@@ -492,7 +492,95 @@ Categories=Utility
 <pre><code># virsh -c lxc:/// define deepin.xml 
 # virsh -c lxc:/// start deepinlxc
 </code></pre>
-<h3 id="6-debian-lxc-host-disable-apparmor"><a class="header" href="#6-debian-lxc-host-disable-apparmor">6. debian lxc host disable apparmor</a></h3>
+<h3 id="6-automatically-scan-devices"><a class="header" href="#6-automatically-scan-devices">6. Automatically scan devices</a></h3>
+<p>Using following scripts for creating a <code>10-lxc-devices.xml</code> which contains all of the misc devices used for lxc instance:</p>
+<pre><code>dash@archnvme:~ $ cat input.sh 
+#!/usr/bin/env bash
+
+### Creates config file for virsh xml with all 
+# currently present input/snd/fb*/card*/renderD* devices
+######################################################################
+# tty8 and tty0 should be always added. 
+cat &gt;/etc/10-lxc-devices.xml &lt;&lt; _EOF_
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/tty8&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/tty0&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+_EOF_
+
+# append all of the input devices
+cd /dev/input
+for input in event*
+do
+cat &gt;&gt; /etc/10-lxc-devices.xml &lt;&lt;_EOF_
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/input/$input&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+_EOF_
+done
+
+# append all of the snd devices
+cd /dev/snd
+for snd in *
+do
+if [ -d $snd ] 
+    then 
+    :
+else
+cat &gt;&gt; /etc/10-lxc-devices.xml &lt;&lt;_EOF_
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/snd/$snd&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+_EOF_
+fi
+done
+
+# append all of the dri devices
+cd /dev/dri
+for dri in *
+do
+if [ -d $dri ] 
+    then 
+    :
+else
+cat &gt;&gt; /etc/10-lxc-devices.xml &lt;&lt;_EOF_
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/dri/$dri&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+_EOF_
+fi
+done
+
+# append all of the fb devices
+cd /dev/
+for fbdev in fb*
+do
+cat &gt;&gt; /etc/10-lxc-devices.xml &lt;&lt;_EOF_
+&lt;hostdev mode='capabilities' type='misc'&gt;
+  &lt;source&gt;
+    &lt;char&gt;/dev/$fbdev&lt;/char&gt;
+  &lt;/source&gt;
+&lt;/hostdev&gt;
+_EOF_
+done
+</code></pre>
+<p>The <code>10-lxc-devices.xml</code> should be added like:</p>
+<pre><code>virsh -c lxc:///  attach-device deepinlxc --file /etc/10-lxc-devices.xml --current
+</code></pre>
+<p>And this command should be added in libvirt hooks(in prepare period).</p>
+<h3 id="7-debian-lxc-host-disable-apparmor"><a class="header" href="#7-debian-lxc-host-disable-apparmor">7. debian lxc host disable apparmor</a></h3>
 <p>Solved via:</p>
 <pre><code>systemctl disable apparmor
 apt remove --assume-yes --purge apparmor
