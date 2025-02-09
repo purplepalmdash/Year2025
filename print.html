@@ -927,6 +927,164 @@ virsh -c lxc:/// ${COMMAND} "${DOMAIN}" --file /etc/10-lxc-devices.xml --config
 </code></pre>
 <p>Attach and detach the camera to running instance.<br />
 Notice: should take effect after rebooted.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250208"><a class="header" href="#20250208">20250208</a></h1>
+<h3 id="1-deepsex"><a class="header" href="#1-deepsex">1. deepsex</a></h3>
+<p>Fetch the model:</p>
+<pre><code>ollama run hf.co/ValueFX9507/Tifa-Deepsex-14b-CoT-GGUF-Q4
+</code></pre>
+<p>Run the webui:</p>
+<pre><code>source ~/open-webui-venv/bin/activate
+AIOHTTP_CLIENT_TIMEOUT_OPENAI_MODEL_LIST=3 open-webui serve
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250209"><a class="header" href="#20250209">20250209</a></h1>
+<h3 id="1-laptop-environment"><a class="header" href="#1-laptop-environment">1. laptop environment</a></h3>
+<p>Re-install hyper-v, wsl after windows upgrading.</p>
+<p>Hyper-v manually installation:</p>
+<pre><code>file: hyperv.cmd(run as adminstrator);    
+pushd "%~dp0"
+dir /b %SystemRoot%\servicing\Packages\*Hyper-V*.mum &gt;hyper-v.txt
+for /f %%i in ('findstr /i . hyper-v.txt 2^&gt;nul') do dism /online /norestart /add-package:"%SystemRoot%\servicing\Packages\%%i"
+del hyper-v.txt
+Dism /online /enable-feature /featurename:Microsoft-Hyper-V-All /LimitAccess /ALL
+</code></pre>
+<p>After installation, the machine should be restarted.</p>
+<h3 id="2-hyper-v-nixos-aarch64"><a class="header" href="#2-hyper-v-nixos-aarch64">2. hyper-v nixos aarch64</a></h3>
+<p>Download the iso from <code>https://releases.nixos.org/nixos/24.11/nixos-24.11.714127.f5a32fa27df9/nixos-minimal-24.11.714127.f5a32fa27df9-aarch64-linux.iso</code>.</p>
+<p>Issue with minimum iso:</p>
+<p><img src="./images/2025_02_09_11_03_42_1239x367.jpg" alt="./images/2025_02_09_11_03_42_1239x367.jpg" /></p>
+<p>Change to gnome iso which is downloaded from <code>https://releases.nixos.org/nixos/24.11/nixos-24.11.714127.f5a32fa27df9/nixos-gnome-24.11.714127.f5a32fa27df9-aarch64-linux.iso</code>:</p>
+<p>parted the disk:</p>
+<pre><code>parted /dev/sda -- mklabel gpt
+parted /dev/sda -- mkpart ESP fat32 1MB 512MB
+parted /dev/sda -- mkpart primary 512MB -2GB
+parted /dev/sda -- mkpart swap linux-swap -2GB 100%
+parted /dev/sda -- set 1 esp on
+ 
+mkfs.fat -F 32 -n boot /dev/sda1
+mkfs.btrfs -L NIXOS /dev/sda2
+mkswap -L swap /dev/sda3
+</code></pre>
+<p>mount the formated disk:</p>
+<pre><code>mount /dev/disk/by-label/NIXOS /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/sda3
+</code></pre>
+<p>Refresh the channel:</p>
+<pre><code>nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixpkgs-unstable nixpkgs
+nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixos-24.11 nixos
+
+nix-channel --list
+nix-channel --update
+nixos-rebuild --option substituters https://mirrors.ustc.edu.cn/nix-channels/store switch --upgrade
+</code></pre>
+<p>Generate a basic configuration:</p>
+<pre><code>nixos-generate-config --root /mnt
+</code></pre>
+<p>Edit the generated <code>configuration.nix</code> file:</p>
+<pre><code>
+{ config, lib, pkgs, ... }:
+
+{
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+    ];
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+    "video=hyperv_fb:1920x1080"
+  ];
+
+# awesome desktop wm
+    services={
+        xserver = {
+            enable = true;
+
+            windowManager.awesome = {
+                enable = true;
+                luaModules = with pkgs.luaPackages; [
+                    luarocks # is the package manager for Lua modules
+                    luadbi-mysql # Database abstraction layer
+                ];
+
+            };
+        };
+
+        displayManager = {
+            sddm.enable = true;
+            defaultSession = "none+awesome";
+        };
+    };
+
+  nix.settings.substituters = [ "https://mirrors.ustc.edu.cn/nix-channels/store" ];
+  nixpkgs.config.allowUnfree = true;
+  networking.hostName = "nixos"; # Define your hostname.
+  time.timeZone = "Asia/Shanghai";
+  virtualisation.hypervGuest = {
+      enable = true;
+};
+
+  users.mutableUsers = false; # 禁止useradd添加用户
+  #security.sudo.wheelNeedsPassword = false;
+  users.users.dash= { #用户名是yh
+      isNormalUser = true;
+      hashedPassword = "xxxxxxxxxxxxxxxxx";
+      extraGroups = [
+        "wheel"
+        "users"
+      ];
+    };
+
+  environment.systemPackages = with pkgs; [
+      wget
+      curl
+      unzip
+      vim
+    ];
+
+ services.openssh.enable = true;
+
+   services.pipewire = {
+     enable = true;
+     pulse.enable = true;
+   };
+
+  system.stateVersion = "24.11"; # Did you read the comment?
+
+}
+
+</code></pre>
+<p>The hashedPassword is generated via:</p>
+<pre><code>mkpasswd -m sha-512
+</code></pre>
+<p>With this modified configuration file, do following:</p>
+<pre><code>cd /mnt
+nixos-install --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-channels/store
+
+</code></pre>
+<p>After installation, it will hints your with set passwd for root.</p>
+<h3 id="3-default-kernel-for-nixos"><a class="header" href="#3-default-kernel-for-nixos">3. default kernel for nixos</a></h3>
+<p>Get from the <code>https://github.com/NixOS/nixpkgs/blob/nixos-24.11/pkgs/top-level/linux-kernels.nix</code>, the default kernel is:</p>
+<pre><code>packageAliases = {
+    linux_default = packages.linux_6_6;
+    # Update this when adding the newest kernel major version!
+    linux_latest = packages.linux_6_13;
+    linux_mptcp = throw "'linux_mptcp' has been moved to https://github.com/teto/mptcp-flake";
+    linux_rt_default = packages.linux_rt_5_15;
+    linux_rt_latest = packages.linux_rt_6_6;
+  };
+
+</code></pre>
+<p>you could switch the kernel in configuration.nix:</p>
+<pre><code>  #boot.kernelPackages = pkgs.linuxPackages_latest;
+
+</code></pre>
 
                     </main>
 
