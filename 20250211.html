@@ -374,6 +374,23 @@ $ sudo update-grub2 &amp;&amp; sudo update-grub &amp;&amp; sudo reboot
 # tar cpvf deepinlxc * &amp;&amp; xz -T8 deepinlxc.tar
 </code></pre>
 <p>Test and verification.</p>
+<p>Issue(lightdm):</p>
+<pre><code>             └─592 /usr/bin/fcitx5 -d
+
+2月 12 08:53:20 deepin lightdm[445]: gkr-pam: gnome-keyring-daemon started properly and unlocked keyring
+2月 12 08:53:20 deepin lightdm[445]: Failed to open CK session: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.ConsoleKit was not provided by any .service files
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activating service name='org.freedesktop.systemd1' requested by ':1.1' (uid=1000 pid=461 comm="/usr/bin/dde-session" label="kernel")
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activating service name='org.freedesktop.systemd1' requested by ':1.1' (uid=1000 pid=461 comm="/usr/bin/dde-session" label="kernel")
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activating service name='org.freedesktop.systemd1' requested by ':1.1' (uid=1000 pid=461 comm="/usr/bin/dde-session" label="kernel")
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activating service name='org.freedesktop.systemd1' requested by ':1.1' (uid=1000 pid=461 comm="/usr/bin/dde-session" label="kernel")
+2月 12 08:53:21 deepin dbus-daemon[556]: [session uid=1000 pid=554] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+root@deepin:~# ls /var/cache/
+
+</code></pre>
+<p>Seems kernel issue.</p>
 
                     </main>
 
