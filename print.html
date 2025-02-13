@@ -156,7 +156,17 @@
                         <h1 id="year2025"><a class="header" href="#year2025">Year2025</a></h1>
 <p>用来记录2025年每天所做的事情，主要是技术类。</p>
 <p>From 2025Feb06</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="20250206"><a class="header" href="#20250206">2025.02.06</a></h1>
+<div class="table-wrapper"><table><thead><tr><th>Date</th><th>Conclusion</th></tr></thead><tbody>
+<tr><td>20250206</td><td>ollama/webui, x86 lxc works</td></tr>
+<tr><td>20250207</td><td>libvirt-lxc hooks, usb camera passthrough</td></tr>
+<tr><td>20250208</td><td>run deepsex at home</td></tr>
+<tr><td>20250209</td><td>run hyper-v based aarch64 nixos at home</td></tr>
+<tr><td>20250210</td><td>upgrade ollma, gtx1660s/3050 passthrough, x86 lxc works</td></tr>
+<tr><td>20250211</td><td>arm64 lxc works, mainly on d3000, deepin got issue, host is zkfd</td></tr>
+<tr><td>20250212</td><td>3a6000 lxc works, old/new world issues</td></tr>
+<tr><td>20250213</td><td>3a6000 libvirt-lxc works(need re-compile libvirt), arm64 lxc verification on d2000, mainly ok. But libvirt-lxc got issues.</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="20250206"><a class="header" href="#20250206">2025.02.06</a></h1>
 <h3 id="1-open-webuidockerollama"><a class="header" href="#1-open-webuidockerollama">1. Open-WebUI/Docker/Ollama</a></h3>
 <p>Fetch new models:</p>
 <pre><code>ollama run deepseek-r1:32b
@@ -1943,7 +1953,211 @@ root@deepin:~# ls /var/cache/
 
 </code></pre>
 <p>Seems kernel issue.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20240212"><a class="header" href="#20240212">20240212</a></h1>
+<p>3a6000:</p>
+<pre><code>old world, zkfd/kylin/uos      
+new world, deepin/aosc, etc   
+</code></pre>
+<p>aosc, used for libvirt/virt-manager, for getting the rawimg.</p>
+<h3 id="1-kylin-host"><a class="header" href="#1-kylin-host">1. Kylin host</a></h3>
+<p>Write iso:</p>
+<pre><code>sudo dd if=/media/nfs1/Kylin-Desktop-V10-SP1-2403-Release-20240506-loongarch64.iso of=/dev/sdb bs=10M &amp;&amp; sudo sync
+</code></pre>
+<p>Install by default.</p>
+<p><img src="./images/20250212_101541_x.jpg" alt="./images/20250212_101541_x.jpg" /></p>
+<p><img src="./images/20250212_101601_x.jpg" alt="./images/20250212_101601_x.jpg" /></p>
+<p><img src="./images/20250212_101614_x.jpg" alt="./images/20250212_101614_x.jpg" /></p>
+<pre><code>$ sudo apt update -y &amp;&amp; sudo apt install -y openssh-server &amp;&amp; sudo systemctl enable ssh 
+$ setstatus disable -p
+$ sudo vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash loglevel=0 net.ifnames=0 biosdevname=0"
+GRUB_CMDLINE_LINUX_SECURITY=""
+$ sudo apt install -y aptitude
+$ sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager smplayer lxcfs
+</code></pre>
+<p>lxc issue:</p>
+<pre><code>$ sudo aptitude install lxc
+下列“新”软件包将被安装。         
+  lxc{b} 
+0 个软件包被升级，新安装 1 个，0 个将被删除， 同时 69 个将不升级。
+需要获取 70.0 kB 的存档。解包后将要使用 75.8 kB。
+下列软件包存在未满足的依赖关系：
+ lxc : 依赖: lxc-utils (&gt;= 1:4.0.2-0kylin1)是虚拟软件包，未被任何可用软件包所提供
 
+下列动作将解决这些依赖关系：
+
+     保持 下列软件包于其当前版本：
+1)     lxc [未安装的]             
+
+
+
+是否接受该解决方案？[Y/n/q/?] n
+
+*** 没有更多的解决方案了 ***
+
+下列动作将解决这些依赖关系：
+
+     保持 下列软件包于其当前版本：
+1)     lxc [未安装的]             
+
+
+
+是否接受该解决方案？[Y/n/q/?] n
+
+</code></pre>
+<p><code>lxc-utils</code> did not exists:</p>
+<pre><code>$ apt-cache policy lxc-utils
+lxc-utils:
+  已安装：(无)
+  候选： (无)
+  版本列表：
+
+</code></pre>
+<h3 id="2-uos-host"><a class="header" href="#2-uos-host">2. uos host</a></h3>
+<p><img src="./images/20250212_105358_x.jpg" alt="./images/20250212_105358_x.jpg" /></p>
+<p>Inject the sshkey then you could ssh login into host.</p>
+<p>packages lost:</p>
+<pre><code>apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
+
+E: 无法定位软件包 libvirt-daemon-driver-lxc
+E: 无法定位软件包 virt-manager
+</code></pre>
+<h3 id="3-zkfd-host"><a class="header" href="#3-zkfd-host">3. zkfd host</a></h3>
+<p>Install:</p>
+<pre><code>$ sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树... 完成
+正在读取状态信息... 完成                 
+E: 无法定位软件包 libvirt-daemon-driver-lxc
+</code></pre>
+<p>old world, could run most of the lxc instance of old world.</p>
+<h3 id="4-deepin-guest"><a class="header" href="#4-deepin-guest">4. deepin guest</a></h3>
+<p>Install in <code>Try </code> mode.</p>
+<p><img src="./images/20250212_145447_x.jpg" alt="./images/20250212_145447_x.jpg" /></p>
+<p>Install:</p>
+<p><img src="./images/20250212_145505_x.jpg" alt="./images/20250212_145505_x.jpg" /></p>
+<p><img src="./images/20250212_145812_x.jpg" alt="./images/20250212_145812_x.jpg" /></p>
+<p><img src="./images/20250212_150333_x.jpg" alt="./images/20250212_150333_x.jpg" /></p>
+<p><img src="./images/20250212_150416_x.jpg" alt="./images/20250212_150416_x.jpg" /></p>
+<pre><code># lxc-create -t local -n  deepinlxc -- -m /root/meta.tar.xz -f /root/deepinlxc.tar.xz
+</code></pre>
+<p>When start lxc, get the following issue:</p>
+<pre><code>root@zkfdhost:~# lxc-start -n deepinlxc -F
+lxc-start: deepinlxc: utils.c: safe_mount: 1179 No such file or directory - Failed to mount "/dev/video0" onto "/usr/lib/loongarch64-linux-gnu/lxc/rootfs/dev/video0"
+           lxc-start: deepinlxc: utils.c: safe_mount: 1179 No such file or directory - Failed to mount "/dev/video1" onto "/usr/lib/loongarch64-linux-gnu/lxc/rootfs/dev/video1"
+                      systemd 255.2-4 running in system mode (+PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK -SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -BPF_FRAMEWORK -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified)
+Detected virtualization lxc.
+Detected architecture loongarch64.
+
+Welcome to Deepin 23!
+
+Hostname set to &lt;deepin&gt;.
+Assertion 'sigaction(SIGCHLD, &amp;sa, NULL) == 0' failed at src/core/manager.c:517, function manager_setup_signals(). Aborting.
+
+</code></pre>
+<h3 id="4-loognix-guest"><a class="header" href="#4-loognix-guest">4. loognix guest</a></h3>
+<p><img src="./images/20250212_145643_x.jpg" alt="./images/20250212_145643_x.jpg" /></p>
+<p><img src="./images/20250212_145857_x.jpg" alt="./images/20250212_145857_x.jpg" /></p>
+<p><img src="./images/20250212_145951_x.jpg" alt="./images/20250212_145951_x.jpg" /></p>
+<p><img src="./images/20250212_150022_x.jpg" alt="./images/20250212_150022_x.jpg" /></p>
+<p><img src="./images/20250212_150053_x.jpg" alt="./images/20250212_150053_x.jpg" /></p>
+<p><img src="./images/20250212_150113_x.jpg" alt="./images/20250212_150113_x.jpg" /></p>
+<p>Cannot boot to loognix vm.</p>
+<p><img src="./images/20250212_153221_x.jpg" alt="./images/20250212_153221_x.jpg" /></p>
+<h3 id="5-aosc-guest"><a class="header" href="#5-aosc-guest">5. aosc guest</a></h3>
+<p><img src="./images/20250212_153446_x.jpg" alt="./images/20250212_153446_x.jpg" /></p>
+<p><img src="./images/20250212_153506_x.jpg" alt="./images/20250212_153506_x.jpg" /></p>
+<p><img src="./images/20250212_153605_x.jpg" alt="./images/20250212_153605_x.jpg" /></p>
+<p><img src="./images/20250212_153618_x.jpg" alt="./images/20250212_153618_x.jpg" /></p>
+<p><img src="./images/20250212_153639_x.jpg" alt="./images/20250212_153639_x.jpg" /></p>
+<h3 id="6-deepin-host"><a class="header" href="#6-deepin-host">6. deepin host</a></h3>
+<p>需要刷写bios固件到新世界，才可以安装deepin.</p>
+<pre><code>sudo apt update -y
+sudo apt install -y openssh-server
+sudo systemctl enable ssh --now
+sudo apt install -y iotop vim s-tui libvirt-daemon-driver-lxc  lxc lxc-templates lxcfs smplayer
+sudo systemctl disable apparmor
+sudo apt purge --assume-yes apparmor
+</code></pre>
+<p>package info:</p>
+<pre><code>test@lxchost:~$ lxc-ls --version
+6.0.1
+test@lxchost:~$ dpkg -l | grep libvirt | grep lxc
+ii  libvirt-daemon-driver-lxc                       10.7.0-3deepin1                        loong64      Virtualization daemon LXC connection driver
+</code></pre>
+<p>Edit the following files:</p>
+<pre><code>/etc/lxc/default.conf
+/usr/share/lxc/config/common.conf
+</code></pre>
+<h4 id="61-zkfd-guest"><a class="header" href="#61-zkfd-guest">6.1 zkfd guest</a></h4>
+<p>Test via:</p>
+<pre><code>lxc-create -t local -n zkfdlxc -- -m /root/meta.tar.xz -f /root/zkfd.tar.xz
+....
+lxc-start -n zkfdlxc
+</code></pre>
+<p>issue:</p>
+<pre><code>root@lxchost:/var/lib/lxc# lxc-start -n zkfdlxc -F
+/sbin/init: error while loading shared libraries: libc.so.6: cannot stat shared object: Error 38
+</code></pre>
+<h4 id="62-deepin-guest"><a class="header" href="#62-deepin-guest">6.2 deepin guest</a></h4>
+<p>Acts well.</p>
+<h4 id="63-kylin-guest"><a class="header" href="#63-kylin-guest">6.3 kylin guest</a></h4>
+<p>issue:</p>
+<pre><code>root@lxchost:~# lxc-start -n kylinlxc -F
+/sbin/init: error while loading shared libraries: libc.so.6: cannot stat shared object: Error 38
+</code></pre>
+<h4 id="64-uos-guest"><a class="header" href="#64-uos-guest">6.4 uos guest</a></h4>
+<p>issue:</p>
+<pre><code>lxc-start -n uoslxc -F
+/sbin/init: error while loading shared libraries: libc.so.6: cannot stat shared object: Error 38
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250213"><a class="header" href="#20250213">20250213</a></h1>
+<p>Conclusion:</p>
+<pre><code>1. libvirt-lxc need to be compiled on 3a6000.    
+2. arm64-lxc could back to d2000 and most of its functionality works well.   
+3. 
+</code></pre>
+<h3 id="1-compile-libvirt"><a class="header" href="#1-compile-libvirt">1. compile libvirt</a></h3>
+<p>Get the specified version:</p>
+<pre><code>wget https://github.com/libvirt/libvirt/archive/refs/tags/v5.0.0.tar.gz
+tar xzvf libvirt-5.0.0.tar.gz
+</code></pre>
+<p>To be continue.</p>
+<p><code>https://developer.ibm.com/tutorials/compiling-libvirt-and-qemu/</code>
+<code>https://gitlab.com/lixianglai/libvirt/-/tree/loongarch?ref_type=heads</code></p>
+<h3 id="2-lxc-verificationd2000"><a class="header" href="#2-lxc-verificationd2000">2. lxc Verification(D2000)</a></h3>
+<p>System hardware Info:</p>
+<p><img src="./images/20250213_110404_x.jpg" alt="./images/20250213_110404_x.jpg" /></p>
+<p><img src="./images/20250213_110414_x.jpg" alt="./images/20250213_110414_x.jpg" /></p>
+<p>Boot from iso and install system.</p>
+<p><img src="./images/20250213_110531_x.jpg" alt="./images/20250213_110531_x.jpg" /></p>
+<p>(ignored)Install some necessary packages and configuration of the lxc default options.</p>
+<pre><code>lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f /root/kylinpulse.tar.xz
+lxc-create -t local -n  uoslxc -- -m /root/meta.tar.xz -f /root/uoslxc.tar.xz
+lxc-create -t local -n zkfdlxc -- -m  /root/meta.tar.xz -f /root/zkfdpulse.tar.xz
+./patchlxc.sh zkfdlxc &amp;&amp; ./patchlxc.sh kylinlxc &amp;&amp; ./patchlxc.sh uoslxc
+</code></pre>
+<p>uos's sound issue(kt-usb audio not recognized).</p>
+<h3 id="3-libvirt-lxc-verificationd2000"><a class="header" href="#3-libvirt-lxc-verificationd2000">3. libvirt-lxc verification(d2000)</a></h3>
+<p>kylinlxc: got xorg startup issue.<br />
+zkfdlxc: got keyboard/mouse input issue.<br />
+uoslxc: got sound issue.</p>
+<pre><code>$ ls arm64_workable_20250211
+added.conf  copy.sh  hooks  kkk.sh  kylinpulse.tar.xz  LXC  override.conf  patchlxc.sh  preX-populate-input.sh  uoslxc.tar.xz  zkfdpulse.tar.xz
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>name</th><th>description</th></tr></thead><tbody>
+<tr><td>added.conf</td><td>lxc instance specified conf</td></tr>
+<tr><td>copy.sh</td><td>copy items into instance</td></tr>
+<tr><td>hooks</td><td>libvirt hooks for lxc</td></tr>
+<tr><td>kylinpulse.tar.xz</td><td>lxc images(pulse audio system-level in guest)</td></tr>
+<tr><td>uoslxc.tar.xz</td><td>lxc images</td></tr>
+<tr><td>zkfdpulse.tar.xz</td><td>lxc images (pulse audio system-level in guest)</td></tr>
+<tr><td>patchlxc.sh</td><td>usage: ./patchlxc.sh lxcinstance, after lxc-create</td></tr>
+<tr><td>override.conf</td><td>override of the lxc instance lightdm systemd file</td></tr>
+<tr><td>preX-populate-input.sh</td><td>added input to lxc instance</td></tr>
+<tr><td>LXC</td><td>definition for lxc xml</td></tr>
+</tbody></table>
+</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
