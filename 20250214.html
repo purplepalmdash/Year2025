@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250213 - year2025</title>
+        <title>20250214 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,64 +152,45 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250213"><a class="header" href="#20250213">20250213</a></h1>
-<p>Conclusion:</p>
-<pre><code>1. libvirt-lxc need to be compiled on 3a6000.    
-2. arm64-lxc could back to d2000 and most of its functionality works well.   
-3. 
+                        <h1 id="20250214"><a class="header" href="#20250214">20250214</a></h1>
+<h3 id="zkfd-host-verificationx86"><a class="header" href="#zkfd-host-verificationx86">zkfd host verification(x86)</a></h3>
+<p>Install packages:</p>
+<pre><code>sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
+crontab -e
+@reboot chmod 777 /dev/tty* &amp;&amp; chmod 777 /dev/fb* &amp;&amp; chmod 777 -R /dev/dri/* &amp;&amp; chmod 777 -R /dev/snd/* &amp;&amp; chmod 777 -R /dev/input/*
+Edit /usr/share/lxc/config/common.conf and /etc/lxc/default.conf
 </code></pre>
-<h3 id="1-compile-libvirt"><a class="header" href="#1-compile-libvirt">1. compile libvirt</a></h3>
-<p>Get the specified version:</p>
-<pre><code>wget https://github.com/libvirt/libvirt/archive/refs/tags/v5.0.0.tar.gz
-tar xzvf libvirt-5.0.0.tar.gz
+<p>Create lxc instance:</p>
+<pre><code>lxc-create -t local -n zkfdlxc -- -m /root/meta.tar.xz -f  /root/zkfdlxc.tar.xz
+root@zkfd:~# ./patchlxc.sh zkfdlxc
+patching lxc zkfdlxc
+root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/lightdm/lightdm.conf 
+root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/fstab 
+root@zkfd:~# lxc-start -n zkfdlxc -F
+root@zkfd:~# mv /var/lib/lxc/zkfdlxc/rootfs/etc/acpi/ /var/lib/lxc/zkfdlxc/rootfs/etc/acpi.bak
 </code></pre>
-<p>To be continue.</p>
-<p><code>https://developer.ibm.com/tutorials/compiling-libvirt-and-qemu/</code>
-<code>https://gitlab.com/lixianglai/libvirt/-/tree/loongarch?ref_type=heads</code></p>
-<h3 id="2-lxc-verificationd2000"><a class="header" href="#2-lxc-verificationd2000">2. lxc Verification(D2000)</a></h3>
-<p>System hardware Info:</p>
-<p><img src="./images/20250213_110404_x.jpg" alt="./images/20250213_110404_x.jpg" /></p>
-<p><img src="./images/20250213_110414_x.jpg" alt="./images/20250213_110414_x.jpg" /></p>
-<p>Boot from iso and install system.</p>
-<p><img src="./images/20250213_110531_x.jpg" alt="./images/20250213_110531_x.jpg" /></p>
-<p>(ignored)Install some necessary packages and configuration of the lxc default options.</p>
-<pre><code>lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f /root/kylinpulse.tar.xz
-lxc-create -t local -n  uoslxc -- -m /root/meta.tar.xz -f /root/uoslxc.tar.xz
-lxc-create -t local -n zkfdlxc -- -m  /root/meta.tar.xz -f /root/zkfdpulse.tar.xz
-./patchlxc.sh zkfdlxc &amp;&amp; ./patchlxc.sh kylinlxc &amp;&amp; ./patchlxc.sh uoslxc
+<p>kylin:</p>
+<pre><code>root@zkfd:/home/test# lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f  /root/kylinlxc.tar.xz
+root@zkfd:~# ./patchlxc.sh kylinlxc
+root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/fstab 
+root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/lightdm/lightdm.conf
+root@zkfd:~# lxc-start -n kylinlxc
 </code></pre>
-<p>uos's sound issue(kt-usb audio not recognized).</p>
-<h3 id="3-libvirt-lxc-verificationd2000"><a class="header" href="#3-libvirt-lxc-verificationd2000">3. libvirt-lxc verification(d2000)</a></h3>
-<p>kylinlxc: got xorg startup issue.<br />
-zkfdlxc: got keyboard/mouse input issue.<br />
-uoslxc: got sound issue.</p>
-<pre><code>$ ls arm64_workable_20250211
-added.conf  copy.sh  hooks  kkk.sh  kylinpulse.tar.xz  LXC  override.conf  patchlxc.sh  preX-populate-input.sh  uoslxc.tar.xz  zkfdpulse.tar.xz
-</code></pre>
-<div class="table-wrapper"><table><thead><tr><th>name</th><th>description</th></tr></thead><tbody>
-<tr><td>added.conf</td><td>lxc instance specified conf</td></tr>
-<tr><td>copy.sh</td><td>copy items into instance</td></tr>
-<tr><td>hooks</td><td>libvirt hooks for lxc</td></tr>
-<tr><td>kylinpulse.tar.xz</td><td>lxc images(pulse audio system-level in guest)</td></tr>
-<tr><td>uoslxc.tar.xz</td><td>lxc images</td></tr>
-<tr><td>zkfdpulse.tar.xz</td><td>lxc images (pulse audio system-level in guest)</td></tr>
-<tr><td>patchlxc.sh</td><td>usage: ./patchlxc.sh lxcinstance, after lxc-create</td></tr>
-<tr><td>override.conf</td><td>override of the lxc instance lightdm systemd file</td></tr>
-<tr><td>preX-populate-input.sh</td><td>added input to lxc instance</td></tr>
-<tr><td>LXC</td><td>definition for lxc xml</td></tr>
-</tbody></table>
-</div>
+<p>Effect: under zkfd, the moving mouse will be stucked.</p>
+<h3 id="kylin-host-verificationx86"><a class="header" href="#kylin-host-verificationx86">kylin host verification(x86)</a></h3>
+<p>The same effect as zkfdlxc.</p>
+<h3 id="ubuntu20042204debian-host-verificationx86"><a class="header" href="#ubuntu20042204debian-host-verificationx86">ubuntu20.04/22.04/debian host verification(x86)</a></h3>
+<p>The same effect as zkfdlxc.</p>
+<p>kylin/zkfd are all derived from ubuntu20.04, so the issues are the same.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250212.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250213.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250214.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -217,13 +198,10 @@ added.conf  copy.sh  hooks  kkk.sh  kylinpulse.tar.xz  LXC  override.conf  patch
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250212.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250213.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250214.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

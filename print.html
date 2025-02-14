@@ -165,6 +165,7 @@
 <tr><td>20250211</td><td>arm64 lxc works, mainly on d3000, deepin got issue, host is zkfd</td></tr>
 <tr><td>20250212</td><td>3a6000 lxc works, old/new world issues</td></tr>
 <tr><td>20250213</td><td>3a6000 libvirt-lxc works(need re-compile libvirt), arm64 lxc verification on d2000, mainly ok. But libvirt-lxc got issues.</td></tr>
+<tr><td>20250214</td><td>meet some bugs on x86 lxc, verification.</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="20250206"><a class="header" href="#20250206">2025.02.06</a></h1>
 <h3 id="1-open-webuidockerollama"><a class="header" href="#1-open-webuidockerollama">1. Open-WebUI/Docker/Ollama</a></h3>
@@ -2157,7 +2158,37 @@ added.conf  copy.sh  hooks  kkk.sh  kylinpulse.tar.xz  LXC  override.conf  patch
 <tr><td>preX-populate-input.sh</td><td>added input to lxc instance</td></tr>
 <tr><td>LXC</td><td>definition for lxc xml</td></tr>
 </tbody></table>
-</div>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="20250214"><a class="header" href="#20250214">20250214</a></h1>
+<h3 id="zkfd-host-verificationx86"><a class="header" href="#zkfd-host-verificationx86">zkfd host verification(x86)</a></h3>
+<p>Install packages:</p>
+<pre><code>sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
+crontab -e
+@reboot chmod 777 /dev/tty* &amp;&amp; chmod 777 /dev/fb* &amp;&amp; chmod 777 -R /dev/dri/* &amp;&amp; chmod 777 -R /dev/snd/* &amp;&amp; chmod 777 -R /dev/input/*
+Edit /usr/share/lxc/config/common.conf and /etc/lxc/default.conf
+</code></pre>
+<p>Create lxc instance:</p>
+<pre><code>lxc-create -t local -n zkfdlxc -- -m /root/meta.tar.xz -f  /root/zkfdlxc.tar.xz
+root@zkfd:~# ./patchlxc.sh zkfdlxc
+patching lxc zkfdlxc
+root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/lightdm/lightdm.conf 
+root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/fstab 
+root@zkfd:~# lxc-start -n zkfdlxc -F
+root@zkfd:~# mv /var/lib/lxc/zkfdlxc/rootfs/etc/acpi/ /var/lib/lxc/zkfdlxc/rootfs/etc/acpi.bak
+</code></pre>
+<p>kylin:</p>
+<pre><code>root@zkfd:/home/test# lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f  /root/kylinlxc.tar.xz
+root@zkfd:~# ./patchlxc.sh kylinlxc
+root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/fstab 
+root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/lightdm/lightdm.conf
+root@zkfd:~# lxc-start -n kylinlxc
+</code></pre>
+<p>Effect: under zkfd, the moving mouse will be stucked.</p>
+<h3 id="kylin-host-verificationx86"><a class="header" href="#kylin-host-verificationx86">kylin host verification(x86)</a></h3>
+<p>The same effect as zkfdlxc.</p>
+<h3 id="ubuntu20042204debian-host-verificationx86"><a class="header" href="#ubuntu20042204debian-host-verificationx86">ubuntu20.04/22.04/debian host verification(x86)</a></h3>
+<p>The same effect as zkfdlxc.</p>
+<p>kylin/zkfd are all derived from ubuntu20.04, so the issues are the same.</p>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
