@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250214 - year2025</title>
+        <title>20250215 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,46 +152,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250214"><a class="header" href="#20250214">20250214</a></h1>
-<h3 id="zkfd-host-verificationx86"><a class="header" href="#zkfd-host-verificationx86">zkfd host verification(x86)</a></h3>
-<p>Install packages:</p>
-<pre><code>sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
-crontab -e
-@reboot chmod 777 /dev/tty* &amp;&amp; chmod 777 /dev/fb* &amp;&amp; chmod 777 -R /dev/dri/* &amp;&amp; chmod 777 -R /dev/snd/* &amp;&amp; chmod 777 -R /dev/input/*
-Edit /usr/share/lxc/config/common.conf and /etc/lxc/default.conf
+                        <h1 id="20250215"><a class="header" href="#20250215">20250215</a></h1>
+<h3 id="1-gen10intel-zkfd"><a class="header" href="#1-gen10intel-zkfd">1. gen10(intel) zkfd</a></h3>
+<p>Install system, pass <code>nomodeset</code> to grub items.</p>
+<p>After installation, i915 driver won't take effects.</p>
+<h3 id="2-xfs-issue"><a class="header" href="#2-xfs-issue">2. xfs issue</a></h3>
+<p>zkfd's xfsprogs is too old to mount <code>xfs on mapper</code>, so I mount the usb disk on archlinux(could mount properly on archlinux first) and <code>xfs_repair /dev/mapper/vol</code> , soonly it won't be mounted. Error messages:</p>
+<pre><code>[218555.149809] Buffer I/O error on dev dm-0, logical block 121679856, async page read
+[218555.150428] EXT4-fs (dm-0): unable to read superblock
 </code></pre>
-<p>Create lxc instance:</p>
-<pre><code>lxc-create -t local -n zkfdlxc -- -m /root/meta.tar.xz -f  /root/zkfdlxc.tar.xz
-root@zkfd:~# ./patchlxc.sh zkfdlxc
-patching lxc zkfdlxc
-root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/lightdm/lightdm.conf 
-root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/fstab 
-root@zkfd:~# lxc-start -n zkfdlxc -F
-root@zkfd:~# mv /var/lib/lxc/zkfdlxc/rootfs/etc/acpi/ /var/lib/lxc/zkfdlxc/rootfs/etc/acpi.bak
-</code></pre>
-<p>kylin:</p>
-<pre><code>root@zkfd:/home/test# lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f  /root/kylinlxc.tar.xz
-root@zkfd:~# ./patchlxc.sh kylinlxc
-root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/fstab 
-root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/lightdm/lightdm.conf
-root@zkfd:~# lxc-start -n kylinlxc
-</code></pre>
-<p>Effect: under zkfd, the moving mouse will be stucked.</p>
-<h3 id="kylin-host-verificationx86"><a class="header" href="#kylin-host-verificationx86">kylin host verification(x86)</a></h3>
-<p>The same effect as zkfdlxc.</p>
-<h3 id="ubuntu20042204debian-host-verificationx86"><a class="header" href="#ubuntu20042204debian-host-verificationx86">ubuntu20.04/22.04/debian host verification(x86)</a></h3>
-<p>The same effect as zkfdlxc.</p>
-<p>kylin/zkfd are all derived from ubuntu20.04, so the issues are the same.</p>
+<p>Beware of this <code>xfs_repair</code> command.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250213.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250214.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250215.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250216.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -201,11 +181,11 @@ root@zkfd:~# lxc-start -n kylinlxc
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250213.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250214.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250215.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250216.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

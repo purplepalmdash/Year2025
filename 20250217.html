@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250214 - year2025</title>
+        <title>20250217 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,48 +152,115 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250214"><a class="header" href="#20250214">20250214</a></h1>
-<h3 id="zkfd-host-verificationx86"><a class="header" href="#zkfd-host-verificationx86">zkfd host verification(x86)</a></h3>
-<p>Install packages:</p>
-<pre><code>sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
-crontab -e
-@reboot chmod 777 /dev/tty* &amp;&amp; chmod 777 /dev/fb* &amp;&amp; chmod 777 -R /dev/dri/* &amp;&amp; chmod 777 -R /dev/snd/* &amp;&amp; chmod 777 -R /dev/input/*
-Edit /usr/share/lxc/config/common.conf and /etc/lxc/default.conf
+                        <h1 id="20250217"><a class="header" href="#20250217">20250217</a></h1>
+<h3 id="1-zkfd-evdev-issue"><a class="header" href="#1-zkfd-evdev-issue">1. zkfd evdev issue</a></h3>
+<p>Problem:<br />
+problem 1: input key slow.<br />
+problem 2: When input UP key in terminal(alsamixer), call screenshot instead.</p>
+<p>debugging period(it turns it's not the real reason).</p>
+<pre><code>apt update -y
+apt install -y xfce4
+Change to xfce by default.   
 </code></pre>
-<p>Create lxc instance:</p>
-<pre><code>lxc-create -t local -n zkfdlxc -- -m /root/meta.tar.xz -f  /root/zkfdlxc.tar.xz
-root@zkfd:~# ./patchlxc.sh zkfdlxc
-patching lxc zkfdlxc
-root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/lightdm/lightdm.conf 
-root@zkfd:~# vim /var/lib/lxc/zkfdlxc/rootfs/etc/fstab 
-root@zkfd:~# lxc-start -n zkfdlxc -F
-root@zkfd:~# mv /var/lib/lxc/zkfdlxc/rootfs/etc/acpi/ /var/lib/lxc/zkfdlxc/rootfs/etc/acpi.bak
+<p>Problem 1, input key is normal under xfce4.</p>
+<p>Problem 1/2 are solved via <code>xinput debugging</code>. Install/Uninstall some packages(xinput).</p>
+<h3 id="2-xinput-debugging"><a class="header" href="#2-xinput-debugging">2. xinput debugging</a></h3>
+<p>Under deepinlxc:</p>
+<p><img src="./images/20250217_164118_x.jpg" alt="./images/20250217_164118_x.jpg" /></p>
+<p>Under zkfdlxc:</p>
+<p><img src="./images/20250217_164309_x.jpg" alt="./images/20250217_164309_x.jpg" /></p>
+<p>float 15:</p>
+<pre><code>xinput float 15
 </code></pre>
-<p>kylin:</p>
-<pre><code>root@zkfd:/home/test# lxc-create -t local -n kylinlxc -- -m /root/meta.tar.xz -f  /root/kylinlxc.tar.xz
-root@zkfd:~# ./patchlxc.sh kylinlxc
-root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/fstab 
-root@zkfd:~# vim /var/lib/lxc/kylinlxc/rootfs/etc/lightdm/lightdm.conf
-root@zkfd:~# lxc-start -n kylinlxc
+<p>Test via following method:</p>
+<pre><code>root@debian:~# lxc-attach -n zkfd1
+root@zkfdlxc:~# su test
+test@zkfdlxc:/root$ DISPLAY=:0 xev
+
+Press UP/Down shows OK
+
+KeyPress event, serial 33, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18939240, (1918,355), root:(1919,398),
+    state 0x0, keycode 111 (keysym 0xff52, Up), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18939311, (1918,355), root:(1919,398),
+    state 0x0, keycode 111 (keysym 0xff52, Up), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+
+KeyPress event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18942639, (1918,355), root:(1919,398),
+    state 0x0, keycode 116 (keysym 0xff54, Down), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18942711, (1918,355), root:(1919,398),
+    state 0x0, keycode 116 (keysym 0xff54, Down), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
 </code></pre>
-<p>Effect: under zkfd, the moving mouse will be stucked.</p>
-<h3 id="kylin-host-verificationx86"><a class="header" href="#kylin-host-verificationx86">kylin host verification(x86)</a></h3>
-<p>The same effect as zkfdlxc.</p>
-<h3 id="ubuntu20042204debian-host-verificationx86"><a class="header" href="#ubuntu20042204debian-host-verificationx86">ubuntu20.04/22.04/debian host verification(x86)</a></h3>
-<p>The same effect as zkfdlxc.</p>
-<p>kylin/zkfd are all derived from ubuntu20.04, so the issues are the same.</p>
+<p>Kylin lxc issue(Up 111/Down 116):</p>
+<pre><code>KeyPress event, serial 38, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19040788, (912,406), root:(960,540),
+    state 0x0, keycode 111 (keysym 0xff61, Print), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19040828, (912,406), root:(960,540),
+    state 0x0, keycode 111 (keysym 0xff61, Print), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+
+
+
+KeyPress event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19052107, (912,406), root:(960,540),
+    state 0x0, keycode 116 (keysym 0xffec, Super_R), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19052163, (912,406), root:(960,540),
+    state 0x40, keycode 116 (keysym 0xffec, Super_R), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+</code></pre>
+<p>Using <code>xmodmap -pke</code> for detecting the key mapping.</p>
+<p>Solved:<br />
+zkfd because I installed too much input equipments:</p>
+<p><img src="./images/20250217_171507_x.jpg" alt="./images/20250217_171507_x.jpg" /></p>
+<p>kylin because no input equipments installed:</p>
+<p><img src="./images/20250217_171613_x.jpg" alt="./images/20250217_171613_x.jpg" /></p>
+<pre><code>zkfd: 
+remove the  kbd, then the evdev got OK.   
+
+apt remove xserver-xorg-input-kbd
+
+kylin:    
+
+apt install xserver-xorg-input-evdev
+</code></pre>
+<p>Now the system behaves OK.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250213.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250216.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250215.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -201,13 +268,10 @@ root@zkfd:~# lxc-start -n kylinlxc
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250213.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250216.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250215.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

@@ -2188,6 +2188,122 @@ root@zkfd:~# lxc-start -n kylinlxc
 <h3 id="ubuntu20042204debian-host-verificationx86"><a class="header" href="#ubuntu20042204debian-host-verificationx86">ubuntu20.04/22.04/debian host verification(x86)</a></h3>
 <p>The same effect as zkfdlxc.</p>
 <p>kylin/zkfd are all derived from ubuntu20.04, so the issues are the same.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250215"><a class="header" href="#20250215">20250215</a></h1>
+<h3 id="1-gen10intel-zkfd"><a class="header" href="#1-gen10intel-zkfd">1. gen10(intel) zkfd</a></h3>
+<p>Install system, pass <code>nomodeset</code> to grub items.</p>
+<p>After installation, i915 driver won't take effects.</p>
+<h3 id="2-xfs-issue"><a class="header" href="#2-xfs-issue">2. xfs issue</a></h3>
+<p>zkfd's xfsprogs is too old to mount <code>xfs on mapper</code>, so I mount the usb disk on archlinux(could mount properly on archlinux first) and <code>xfs_repair /dev/mapper/vol</code> , soonly it won't be mounted. Error messages:</p>
+<pre><code>[218555.149809] Buffer I/O error on dev dm-0, logical block 121679856, async page read
+[218555.150428] EXT4-fs (dm-0): unable to read superblock
+</code></pre>
+<p>Beware of this <code>xfs_repair</code> command.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250216"><a class="header" href="#20250216">20250216</a></h1>
+<h3 id="photo-print"><a class="header" href="#photo-print">photo print</a></h3>
+<p><img src="./images/2025_02_16_08_35_23_686x474.jpg" alt="./images/2025_02_16_08_35_23_686x474.jpg" /></p>
+<p><img src="./images/2025_02_16_08_35_40_436x369.jpg" alt="./images/2025_02_16_08_35_40_436x369.jpg" /></p>
+<h3 id="2-lxc-stuck-issue"><a class="header" href="#2-lxc-stuck-issue">2. lxc stuck issue</a></h3>
+<p>solved via change <code>cgroups.allow = all</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250217"><a class="header" href="#20250217">20250217</a></h1>
+<h3 id="1-zkfd-evdev-issue"><a class="header" href="#1-zkfd-evdev-issue">1. zkfd evdev issue</a></h3>
+<p>Problem:<br />
+problem 1: input key slow.<br />
+problem 2: When input UP key in terminal(alsamixer), call screenshot instead.</p>
+<p>debugging period(it turns it's not the real reason).</p>
+<pre><code>apt update -y
+apt install -y xfce4
+Change to xfce by default.   
+</code></pre>
+<p>Problem 1, input key is normal under xfce4.</p>
+<p>Problem 1/2 are solved via <code>xinput debugging</code>. Install/Uninstall some packages(xinput).</p>
+<h3 id="2-xinput-debugging"><a class="header" href="#2-xinput-debugging">2. xinput debugging</a></h3>
+<p>Under deepinlxc:</p>
+<p><img src="./images/20250217_164118_x.jpg" alt="./images/20250217_164118_x.jpg" /></p>
+<p>Under zkfdlxc:</p>
+<p><img src="./images/20250217_164309_x.jpg" alt="./images/20250217_164309_x.jpg" /></p>
+<p>float 15:</p>
+<pre><code>xinput float 15
+</code></pre>
+<p>Test via following method:</p>
+<pre><code>root@debian:~# lxc-attach -n zkfd1
+root@zkfdlxc:~# su test
+test@zkfdlxc:/root$ DISPLAY=:0 xev
+
+Press UP/Down shows OK
+
+KeyPress event, serial 33, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18939240, (1918,355), root:(1919,398),
+    state 0x0, keycode 111 (keysym 0xff52, Up), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18939311, (1918,355), root:(1919,398),
+    state 0x0, keycode 111 (keysym 0xff52, Up), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+
+KeyPress event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18942639, (1918,355), root:(1919,398),
+    state 0x0, keycode 116 (keysym 0xff54, Down), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 36, synthetic NO, window 0x1000001,
+    root 0x6c7, subw 0x0, time 18942711, (1918,355), root:(1919,398),
+    state 0x0, keycode 116 (keysym 0xff54, Down), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+</code></pre>
+<p>Kylin lxc issue(Up 111/Down 116):</p>
+<pre><code>KeyPress event, serial 38, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19040788, (912,406), root:(960,540),
+    state 0x0, keycode 111 (keysym 0xff61, Print), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19040828, (912,406), root:(960,540),
+    state 0x0, keycode 111 (keysym 0xff61, Print), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+
+
+
+KeyPress event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19052107, (912,406), root:(960,540),
+    state 0x0, keycode 116 (keysym 0xffec, Super_R), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+KeyRelease event, serial 41, synthetic NO, window 0x7200001,
+    root 0x6c7, subw 0x0, time 19052163, (912,406), root:(960,540),
+    state 0x40, keycode 116 (keysym 0xffec, Super_R), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+</code></pre>
+<p>Using <code>xmodmap -pke</code> for detecting the key mapping.</p>
+<p>Solved:<br />
+zkfd because I installed too much input equipments:</p>
+<p><img src="./images/20250217_171507_x.jpg" alt="./images/20250217_171507_x.jpg" /></p>
+<p>kylin because no input equipments installed:</p>
+<p><img src="./images/20250217_171613_x.jpg" alt="./images/20250217_171613_x.jpg" /></p>
+<pre><code>zkfd: 
+remove the  kbd, then the evdev got OK.   
+
+apt remove xserver-xorg-input-kbd
+
+kylin:    
+
+apt install xserver-xorg-input-evdev
+</code></pre>
+<p>Now the system behaves OK.</p>
 
                     </main>
 
