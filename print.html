@@ -2304,6 +2304,160 @@ kylin:
 apt install xserver-xorg-input-evdev
 </code></pre>
 <p>Now the system behaves OK.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250218"><a class="header" href="#20250218">20250218</a></h1>
+<h3 id="1-arm64-soundkt-usb-audio"><a class="header" href="#1-arm64-soundkt-usb-audio">1. arm64 sound(KT USB Audio)</a></h3>
+<p>In guest(lxc):</p>
+<p><img src="./images/20250218_094037_x.jpg" alt="./images/20250218_094037_x.jpg" /></p>
+<p>In Host:</p>
+<p><img src="./images/20250218_094101_x.jpg" alt="./images/20250218_094101_x.jpg" /></p>
+<h3 id="2-arm64-lxc"><a class="header" href="#2-arm64-lxc">2. arm64 lxc</a></h3>
+<p>libvirt-lxc startup vs lxc-start startup issue:</p>
+<p><img src="./images/20250218_110518_x.jpg" alt="./images/20250218_110518_x.jpg" /></p>
+<p>In libvirt-lxc, pulseaudio won't use, while lxc-start could use.</p>
+<p><code>pactl list cards short</code> shows no card in libvirt-lxc, while lxc-start could show.</p>
+<p>Solved via:</p>
+<pre><code>    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/sys/fs/fuse/connections'/&gt;
+      &lt;target dir='/sys/fs/fuse/connections'/&gt;
+    &lt;/filesystem&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/sys'/&gt;
+      &lt;target dir='/sys'/&gt;
+    &lt;/filesystem&gt;
+
+
+
+  &lt;os&gt;
+    &lt;type arch='x86_64'&gt;exe&lt;/type&gt;
+    &lt;init&gt;/lib/systemd/systemd&lt;/init&gt;
+  &lt;/os&gt;
+  &lt;features&gt;
+    &lt;capabilities policy='allow'&gt;
+      &lt;audit_control state='on'/&gt;
+      &lt;audit_write state='on'/&gt;
+      &lt;block_suspend state='on'/&gt;
+      &lt;chown state='on'/&gt;
+      &lt;dac_override state='on'/&gt;
+      &lt;dac_read_search state='on'/&gt;
+      &lt;fowner state='on'/&gt;
+      &lt;fsetid state='on'/&gt;
+      &lt;ipc_lock state='on'/&gt;
+      &lt;ipc_owner state='on'/&gt;
+      &lt;kill state='on'/&gt;
+      &lt;lease state='on'/&gt;
+      &lt;linux_immutable state='on'/&gt;
+      &lt;mac_admin state='on'/&gt;
+      &lt;mac_override state='on'/&gt;
+      &lt;mknod state='on'/&gt;
+      &lt;net_admin state='on'/&gt;
+      &lt;net_bind_service state='on'/&gt;
+      &lt;net_broadcast state='on'/&gt;
+      &lt;net_raw state='on'/&gt;
+      &lt;setgid state='on'/&gt;
+      &lt;setfcap state='on'/&gt;
+      &lt;setpcap state='on'/&gt;
+      &lt;setuid state='on'/&gt;
+      &lt;sys_admin state='on'/&gt;
+      &lt;sys_boot state='on'/&gt;
+      &lt;sys_chroot state='on'/&gt;
+      &lt;sys_module state='on'/&gt;
+      &lt;sys_nice state='on'/&gt;
+      &lt;sys_pacct state='on'/&gt;
+      &lt;sys_ptrace state='on'/&gt;
+      &lt;sys_rawio state='on'/&gt;
+      &lt;sys_resource state='on'/&gt;
+      &lt;sys_time state='on'/&gt;
+      &lt;sys_tty_config state='on'/&gt;
+      &lt;syslog state='on'/&gt;
+      &lt;wake_alarm state='on'/&gt;
+    &lt;/capabilities&gt;
+  &lt;/features&gt;
+
+</code></pre>
+<h3 id="3-lxc-network"><a class="header" href="#3-lxc-network">3. lxc network</a></h3>
+<p>In /sys mounted lxc container:</p>
+<p><img src="./images/20250218_172417_x.jpg" alt="./images/20250218_172417_x.jpg" /></p>
+<p>not mounted lxc instance:</p>
+<p><img src="./images/20250218_172806_x.jpg" alt="./images/20250218_172806_x.jpg" /></p>
+<h3 id="4-xml-definition"><a class="header" href="#4-xml-definition">4. xml definition</a></h3>
+<pre><code>&lt;domain type='lxc'&gt;
+  &lt;name&gt;zkfdlxc&lt;/name&gt;
+  &lt;uuid&gt;4c5bbaef-0b21-48b6-bdf9-21a0d0f793df&lt;/uuid&gt;
+  &lt;memory unit='KiB'&gt;4276800&lt;/memory&gt;
+  &lt;currentMemory unit='KiB'&gt;4276800&lt;/currentMemory&gt;
+  &lt;vcpu placement='static'&gt;1&lt;/vcpu&gt;
+  &lt;resource&gt;
+    &lt;partition&gt;/machine&lt;/partition&gt;
+  &lt;/resource&gt;
+  &lt;os&gt;
+    &lt;type arch='x86_64'&gt;exe&lt;/type&gt;
+    &lt;init&gt;/lib/systemd/systemd&lt;/init&gt;
+  &lt;/os&gt;
+  &lt;features&gt;
+    &lt;capabilities policy='allow'&gt;
+      &lt;audit_control state='on'/&gt;
+      &lt;audit_write state='on'/&gt;
+      &lt;block_suspend state='on'/&gt;
+      &lt;chown state='on'/&gt;
+      &lt;dac_override state='on'/&gt;
+      &lt;dac_read_search state='on'/&gt;
+      &lt;fowner state='on'/&gt;
+      &lt;fsetid state='on'/&gt;
+      &lt;ipc_lock state='on'/&gt;
+      &lt;ipc_owner state='on'/&gt;
+      &lt;kill state='on'/&gt;
+      &lt;lease state='on'/&gt;
+      &lt;linux_immutable state='on'/&gt;
+      &lt;mac_admin state='on'/&gt;
+      &lt;mac_override state='on'/&gt;
+      &lt;mknod state='on'/&gt;
+      &lt;net_admin state='on'/&gt;
+      &lt;net_bind_service state='on'/&gt;
+      &lt;net_broadcast state='on'/&gt;
+      &lt;net_raw state='on'/&gt;
+      &lt;setgid state='on'/&gt;
+      &lt;setfcap state='on'/&gt;
+      &lt;setpcap state='on'/&gt;
+      &lt;setuid state='on'/&gt;
+      &lt;sys_admin state='on'/&gt;
+      &lt;sys_boot state='on'/&gt;
+      &lt;sys_chroot state='on'/&gt;
+      &lt;sys_module state='on'/&gt;
+      &lt;sys_nice state='on'/&gt;
+      &lt;sys_pacct state='on'/&gt;
+      &lt;sys_ptrace state='on'/&gt;
+      &lt;sys_rawio state='on'/&gt;
+      &lt;sys_resource state='on'/&gt;
+      &lt;sys_time state='on'/&gt;
+      &lt;sys_tty_config state='on'/&gt;
+      &lt;syslog state='on'/&gt;
+      &lt;wake_alarm state='on'/&gt;
+    &lt;/capabilities&gt;
+  &lt;/features&gt;
+  &lt;clock offset='utc'/&gt;
+  &lt;on_poweroff&gt;destroy&lt;/on_poweroff&gt;
+  &lt;on_reboot&gt;restart&lt;/on_reboot&gt;
+  &lt;on_crash&gt;destroy&lt;/on_crash&gt;
+  &lt;devices&gt;
+    &lt;emulator&gt;/usr/lib/libvirt/libvirt_lxc&lt;/emulator&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/var/lib/lxc/zkfd2/rootfs'/&gt;
+      &lt;target dir='/'/&gt;
+    &lt;/filesystem&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/dev/snd'/&gt;
+      &lt;target dir='/dev/snd'/&gt;
+    &lt;/filesystem&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/sys/fs/fuse/connections'/&gt;
+      &lt;target dir='/sys/fs/fuse/connections'/&gt;
+    &lt;/filesystem&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/sys'/&gt;
+      &lt;target dir='/sys'/&gt;
+    &lt;/filesystem&gt;
+
+</code></pre>
 
                     </main>
 
