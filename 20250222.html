@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250220 - year2025</title>
+        <title>20250222 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,101 +152,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250220"><a class="header" href="#20250220">20250220</a></h1>
-<h3 id="1-arm64-lxc-images"><a class="header" href="#1-arm64-lxc-images">1. arm64-lxc images</a></h3>
-<p>Changed to ubuntu lxc image.</p>
-<p>Under arm64 minimal vm:</p>
-<pre><code>sudo apt-get install mate-desktop-environment-core
-# This will install the complete MATE desktop
-sudo apt-get install mate-desktop-environment
-# This will install the complete MATE desktop including a few extras
-sudo apt-get install mate-desktop-environment-extras
-</code></pre>
-<p>Changes to lightdm:</p>
-<pre><code>$ sudo apt install -y lightdm
-$ sudo systemctl set-default graphical.target
-$ cat /etc/lightdm/lightdm.conf
-[LightDM]
-minimum-vt=8
-[SeatDefaults]
-autologin-guest=false
-autologin-user=test
-autologin-user-timeout=0
-autologin-session=mate
-</code></pre>
-<p>Shutdown the vm and convert it to lxc images.</p>
-<h3 id="2-libvirt-lxc-network"><a class="header" href="#2-libvirt-lxc-network">2. libvirt-lxc network</a></h3>
-<p>ubuntulxc:</p>
-<pre><code># cat /var/lib/lxc/ubuntulxc/rootfs/etc/systemd/network/05-eth0.network 
-[Match]
-Name=eth0
-
-[Network]
-DHCP=yes
-########################################3
-In lxc instance: 
-$ sudo systemctl disable NetworkManager
-$ sudo systemctl enable systemd-networkd
-########################################3
-</code></pre>
-<p>zkfdlxc:</p>
-<pre><code>The same as ubuntulxc
-</code></pre>
-<h3 id="3-libvirt-lxc-reboot"><a class="header" href="#3-libvirt-lxc-reboot">3. libvirt-lxc reboot</a></h3>
-<p>Seems no issue under arm64(debian 12.9).</p>
-<p>Sometimes it will not OK.   needed to open log and view libvirtd's behavior.</p>
-<h3 id="4-sound"><a class="header" href="#4-sound">4. sound</a></h3>
-<p>Solved via:</p>
-<pre><code>test@idv:~$ cat /etc/pulse/default.pa 
-load-module module-alsa-card device_id=0
-load-module module-alsa-card device_id=1
-
-### Make some devices default
-#set-default-sink output
-#set-default-source input
-
-</code></pre>
-<p>Added to usermod, then <code>aplay -L</code> will acts well:</p>
-<pre><code> usermod -aG audio test
- usermod -aG audio root
- usermod -aG pulse test
- usermod -aG pulse-access test
-</code></pre>
-<h3 id="5-kylin-desktop-issuearm64"><a class="header" href="#5-kylin-desktop-issuearm64">5. kylin desktop issue(arm64)</a></h3>
-<p>solved via replace the package(using ubuntu's package):</p>
-<pre><code>sudo apt install xserver-xorg-video-all=1:7.7+19ubuntu14
-</code></pre>
-<h3 id="6-x86-to-do"><a class="header" href="#6-x86-to-do">6. x86 to-do</a></h3>
-<p>zkfd image:</p>
-<p><img src="./images/20250220_154650_x.jpg" alt="./images/20250220_154650_x.jpg" /></p>
-<p><img src="./images/20250220_154714_x.jpg" alt="./images/20250220_154714_x.jpg" /></p>
-<p><img src="./images/20250220_154729_x.jpg" alt="./images/20250220_154729_x.jpg" /></p>
-<p>kylin image:</p>
-<p><img src="./images/20250220_154829_x.jpg" alt="./images/20250220_154829_x.jpg" /></p>
-<p><img src="./images/20250220_154849_x.jpg" alt="./images/20250220_154849_x.jpg" /></p>
-<p><img src="./images/20250220_154904_x.jpg" alt="./images/20250220_154904_x.jpg" /></p>
-<p>uos image:</p>
-<p><img src="./images/20250220_155143_x.jpg" alt="./images/20250220_155143_x.jpg" /></p>
-<p><img src="./images/20250220_155328_x.jpg" alt="./images/20250220_155328_x.jpg" /></p>
-<p><img src="./images/20250220_155337_x.jpg" alt="./images/20250220_155337_x.jpg" /></p>
-<p>Notice, uos could be upgrade under vm.</p>
-<p><img src="./images/20250220_161139_x.jpg" alt="./images/20250220_161139_x.jpg" /></p>
-<p>Notice, uos lxc upgrade will failed:</p>
-<p><img src="./images/20250220_170202_x.jpg" alt="./images/20250220_170202_x.jpg" /></p>
-<h3 id="7-ffmpeg-for-cutting-mp4"><a class="header" href="#7-ffmpeg-for-cutting-mp4">7. ffmpeg for cutting mp4</a></h3>
-<p>Via(start time, stop time):</p>
-<pre><code>fmpeg -ss 00:02:23 -to 00:06:59 -i ~/Downloads/bao.mp4 -threads 2 -c:v copy -c:a copy  mybao.mp4
-</code></pre>
+                        <h1 id="20250222"><a class="header" href="#20250222">20250222</a></h1>
+<h3 id="1-ubuntu-lxc-debugging"><a class="header" href="#1-ubuntu-lxc-debugging">1. ubuntu lxc debugging</a></h3>
+<p>should always include tty0, else lightdm wont' startup</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250219.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250221.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250221.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250223.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -256,11 +174,11 @@ load-module module-alsa-card device_id=1
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250219.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250221.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250221.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250223.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
