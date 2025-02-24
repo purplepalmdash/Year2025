@@ -153,6 +153,73 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="20250224"><a class="header" href="#20250224">20250224</a></h1>
+<h3 id="1-debian-building-pkg"><a class="header" href="#1-debian-building-pkg">1. debian building pkg</a></h3>
+<p>Enable <code>deb-src</code> in <code>/etc/apt/sources.list</code>, then:</p>
+<pre><code># apt install -y build-essential pbuilder
+$ mkdir ~/Code/libvirt-lxc
+$ apt-get source libvirt-daemon-driver-lxc
+$ dpkg-source --no-check -x libvirt_9.0.0-4+deb12u2.dsc
+# apt-get build-dep libvirt-daemon-driver-lxc
+</code></pre>
+<p>Build:</p>
+<pre><code>dpkg-source --commit
+debuild -us -uc
+</code></pre>
+<p>Verification:</p>
+<pre><code>apt remove --purge libvirt-daemon-system libvirt-daemon
+dpkg -i libvirt0_9.0.0-4+deb12u2_amd64.deb libvirt-daemon_9.0.0-4+deb12u2_amd64.deb libvirt-daemon-system-systemd_9.0.0-4+deb12u2_all.deb libvirt-daemon-system_9.0.0-4+deb12u2_amd64.deb  libvirt-daemon-driver-storage-rbd_9.0.0-4+deb12u2_amd64.deb libvirt-daemon-driver-qemu_9.0.0-4+deb12u2_amd64.deb libvirt-daemon-driver-lxc_9.0.0-4+deb12u2_amd64.deb
+</code></pre>
+<p>Directly reboot host machine for taking effects.</p>
+<h3 id="2-sound-debugubuntu-guest"><a class="header" href="#2-sound-debugubuntu-guest">2. sound debug(ubuntu guest)</a></h3>
+<p>After doing following steps:</p>
+<pre><code>usermod -aG audio test
+ usermod -aG audio root
+ usermod -aG pulse test
+ usermod -aG pulse-access test
+</code></pre>
+<p><img src="./images/20250224_092017_x.jpg" alt="./images/20250224_092017_x.jpg" />
+But with the origin libvirt-lxc, virsh-lxc see nothing.</p>
+<p>With modified libvirt-lxc, virsh-lxc works well.</p>
+<p><img src="./images/20250224_093513_x.jpg" alt="./images/20250224_093513_x.jpg" /></p>
+<h3 id="3-verification-on-kylinv10"><a class="header" href="#3-verification-on-kylinv10">3. verification on kylinv10</a></h3>
+<p>Close all of the firewall/anti-virus, etc:</p>
+<p><img src="./images/20250224_120949_x.jpg" alt="./images/20250224_120949_x.jpg" /></p>
+<p>acpi related, disable sleep:</p>
+<p><img src="./images/20250224_121145_x.jpg" alt="./images/20250224_121145_x.jpg" /></p>
+<pre><code>$ setstatus disable -p
+$ sudo cat /etc/default/grub | grep GRUB_CMDLINE_LINUX_SECURITY
+GRUB_CMDLINE_LINUX_SECURITY=""
+$ sudo update-grub2
+$ sudo reboot
+$ getstatus 
+KySec status: disabled
+</code></pre>
+<p>Install Packages:</p>
+<pre><code>$ sudo apt install -y iotop vim nethogs s-tui libvirt-daemon-driver-lxc virt-manager lxc lxc-templates lxcfs smplayer
+$ sudo apt remove --purge libvirt-daemon-system libvirt-daemon
+test@zhaoxinlxc:~/ubuntu2004debs$ ls
+libnss-libvirt_6.0.0-0ubuntu8.20_amd64.deb
+libvirt0_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-clients_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-lxc_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-qemu_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-storage-gluster_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-storage-rbd_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-storage-zfs_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-vbox_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-driver-xen_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-system_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-system-systemd_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-daemon-system-sysv_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-dev_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-doc_6.0.0-0ubuntu8.20_all.deb
+libvirt-sanlock_6.0.0-0ubuntu8.20_amd64.deb
+libvirt-wireshark_6.0.0-0ubuntu8.20_amd64.deb
+$ sudo apt install ./libvirt0_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-driver-lxc_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-driver-qemu_6.0.0-0ubuntu8.20_amd64.deb  ./libvirt-daemon-system_6.0.0-0ubuntu8.20_amd64.deb  ./libvirt-clients_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-system-sysv_6.0.0-0ubuntu8.20_amd64.deb
+$ sudo reboot
+</code></pre>
+<p>kylin won't be continue.</p>
 
                     </main>
 
