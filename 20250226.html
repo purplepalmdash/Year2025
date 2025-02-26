@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250225 - year2025</title>
+        <title>20250226 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,79 +152,163 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250225"><a class="header" href="#20250225">20250225</a></h1>
-<h3 id="1-zkfd-lxchost"><a class="header" href="#1-zkfd-lxchost">1. zkfd lxchost</a></h3>
-<p>Install following packages:</p>
-<pre><code>root@zkfd:~# apt install -y iotop vim nethogs s-tui lxc lxc-templates lxcfs smplayer
+                        <h1 id="20250226"><a class="header" href="#20250226">20250226</a></h1>
+<h3 id="1-hwe-zkfd-host"><a class="header" href="#1-hwe-zkfd-host">1. hwe zkfd host</a></h3>
+<p><img src="./images/20250226_084550_x.jpg" alt="./images/20250226_084550_x.jpg" /></p>
+<pre><code># uname -a
+Linux zkfdhwe 6.2.16 #m4+1nfs5.6 SMP PREEMPT_DYNAMIC Fri Nov  1 12:58:14 CST 2024 x86_64 GNU/Linux
 </code></pre>
-<p>Get the debs from <code>libvirt70debs</code>, install them:</p>
-<pre><code># vim /etc/dpkg/dpkg.cfg
-no-debsig
-#  cd ~/libvirt70debs
-$ sudo apt-get --allow-unauthenticated  -o APT::Get::AllowUnauthenticated=true  install ./libvirt0_7.0.0-3+deb11u3_amd64.deb ./libvirt-clients_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon-driver-lxc_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon-driver-qemu_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon-driver-storage-rbd_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon-system_7.0.0-3+deb11u3_amd64.deb ./libvirt-daemon-system-systemd_7.0.0-3+deb11u3_all.deb ./libvirt-daemon-config-network_7.0.0-3+deb11u3_all.deb ./libvirt-daemon-config-nwfilter_7.0.0-3+deb11u3_all.deb
+<p>Could be run on gen12 idv.</p>
+<h3 id="2-dual-vm-rescue"><a class="header" href="#2-dual-vm-rescue">2. dual vm rescue</a></h3>
+<p>USB network adapter:</p>
+<p><img src="./images/20250226_093424_x.jpg" alt="./images/20250226_093424_x.jpg" /></p>
+<p><img src="./images/20250226_093323_x.jpg" alt="./images/20250226_093323_x.jpg" /></p>
+<p>256GB rescue image:</p>
+<p><img src="./images/20250226_093526_x.jpg" alt="./images/20250226_093526_x.jpg" /></p>
+<p>destination:</p>
+<p><img src="./images/20250226_093551_x.jpg" alt="./images/20250226_093551_x.jpg" /></p>
+<p><img src="./images/20250226_101658_x.jpg" alt="./images/20250226_101658_x.jpg" /></p>
+<p>After restore, configuration:</p>
+<p><img src="./images/20250226_105525_x.jpg" alt="./images/20250226_105525_x.jpg" /></p>
+<p>Save/Restart the machine.</p>
+<p><img src="./images/20250226_105648_x.jpg" alt="./images/20250226_105648_x.jpg" /></p>
+<p>ssh into the machine and shutdown :</p>
+<pre><code>root@zkfd:~# virsh list
+ Id   名称      状态
+-------------------------
+ 1    dom0zx    running
+ 2    dom0amd   running
+
+root@zkfd:~# shutdown -h now
+
 </code></pre>
-<p>remove apparmor:</p>
-<pre><code>systemctl disable apparmor
-apt remove --purge apparmor
+<h3 id="3-fnnas"><a class="header" href="#3-fnnas">3. fnnas</a></h3>
+<p>Download from <code>fnnas.com</code>:</p>
+<p><img src="./images/20250226_101915_x.jpg" alt="./images/20250226_101915_x.jpg" /></p>
+<p><img src="./images/20250226_162949_x.jpg" alt="./images/20250226_162949_x.jpg" /></p>
+<p><img src="./images/20250226_163023_x.jpg" alt="./images/20250226_163023_x.jpg" /></p>
+<h3 id="4-kylinlxchost"><a class="header" href="#4-kylinlxchost">4. kylinlxchost</a></h3>
+<p>Install packages:</p>
+<pre><code>sudo apt install -y iotop vim nethogs s-tui lxc lxc-templates lxcfs smplayer
+cd debs
+sudo apt install ./libvirt0_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-driver-lxc_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-driver-qemu_6.0.0-0ubuntu8.20_amd64.deb  ./libvirt-daemon-system_6.0.0-0ubuntu8.20_amd64.deb  ./libvirt-clients_6.0.0-0ubuntu8.20_amd64.deb ./libvirt-daemon-system-sysv_6.0.0-0ubuntu8.20_amd64.deb
+sudo reboot
 </code></pre>
-<p>zkfd guest(virsh):</p>
-<p><img src="./images/20250225_142727_x.jpg" alt="./images/20250225_142727_x.jpg" /></p>
-<p>kylin30g guest: both are OK.<br />
-uos30g guest: both are OK.</p>
-<h3 id="2-debian-11-building"><a class="header" href="#2-debian-11-building">2. debian 11 building</a></h3>
-<p>debian 11 building:</p>
-<p><img src="./images/20250225_100407_x.jpg" alt="./images/20250225_100407_x.jpg" /></p>
-<p><img src="./images/20250225_100453_x.jpg" alt="./images/20250225_100453_x.jpg" /></p>
-<p><img src="./images/20250225_100507_x.jpg" alt="./images/20250225_100507_x.jpg" /></p>
-<pre><code>root@debian:~# uname -a
-Linux debian 5.10.0-32-amd64 #1 SMP Debian 5.10.223-1 (2024-08-10) x86_64 GNU/Linux
-root@debian:~# cat /etc/issue
-Debian GNU/Linux 11 \n \l
+<p>Added:</p>
+<pre><code># cat /etc/lxc/default.conf
+lxc.apparmor.profile = unconfined
+
+# vim /usr/share/lxc/config/common.conf
+
+lxc.mount.auto = cgroup:rw proc:rw sys:rw
+lxc.mount.entry = /sys/fs/fuse/connections sys/fs/fuse/connections none bind,optional 0 0
+
+# Blacklist some syscalls which are not safe in privileged
+# containers
+lxc.seccomp.profile = /usr/share/lxc/config/common.seccomp
+
+# Lastly, include all the configs from /usr/share/lxc/config/common.conf.d/
+lxc.include = /usr/share/lxc/config/common.conf.d/
+
+### tty0, tty1, tty3, tty4, tty5, tty6, tty7, tty8
+lxc.cgroup.devices.allow = c 4:0 rwm
+lxc.cgroup.devices.allow = c 4:1 rwm
+#lxc.cgroup.devices.allow = c 4:3 rwm
+#lxc.cgroup.devices.allow = c 4:4 rwm
+#lxc.cgroup.devices.allow = c 4:5 rwm
+#lxc.cgroup.devices.allow = c 4:6 rwm
+lxc.cgroup.devices.allow = c 4:7 rwm
+lxc.cgroup.devices.allow = c 4:8 rwm
+## graphics. /dev/dri
+lxc.cgroup.devices.allow = c 226:0 rwm
+lxc.cgroup.devices.allow = c 226:128 rwm
+## graphics. /dev/fb0
+lxc.cgroup.devices.allow = c 29:0 rwm
+### sound
+lxc.cgroup.devices.allow = c 116:* rwm
+### input
+lxc.cgroup.devices.allow = c 13:* rwm
+
+lxc.mount.entry = /dev/snd dev/snd none bind,optional,create=dir
+
 </code></pre>
-<pre><code>apt install -y build-essential pbuilder
-apt-get build-dep libvirt-daemon-driver-lxc
-apt-get source libvirt-daemon-driver-lxc
-cd libvirt-7.0.0
-vim src/lxc/lxc_container.c
-......
-dpkg-source --commit
-debuild -us -uc
-cd ..
-mkdir ~/libvirt70debs
-cp *.deb ~/libvirt70debs
+<p>zkfdlxc:</p>
+<p><img src="./images/20250226_163953_x.jpg" alt="./images/20250226_163953_x.jpg" /></p>
+<p>kylinlxc/uoslxc, OK.</p>
+<p>zkfdhwe30g, OK.</p>
+<h3 id="5-kylin-libvirt-changes"><a class="header" href="#5-kylin-libvirt-changes">5. kylin libvirt changes</a></h3>
+<p>Get the source code:</p>
+<pre><code>
+Added followinig to `/etc/apt/sources.list`
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal main restricted
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal-updates main restricted
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal universe
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal-updates universe
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal multiverse
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal-updates multiverse
+deb-src http://mirrors.lzu.edu.cn/ubuntu/ focal-backports main restricted universe multiverse
+deb-src http://archive.canonical.com/ubuntu focal partner
+deb-src http://mirrors.lzu.edu.cn/ubuntu focal-security main restricted
+deb-src http://mirrors.lzu.edu.cn/ubuntu focal-security universe
+deb-src http://mirrors.lzu.edu.cn/ubuntu focal-security multiverse
+# apt-get source libvirt-daemon-driver-lxc
 </code></pre>
-<h3 id="3-zkfd30g-comparison"><a class="header" href="#3-zkfd30g-comparison">3. zkfd30g comparison</a></h3>
-<p>under debian host, zkfd guest:</p>
-<p><img src="./images/20250225_144324_x.jpg" alt="./images/20250225_144324_x.jpg" /></p>
-<p>under debian host, libvirt zkfd guest:</p>
-<p><img src="./images/20250225_144712_x.jpg" alt="./images/20250225_144712_x.jpg" /></p>
-<p>under zkfd host, zkfd guest(virsh):</p>
-<p><img src="./images/20250225_142727_x.jpg" alt="./images/20250225_142727_x.jpg" /></p>
-<h3 id="4-ubuntu-2204-host"><a class="header" href="#4-ubuntu-2204-host">4. ubuntu 22.04 host</a></h3>
-<p>Should back to old kernel:</p>
-<pre><code>$ apt install -y linux-image-generic
-$ vim /etc/default/grub
-GRUB_DEFAULT="Advanced options for Ubuntu&gt;Ubuntu, with Linux 5.15.0-133-generic"
-$ sudo update-grub2
+<p>Diffs:</p>
+<pre><code>test@kylinidvhost:~$ diff Code1/libvirt-6.0.0/src/lxc/lxc_container.c ~/Code/libvirtlxc/libvirt-6.0.0/src/lxc/lxc_container.c
+798c798
+&lt;     { "/proc/sys", "/proc/sys", "none", MS_BIND|MS_NOSUID|MS_NOEXEC|MS_NODEV|MS_RDONLY, false, false, false },
+---
+&gt;     { "/proc/sys", "/proc/sys", "none", MS_BIND|MS_NOSUID|MS_NOEXEC|MS_NODEV, false, false, false },
+801c801
+&lt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV|MS_RDONLY, false, false, false },
+---
+&gt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV, false, false, false },
 </code></pre>
-<p>Make package(re-build).</p>
-<p>Install pkg:</p>
-<pre><code>apt remove --purge libvirt-daemon-system libvirt-daemon
-apt install ./libvirt0_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-daemon_8.0.0-1ubuntu7.10_amd64.deb  ./libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-daemon-driver-qemu_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-daemon-system_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-clients_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-daemon-system-sysv_8.0.0-1ubuntu7.10_all.deb
+<h2>test@kylinidvhost:~$ diff Code1/libvirt-6.0.0/debian/rules ~/Code/libvirtlxc/libvirt-6.0.0/debian/rules
+50,51c50,51
+&lt;   WITH_SELINUX        = --with-selinux --with-secdriver-selinux --with-selinux-mount=/sys/fs/selinux
+&lt;   WITH_APPARMOR       = --with-apparmor --with-secdriver-apparmor --with-apparmor-profiles</h2>
+<blockquote>
+<p>WITH_SELINUX        = --without-selinux
+WITH_APPARMOR       = --without-apparmor
+124,125c124,125
+&lt; 	$(WITH_SELINUX)          <br />
+&lt; 	$(WITH_APPARMOR)         \</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>$(WITH_SELINUX)             <br />
+$(WITH_APPARMOR)             <br />
+215,218c215,218
+&lt; 	dh_install -p libvirt-daemon-system usr/lib/libvirt/virt-aa-helper
+&lt; 	dh_install -p libvirt-daemon-system etc/apparmor.d
+&lt; 	dh_apparmor -p libvirt-daemon-system --profile-name=usr.lib.libvirt.virt-aa-helper
+&lt; 	dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>#dh_install -p libvirt-daemon-system usr/lib/libvirt/virt-aa-helper
+#dh_install -p libvirt-daemon-system etc/apparmor.d
+#dh_apparmor -p libvirt-daemon-system --profile-name=usr.lib.libvirt.virt-aa-helper
+#dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd
+246c246
+&lt; 	rm debian/libvirt-daemon-system/etc/apparmor.d/local/*</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>#rm debian/libvirt-daemon-system/etc/apparmor.d/local/*</p>
+</blockquote>
+<pre><code>Changes are made for installation.   
 </code></pre>
-<p>zkfd30g image, should remove xorg-input-kbd</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250224.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250225.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250226.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -232,13 +316,10 @@ apt install ./libvirt0_8.0.0-1ubuntu7.10_amd64.deb ./libvirt-daemon_8.0.0-1ubunt
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250224.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250225.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250226.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
