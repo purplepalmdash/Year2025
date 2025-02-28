@@ -3084,43 +3084,35 @@ deb-src http://mirrors.lzu.edu.cn/ubuntu focal-security multiverse
 &lt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV|MS_RDONLY, false, false, false },
 ---
 &gt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV, false, false, false },
-</code></pre>
-<h2>test@kylinidvhost:~$ diff Code1/libvirt-6.0.0/debian/rules ~/Code/libvirtlxc/libvirt-6.0.0/debian/rules
+test@kylinidvhost:~$ diff Code1/libvirt-6.0.0/debian/rules ~/Code/libvirtlxc/libvirt-6.0.0/debian/rules 
 50,51c50,51
 &lt;   WITH_SELINUX        = --with-selinux --with-secdriver-selinux --with-selinux-mount=/sys/fs/selinux
-&lt;   WITH_APPARMOR       = --with-apparmor --with-secdriver-apparmor --with-apparmor-profiles</h2>
-<blockquote>
-<p>WITH_SELINUX        = --without-selinux
-WITH_APPARMOR       = --without-apparmor
+&lt;   WITH_APPARMOR       = --with-apparmor --with-secdriver-apparmor --with-apparmor-profiles
+---
+&gt;   WITH_SELINUX        = --without-selinux
+&gt;   WITH_APPARMOR       = --without-apparmor
 124,125c124,125
-&lt; 	$(WITH_SELINUX)          <br />
-&lt; 	$(WITH_APPARMOR)         \</p>
-</blockquote>
-<hr />
-<blockquote>
-<p>$(WITH_SELINUX)             <br />
-$(WITH_APPARMOR)             <br />
+&lt; 	$(WITH_SELINUX)          \
+&lt; 	$(WITH_APPARMOR)         \
+---
+&gt; 	$(WITH_SELINUX)             \
+&gt; 	$(WITH_APPARMOR)             \
 215,218c215,218
 &lt; 	dh_install -p libvirt-daemon-system usr/lib/libvirt/virt-aa-helper
 &lt; 	dh_install -p libvirt-daemon-system etc/apparmor.d
 &lt; 	dh_apparmor -p libvirt-daemon-system --profile-name=usr.lib.libvirt.virt-aa-helper
-&lt; 	dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd</p>
-</blockquote>
-<hr />
-<blockquote>
-<p>#dh_install -p libvirt-daemon-system usr/lib/libvirt/virt-aa-helper
-#dh_install -p libvirt-daemon-system etc/apparmor.d
-#dh_apparmor -p libvirt-daemon-system --profile-name=usr.lib.libvirt.virt-aa-helper
-#dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd
+&lt; 	dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd
+---
+&gt; 	#dh_install -p libvirt-daemon-system usr/lib/libvirt/virt-aa-helper
+&gt; 	#dh_install -p libvirt-daemon-system etc/apparmor.d
+&gt; 	#dh_apparmor -p libvirt-daemon-system --profile-name=usr.lib.libvirt.virt-aa-helper
+&gt; 	#dh_apparmor -p libvirt-daemon-system --profile-name=usr.sbin.libvirtd
 246c246
-&lt; 	rm debian/libvirt-daemon-system/etc/apparmor.d/local/*</p>
-</blockquote>
-<hr />
-<blockquote>
-<p>#rm debian/libvirt-daemon-system/etc/apparmor.d/local/*</p>
-</blockquote>
-<pre><code>Changes are made for installation.   
+&lt; 	rm debian/libvirt-daemon-system/etc/apparmor.d/local/*
+---
+&gt; 	#rm debian/libvirt-daemon-system/etc/apparmor.d/local/*
 </code></pre>
+<p>Changes are made for installation.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250227"><a class="header" href="#20250227">20250227</a></h1>
 <h3 id="1-ybd-verification"><a class="header" href="#1-ybd-verification">1. ybd verification</a></h3>
 <p>Information:</p>
@@ -3386,6 +3378,27 @@ sudo reboot
 add test to several groups.   
 </code></pre>
 <h3 id="5-ybd-worktips"><a class="header" href="#5-ybd-worktips">5. ybd worktips</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250228"><a class="header" href="#20250228">20250228</a></h1>
+<h3 id="1-ybd-verification-1"><a class="header" href="#1-ybd-verification-1">1. ybd verification</a></h3>
+<p>zkfd, browser won't connect to internet.</p>
+<h3 id="2-lxc-on-ctyun"><a class="header" href="#2-lxc-on-ctyun">2. lxc on ctyun</a></h3>
+<p>Install lxc related packages:</p>
+<pre><code>sudo apt install -y iotop vim nethogs s-tui lxc lxc-templates lxcfs smplayer
+sudo reboot
+</code></pre>
+<p>Detect the lxcbr0 bridge:</p>
+<pre><code>$ ip a show lxcbr0
+3: lxcbr0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+    link/ether 00:16:3e:00:00:00 brd ff:ff:ff:ff:ff:ff
+    inet 10.0.3.1/24 brd 10.0.3.255 scope global lxcbr0
+       valid_lft forever preferred_lft forever
+</code></pre>
+<p>Install package. then load the lxc images, the same as we did in yesterday.</p>
+<h3 id="3-ollama-in-lxc"><a class="header" href="#3-ollama-in-lxc">3. ollama in lxc</a></h3>
+<p>Under ubuntu:</p>
+<pre><code>curl -fsSL https://ollama.com/install.sh | sh
+ollama run deepseek-r1:7b
+</code></pre>
 
                     </main>
 
