@@ -3399,6 +3399,59 @@ sudo reboot
 <pre><code>curl -fsSL https://ollama.com/install.sh | sh
 ollama run deepseek-r1:7b
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250301"><a class="header" href="#20250301">20250301</a></h1>
+<h3 id="1-qemu-rebuild-for-idv"><a class="header" href="#1-qemu-rebuild-for-idv">1. qemu rebuild for idv</a></h3>
+<p>Steps:</p>
+<pre><code>tar xzvf debs.tar.gz
+cd debs
+dpkg -i *.deb
+mkdir -p /home/idv/Code
+tar xzvf idv_qemu_4.2.tar.gz -C /home/idv/Code
+cd /home/idv/Code/qemu
+
+git config --global --add safe.directory /home/idv/Code/qemu
+git config --global --add safe.directory /home/idv/Code/qemu/capstone
+git config --global --add safe.directory /home/idv/Code/qemu/dtc
+git config --global --add safe.directory /home/idv/Code/qemu/slirp
+git config --global --add safe.directory /home/idv/Code/qemu/tests/fp/berkeley-softfloat-3
+git config --global --add safe.directory /home/idv/Code/qemu/tests/fp/berkeley-testfloat-3
+git config --global --add safe.directory /home/idv/Code/qemu/ui/keycodemapdb
+
+make clean
+./configure --prefix=/usr --enable-kvm --disable-xen --enable-libusb --enable-debug-info --enable-debug --enable-sdl --enable-vhost-net --enable-spice --disable-debug-tcg --enable-opengl --enable-gtk --target-list=x86_64-softmmu --audio-drv-list=oss,alsa,pa --enable-usb-redir --enable-spice &amp;&amp; make -j8
+make install
+</code></pre>
+<p>verification:</p>
+<pre><code># ldd /usr/bin/qemu-system-x86_64 | grep dir
+	libusbredirparser.so.1 =&gt; /usr/lib/x86_64-linux-gnu/libusbredirparser.so.1 (0x00007ff314eb7000)
+</code></pre>
+<p>Cleanup:</p>
+<pre><code>rm -rf /home/idv/Code
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250302"><a class="header" href="#20250302">20250302</a></h1>
+<h3 id="1-gen12-rebuild-qemu"><a class="header" href="#1-gen12-rebuild-qemu">1. gen12 rebuild qemu</a></h3>
+<p>Steps for rebuilding:</p>
+<pre><code>tar xzvf debs.tar.gz
+cd debs
+dpkg -i *.deb
+
+mkdir -p /opt/Code
+cd /opt/Code
+tar xzvf ~/gen12_qemu.tar.gz
+cd qemu
+mv build build.bak
+mkdir build
+../configure --prefix=/usr --enable-kvm --disable-xen --enable-libusb --enable-debug-info --enable-debug --enable-sdl --enable-vhost-net --enable-spice --disable-debug-tcg --enable-opengl --target-list=x86_64-softmmu --disable-tcg --audio-drv-list=alsa,oss,pa --enable-spice --enable-spice-protocol --enable-libusb --enable-usb-redir
+make -j8
+make install
+</code></pre>
+<p>Verification:</p>
+<pre><code>root@test-Standard-PC-Q35-ICH9-2009:/opt/Code/qemu/build# ldd /usr/bin/qemu-system-x86_64 | grep red
+	libusbredirparser.so.1 =&gt; /usr/lib/x86_64-linux-gnu/libusbredirparser.so.1 (0x00007f3a6c800000)
+root@test-Standard-PC-Q35-ICH9-2009:/opt/Code/qemu/build# qemu-system-x86_64 --version
+QEMU emulator version 8.0.1 (v8.0.1-dirty)
+Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developer
+</code></pre>
 
                     </main>
 
