@@ -3452,6 +3452,83 @@ root@test-Standard-PC-Q35-ICH9-2009:/opt/Code/qemu/build# qemu-system-x86_64 --v
 QEMU emulator version 8.0.1 (v8.0.1-dirty)
 Copyright (c) 2003-2022 Fabrice Bellard and the QEMU Project developer
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250303"><a class="header" href="#20250303">20250303</a></h1>
+<h3 id="1-redir-documentation"><a class="header" href="#1-redir-documentation">1. redir documentation</a></h3>
+<p>Write the redir documentation.</p>
+<h3 id="2-system-benchmark"><a class="header" href="#2-system-benchmark">2. system benchmark</a></h3>
+<p>Download system benchmark from:</p>
+<p><code>https://www.passmark.com/products/pt_linux/download.php</code></p>
+<p>Then after install <code>libncurses5</code>, run it for benchmark.</p>
+<p>ubuntu 24.04 arm64(rpi 4):</p>
+<pre><code># vim  /etc/apt/sources.list.d/ubuntu-focal-sources.list 
+deb http://mirrors.ustc.edu.cn/ubuntu-ports focal-security main universe
+# apt update -y
+# apt install -y  libncurses5
+</code></pre>
+<h3 id="3-nixos---install-passmark"><a class="header" href="#3-nixos---install-passmark">3. nixos - install passmark</a></h3>
+<p>Should have all-cross gfw environment.</p>
+<p>nixshell:</p>
+<pre><code>export NIXPKGS_ALLOW_UNFREE=1
+NIX_CURL_FLAGS=-L
+nix-shell -p passmark-performancetest
+</code></pre>
+<p>Then in home.nix:</p>
+<pre><code>NIX_CURL_FLAGS=-L
+nix-shell -p passmark-performancetest
+</code></pre>
+<h3 id="4-perf-data"><a class="header" href="#4-perf-data">4. perf data</a></h3>
+<p>x86:</p>
+<pre><code>CPU;ZHAOXIN KaiXian KX-U6780A@2.7GHz (x86_64);Hygon C86-3G (OPN:3350) (x86_64);13th Gen Intel Core i5-13400 (x86_64);Intel Core i5-14400 (x86_64);AMD Ryzen 5 4500 6-Core Processor (x86_64);ZHAOXIN KaiXian KX-U6780A@2.7GHz (x86_64)-Huanghe;ZHAOXIN KaiXian KX-7000/8@3.6GHz (x86_64);12th Gen Intel Core i3-12100 (x86_64);Intel Core i9-10900 CPU @ 2.80GHz (x86_64);Intel Celeron CPU  J1900  @ 1.99GHz (x86_64);11th Gen Intel Core i7-1165G7 @ 2.80GHz (x86_64);Intel Core i7-10700 CPU @ 2.90GHz (x86_64);
+Cores;8 cores @ 2700 MHz;8 cores @ 3000 MHz;10 cores @ 4600 MHz;10 cores @ 4700 MHz;6 cores @ 3600 MHz;8 cores @ 2700 MHz;8 cores @ 3400 MHz;4 cores @ 4200 MHz;10 cores @ 5200 MHz;4 cores @ 2415 MHz;4 cores @ 4700 MHz;8 cores @ 4800 MHz;
+Memory Size; 15.2 GiB RAM;15.5 GiB RAM;125.6 GiB RAM;14.9 GiB RAM;23.3 GiB RAM;15.1 GiB RAM;14.4 GiB RAM;7.0 GiB RAM; 62.6 GiB RAM;3.7 GiB RAM; 15.3 GiB RAM; 31.3 GiB RAM;
+Number of Processes; 8;16;16;16;12;8;8;8;20;4;8;16;
+CPU Mark;                          3090;11345;27892;21232;13864;4055;8404;11786;21800;942;12899;12888;
+Integer Math;                     7722 Million Operations/s;49754 Million Operations/s;84314 Million Operations/s;84459 Million Operations/s;51686 Million Operations/s;10372 Million Operations/s;29447 Million Operations/s; 35055 Million Operations/s;84665 Million Operations/s;5644 Million Operations/s;37209 Million Operations/s;51214 Million Operations/s;
+Floating Point Math;              5047 Million Operations/s;20091 Million Operations/s;59050 Million Operations/s;55218 Million Operations/s;30918 Million Operations/s;6917 Million Operations/s;23324 Million Operations/s;25261 Million Operations/s;52064 Million Operations/s;1301 Million Operations/s;19918 Million Operations/s;31478 Million Operations/s;
+Prime Numbers;                    11.9 Million Primes/s;20.4 Million Primes/s;95.4 Million Primes/s;49.6 Million Primes/s;20.4 Million Primes/s;15.2 Million Primes/s;56.4 Million Primes/s;37.5 Million Primes/s;54.4 Million Primes/s;3.9 Million Primes/s;48.6 Million Primes/s;29.7 Million Primes/s;
+Sorting;                          7483 Thousand Strings/s;17775 Thousand Strings/s;42122 Thousand Strings/s;29023 Thousand Strings/s;19675 Thousand Strings/s;11573 Thousand Strings/s;15535 Thousand Strings/s;16735 Thousand Strings/s;40072 Thousand Strings/s;2676 Thousand Strings/s;20563 Thousand Strings/s;19978 Thousand Strings/s;
+Encryption;                       1379 MB/s;15158 MB/s;19506 MB/s;17989 MB/s;14425 MB/s;1876 MB/s;3407 MB/s;7815 MB/s;11105 MB/s;242 MB/s;8757 MB/s;6320 MB/s;
+Compression;                      52803 KB/s;206949 KB/s;322672 KB/s;269731 KB/s;231489 KB/s;69570 KB/s;103116 KB/s;131006 KB/s;299985 KB/s;25947 KB/s;149778 KB/s;196672 KB/s;
+CPU Single Threaded;              823 Million Operations/s;1715 Million Operations/s;3767 Million Operations/s;3299 Million Operations/s;2726 Million Operations/s;853 Million Operations/s;1701 Million Operations/s;2756 Million Operations/s;3321 Million Operations/s;644 Million Operations/s;3157 Million Operations/s;2312 Million Operations/s;
+Physics;                          281 Frames/s;400 Frames/s;2185 Frames/s;711 Frames/s;366 Frames/s;352 Frames/s;521 Frames/s;655 Frames/s;895 Frames/s;99.6 Frames/s;950 Frames/s; 502 Frames/s;
+Extended Instructions (SSE);      1726 Million Matrices/s;6296 Million Matrices/s;19494 Million Matrices/s;15112 Million Matrices/s;13631 Million Matrices/s;2117 Million Matrices/s;4153 Million Matrices/s;8427 Million Matrices/s;15814 Million Matrices/s;408 Million Matrices/s;8933 Million Matrices/s; 9615 Million Matrices/s;
+Memory Mark;                       1400;2291;3144;2298;2292;1496;1046;2288; 3267;689;2741;2463;
+Database Operations;              1280 Thousand Operations/s;3696 Thousand Operations/s;9833 Thousand Operations/s;5148 Thousand Operations/s;3517 Thousand Operations/s;2017 Thousand Operations/s;2770 Thousand Operations/s;4452 Thousand Operations/s;7484 Thousand Operations/s;593 Thousand Operations/s;4609 Thousand Operations/s;5085 Thousand Operations/s;
+Memory Read Cached;               9708 MB/s;22326 MB/s;34284 MB/s;29818 MB/s;28760 MB/s;9776 MB/s;7614 MB/s;24946 MB/s;35523 MB/s;5384 MB/s;32239 MB/s;24685 MB/s;
+Memory Read Uncached;             6769 MB/s;15739 MB/s;17528 MB/s;14925 MB/s;14231 MB/s;6862 MB/s;5746 MB/s;16002 MB/s;14664 MB/s;4270 MB/s;18486 MB/s;13120 MB/s;
+Memory Write;                     6071 MB/s;7572 MB/s;15981 MB/s;7982 MB/s;6636 MB/s;6151 MB/s;5280 MB/s;9163 MB/s;12702 MB/s;2708 MB/s; 13795 MB/s; 7261 MB/s;
+Available RAM;                    10262 Megabytes;14617 Megabytes;122316 Megabytes;14066 Megabytes;21374 Megabytes;12643 Megabytes;1955 Megabytes;5281 Megabytes;61945 Megabytes; 1256 Megabytes;8570 Megabytes; 25156 Megabytes;
+Memory Latency;                   60 Nanoseconds;49 Nanoseconds;53 Nanoseconds;55 Nanoseconds;47 Nanoseconds;58 Nanoseconds;69 Nanoseconds; 45 Nanoseconds; 35 Nanoseconds;71 Nanoseconds; 51 Nanoseconds; 36 Nanoseconds;
+Memory Threaded;                  17505 MB/s;21830 MB/s;55495 MB/s;19427 MB/s;16716 MB/s;21190 MB/s;13172 MB/s; 23200 MB/s; 27150 MB/s; 6776 MB/s; 43237 MB/s; 16910 MB/s
+URL;https://www.passmark.com/baselines/V11/display.php?id=508831244305;https://www.passmark.com/baselines/V11/display.php?id=508831528847;https://www.passmark.com/baselines/V11/display.php?id=508831414480;https://www.passmark.com/baselines/V11/display.php?id=508831957240;https://www.passmark.com/baselines/V11/display.php?id=508831528847;
+</code></pre>
+<p>arm64:</p>
+<pre><code>CPU Model, D3000 (aarch64),FTC663 (aarch64),Apple M4 (arm64),Radxa ROCK 5B+  (aarch64),"Raspberry Pi 4 Model B Rev 1.4
+","Kunpeng-920(aarch64)"
+CPU Frequenty, 8 cores @ 2500 MHz,8 cores @ 0 MHz,10 cores @ 0 MHz,"8 cores @ 1800 MHz
+",4 cores @ 1800 MHz,8 Cores @ 0 MHZ
+RAM,  15.0 GiB RAM,15.5 GiB RAM,16.0 GiB RAM,15.6 GiB RAM,7.6 GiB RAM,15.6 GiB RAM
+Number of Processes,8,8,10,8,4,8
+CPU Mark,5653,2882,23520,"3103
+",615,3647
+Integer Math,                     28632 Million Operations/s,30922 Million Operations/s,49724 Million Operations/s,26311 Million Operations/s,11625 Million Operations/s,28948 Million Operations/s
+Floating Point Math,              29756 Million Operations/s,10910 Million Operations/s,50198 Million Operations/s,13136 Million Operations/s,4440 Million Operations/s,10115 Million Operations/s
+Prime Numbers,                    49.4 Million Primes/s,24.6 Million Primes/s,255 Million Primes/s,13.9 Million Primes/s,3.1 Million Primes/s,31.9 Million Primes/s
+Sorting,                          21738 Thousand Strings/s,13491 Thousand Strings/s,33591 Thousand Strings/s,14092 Thousand Strings/s,3278 Thousand Strings/s,17248 Thousand Strings/s
+Encryption,                       1349 MB/s,621 MB/s,14651 MB/s,668 MB/s,78.0 MB/s,772 MB/s
+Compression,                      37718 KB/s,22233 KB/s,294065 KB/s,23524 KB/s, 8481 KB/s, 29844 KB/s
+CPU Single Threaded,              1271 Million Operations/s,610 Million Operations/s,4775 Million Operations/s,983 Million Operations/s,469 Million Operations/s,674 Million Operations/s
+Physics,                          729 Frames/s,356 Frames/s,2392 Frames/s,328 Frames/s,74.7 Frames/s,528 Frames/s
+Extended Instructions (NEON),     5438 Million Matrices/s, 2000 Million Matrices/s,14236 Million Matrices/s,2509 Million Matrices/s,778 Million Matrices/s,3491 Million Matrices/s
+Memory Mark,1631,1058,4496,1153,719,1083
+Database Operations,              4905 Thousand Operations/s,2712 Thousand Operations/s,9125 Thousand Operations/s,2794 Thousand Operations/s,614 Thousand Operations/s,3047 Thousand Operations/s
+Memory Read Cached,               9523 MB/s,8344 MB/s,31910 MB/s,11065 MB/s,6044 MB/s,8672 MB/s
+Memory Read Uncached,             8887 MB/s,5111 MB/s,31523 MB/s,11121 MB/s,3880 MB/s,3862 MB/s
+Memory Write,                     12668 MB/s,8767 MB/s,32808 MB/s,8517 MB/s,2964 MB/s,5385 MB/s
+Available RAM,                    13471 Megabytes,14816 Megabytes,6808 Megabytes,15056 Megabytes,6832 Megabytes,3633 Megabytes
+Memory Latency,                   76 Nanoseconds,137 Nanoseconds,20 Nanoseconds,161 Nanoseconds,92 Nanoseconds,85 Nanoseconds
+Memory Threaded,                  42526 MB/s,19732 MB/s,106015 MB/s,21916 MB/s,3915 MB/s,25742 MB/s
+</code></pre>
 
                     </main>
 
