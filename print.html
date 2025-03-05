@@ -3529,6 +3529,97 @@ Memory Threaded,                  42526 MB/s,19732 MB/s,106015 MB/s,21916 MB/s,3
 <h3 id="5-perf-graph"><a class="header" href="#5-perf-graph">5. perf graph</a></h3>
 <p><img src="./images/2025_03_03_22_12_33_1338x986.jpg" alt="./images/2025_03_03_22_12_33_1338x986.jpg" /></p>
 <p><img src="./images/2025_03_03_22_12_56_1319x978.jpg" alt="./images/2025_03_03_22_12_56_1319x978.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250304"><a class="header" href="#20250304">20250304</a></h1>
+<h3 id="1-csv-re-org"><a class="header" href="#1-csv-re-org">1. csv re-org</a></h3>
+<p>Answer from deepseeker:</p>
+<pre><code>1. **使用Excel手动转置**：
+   - 打开CSV文件后，选中所有数据（Ctrl+A）。
+   - 复制数据（Ctrl+C）。
+   - 点击到另一个空白位置，右键选择“以值粘贴特殊”，然后勾选“转置”。
+</code></pre>
+<p>Operations in libreoffice:</p>
+<p><code>Paste-&gt; Paste special -&gt; Transpose</code></p>
+<p>Then sort the column, then generate the graph.</p>
+<h3 id="2-heif-in-nixos"><a class="header" href="#2-heif-in-nixos">2. heif in nixos</a></h3>
+<p>Install following packages:</p>
+<pre><code>$ sudo vim /etc/nixos/home.nix
+...
+nautilus
+libheif
+eog
+...
+$ sudo vim /etc/nixos/configuration.nix
+...
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    git
+    dconf
+  libimobiledevice
+  ifuse 
+  libheif
+  libheif.out
+  ];
+
+environment.pathsToLink = [ "share/thumbnailers" ];
+...
+$  sudo nixos-rebuild switch --option substituers https://mirror.sjtu.edu.cn/nix-channels/store
+</code></pre>
+<p>Then you could view heif files under nautilus, then select eog for openning it.</p>
+<h3 id="3-image-formatter"><a class="header" href="#3-image-formatter">3. image formatter</a></h3>
+<p><img src="./images/20250304_151848_x.jpg" alt="./images/20250304_151848_x.jpg" /></p>
+<p>markdown writer:</p>
+<pre><code>docker run -d -p 28080:80 doocs/md:latest
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250305"><a class="header" href="#20250305">20250305</a></h1>
+<h3 id="1-docker-related"><a class="header" href="#1-docker-related">1. docker related</a></h3>
+<p>Build kbox steps:</p>
+<pre><code>cd /home/
+cd auto_compile/
+apt update -y
+apt install -y vim
+apt install -y build-essential openssh-client
+apt install -y wget
+wget https://mirrors.huaweicloud.com/kunpeng/archive/kunpeng_solution/ARMNative/BoostKit24.0.0_Demo/Kbox_Demo/Kbox-AOSP11.zip
+apt install -y unzip sudo
+unzip Kbox-AOSP11.zip 
+cd Kbox-AOSP11
+cd /home/auto_compile/Kbox-AOSP11/make_img_sample/kbox11_android_build
+vim kbox11_android_build.sh 
+DNS=223.5.5.5
+cd /home/auto_compile/Kbox-AOSP11/make_img_sample/kbox11_android_build
+mkdir -p package
+# ls /root/kbox/
+BoostKit-kbox_6.0.0_11.zip       Kbox-AOSP11.zip         libva-2.14.0.tar.gz     mesa-22.1.7.tar.xz   patchForExagear.zip
+ExaGear_ARM32-ARM64_V2.5.tar.gz  drm-libdrm-2.4.111.zip  llvm-13.0.1.src.tar.xz  meson-0.63.2.tar.gz  vmi-CloudPhone.zip
+</code></pre>
+<h3 id="2-openeuler-2203-sp3"><a class="header" href="#2-openeuler-2203-sp3">2. openeuler 22.03-sp3</a></h3>
+<p><img src="./images/20250305_171853_858x234.jpg" alt="./images/20250305_171853_858x234.jpg" /></p>
+<p><img src="./images/20250305_172018_1196x755.jpg" alt="./images/20250305_172018_1196x755.jpg" /></p>
+<p>reformat:</p>
+<p><img src="./images/20250305_172144_1283x582.jpg" alt="./images/20250305_172144_1283x582.jpg" /></p>
+<p><img src="./images/20250305_172346_1171x533.jpg" alt="./images/20250305_172346_1171x533.jpg" /></p>
+<p>create user:</p>
+<p><img src="./images/20250305_172409_1296x481.jpg" alt="./images/20250305_172409_1296x481.jpg" /></p>
+<p>After installation:</p>
+<p><img src="./images/20250305_172930_878x235.jpg" alt="./images/20250305_172930_878x235.jpg" /></p>
+<pre><code># vi /etc/default/grub
+cgroup_enable=memory swapaccount=1
+# grub2-mkconfig -o /boot/efi/EFI/openEuler/grub.cfg
+# vi /etc/selinux/config 
+disabled
+# echo "fs.inotify.max_user_instances=8192" &gt;&gt; /etc/sysctl.conf
+# sudo sed -e 's|http://repo.openeuler.org/|https://mirrors.ustc.edu.cn/openeuler/|g' \
+         -e 's|https://mirrors.openeuler.org/|https://mirrors.ustc.edu.cn/openeuler/|g' \
+         -i.bak \
+         /etc/yum.repos.d/openEuler.repo
+# yum install -y make dpkg dpkg-devel openssl openssl-devel ncurses ncurses-devel bison flex bc libdrm build elfutils-libelf-devel patch gcc
+</code></pre>
+<p>Kernel should downloaded from:</p>
+<pre><code>https://gitee.com/openeuler/kernel/repository/archive/5.10.0-182.0.0.zip
+</code></pre>
 
                     </main>
 
