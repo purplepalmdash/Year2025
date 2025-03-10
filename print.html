@@ -3675,6 +3675,60 @@ security_level = weak
 <p>update failed, but you could re update via:</p>
 <pre><code>python custom_nodes/ComfyUI-Manager/cm-cli.py update all 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="202350307"><a class="header" href="#202350307">202350307</a></h1>
+<h3 id="wan-models"><a class="header" href="#wan-models">Wan models</a></h3>
+<p>Position:</p>
+<pre><code>ls ~/dmx/
+mv ~/dmx/umt5-xxl-enc-bf16.safetensors models/text_encoders/
+mv ~/dmx/open-clip-xlm-roberta-large-vit-huge-14_visual_fp16.safetensors models/clip
+cp -r ~/dmx/wanvideo models/vae/
+rm -rf ~/dmx/wanvideo
+mv ~/dmx/WanVideo/ models/diffusion_models/
+</code></pre>
+<p>sub-directory info:</p>
+<pre><code>(comfyui) dash@comfyvm:~/Code/ComfyUI$ ls models/vae/wanvideo/
+Wan2_1_VAE_bf16.safetensors
+(comfyui) dash@comfyvm:~/Code/ComfyUI$ ls models/diffusion_models/WanVideo/
+Wan2_1-I2V-14B-480P_fp8_e4m3fn.safetensors  Wan2_1-T2V-14B_fp8_e4m3fn.safetensors
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250308"><a class="header" href="#20250308">20250308</a></h1>
+<h3 id="1-xrandr-issue"><a class="header" href="#1-xrandr-issue">1. xrandr issue</a></h3>
+<p>Specify the position:</p>
+<pre><code>xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --mode 2560x1440 --pos 1920x0 --rotate normal
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250310"><a class="header" href="#20250310">20250310</a></h1>
+<h3 id="1-nixos-x86"><a class="header" href="#1-nixos-x86">1. nixos x86</a></h3>
+<p>Get the installation iso:</p>
+<pre><code>axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-gnome-x86_64-linux.iso
+axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-minimal-x86_64-linux.iso; axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-gnome-aarch64-linux.iso; axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-minimal-aarch64-linux.iso
+</code></pre>
+<p>Write iso to disk.</p>
+<p>Installation cdrom is gnome based:</p>
+<p><img src="./images/20250310_125349_801x443.jpg" alt="./images/20250310_125349_801x443.jpg" /></p>
+<p>Open the terminal and change the passwd for nixos user:</p>
+<p><img src="./images/20250310_125531_309x81.jpg" alt="./images/20250310_125531_309x81.jpg" /></p>
+<pre><code># cat parted.sh
+parted /dev/nvme0n1 -- mklabel gpt
+parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
+parted /dev/nvme0n1 -- mkpart primary 512MB -2GB
+parted /dev/nvme0n1 -- mkpart swap linux-swap -2GB 100%
+parted /dev/nvme0n1 -- set 1 esp on
+ 
+mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+mkfs.btrfs -L NIXOS /dev/nvme0n1p2
+mkswap -L swap /dev/nvme0n1p3
+# ./parted.sh
+# lsblk
+...
+nvme0n1     259:0    0 953.9G  0 disk 
+├─nvme0n1p1 259:1    0   487M  0 part 
+├─nvme0n1p2 259:2    0 951.5G  0 part 
+└─nvme0n1p3 259:3    0   1.9G  0 part
+</code></pre>
+<h3 id="2-redsocks-related"><a class="header" href="#2-redsocks-related">2. redsocks related</a></h3>
+<p>Generate the chnroute.txt:</p>
+<pre><code>curl 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' &gt; chnroute.txt
+</code></pre>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250306 - year2025</title>
+        <title>20250308 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,62 +152,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250306"><a class="header" href="#20250306">20250306</a></h1>
-<h3 id="1-openeuler-kernel-building"><a class="header" href="#1-openeuler-kernel-building">1. openEuler kernel building</a></h3>
-<p>Get files:</p>
-<pre><code>https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/firmware/linux-firmware-20210919.tar.gz
-kernel-5.10.0-182.0.0.zip
-ExaGear_ARM32-ARM64_V2.5.tar.gz
-</code></pre>
-<p>Install kernel:</p>
-<pre><code>[root@phone openEuler_deploy]# ./kbox_install_kernel.sh /root/patch/
-
-</code></pre>
-<h3 id="2-ollama-listening-port"><a class="header" href="#2-ollama-listening-port">2. ollama listening port</a></h3>
-<p>Change to listening on <code>0.0.0.0</code>:</p>
-<pre><code>dash@ai:~$ sudo vim /etc/systemd/system/ollama.service 
-...
-[Service]
-Environment="OLLAMA_HOST=0.0.0.0"
-ExecStart=/usr/local/bin/ollama serve
-
-...
-$ sudo systemctl daemon-reload
-$ sudo systemctl restart ollama
-</code></pre>
-<h3 id="3-comfyui-wan21"><a class="header" href="#3-comfyui-wan21">3. comfyui wan2.1</a></h3>
-<p><img src="./images/20250306_164143_1222x430.jpg" alt="./images/20250306_164143_1222x430.jpg" /></p>
-<p>Solved via:</p>
-<pre><code>dash@ai:~/Code/Comfy/ComfyUI$ vim ./user/default/ComfyUI-Manager/config.ini
-...
-security_level = weak
-
-...
-
-</code></pre>
-<p>workflow:</p>
-<pre><code>https://github.com/kijai/ComfyUI-WanVideoWrapper/blob/main/example_workflows/wanvideo_480p_I2V_example_02.json
-
-</code></pre>
-<p><img src="./images/20250306_164914_804x595.jpg" alt="./images/20250306_164914_804x595.jpg" /></p>
-<p>too many missing nodes.</p>
-<p><img src="./images/20250306_171834_898x423.jpg" alt="./images/20250306_171834_898x423.jpg" /></p>
-<p>channel should be dev channel.</p>
-<p>Refers to :    <code>https://www.youtube.com/watch?v=gdoRVlJH218</code></p>
-<h3 id="4-comfyui-update"><a class="header" href="#4-comfyui-update">4. comfyui update</a></h3>
-<p>update failed, but you could re update via:</p>
-<pre><code>python custom_nodes/ComfyUI-Manager/cm-cli.py update all 
+                        <h1 id="20250308"><a class="header" href="#20250308">20250308</a></h1>
+<h3 id="1-xrandr-issue"><a class="header" href="#1-xrandr-issue">1. xrandr issue</a></h3>
+<p>Specify the position:</p>
+<pre><code>xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --mode 2560x1440 --pos 1920x0 --rotate normal
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250305.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250307.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250307.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250310.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -217,11 +176,11 @@ security_level = weak
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250305.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250307.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250307.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250310.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
