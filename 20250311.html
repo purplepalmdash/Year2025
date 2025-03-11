@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250310 - year2025</title>
+        <title>20250311 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,124 +152,84 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250310"><a class="header" href="#20250310">20250310</a></h1>
-<h3 id="1-nixos-x86"><a class="header" href="#1-nixos-x86">1. nixos x86</a></h3>
-<p>Get the installation iso:</p>
-<pre><code>axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-gnome-x86_64-linux.iso
-axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-minimal-x86_64-linux.iso; axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-gnome-aarch64-linux.iso; axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-24.11/latest-nixos-minimal-aarch64-linux.iso
+                        <h1 id="20250311"><a class="header" href="#20250311">20250311</a></h1>
+<h3 id="1-rockylinux-nvidia"><a class="header" href="#1-rockylinux-nvidia">1. rockylinux nvidia</a></h3>
+<p>Steps:</p>
+<pre><code>sudo dnf install epel-release -y
+sudo dnf groupinstall "Development Tools" -y
+sudo dnf install kernel-devel dkms -y
+sudo dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel9/$(uname -i)/cuda-rhel9.repo
+sudo yum install -y ./kernel-devel-matched-5.15.113-zdyun.el9.x86_64.rpm ./kernel-devel-5.15.113-zdyun.el9.x86_64.rpm
+sudo dnf install  kernel-devel-$(uname -r) tar bzip2 make automake gcc gcc-c++ pciutils elfutils-libelf-devel libglvnd-opengl libglvnd-glx libglvnd-devel acpid pkgconf dkms -y
+sudo dnf module install nvidia-driver:latest-dkms -y
+sudo grubby --args="nouveau.modeset=0 rd.driver.blacklist=nouveau" --update-kernel=ALL
+sudo reboot
 </code></pre>
-<p>Write iso to disk.</p>
-<p>Installation cdrom is gnome based:</p>
-<p><img src="./images/20250310_125349_801x443.jpg" alt="./images/20250310_125349_801x443.jpg" /></p>
-<p>Open the terminal and change the passwd for nixos user:</p>
-<p><img src="./images/20250310_125531_309x81.jpg" alt="./images/20250310_125531_309x81.jpg" /></p>
-<pre><code># cat parted.sh
-parted /dev/nvme0n1 -- mklabel gpt
-parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
-parted /dev/nvme0n1 -- mkpart primary 512MB -2GB
-parted /dev/nvme0n1 -- mkpart swap linux-swap -2GB 100%
-parted /dev/nvme0n1 -- set 1 esp on
- 
-mkfs.fat -F 32 -n boot /dev/nvme0n1p1
-mkfs.btrfs -L NIXOS /dev/nvme0n1p2
-mkswap -L swap /dev/nvme0n1p3
-# ./parted.sh
-# lsblk
-...
-nvme0n1     259:0    0 953.9G  0 disk 
-├─nvme0n1p1 259:1    0   487M  0 part 
-├─nvme0n1p2 259:2    0 951.5G  0 part 
-└─nvme0n1p3 259:3    0   1.9G  0 part
+<p>After reboot, the nvidia-smi could be used:</p>
+<pre><code>[root@minirocky92 test]# nvidia-smi 
+Tue Mar 11 09:08:25 2025       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 570.124.06             Driver Version: 570.124.06     CUDA Version: 12.8     |
+|-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA GeForce RTX 4070        Off |   00000000:01:00.0 Off |                  N/A |
+| 31%   36C    P8              9W /  200W |       6MiB /  12282MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+                                                                                         
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+
 </code></pre>
-<h3 id="2-redsocks-related"><a class="header" href="#2-redsocks-related">2. redsocks related</a></h3>
-<p>Generate the chnroute.txt:</p>
-<pre><code>curl 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' &gt; chnroute.txt
+<h3 id="2-rocky-deployment"><a class="header" href="#2-rocky-deployment">2. rocky deployment</a></h3>
+<p>Steps:</p>
+<pre><code>scp -r dash@192.168.1.8:/media/sda/apparmor .
+cd apparmor/
+sudo yum install -y tar
+tar xzvf apparmor_kernels.tar.gz 
+tar xzvf i915.tar.gz 
+sudo mv /lib/firmware/i915/ /lib/firmware/i915.bak
+sudo cp -r i915 /lib/firmware/
+cd rpms/
+sudo yum install -y bison elfutils-libelf-devel flex gcc make openssl-devel perl-interpreter ./kernel-5.15.113-zdyun.el9.x86_64.rpm ./kernel-devel-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-internal-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-extra-5.15.113-zdyun.el9.x86_64.rpm  ./kernel-core-5.15.113-zdyun.el9.x86_64.rpm vim pciutils openssh-server
+sudo grubby --args="i915.enable_guc=0x7 udmabuf.list_limit=8192 intel_iommu=on i915.force_probe=* modprobe.blacklist=evbug" --update-kernel=ALL
+sudo ./qie.sh 
+sudo lspci | grep -i vga
+
 </code></pre>
-<p>The content of <code>redsocks.sh</code> is listed:</p>
-<pre><code>#! /bin/sh
+<h3 id="3-nixos-working-tips"><a class="header" href="#3-nixos-working-tips">3. nixos working tips</a></h3>
+<p>In installation steps:</p>
+<pre><code>nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixpkgs-unstable nixpkgs
+nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixos-24.11 nixos
 
-case "$1" in
-  start|"")
-    cd /home/nixos/redsocks
-    if [ -e redsocks.log ] ; then
-      rm redsocks.log
-    fi
-    redsocks -p /home/nixos/redsocks/redsocks.pid #set daemon = on in config file
-    # start redirection
-    #iptables -t nat -A OUTPUT -d 192.168.0.0/16 -j RETURN
-    #iptables -t nat -A OUTPUT -d 10.10.0.0/16 -j RETURN
-    #iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to 12345
-    #iptables -t nat -A OUTPUT -p tcp --dport 443 -j REDIRECT --to 12345
-    # Create new chain
-    iptables -t nat -N REDSOCKS
-
-    # Ignore LANs and some other reserved addresses.
-    iptables -t nat -A REDSOCKS -d 0.0.0.0/8 -j RETURN
-    iptables -t nat -A REDSOCKS -d 10.0.0.0/8 -j RETURN
-    iptables -t nat -A REDSOCKS -d 100.64.0.0/10 -j RETURN
-    iptables -t nat -A REDSOCKS -d 127.0.0.0/8 -j RETURN
-    iptables -t nat -A REDSOCKS -d 169.254.0.0/16 -j RETURN
-    iptables -t nat -A REDSOCKS -d 172.16.0.0/12 -j RETURN
-    iptables -t nat -A REDSOCKS -d 192.168.0.0/16 -j RETURN
-    iptables -t nat -A REDSOCKS -d 198.18.0.0/15 -j RETURN
-    iptables -t nat -A REDSOCKS -d 224.0.0.0/4 -j RETURN
-    iptables -t nat -A REDSOCKS -d 240.0.0.0/4 -j RETURN
-    
-    # Anything else should be redirected to port 12345
-    iptables -t nat -A REDSOCKS -p tcp -j REDIRECT --to-ports 12345
-    ;;
-
-  stop)
-    cd /home/nixos/redsocks
-    if [ -e redsocks.pid ]; then
-      kill `cat redsocks.pid`
-      rm redsocks.pid
-    else
-      echo already killed, anyway, I will try killall
-      killall -9 redsocks
-    fi
-    # stop redirection
-    #iptables -t nat -F OUTPUT
-    iptables -t nat -F REDSOCKS
-    ;;
-
-  start_ssh)
-    #ssh -NfD 1234 user@example.cc #TODO: change it!!!
-    ssh -NfD 1234 544644af4382ec37bc0009da@weatherapp-kkkttt.rhcloud.com
-    ;;
-
-  stop_ssh)
-    ps aux|grep "ssh -NfD 1234"|awk '{print $2}'|xargs kill
-    ;;
-
-  clean_dns)
-    iptables -A INPUT -p udp --sport 53 -m state --state ESTABLISHED -m gfw -j DROP -m comment --comment "drop gfw dns hijacks"
-    ;;
-
-  *)
-    echo "Usage: redsocks start|stop|start_ssh|stop_ssh|clean_dns" &gt;&amp;2
-    exit 3
-    ;;
-esac
+nix-channel --list
+nix-channel --update
+nixos-generate-config --root /mnt
 </code></pre>
-<p>the redsocks environment could be activated via:</p>
-<pre><code>nix-shell -p redsocks
+<p>Edit the configuration.nix file, then:</p>
+<pre><code>cd /mnt
+nixos-install --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-channels/store
 </code></pre>
-<p>After start redsocks, do following for adding rules:</p>
-<pre><code>cat /home/nixos/chnroute.txt | xargs -I % iptables -t nat -A REDSOCKS -d % -j RETURN
+<p>After installation, the kernel will be in <code>6.12.x</code>.</p>
+<p>Specify this version, or it will automatically use 6.6.x version:</p>
+<pre><code>boot.kernelPackages = pkgs.linuxPackages_6_12;
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250308.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250310.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250311.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -277,13 +237,10 @@ esac
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250308.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250310.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250311.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
