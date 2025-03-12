@@ -3871,6 +3871,54 @@ nixos-install --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-
 <p>Specify this version, or it will automatically use 6.6.x version:</p>
 <pre><code>boot.kernelPackages = pkgs.linuxPackages_6_12;
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250312"><a class="header" href="#20250312">20250312</a></h1>
+<h3 id="1-disable-ipv6linux"><a class="header" href="#1-disable-ipv6linux">1. disable ipv6(linux)</a></h3>
+<p>via:</p>
+<pre><code>sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sysctl -w net.ipv6.conf.default.disable_ipv6=1
+</code></pre>
+<h3 id="2-quick-setup-nixos"><a class="header" href="#2-quick-setup-nixos">2. quick-setup nixos</a></h3>
+<p>via selecting the correct store channel(almost all of the pkgs are fetched from cache), we will get quick setup.</p>
+<pre><code>nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixpkgs-unstable nixpkgs
+nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixos-24.11 nixos
+nix-channel --list
+nix-channel --update
+nixos-generate-config --root /mnt
+vim /mnt/etc/nixos/configuration.nix
+nixos-install --show-trace --option substituters https://mirrors.ustc.edu.cn/nix-channels/store
+</code></pre>
+<p>Reboot, introducing <code>/etc/nixos/flake.nix&lt;home.nix&gt;</code>, then :</p>
+<pre><code>nixos-rebuild switch --option  substituters https://mirrors.ustc.edu.cn/nix-channels/store
+</code></pre>
+<p>Issue:</p>
+<p><img src="./images/20250312_110105_927x468.jpg" alt="./images/20250312_110105_927x468.jpg" /></p>
+<p><img src="./images/20250312_111808_933x222.jpg" alt="./images/20250312_111808_933x222.jpg" /></p>
+<p>Solved via(cross-gfw):</p>
+<pre><code>dash@mynix:~/ &gt; scp dash@192.168.1.210:~/nix_redsocks.tar.gz .
+nix_redsocks.tar.gz                                                              100%   27KB   3.1MB/s   00:00    
+dash@mynix:~/ &gt; tar xzvf nix_redsocks.tar.gz 
+redsocks/
+redsocks/redsocks.sh
+redsocks/redsocks.conf
+redsocks/chnroute.txt
+redsocks/redsocks.pid
+dash@mynix:~/ &gt; sudo su
+root@mynix:/home/dash/ &gt; cd redsocks 
+root@mynix:/home/dash/redsocks/ &gt; ./redsocks.sh start
+root@mynix:/home/dash/redsocks/ &gt; cat chnroute.txt| xargs -I % iptables -t nat -A OUTPUT -d % -j RETURN
+</code></pre>
+<p>Then re-launch the rebuild script, notice should choose cernet:</p>
+<pre><code>nixos-rebuild switch --option  substituters https://mirrors.cernet.edu.cn/nix-channels/store
+</code></pre>
+<p>Difference:</p>
+<p><img src="./images/20250312_114601_934x640.jpg" alt="./images/20250312_114601_934x640.jpg" /></p>
+<p>reason:</p>
+<p><img src="./images/20250312_143959_824x140.jpg" alt="./images/20250312_143959_824x140.jpg" /></p>
+<p>Change to correct repository:</p>
+<pre><code>sudo nixos-rebuild switch --option substituters  "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+</code></pre>
+<h3 id="3-dual-vms-in-i9"><a class="header" href="#3-dual-vms-in-i9">3. dual vms in i9</a></h3>
+<p>Ignore, for no reason to do this.</p>
 
                     </main>
 

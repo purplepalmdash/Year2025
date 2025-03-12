@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250311 - year2025</title>
+        <title>20250312 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,87 +152,63 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250311"><a class="header" href="#20250311">20250311</a></h1>
-<h3 id="1-rockylinux-nvidia"><a class="header" href="#1-rockylinux-nvidia">1. rockylinux nvidia</a></h3>
-<p>Steps:</p>
-<pre><code>sudo dnf install epel-release -y
-sudo dnf groupinstall "Development Tools" -y
-sudo dnf install kernel-devel dkms -y
-sudo dnf config-manager --add-repo http://developer.download.nvidia.com/compute/cuda/repos/rhel9/$(uname -i)/cuda-rhel9.repo
-sudo yum install -y ./kernel-devel-matched-5.15.113-zdyun.el9.x86_64.rpm ./kernel-devel-5.15.113-zdyun.el9.x86_64.rpm
-sudo dnf install  kernel-devel-$(uname -r) tar bzip2 make automake gcc gcc-c++ pciutils elfutils-libelf-devel libglvnd-opengl libglvnd-glx libglvnd-devel acpid pkgconf dkms -y
-sudo dnf module install nvidia-driver:latest-dkms -y
-sudo grubby --args="nouveau.modeset=0 rd.driver.blacklist=nouveau" --update-kernel=ALL
-sudo reboot
+                        <h1 id="20250312"><a class="header" href="#20250312">20250312</a></h1>
+<h3 id="1-disable-ipv6linux"><a class="header" href="#1-disable-ipv6linux">1. disable ipv6(linux)</a></h3>
+<p>via:</p>
+<pre><code>sysctl -w net.ipv6.conf.all.disable_ipv6=1
+sysctl -w net.ipv6.conf.default.disable_ipv6=1
 </code></pre>
-<p>After reboot, the nvidia-smi could be used:</p>
-<pre><code>[root@minirocky92 test]# nvidia-smi 
-Tue Mar 11 09:08:25 2025       
-+-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 570.124.06             Driver Version: 570.124.06     CUDA Version: 12.8     |
-|-----------------------------------------+------------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-|                                         |                        |               MIG M. |
-|=========================================+========================+======================|
-|   0  NVIDIA GeForce RTX 4070        Off |   00000000:01:00.0 Off |                  N/A |
-| 31%   36C    P8              9W /  200W |       6MiB /  12282MiB |      0%      Default |
-|                                         |                        |                  N/A |
-+-----------------------------------------+------------------------+----------------------+
-                                                                                         
-+-----------------------------------------------------------------------------------------+
-| Processes:                                                                              |
-|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
-|        ID   ID                                                               Usage      |
-|=========================================================================================|
-|  No running processes found                                                             |
-+-----------------------------------------------------------------------------------------+
-</code></pre>
-<h3 id="2-rocky-deployment"><a class="header" href="#2-rocky-deployment">2. rocky deployment</a></h3>
-<p>Steps:</p>
-<pre><code>scp -r dash@192.168.1.8:/media/sda/apparmor .
-cd apparmor/
-sudo yum install -y tar
-tar xzvf apparmor_kernels.tar.gz 
-tar xzvf i915.tar.gz 
-sudo mv /lib/firmware/i915/ /lib/firmware/i915.bak
-sudo cp -r i915 /lib/firmware/
-cd rpms/
-sudo yum install -y bison elfutils-libelf-devel flex gcc make openssl-devel perl-interpreter ./kernel-5.15.113-zdyun.el9.x86_64.rpm ./kernel-devel-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-internal-5.15.113-zdyun.el9.x86_64.rpm ./kernel-modules-extra-5.15.113-zdyun.el9.x86_64.rpm  ./kernel-core-5.15.113-zdyun.el9.x86_64.rpm vim pciutils openssh-server
-sudo grubby --args="i915.enable_guc=0x7 udmabuf.list_limit=8192 intel_iommu=on i915.force_probe=* modprobe.blacklist=evbug" --update-kernel=ALL
-sudo ./qie.sh 
-sudo lspci | grep -i vga
-
-</code></pre>
-<h3 id="3-nixos-working-tips"><a class="header" href="#3-nixos-working-tips">3. nixos working tips</a></h3>
-<p>In installation steps:</p>
+<h3 id="2-quick-setup-nixos"><a class="header" href="#2-quick-setup-nixos">2. quick-setup nixos</a></h3>
+<p>via selecting the correct store channel(almost all of the pkgs are fetched from cache), we will get quick setup.</p>
 <pre><code>nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixpkgs-unstable nixpkgs
 nix-channel --add https://mirrors.ustc.edu.cn/nix-channels/nixos-24.11 nixos
-
 nix-channel --list
 nix-channel --update
 nixos-generate-config --root /mnt
+vim /mnt/etc/nixos/configuration.nix
+nixos-install --show-trace --option substituters https://mirrors.ustc.edu.cn/nix-channels/store
 </code></pre>
-<p>Edit the configuration.nix file, then:</p>
-<pre><code>cd /mnt
-nixos-install --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-channels/store
+<p>Reboot, introducing <code>/etc/nixos/flake.nix&lt;home.nix&gt;</code>, then :</p>
+<pre><code>nixos-rebuild switch --option  substituters https://mirrors.ustc.edu.cn/nix-channels/store
 </code></pre>
-<p>After installation, the kernel will be in <code>6.12.x</code>.</p>
-<p>Specify this version, or it will automatically use 6.6.x version:</p>
-<pre><code>boot.kernelPackages = pkgs.linuxPackages_6_12;
+<p>Issue:</p>
+<p><img src="./images/20250312_110105_927x468.jpg" alt="./images/20250312_110105_927x468.jpg" /></p>
+<p><img src="./images/20250312_111808_933x222.jpg" alt="./images/20250312_111808_933x222.jpg" /></p>
+<p>Solved via(cross-gfw):</p>
+<pre><code>dash@mynix:~/ &gt; scp dash@192.168.1.210:~/nix_redsocks.tar.gz .
+nix_redsocks.tar.gz                                                              100%   27KB   3.1MB/s   00:00    
+dash@mynix:~/ &gt; tar xzvf nix_redsocks.tar.gz 
+redsocks/
+redsocks/redsocks.sh
+redsocks/redsocks.conf
+redsocks/chnroute.txt
+redsocks/redsocks.pid
+dash@mynix:~/ &gt; sudo su
+root@mynix:/home/dash/ &gt; cd redsocks 
+root@mynix:/home/dash/redsocks/ &gt; ./redsocks.sh start
+root@mynix:/home/dash/redsocks/ &gt; cat chnroute.txt| xargs -I % iptables -t nat -A OUTPUT -d % -j RETURN
 </code></pre>
+<p>Then re-launch the rebuild script, notice should choose cernet:</p>
+<pre><code>nixos-rebuild switch --option  substituters https://mirrors.cernet.edu.cn/nix-channels/store
+</code></pre>
+<p>Difference:</p>
+<p><img src="./images/20250312_114601_934x640.jpg" alt="./images/20250312_114601_934x640.jpg" /></p>
+<p>reason:</p>
+<p><img src="./images/20250312_143959_824x140.jpg" alt="./images/20250312_143959_824x140.jpg" /></p>
+<p>Change to correct repository:</p>
+<pre><code>sudo nixos-rebuild switch --option substituters  "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"
+</code></pre>
+<h3 id="3-dual-vms-in-i9"><a class="header" href="#3-dual-vms-in-i9">3. dual vms in i9</a></h3>
+<p>Ignore, for no reason to do this.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250310.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250311.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250312.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -240,13 +216,10 @@ nixos-install --show-trace --option substituters https://mirror.sjtu.edu.cn/nix-
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250310.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250311.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250312.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
