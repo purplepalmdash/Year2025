@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250314 - year2025</title>
+        <title>20250316 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,21 +152,33 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250314"><a class="header" href="#20250314">20250314</a></h1>
-<h3 id="1-awesome"><a class="header" href="#1-awesome">1. awesome</a></h3>
-<p>Change awesome configurations for nixos.</p>
+                        <h1 id="20250316"><a class="header" href="#20250316">20250316</a></h1>
+<h3 id="1-part-for-nvme-ssd"><a class="header" href="#1-part-for-nvme-ssd">1. part for nvme ssd</a></h3>
+<p>Scripts:</p>
+<pre><code>parted /dev/nvme0n1 -- mklabel gpt
+parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
+parted /dev/nvme0n1 -- mkpart primary 512MB -2GB
+parted /dev/nvme0n1 -- mkpart swap linux-swap -2GB 100%
+parted /dev/nvme0n1 -- set 1 esp on
+ 
+mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+mkfs.btrfs -L NIXOS /dev/nvme0n1p2
+mkswap -L swap /dev/nvme0n1p3
+
+mount /dev/disk/by-label/NIXOS /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/nvme0n1p3
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250313.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250315.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250315.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -174,13 +186,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250313.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250315.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250315.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

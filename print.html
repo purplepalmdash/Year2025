@@ -3954,6 +3954,28 @@ Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250314"><a class="header" href="#20250314">20250314</a></h1>
 <h3 id="1-awesome"><a class="header" href="#1-awesome">1. awesome</a></h3>
 <p>Change awesome configurations for nixos.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250315"><a class="header" href="#20250315">20250315</a></h1>
+<h3 id="nixos-working-tips"><a class="header" href="#nixos-working-tips">nixos working tips</a></h3>
+<p>pavucontrol for controlling the pnmixer.</p>
+<p><img src="./images/2025_03_15_21_51_38_542x554.jpg" alt="./images/2025_03_15_21_51_38_542x554.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250316"><a class="header" href="#20250316">20250316</a></h1>
+<h3 id="1-part-for-nvme-ssd"><a class="header" href="#1-part-for-nvme-ssd">1. part for nvme ssd</a></h3>
+<p>Scripts:</p>
+<pre><code>parted /dev/nvme0n1 -- mklabel gpt
+parted /dev/nvme0n1 -- mkpart ESP fat32 1MB 512MB
+parted /dev/nvme0n1 -- mkpart primary 512MB -2GB
+parted /dev/nvme0n1 -- mkpart swap linux-swap -2GB 100%
+parted /dev/nvme0n1 -- set 1 esp on
+ 
+mkfs.fat -F 32 -n boot /dev/nvme0n1p1
+mkfs.btrfs -L NIXOS /dev/nvme0n1p2
+mkswap -L swap /dev/nvme0n1p3
+
+mount /dev/disk/by-label/NIXOS /mnt
+mkdir -p /mnt/boot
+mount /dev/disk/by-label/boot /mnt/boot
+swapon /dev/nvme0n1p3
+</code></pre>
 
                     </main>
 
