@@ -4117,6 +4117,75 @@ ${goto 10}${color}Home:      ${alignr 10}${color6}${fs_used /home}${color}  /  $
 <pre><code>run_once("sleep 1 &amp;&amp; xrandr --output HDMI-1 --mode 1920x1080 --left-of HDMI-2")
 run_once("sleep 10 &amp;&amp; conky -c /home/dash/.config/awesome/conky_intel.conf")
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250318"><a class="header" href="#20250318">20250318</a></h1>
+<h3 id="1-virtualizationunder-2206"><a class="header" href="#1-virtualizationunder-2206">1. virtualization(under 22.06)</a></h3>
+<p>Commands in xxxOS:</p>
+<pre><code>yum install -y virt-manager edk2-ovmf libvirt-client libvirt-daemon-driver-qemu qemu-kvm libvirt-daemon-driver-storage libvirt*
+yum install -y ninja-build spice-server-devel SDL2-devel alsa-utils-devel  alsa-utils-devel alsa-utils alsa-lib alsa-lib-devel alsa-tools alsa-tools-devel pulseaudio-libs-dev
+grubby --args="iommu=pt amd_iommu=on pcie_acs_override=downstream,multifunction" --update-kernel=ALL
+systemctl enable libvirtd --now &amp;&amp; reboot
+</code></pre>
+<p>After reboot:</p>
+<pre><code># virsh list --all
+ Id   名称   状态
+-------------------
+# grubby --args="vfio-pci.ids=1002:6613,1002:aab0" --update-kernel=ALL
+# vim /etc/modprobe.d/vfio.conf
+options vfio-pci ids=1002:6611,1002:aab0
+# vim /etc/modules-load.d/vfio.conf
+vfio-pci
+# reboot
+</code></pre>
+<p>Now examine the driver status of gpu:</p>
+<pre><code># lspci -vvnn -s 06:00.0 | grep -i 'in use'
+	Kernel driver in use: vfio-pci
+# lspci -vvnn -s 06:00.1 | grep -i 'in use'
+	Kernel driver in use: vfio-pci
+</code></pre>
+<p>Build qemu(6.2.0):</p>
+<pre><code>wget https://download.qemu.org/qemu-6.2.0.tar.xz
+tar cJvf qemu-6.2.0.tar.xz
+Build error:      
+ERROR: You need at least GCC v7.4 or Clang v6.0 (or XCode Clang v10.0)
+</code></pre>
+<p>6.0.0:</p>
+<pre><code> wget https://download.qemu.org/qemu-6.0.0.tar.xz
+ tar xJvf qemu-6.0.0.tar.xz 
+ cd qemu-6.0.0
+./configure --prefix=/opt/local --enable-kvm --disable-xen --enable-libusb --enable-debug-info --enable-debug --enable-sdl --enable-vhost-net --enable-spice --disable-debug-tcg --enable-opengl --enable-gtk --target-list=x86_64-softmmu --audio-drv-list=oss,alsa,pa --enable-usb-redir --enable-spice
+make -j16
+make install
+/opt/local/bin/qemu-system-x86_64 --version
+QEMU emulator version 6.0.0
+Copyright (c) 2003-2021 Fabrice Bellard and the QEMU Project developers
+</code></pre>
+<p>Prepare the disk:</p>
+<pre><code>scp little_win10.qcow2  root@192.168.1.70:/var/lib/libvirt/images/
+qemu-img create -f qcow2 -b little_win10.qcow2 win10_amd.qcow2
+Copy the llllllittle_win10_VARS.fd to :   
+cp llllllittle_win10_VARS.fd   /var/lib/libvirt/qemu/nvram/win10amd_VARS.fd
+</code></pre>
+<p>Win10amd.xml is fetched from gist, then:</p>
+<pre><code>virsh define Win10amd.xml
+virsh start win10amd
+</code></pre>
+<p>The kernel output:</p>
+<pre><code>it pref]
+[  921.373281] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373402] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373518] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373634] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373749] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373864] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+[  921.373979] vfio-pci 0000:06:00.0: BAR 0: can't reserve [mem 0x3fff0000000-0x3ffffffffff 64bit pref]
+
+</code></pre>
+<p>Won't startup:</p>
+<p><img src="./images/2025_03_18_19_40_52_1430x640.jpg" alt="./images/2025_03_18_19_40_52_1430x640.jpg" /></p>
+<h3 id="2-enable-tips"><a class="header" href="#2-enable-tips">2. enable tips</a></h3>
+<p>should add following:</p>
+<pre><code>grubby --args="video=efifb:off" --update-kernel=ALL
+</code></pre>
 
                     </main>
 
