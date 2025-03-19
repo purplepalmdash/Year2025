@@ -4186,6 +4186,58 @@ virsh start win10amd
 <p>should add following:</p>
 <pre><code>grubby --args="video=efifb:off" --update-kernel=ALL
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250319"><a class="header" href="#20250319">20250319</a></h1>
+<h3 id="1-xxxos-2206-verification"><a class="header" href="#1-xxxos-2206-verification">1. xxxos 22.06 verification</a></h3>
+<p>Fetch the qcow2 file from dual-launch vm.</p>
+<h3 id="2-smplayer-configuration"><a class="header" href="#2-smplayer-configuration">2. smplayer configuration</a></h3>
+<p>hardware decode:</p>
+<p><img src="./images/2025_03_19_11_00_06_472x322.jpg" alt="./images/2025_03_19_11_00_06_472x322.jpg" /></p>
+<p>Video is used:</p>
+<p><img src="./images/2025_03_19_11_00_24_955x469.jpg" alt="./images/2025_03_19_11_00_24_955x469.jpg" /></p>
+<h3 id="3-xxxos-vmlaunch-rescuezilla"><a class="header" href="#3-xxxos-vmlaunch-rescuezilla">3. xxxos vmlaunch rescuezilla</a></h3>
+<p>Enable the nested hypervisor:</p>
+<pre><code># cat /sys/module/kvm_intel/parameters/nested 
+Y
+</code></pre>
+<p>TBD in tomorrow.</p>
+<h3 id="4-chrome-issuedevice"><a class="header" href="#4-chrome-issuedevice">4. chrome issue(device)</a></h3>
+<p>chrome stucks(xrandr shows virtual display):</p>
+<pre><code>      services={
+          xserver = {
+              enable = true;
+              videoDrivers = [
+             #"intel"
+             "intel"
+             "modesetting"
+             "fbdev"
+              ];
+              deviceSection = ''
+  Option "VirtualHeads" "2"
+              ''; 
+              exportConfiguration = true
+</code></pre>
+<p>Chrome not stucks:</p>
+<pre><code>      services={
+          xserver = {
+              enable = true;
+              videoDrivers = [
+             #"intel"
+             "modesetting"
+             "fbdev"
+             "intel"
+              ];
+              deviceSection = ''
+  Option "VirtualHeads" "2"
+              ''; 
+              exportConfiguration = true
+</code></pre>
+<p>Solved via(DRI-2):</p>
+<pre><code>              deviceSection = ''
+  Option "VirtualHeads" "2"
+  #Option  "SwapbuffersWait"  "false"
+  Option  "DRI" "2"
+              ''; 
+</code></pre>
 
                     </main>
 
