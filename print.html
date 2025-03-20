@@ -4238,6 +4238,52 @@ Y
   Option  "DRI" "2"
               ''; 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250320"><a class="header" href="#20250320">20250320</a></h1>
+<h3 id="1-xxxos-audio"><a class="header" href="#1-xxxos-audio">1. xxxOS Audio</a></h3>
+<p>enable the system-level pulseaudio, change the qemu configuration. then everything will be OK.</p>
+<p>Choose between 2 equipments:</p>
+<p><img src="./images/2025_03_20_10_02_23_409x350.jpg" alt="./images/2025_03_20_10_02_23_409x350.jpg" /></p>
+<p><img src="./images/2025_03_20_10_02_46_324x109.jpg" alt="./images/2025_03_20_10_02_46_324x109.jpg" /></p>
+<pre><code>  &lt;qemu:commandline&gt;
+    &lt;qemu:arg value='-device'/&gt;
+    &lt;qemu:arg value='ich9-intel-hda,bus=pcie.0,addr=0x1b'/&gt;
+    &lt;qemu:arg value='-device'/&gt;
+    &lt;qemu:arg value='hda-micro,audiodev=hda'/&gt;
+    &lt;qemu:arg value='-audiodev'/&gt;
+    &lt;qemu:arg value='pa,id=hda,server=unix:/var/run/pulse/native'/&gt;
+  &lt;/qemu:commandline&gt;
+</code></pre>
+<h3 id="2-mpv-issue"><a class="header" href="#2-mpv-issue">2. mpv issue</a></h3>
+<p>start issue:</p>
+<pre><code> mpv mybao.mp4 
+● Video  --vid=1               (av1 3840x2160 25 fps) [default]
+● Audio  --aid=1  --alang=eng  (aac 2ch 44100 Hz 128 kbps) [default]
+[vo/gpu/opengl] Suspected software renderer or indirect context.
+[vo/gpu/drm] VT_GETMODE failed: Inappropriate ioctl for device
+[vo/gpu/drm] Failed to set up VT switcher. Terminal switching will be unavailable.
+[vo/gpu/drm] Failed to acquire DRM master: Permission denied
+[vo/gpu/drm] Failed to commit ModeSetting atomic request: Permission denied
+[vo/gpu/opengl] Failed to set CRTC for connector 189: Permission denied
+[vo/gpu] Failed to commit atomic request: Permission denied
+[vo/gpu/drm] Failed to commit ModeSetting atomic request: Permission denied
+[vo/gpu/drm] Failed to restore previous mode
+[vo/gpu/drm] Failed to drop DRM master: Permission denied
+vulkan: No DRI3 support detected - required for presentation
+Note: you can probably enable DRI3 in your Xorg config
+[vo/gpu/libplacebo] Found no suitable device, giving up.
+[vo/gpu/libplacebo] Failed initializing vulkan device
+[vo/gpu] Failed initializing any suitable GPU context!
+Error opening/initializing the selected video_out (--vo) device.
+Video: no video
+
+
+</code></pre>
+<h3 id="3-issue-for-xxxos"><a class="header" href="#3-issue-for-xxxos">3. issue for xxxos</a></h3>
+<p>re install kernel then everything goest ok:</p>
+<pre><code>yum reinstall /root/kernel-4.19.90-2102.2.0.0068.ctl2.x86_64.rpm
+ grubby --args="iommu=pt amd_iommu=on pcie_acs_override=downstream,multifunction video=efifb:off vfio-pci.ids=1002:6613,1002:aab0 net.ifnames=0 biosdevname=0" --update-kernel="$(grubby --default-kernel)"
+
+</code></pre>
 
                     </main>
 
