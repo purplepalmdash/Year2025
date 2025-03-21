@@ -4284,6 +4284,96 @@ Video: no video
  grubby --args="iommu=pt amd_iommu=on pcie_acs_override=downstream,multifunction video=efifb:off vfio-pci.ids=1002:6613,1002:aab0 net.ifnames=0 biosdevname=0" --update-kernel="$(grubby --default-kernel)"
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250321"><a class="header" href="#20250321">20250321</a></h1>
+<h3 id="1-fcitx5-input-issue"><a class="header" href="#1-fcitx5-input-issue">1. fcitx5 input issue</a></h3>
+<p>fcitx5 could be used in alacritty, but on gnome-terminal, not OK.</p>
+<h3 id="2-debian-fix-bootloader"><a class="header" href="#2-debian-fix-bootloader">2. debian fix bootloader</a></h3>
+<p>Not working under debian 12 installation iso:</p>
+<p><img src="./images/2025_03_21_11_59_37_875x273.jpg" alt="./images/2025_03_21_11_59_37_875x273.jpg" /></p>
+<p><img src="./images/2025_03_21_12_03_41_690x175.jpg" alt="./images/2025_03_21_12_03_41_690x175.jpg" /></p>
+<h3 id="3-d3000-ubuntu-docker-images"><a class="header" href="#3-d3000-ubuntu-docker-images">3. d3000 ubuntu docker images</a></h3>
+<p>ubuntu24.04 graphical arm64 installation:</p>
+<pre><code>sudo apt update -y &amp;&amp; sudo apt upgrade -y
+sudo apt install -y ubuntu-desktop
+sudo apt install -y nethogs
+sudo apt install -y virt-manager
+sudo apt install -y libvirt-clients-qemu qemu-system
+sudo systemctl set-default graphical.target
+
+</code></pre>
+<h3 id="4-sleep-infinite-docker"><a class="header" href="#4-sleep-infinite-docker">4. sleep infinite docker</a></h3>
+<p>Created via:</p>
+<pre><code>test@d3000:~/ubuntudaemon$ cat Dockerfile 
+FROM jhq888:latest
+CMD ["/bin/bash", "-c", "echo 'Container running'; sleep infinity"]
+test@d3000:~/ubuntudaemon$ !39
+sudo docker build -t jhq8888 .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  2.048kB
+Step 1/2 : FROM jhq888:latest
+ ---&gt; d771e925d4bd
+Step 2/2 : CMD ["/bin/bash", "-c", "echo 'Container running'; sleep infinity"]
+ ---&gt; Running in 2c5836d6c277
+ ---&gt; Removed intermediate container 2c5836d6c277
+ ---&gt; d6609764b96f
+Successfully built d6609764b96f
+Successfully tagged jhq8888:latest
+test@d3000:~/ubuntudaemon$ !40
+sudo docker run -itd --name kkk888 jhq8888:latest
+b3f09540d3cd81ea78205805148d7d51157f5d37ab82293861934020bf223aa6
+test@d3000:~/ubuntudaemon$ sudo docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS     NAMES
+b3f09540d3cd   jhq8888:latest   "/bin/bash -c 'echo …"   3 seconds ago   Up 2 seconds             kkk888
+test@d3000:~/ubuntudaemon$ sudo docker ps
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS     NAMES
+b3f09540d3cd   jhq8888:latest   "/bin/bash -c 'echo …"   6 seconds ago   Up 5 seconds             kkk888
+
+</code></pre>
+<h3 id="5-fcitx5-input-issue"><a class="header" href="#5-fcitx5-input-issue">5. fcitx5 input issue</a></h3>
+<p>possible solution:</p>
+<pre><code>具体的表现就像一个漏风的牙齿，输入的字母没有全部在 fcitx5 的输入面板上，部分泄漏到 chrome 或 vscode 的输入部件中
+解决办法，先通过 fcitx5-diagnose 命令查看诊断日志
+会提示 gtk query cache 相关问题
+修复
+
+# 进入 root shell，确保 GTK_PATH 设置生效
+sudo -s
+# 编译安装的fcitx5的 immoudle在该目录
+export GTK_PATH=/usr/local/lib/gtk-3.0
+
+# 更新 cache
+/usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
+
+# 查询 cache，确保 fcitx5 的moudule生效
+/usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0
+
+
+同理处理 gtk2 的
+export GTK_PATH=/usr/local/lib/gtk-2.0
+/usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
+/usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0
+
+gtk4 的因为机制变更，目前貌似误解，可以尝试（不一定有效）
+
+sudo mkdir /usr/lib/x86_64-linux-gnu/gtk-4.0/4.0.0/immodules
+sudo cp /usr/local/lib/gtk-4.0/4.0.0/immodules/libim-fcitx5.so /usr/lib/x86_64-linux-gnu/gtk-4.0/4.0.0/immodules
+
+
+2025-03-18 ubuntu 24.04 上问题的解决：
+
+sudo apt install -y \
+  fcitx5-frontend-gtk2 \
+  fcitx5-frontend-gtk3 \
+  fcitx5-frontend-gtk4 \
+  fcitx5-frontend-qt5 \
+  fcitx5-frontend-qt6
+
+# 或者
+sudo apt install -y fcitx5-frontend-all
+</code></pre>
 
                     </main>
 
