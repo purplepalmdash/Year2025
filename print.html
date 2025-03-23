@@ -4374,6 +4374,31 @@ sudo apt install -y \
 # 或者
 sudo apt install -y fcitx5-frontend-all
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250322"><a class="header" href="#20250322">20250322</a></h1>
+<h3 id="1-nixos-fcitx5-comparison"><a class="header" href="#1-nixos-fcitx5-comparison">1. nixos fcitx5 comparison</a></h3>
+<p>sddm:</p>
+<div class="table-wrapper"><table><thead><tr><th>机型</th><th>配置</th><th>fcitx5表现</th><th>视频播放、解码表现</th></tr></thead><tbody>
+<tr><td>N100(ADL-N), 32G内存, 双屏1080P</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在终端模拟器gnome-terminal下输入，在chrome下输入存在漏字现象</td><td>激活xorg-video-intel后，无法硬件解码，modesetting+fbdev下硬件解码正常</td></tr>
+<tr><td>i3-8100, 16G内存， 单屏4K</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+<tr><td>NUC11 i7-1165G7, 48G内存, 单屏4K</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+</tbody></table>
+</div>
+<p>gdm based:</p>
+<div class="table-wrapper"><table><thead><tr><th>机型</th><th>配置</th><th>fcitx5表现</th><th>视频播放、解码表现</th></tr></thead><tbody>
+<tr><td>N100(ADL-N), 32G内存, 双屏1080P</td><td>nixos24.11+gdm(xorg)+awesome</td><td>未验证</td><td>未验证</td></tr>
+<tr><td>i3-8100, 16G内存， 单屏4K</td><td>nixos24.11+gdm(xorg)+awesome</td><td>fcitx5可在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+<tr><td>NUC11 i7-1165G7, 48G内存, 单屏4K</td><td>nixos24.11+gdm(xorg)+awesome</td><td>fcitx5可在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+</tbody></table>
+</div>
+<h3 id="2-n100-performance-issue"><a class="header" href="#2-n100-performance-issue">2. N100 performance issue</a></h3>
+<p><img src="./images/2025_03_22_10_51_18_1169x382.jpg" alt="./images/2025_03_22_10_51_18_1169x382.jpg" /></p>
+<p><img src="./images/2025_03_22_10_51_48_1159x1013.jpg" alt="./images/2025_03_22_10_51_48_1159x1013.jpg" /></p>
+<p><img src="./images/2025_03_22_10_52_08_1175x893.jpg" alt="./images/2025_03_22_10_52_08_1175x893.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250323"><a class="header" href="#20250323">20250323</a></h1>
+<h3 id="1-restore-vm"><a class="header" href="#1-restore-vm">1. restore vm</a></h3>
+<p>URL:</p>
+<pre><code>https://serverfault.com/questions/677341/state-of-vm-after-virsh-save
+</code></pre>
 
                     </main>
 

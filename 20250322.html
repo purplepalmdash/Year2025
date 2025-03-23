@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250321 - year2025</title>
+        <title>20250322 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,106 +152,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250321"><a class="header" href="#20250321">20250321</a></h1>
-<h3 id="1-fcitx5-input-issue"><a class="header" href="#1-fcitx5-input-issue">1. fcitx5 input issue</a></h3>
-<p>fcitx5 could be used in alacritty, but on gnome-terminal, not OK.</p>
-<h3 id="2-debian-fix-bootloader"><a class="header" href="#2-debian-fix-bootloader">2. debian fix bootloader</a></h3>
-<p>Not working under debian 12 installation iso:</p>
-<p><img src="./images/2025_03_21_11_59_37_875x273.jpg" alt="./images/2025_03_21_11_59_37_875x273.jpg" /></p>
-<p><img src="./images/2025_03_21_12_03_41_690x175.jpg" alt="./images/2025_03_21_12_03_41_690x175.jpg" /></p>
-<h3 id="3-d3000-ubuntu-docker-images"><a class="header" href="#3-d3000-ubuntu-docker-images">3. d3000 ubuntu docker images</a></h3>
-<p>ubuntu24.04 graphical arm64 installation:</p>
-<pre><code>sudo apt update -y &amp;&amp; sudo apt upgrade -y
-sudo apt install -y ubuntu-desktop
-sudo apt install -y nethogs
-sudo apt install -y virt-manager
-sudo apt install -y libvirt-clients-qemu qemu-system
-sudo systemctl set-default graphical.target
-
-</code></pre>
-<h3 id="4-sleep-infinite-docker"><a class="header" href="#4-sleep-infinite-docker">4. sleep infinite docker</a></h3>
-<p>Created via:</p>
-<pre><code>test@d3000:~/ubuntudaemon$ cat Dockerfile 
-FROM jhq888:latest
-CMD ["/bin/bash", "-c", "echo 'Container running'; sleep infinity"]
-test@d3000:~/ubuntudaemon$ !39
-sudo docker build -t jhq8888 .
-DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
-            Install the buildx component to build images with BuildKit:
-            https://docs.docker.com/go/buildx/
-
-Sending build context to Docker daemon  2.048kB
-Step 1/2 : FROM jhq888:latest
- ---&gt; d771e925d4bd
-Step 2/2 : CMD ["/bin/bash", "-c", "echo 'Container running'; sleep infinity"]
- ---&gt; Running in 2c5836d6c277
- ---&gt; Removed intermediate container 2c5836d6c277
- ---&gt; d6609764b96f
-Successfully built d6609764b96f
-Successfully tagged jhq8888:latest
-test@d3000:~/ubuntudaemon$ !40
-sudo docker run -itd --name kkk888 jhq8888:latest
-b3f09540d3cd81ea78205805148d7d51157f5d37ab82293861934020bf223aa6
-test@d3000:~/ubuntudaemon$ sudo docker ps
-CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS     NAMES
-b3f09540d3cd   jhq8888:latest   "/bin/bash -c 'echo …"   3 seconds ago   Up 2 seconds             kkk888
-test@d3000:~/ubuntudaemon$ sudo docker ps
-CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS     NAMES
-b3f09540d3cd   jhq8888:latest   "/bin/bash -c 'echo …"   6 seconds ago   Up 5 seconds             kkk888
-
-</code></pre>
-<h3 id="5-fcitx5-input-issue"><a class="header" href="#5-fcitx5-input-issue">5. fcitx5 input issue</a></h3>
-<p>possible solution:</p>
-<pre><code>具体的表现就像一个漏风的牙齿，输入的字母没有全部在 fcitx5 的输入面板上，部分泄漏到 chrome 或 vscode 的输入部件中
-解决办法，先通过 fcitx5-diagnose 命令查看诊断日志
-会提示 gtk query cache 相关问题
-修复
-
-# 进入 root shell，确保 GTK_PATH 设置生效
-sudo -s
-# 编译安装的fcitx5的 immoudle在该目录
-export GTK_PATH=/usr/local/lib/gtk-3.0
-
-# 更新 cache
-/usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0 --update-cache
-
-# 查询 cache，确保 fcitx5 的moudule生效
-/usr/lib/x86_64-linux-gnu/libgtk-3-0/gtk-query-immodules-3.0
-
-
-同理处理 gtk2 的
-export GTK_PATH=/usr/local/lib/gtk-2.0
-/usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0 --update-cache
-/usr/lib/x86_64-linux-gnu/libgtk2.0-0/gtk-query-immodules-2.0
-
-gtk4 的因为机制变更，目前貌似误解，可以尝试（不一定有效）
-
-sudo mkdir /usr/lib/x86_64-linux-gnu/gtk-4.0/4.0.0/immodules
-sudo cp /usr/local/lib/gtk-4.0/4.0.0/immodules/libim-fcitx5.so /usr/lib/x86_64-linux-gnu/gtk-4.0/4.0.0/immodules
-
-
-2025-03-18 ubuntu 24.04 上问题的解决：
-
-sudo apt install -y \
-  fcitx5-frontend-gtk2 \
-  fcitx5-frontend-gtk3 \
-  fcitx5-frontend-gtk4 \
-  fcitx5-frontend-qt5 \
-  fcitx5-frontend-qt6
-
-# 或者
-sudo apt install -y fcitx5-frontend-all
-</code></pre>
+                        <h1 id="20250322"><a class="header" href="#20250322">20250322</a></h1>
+<h3 id="1-nixos-fcitx5-comparison"><a class="header" href="#1-nixos-fcitx5-comparison">1. nixos fcitx5 comparison</a></h3>
+<p>sddm:</p>
+<div class="table-wrapper"><table><thead><tr><th>机型</th><th>配置</th><th>fcitx5表现</th><th>视频播放、解码表现</th></tr></thead><tbody>
+<tr><td>N100(ADL-N), 32G内存, 双屏1080P</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在终端模拟器gnome-terminal下输入，在chrome下输入存在漏字现象</td><td>激活xorg-video-intel后，无法硬件解码，modesetting+fbdev下硬件解码正常</td></tr>
+<tr><td>i3-8100, 16G内存， 单屏4K</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+<tr><td>NUC11 i7-1165G7, 48G内存, 单屏4K</td><td>nixos24.11+sddm+awesome</td><td>fcitx5无法在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+</tbody></table>
+</div>
+<p>gdm based:</p>
+<div class="table-wrapper"><table><thead><tr><th>机型</th><th>配置</th><th>fcitx5表现</th><th>视频播放、解码表现</th></tr></thead><tbody>
+<tr><td>N100(ADL-N), 32G内存, 双屏1080P</td><td>nixos24.11+gdm(xorg)+awesome</td><td>未验证</td><td>未验证</td></tr>
+<tr><td>i3-8100, 16G内存， 单屏4K</td><td>nixos24.11+gdm(xorg)+awesome</td><td>fcitx5可在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+<tr><td>NUC11 i7-1165G7, 48G内存, 单屏4K</td><td>nixos24.11+gdm(xorg)+awesome</td><td>fcitx5可在gnome-terminal下输入，chrome下输入正常</td><td>xorg-video-intel下正常</td></tr>
+</tbody></table>
+</div>
+<h3 id="2-n100-performance-issue"><a class="header" href="#2-n100-performance-issue">2. N100 performance issue</a></h3>
+<p><img src="./images/2025_03_22_10_51_18_1169x382.jpg" alt="./images/2025_03_22_10_51_18_1169x382.jpg" /></p>
+<p><img src="./images/2025_03_22_10_51_48_1159x1013.jpg" alt="./images/2025_03_22_10_51_48_1159x1013.jpg" /></p>
+<p><img src="./images/2025_03_22_10_52_08_1175x893.jpg" alt="./images/2025_03_22_10_52_08_1175x893.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250320.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250321.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250322.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250323.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -261,11 +191,11 @@ sudo apt install -y fcitx5-frontend-all
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250320.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250321.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250322.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250323.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
