@@ -171,6 +171,42 @@ This is my &lt;pm&gt; block on the xml
     &lt;suspend-to-disk enabled='yes'/&gt;
 &lt;/pm&gt;
 </code></pre>
+<h3 id="3-deb-contains-files"><a class="header" href="#3-deb-contains-files">3. deb contains files</a></h3>
+<p>via :</p>
+<pre><code>apt-file list ovmf
+</code></pre>
+<h3 id="4-managedsave-domain"><a class="header" href="#4-managedsave-domain">4. managedsave domain</a></h3>
+<p>issue:</p>
+<pre><code>dash@aiBox:~$ sudo virsh managedsave 0000_test_suspend_ubuntu22.04
+error: Failed to save domain '0000_test_suspend_ubuntu22.04' state
+error: Operation not supported: cannot migrate a domain with &lt;hostdev mode='subsystem' type='pci'&gt;
+
+</code></pre>
+<h3 id="5-hibernate-issue"><a class="header" href="#5-hibernate-issue">5. hibernate issue</a></h3>
+<p>should have seperate swap partition:</p>
+<pre><code>vda    253:0    0    60G  0 disk 
+├─vda1 253:1    0   512M  0 part /boot/efi
+├─vda2 253:2    0  51.5G  0 part /var/snap/firefox/common/host-hunspell
+│                                /
+└─vda3 253:3    0     8G  0 part [SWAP]
+test@testsuspend:~$ free -m
+               total        used        free      shared  buff/cache   available
+Mem:            7904        1539        5155          33        1208        6096
+Swap:           8199           0        8199
+test@testsuspend:~$ cat /etc/default/grub | grep resume
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=9155b004-c472-4eaa-addf-217b13046b5b"
+$ cat /etc/fstab  | grep swap
+#/swapfile                                 none            swap    sw              0       0
+UUID=9155b004-c472-4eaa-addf-217b13046b5b                                 none            swap    sw              0       0
+$ sudo update-initramfs -u
+</code></pre>
+<p>Then in host:</p>
+<pre><code>dash@aiBox:~$ sudo virsh dompmsuspend 0000_test_suspend_ubuntu22.04 disk
+Domain '0000_test_suspend_ubuntu22.04' successfully suspended
+dash@aiBox:~$ sudo virsh start 0000_test_suspend_ubuntu22.04
+Domain '0000_test_suspend_ubuntu22.04' started
+
+</code></pre>
 
                     </main>
 
