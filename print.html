@@ -4399,6 +4399,25 @@ sudo apt install -y fcitx5-frontend-all
 <p>URL:</p>
 <pre><code>https://serverfault.com/questions/677341/state-of-vm-after-virsh-save
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250324"><a class="header" href="#20250324">20250324</a></h1>
+<h3 id="1-vimium-map-keys"><a class="header" href="#1-vimium-map-keys">1. vimium map keys</a></h3>
+<p>Enable ctrl+f for forwardinig and ctrl+b for up:</p>
+<pre><code>map &lt;c-f&gt; scrollFullPageDown
+map &lt;c-b&gt; scrollFullPageU
+</code></pre>
+<p><img src="./images/2025_03_24_09_50_47_747x366.jpg" alt="./images/2025_03_24_09_50_47_747x366.jpg" /></p>
+<h3 id="2-vm-resume"><a class="header" href="#2-vm-resume">2. vm resume</a></h3>
+<p>possible solution:</p>
+<pre><code>virsh dompmsuspend win10 disk
+win10 is my domain and just virsh start as usual to start the vm.
+
+This is my &lt;pm&gt; block on the xml
+
+&lt;pm&gt;
+    &lt;suspend-to-mem enabled='yes'/&gt;
+    &lt;suspend-to-disk enabled='yes'/&gt;
+&lt;/pm&gt;
+</code></pre>
 
                     </main>
 

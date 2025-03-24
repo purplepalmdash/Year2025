@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250323 - year2025</title>
+        <title>20250324 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,23 +152,34 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250323"><a class="header" href="#20250323">20250323</a></h1>
-<h3 id="1-restore-vm"><a class="header" href="#1-restore-vm">1. restore vm</a></h3>
-<p>URL:</p>
-<pre><code>https://serverfault.com/questions/677341/state-of-vm-after-virsh-save
+                        <h1 id="20250324"><a class="header" href="#20250324">20250324</a></h1>
+<h3 id="1-vimium-map-keys"><a class="header" href="#1-vimium-map-keys">1. vimium map keys</a></h3>
+<p>Enable ctrl+f for forwardinig and ctrl+b for up:</p>
+<pre><code>map &lt;c-f&gt; scrollFullPageDown
+map &lt;c-b&gt; scrollFullPageU
+</code></pre>
+<p><img src="./images/2025_03_24_09_50_47_747x366.jpg" alt="./images/2025_03_24_09_50_47_747x366.jpg" /></p>
+<h3 id="2-vm-resume"><a class="header" href="#2-vm-resume">2. vm resume</a></h3>
+<p>possible solution:</p>
+<pre><code>virsh dompmsuspend win10 disk
+win10 is my domain and just virsh start as usual to start the vm.
+
+This is my &lt;pm&gt; block on the xml
+
+&lt;pm&gt;
+    &lt;suspend-to-mem enabled='yes'/&gt;
+    &lt;suspend-to-disk enabled='yes'/&gt;
+&lt;/pm&gt;
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250322.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250323.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250324.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -176,13 +187,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250322.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250323.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250324.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
