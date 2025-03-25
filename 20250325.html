@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250324 - year2025</title>
+        <title>20250325 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,73 +152,67 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250324"><a class="header" href="#20250324">20250324</a></h1>
-<h3 id="1-vimium-map-keys"><a class="header" href="#1-vimium-map-keys">1. vimium map keys</a></h3>
-<p>Enable ctrl+f for forwardinig and ctrl+b for up:</p>
-<pre><code>map &lt;c-f&gt; scrollFullPageDown
-map &lt;c-b&gt; scrollFullPageU
+                        <h1 id="20250325"><a class="header" href="#20250325">20250325</a></h1>
+<h3 id="1-vm-pm-hibernate--resume"><a class="header" href="#1-vm-pm-hibernate--resume">1. vm pm-hibernate &amp;&amp; resume</a></h3>
+<p>steps1: create hibernate-enabled vm images.</p>
+<p>Step2: install quick-launch in host vm(ubuntu180406)</p>
+<h3 id="2-install-pyqt5-on-ubuntu1804"><a class="header" href="#2-install-pyqt5-on-ubuntu1804">2. install pyqt5 on ubuntu18.04</a></h3>
+<p>Steps:</p>
+<pre><code># python3 -m pip install -U pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+#  python3 -m pip --version
+pip 21.3.1 from /usr/local/lib/python3.6/dist-packages/pip (python 3.6)
+# pip3 install pyqt5==5.15.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
+# python3 -c "from PyQt5.Qt import PYQT_VERSION_STR; print(PYQT_VERSION_STR)"
+5.15.2
 </code></pre>
-<p><img src="./images/2025_03_24_09_50_47_747x366.jpg" alt="./images/2025_03_24_09_50_47_747x366.jpg" /></p>
-<h3 id="2-vm-resume"><a class="header" href="#2-vm-resume">2. vm resume</a></h3>
-<p>possible solution:</p>
-<pre><code>virsh dompmsuspend win10 disk
-win10 is my domain and just virsh start as usual to start the vm.
-
-This is my &lt;pm&gt; block on the xml
-
-&lt;pm&gt;
-    &lt;suspend-to-mem enabled='yes'/&gt;
-    &lt;suspend-to-disk enabled='yes'/&gt;
-&lt;/pm&gt;
+<h3 id="3-vfio-pre-defined"><a class="header" href="#3-vfio-pre-defined">3. vfio pre-defined</a></h3>
+<p>Steps:</p>
+<pre><code># systemctl set-default multi-user.target
+# ls -l -h /bin/dom-*
+lrwxrwxrwx 1 root root 33 3月  25 11:54 /bin/dom-startup.sh -&gt; /etc/libvirt/hooks/dom-startup.sh
+lrwxrwxrwx 1 root root 34 3月  25 11:54 /bin/dom-teardown.sh -&gt; /etc/libvirt/hooks/dom-teardown.sh
+# cat /bin/dom-startup.sh 
+    #!/bin/sh
+    virsh start ubuntu2404
+# cat /bin/dom-teardown.sh 
+    #!/bin/bash
+    virsh dompmsuspend ubuntu2404 disk
+    sleep 3
+    virsh destroy ubuntu2404 disk
+# cat /etc/libvirt/hooks/qemu
+......
+### dom startup
+if [[ $OBJECT == "kylin_uefi" ]]; then
+        case "$OPERATION" in
+                "prepare")
+                /bin/dom-teardown.sh 2&gt;&amp;1 | tee -a /var/log/libvirt/custom_hooks.log
+                ;;
+            "release")
+                /bin/dom-startup.sh 2&gt;&amp;1 | tee -a /var/log/libvirt/custom_hooks.log
+                ;;
+        esac
+fi
+......
 </code></pre>
-<h3 id="3-deb-contains-files"><a class="header" href="#3-deb-contains-files">3. deb contains files</a></h3>
-<p>via :</p>
-<pre><code>apt-file list ovmf
-</code></pre>
-<h3 id="4-managedsave-domain"><a class="header" href="#4-managedsave-domain">4. managedsave domain</a></h3>
-<p>issue:</p>
-<pre><code>dash@aiBox:~$ sudo virsh managedsave 0000_test_suspend_ubuntu22.04
-error: Failed to save domain '0000_test_suspend_ubuntu22.04' state
-error: Operation not supported: cannot migrate a domain with &lt;hostdev mode='subsystem' type='pci'&gt;
-
-</code></pre>
-<h3 id="5-hibernate-issue"><a class="header" href="#5-hibernate-issue">5. hibernate issue</a></h3>
-<p>should have seperate swap partition:</p>
-<pre><code>vda    253:0    0    60G  0 disk 
-├─vda1 253:1    0   512M  0 part /boot/efi
-├─vda2 253:2    0  51.5G  0 part /var/snap/firefox/common/host-hunspell
-│                                /
-└─vda3 253:3    0     8G  0 part [SWAP]
-test@testsuspend:~$ free -m
-               total        used        free      shared  buff/cache   available
-Mem:            7904        1539        5155          33        1208        6096
-Swap:           8199           0        8199
-test@testsuspend:~$ cat /etc/default/grub | grep resume
-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=UUID=9155b004-c472-4eaa-addf-217b13046b5b"
-$ cat /etc/fstab  | grep swap
-#/swapfile                                 none            swap    sw              0       0
-UUID=9155b004-c472-4eaa-addf-217b13046b5b                                 none            swap    sw              0       0
-$ sudo update-initramfs -u
-</code></pre>
-<p>Then in host:</p>
-<pre><code>dash@aiBox:~$ sudo virsh dompmsuspend 0000_test_suspend_ubuntu22.04 disk
-Domain '0000_test_suspend_ubuntu22.04' successfully suspended
-dash@aiBox:~$ sudo virsh start 0000_test_suspend_ubuntu22.04
-Domain '0000_test_suspend_ubuntu22.04' started
-
+<p>Modification for vfio:</p>
+<pre><code>root@idv-ADL-S:~# cat /etc/default/grub  | grep GRUB_CMDLINE_LINUX_DEFAULT
+GRUB_CMDLINE_LINUX_DEFAULT="splash intel_iommu=on intel_iommu=pt kvm.ignore_msrs=1  vfio-pci.ids=8086:4682,8086:7ae0"
+root@idv-ADL-S:~# cat /etc/modules
+modules         modules-load.d/ 
+root@idv-ADL-S:~# cat /etc/modules-load.d/vfio.conf 
+vfio-pci
+root@idv-ADL-S:~# cat /etc/modprobe.d/vfio.conf 
+options vfio-pci ids=8086:4682,8086:7ae0
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250323.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250324.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250325.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -226,13 +220,10 @@ Domain '0000_test_suspend_ubuntu22.04' started
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250323.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250324.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250325.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
