@@ -4512,6 +4512,28 @@ options vfio-pci ids=8086:4682,8086:7ae0
 <h3 id="2-markdown-viewer"><a class="header" href="#2-markdown-viewer">2. markdown viewer</a></h3>
 <p><img src="./images/2025_03_26_17_27_58_1404x513.jpg" alt="./images/2025_03_26_17_27_58_1404x513.jpg" /></p>
 <p><img src="./images/2025_03_26_17_28_23_676x432.jpg" alt="./images/2025_03_26_17_28_23_676x432.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250327"><a class="header" href="#20250327">20250327</a></h1>
+<h3 id="1-ubuntu2204-arm64-kvm-hypervisor"><a class="header" href="#1-ubuntu2204-arm64-kvm-hypervisor">1. ubuntu2204 arm64 kvm-hypervisor</a></h3>
+<pre><code>root@d3000:/home/test# qemu-system-x86_64 --version
+QEMU emulator version 6.2.0 (Debian 1:6.2+dfsg-2ubuntu6.25)
+Copyright (c) 2003-2021 Fabrice Bellard and the QEMU Project developers
+root@d3000:/home/test# libvirtd --version
+libvirtd (libvirt) 8.0.0
+root@d3000:/home/test# cat /etc/issue
+Ubuntu 22.04.5 LTS \n \l
+
+root@d3000:/home/test# uname -a
+Linux d3000 5.15.0-135-generic #146-Ubuntu SMP Sat Feb 15 17:31:19 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+
+</code></pre>
+<p>Running vm:</p>
+<p><img src="./images/2025_03_27_09_35_38_819x631.jpg" alt="./images/2025_03_27_09_35_38_819x631.jpg" /></p>
+<h3 id="2-hibernate-and-resume-from-partition"><a class="header" href="#2-hibernate-and-resume-from-partition">2. hibernate and resume from partition</a></h3>
+<p>Re-allocate the disk space, create a swap file which  equals to ram size.</p>
+<p>Host hibernate won't resume the (gpu-passthroughed)vm's video output.</p>
+<p>maybe we try newest kernel ?</p>
+<h3 id="3-arm64-vfio-windows"><a class="header" href="#3-arm64-vfio-windows">3. arm64 vfio windows</a></h3>
+<p>no windows driver for amd 520.</p>
 
                     </main>
 
