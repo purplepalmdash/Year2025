@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250328 - year2025</title>
+        <title>20250329 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -152,20 +152,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250328"><a class="header" href="#20250328">20250328</a></h1>
-<h3 id="1-nvidia-vfio-host-hibernate"><a class="header" href="#1-nvidia-vfio-host-hibernate">1. nvidia vfio host hibernate</a></h3>
-<p>Shrink the space for creating a big swap file:</p>
-<p><img src="./images/2025_03_28_11_19_20_1521x759.jpg" alt="./images/2025_03_28_11_19_20_1521x759.jpg" /></p>
-<p>Under nvidia gpu, the resume runs OK.</p>
-<h3 id="2-amdgpu-vfio-host-hibernate"><a class="header" href="#2-amdgpu-vfio-host-hibernate">2. amdgpu vfio host hibernate</a></h3>
-<p>amdgpu vendor-reset issue, won't work after wakeup.</p>
-<h3 id="3-cuttlefish-on-arm64"><a class="header" href="#3-cuttlefish-on-arm64">3. cuttlefish on arm64</a></h3>
-<p>Steps:</p>
-<pre><code>apt install -y git devscripts equivs config-package-dev debhelper-compat golang curl libevent build-essential vim git
-git clone https://github.com/google/android-cuttlefish
-cd android-cuttlefish
-tools/buildutils/build_packages.sh
-
+                        <h1 id="20250329"><a class="header" href="#20250329">20250329</a></h1>
+<h3 id="cuttlefish-working-issue"><a class="header" href="#cuttlefish-working-issue">cuttlefish working issue</a></h3>
+<p>Start via:</p>
+<pre><code> DISPLAY=:0 HOME=$PWD ./bin/launch_cvd --gpu_mode=gfxstream -cpus 8 -memory_mb 10240  -console
+ctrl + c
+ DISPLAY=:0 HOME=$PWD ./bin/launch_cvd --gpu_mode=gfxstream -cpus 8 -memory_mb 10240 -data_policy resize_up_to -blank_data_image_mb 40960 -console
+</code></pre>
+<p>Then you could connect with :</p>
+<pre><code>adb connect 0.0.0.0:6520
+adb shell
+</code></pre>
+<p>GLES infos:</p>
+<pre><code>vsoc_arm64_only:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES (Ganesh)------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon Pro WX 5100 Graphics (polaris10, LLVM 15.0.7, DRM 3.42, 5.15.0-135-generic)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 23.2.1-1ubuntu3.1~22.04.3)
 
 </code></pre>
 
@@ -173,11 +174,11 @@ tools/buildutils/build_packages.sh
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250327.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250328.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250329.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250330.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -187,11 +188,11 @@ tools/buildutils/build_packages.sh
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250327.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250328.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250329.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250330.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

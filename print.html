@@ -4550,6 +4550,26 @@ tools/buildutils/build_packages.sh
 
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250329"><a class="header" href="#20250329">20250329</a></h1>
+<h3 id="cuttlefish-working-issue"><a class="header" href="#cuttlefish-working-issue">cuttlefish working issue</a></h3>
+<p>Start via:</p>
+<pre><code> DISPLAY=:0 HOME=$PWD ./bin/launch_cvd --gpu_mode=gfxstream -cpus 8 -memory_mb 10240  -console
+ctrl + c
+ DISPLAY=:0 HOME=$PWD ./bin/launch_cvd --gpu_mode=gfxstream -cpus 8 -memory_mb 10240 -data_policy resize_up_to -blank_data_image_mb 40960 -console
+</code></pre>
+<p>Then you could connect with :</p>
+<pre><code>adb connect 0.0.0.0:6520
+adb shell
+</code></pre>
+<p>GLES infos:</p>
+<pre><code>vsoc_arm64_only:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES (Ganesh)------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon Pro WX 5100 Graphics (polaris10, LLVM 15.0.7, DRM 3.42, 5.15.0-135-generic)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 23.2.1-1ubuntu3.1~22.04.3)
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250330"><a class="header" href="#20250330">20250330</a></h1>
+<h3 id="1-cuttlefishcrosvm-with-latest-mesa"><a class="header" href="#1-cuttlefishcrosvm-with-latest-mesa">1. cuttlefish(crosvm) with latest mesa</a></h3>
+<p>ubuntu22.04, mesa upgraded to newest version(25.xxx), still failed in YuanShen's ground display.</p>
 
                     </main>
 
