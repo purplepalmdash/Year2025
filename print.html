@@ -4570,6 +4570,46 @@ GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon Pro WX 510
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250330"><a class="header" href="#20250330">20250330</a></h1>
 <h3 id="1-cuttlefishcrosvm-with-latest-mesa"><a class="header" href="#1-cuttlefishcrosvm-with-latest-mesa">1. cuttlefish(crosvm) with latest mesa</a></h3>
 <p>ubuntu22.04, mesa upgraded to newest version(25.xxx), still failed in YuanShen's ground display.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250331"><a class="header" href="#20250331">20250331</a></h1>
+<h3 id="1-kbox-working-tips"><a class="header" href="#1-kbox-working-tips">1. kbox working tips</a></h3>
+<p>Create installation iso:</p>
+<pre><code>sudo dd if=/media/nfs/openEuler-22.03-LTS-SP3-aarch64-dvd.iso of=/dev/sda bs=10M &amp;&amp; sudo sync 
+</code></pre>
+<p>After installation(installation steps could refers to <code>20250305</code> workingtips), insert usb ethernet dongle.</p>
+<pre><code>sudo yum install -y vim
+mkdir kbox_packages
+mv 5.10.0-182.0.0.zip kbox_packages/kernel-5.10.0-182.0.0.zip
+cp kbox/ExaGear_ARM32-ARM64_V2.5.tar.gz kbox_packages/
+cp kbox/linux-firmware-20210919.tar.gz kbox_packages/
+cd Kbox-AOSP11/Kbox-AOSP11/deploy_scripts/openEuler_deploy/
+ chmod 777 kbox_install_kernel.sh 
+./kbox_install_kernel.sh /home/test/kbox_packages/
+
+</code></pre>
+<h3 id="2-kbox-on-kunpeng920"><a class="header" href="#2-kbox-on-kunpeng920">2. kbox on kunpeng920</a></h3>
+<p>Install with following command:</p>
+<p><img src="./images/2025_03_31_14_45_16_1535x258.jpg" alt="./images/2025_03_31_14_45_16_1535x258.jpg" /></p>
+<pre><code># cat /etc/default/grub
+...
+GRUB_CMDLINE_LINUX="video=VGA-1:640x480-32@60me cgroup_disable=files apparmor=0 crashkernel=1024M,high smmu.bypassdev=0x1000:0x17 smmu.bypassdev=0x1000:0x15 console=tty0 cgroup_enable=memory swapaccount=1 initcall_blacklist=hisi_ddrc_pmu_module_init"
+...
+#  grub2-mkconfig -o /boot/efi/EFI/openEuler/grub.cfg 
+</code></pre>
+<p>Start:</p>
+<pre><code>./android_kbox.sh start  kbox:demo 1
+./android_kbox.sh restart 1
+</code></pre>
+<h3 id="3-docker-for-running-redroid"><a class="header" href="#3-docker-for-running-redroid">3. docker for running redroid</a></h3>
+<p>Configure docker:</p>
+<pre><code>$ cat /etc/docker/daemon.json 
+{
+    "registry-mirrors": ["https://docker.nju.edu.cn", "https://docker.mirrors.ustc.edu.cn", "https://docker.1ms.run", "https://docker.xuanyuan.me"]
+}
+$   sudo systemctl daemon-reload
+$  sudo systemctl restart docker
+$  sudo docker run -itd --rm --privileged     --pull always     -v ~/data:/data     -p 5555:5555     redroid/redroid:12.0.0_64only-latest
+$ sudo docker run -itd --name redroid15 --privileged   -p 5555:5555 -v ~/data:/data  redroid/redroid:15.0.0_64only-latest redroid.width=1080 redroid.height=1920 redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128
+</code></pre>
 
                     </main>
 
