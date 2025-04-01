@@ -32,10 +32,11 @@
         <!-- Custom theme stylesheets -->
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -45,8 +46,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -60,7 +61,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -73,8 +75,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -110,6 +112,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -4610,6 +4613,21 @@ $  sudo systemctl restart docker
 $  sudo docker run -itd --rm --privileged     --pull always     -v ~/data:/data     -p 5555:5555     redroid/redroid:12.0.0_64only-latest
 $ sudo docker run -itd --name redroid15 --privileged   -p 5555:5555 -v ~/data:/data  redroid/redroid:15.0.0_64only-latest redroid.width=1080 redroid.height=1920 redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250401"><a class="header" href="#20250401">20250401</a></h1>
+<h3 id="1-downgrade-ppa-mesa"><a class="header" href="#1-downgrade-ppa-mesa">1. downgrade ppa mesa</a></h3>
+<p>Revert to distribution installed mesa.</p>
+<pre><code>sudo apt install ppa-purge
+sudo ppa-purge ppa:kisak/kisak-mesa
+</code></pre>
+<h3 id="2-vulkan-issue"><a class="header" href="#2-vulkan-issue">2. vulkan issue</a></h3>
+<p>Install:</p>
+<pre><code>sudo apt install vulkan-tools mesa-vulkan-drivers -y
+sudo apt install libvulkan-dev -y
+sudo apt install glslang-tools glslang-dev glslc -y
+</code></pre>
+<p>then <code>vulkaninfo --summary</code> will be OK.</p>
+<h3 id="3-docker-images-show-sha256"><a class="header" href="#3-docker-images-show-sha256">3. docker images show sha256</a></h3>
+<p>via <code>docker images --digests</code></p>
 
                     </main>
 

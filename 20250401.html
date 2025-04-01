@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250308 - year2025</title>
+        <title>20250401 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,23 +155,30 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250308"><a class="header" href="#20250308">20250308</a></h1>
-<h3 id="1-xrandr-issue"><a class="header" href="#1-xrandr-issue">1. xrandr issue</a></h3>
-<p>Specify the position:</p>
-<pre><code>xrandr --output eDP1 --mode 1920x1080 --pos 0x0 --rotate normal --output HDMI-0 --mode 2560x1440 --pos 1920x0 --rotate normal
+                        <h1 id="20250401"><a class="header" href="#20250401">20250401</a></h1>
+<h3 id="1-downgrade-ppa-mesa"><a class="header" href="#1-downgrade-ppa-mesa">1. downgrade ppa mesa</a></h3>
+<p>Revert to distribution installed mesa.</p>
+<pre><code>sudo apt install ppa-purge
+sudo ppa-purge ppa:kisak/kisak-mesa
 </code></pre>
+<h3 id="2-vulkan-issue"><a class="header" href="#2-vulkan-issue">2. vulkan issue</a></h3>
+<p>Install:</p>
+<pre><code>sudo apt install vulkan-tools mesa-vulkan-drivers -y
+sudo apt install libvulkan-dev -y
+sudo apt install glslang-tools glslang-dev glslc -y
+</code></pre>
+<p>then <code>vulkaninfo --summary</code> will be OK.</p>
+<h3 id="3-docker-images-show-sha256"><a class="header" href="#3-docker-images-show-sha256">3. docker images show sha256</a></h3>
+<p>via <code>docker images --digests</code></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250307.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250331.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250310.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -179,13 +186,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250307.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250331.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250310.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
