@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250401 - year2025</title>
+        <title>20250402 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,33 +155,60 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250401"><a class="header" href="#20250401">20250401</a></h1>
-<h3 id="1-downgrade-ppa-mesa"><a class="header" href="#1-downgrade-ppa-mesa">1. downgrade ppa mesa</a></h3>
-<p>Revert to distribution installed mesa.</p>
-<pre><code>sudo apt install ppa-purge
-sudo ppa-purge ppa:kisak/kisak-mesa
+                        <h1 id="20250402"><a class="header" href="#20250402">20250402</a></h1>
+<h3 id="1-waydroid"><a class="header" href="#1-waydroid">1. Waydroid</a></h3>
+<p>Outdated android 11 image:</p>
+<p><code>https://github.com/waydroid/waydroid/issues/1797</code>.</p>
+<h3 id="2-cuttlefish-installation"><a class="header" href="#2-cuttlefish-installation">2. cuttlefish installation</a></h3>
+<p>quickly install cuttlefish:</p>
+<pre><code>sudo wget -O /etc/apt/trusted.gpg.d/linaro-glt-gig-archive-bookworm.asc https://artifacts.codelinaro.org/artifactory/linaro-372-googlelt-gigabyte-ampere-cuttlefish-installer/gigabyte-ampere-cuttlefish-installer/latest/debian/linaro-glt-gig-archive-bookworm.asc
+echo "deb https://artifacts.codelinaro.org/linaro-372-googlelt-gigabyte-ampere-cuttlefish-installer/gigabyte-ampere-cuttlefish-installer/latest/debian bookworm main" | sudo tee /etc/apt/sources.list.d/linaro-glt-gig-archive-bookworm.list
+sudo apt update &amp;&amp; sudo apt install --no-install-recommends cuttlefish-base cuttlefish-user cuttlefish-orchestration
 </code></pre>
-<h3 id="2-vulkan-issue"><a class="header" href="#2-vulkan-issue">2. vulkan issue</a></h3>
-<p>Install:</p>
-<pre><code>sudo apt install vulkan-tools mesa-vulkan-drivers -y
-sudo apt install libvulkan-dev -y
-sudo apt install glslang-tools glslang-dev glslc -y
+<h3 id="3-redroid-mesa-issue"><a class="header" href="#3-redroid-mesa-issue">3. redroid mesa issue</a></h3>
+<p>Change:</p>
+<pre><code>$ vim ./uniform_query.cpp
+dash@ai:/media/nvme/kbox/aosp/external/mesa/src/mesa/main$ pwd
+/media/nvme/kbox/aosp/external/mesa/src/mesa/main
+
+sh-&gt;Program-&gt;SamplerUnits[unit] = value;
+                  GLubyte samplerUnit = sh-&gt;Program-&gt;SamplerUnits[unit];
+                  sh-&gt;Program-&gt;SamplerUnits[unit] = samplerUnit % MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 </code></pre>
-<p>then <code>vulkaninfo --summary</code> will be OK.</p>
-<h3 id="3-docker-images-show-sha256"><a class="header" href="#3-docker-images-show-sha256">3. docker images show sha256</a></h3>
-<p>via <code>docker images --digests</code></p>
+<h3 id="4-xxxos-kbox-working-tips"><a class="header" href="#4-xxxos-kbox-working-tips">4. xxxos kbox working tips</a></h3>
+<p>kernel source code :</p>
+<pre><code>wget https://gitee.com/openeuler/kernel/repository/archive/5.10.0-136.12.0.zip
+mv 5.10.0-136.12.0.zip kernel-5.10.0-136.12.0.zip
+</code></pre>
+<p>modification:</p>
+<pre><code>vim kbox_install_kernel.sh
+[root@ctyun openEuler_deploy]# cp kbox_install_kernel.sh kbox_install_kernel_ctyunos.sh 
+[root@ctyun openEuler_deploy]# scp kbox_install_kernel_ctyunos.sh dash@192.168.1.8:/media/sda/kbox
+
+cp -r /root/Kbox-AOSP11/patchForKernel/openEuler_22.03/  /root/Kbox-AOSP11/patchForKernel/ctyunos_23.01
+[root@ctyun openEuler_deploy]# grub2-mkconfig -o /boot/efi/EFI/ctyunos/grub.cfg 
+[root@ctyun openEuler_deploy]# grub_default=$(&lt; /boot/efi/EFI/ctyunos/grub.cfg grep "menuentry"|grep -v "recovery mode\|old"|grep -w "(5.10.0)"|awk -F \' '{print $2}')
+[root@ctyun openEuler_deploy]# echo $grub_default
+ctyunos (5.10.0) 23.01 2
+[root@ctyun openEuler_deploy]# grub2-set-default "${grub_default}"
+reboot
+</code></pre>
+<p>Import docker:</p>
+<pre><code>[root@ctyun ~]# systemctl start docker
+[root@ctyun ~]# systemctl enable docker
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+[root@ctyun ~]# docker import android.tar kbox:demo
+
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250331.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250401.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250402.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -189,13 +216,10 @@ sudo apt install glslang-tools glslang-dev glslc -y
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250331.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250401.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250402.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
