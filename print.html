@@ -4673,6 +4673,95 @@ Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /
 [root@ctyun ~]# docker import android.tar kbox:demo
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250404"><a class="header" href="#20250404">20250404</a></h1>
+<h3 id="1-build-redroid11"><a class="header" href="#1-build-redroid11">1. build redroid11</a></h3>
+<pre><code>mkdir -p /media/sda/redroid/redroid11
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-11.0.0_r48
+repo sync -j12
+$ sudo du -hs redroid11/
+81G     redroid11/
+git clone https://github.com/remote-android/local_manifests.git  .repo/local_manifests -b 11.0.0
+# Using Fanqiang
+repo sync -j1 --force-sync
+repo forall -c "git lfs pull"
+</code></pre>
+<p><img src="./images/2025_04_03_19_55_08_1251x367.jpg" alt="./images/2025_04_03_19_55_08_1251x367.jpg" /></p>
+<p>Apply patch:</p>
+<pre><code>git clone https://github.com/remote-android/redroid-patches.git
+dash@aiBox:/media/sda/redroid$ `pwd`/redroid-patches/apply-patch.sh /media/sda/redroid/redroid11/
+</code></pre>
+<p>Build:</p>
+<pre><code>dash@aiBox:/media/sda/redroid/redroid11$ sudo docker run -it --rm --hostname redroid-builder --name redroid-builder -v `pwd`:/src redroid-builder
+dash@redroid-builder:/$ cd /src
+dash@redroid-builder:/src$ . build/envsetup.sh
+dash@redroid-builder:/src$ lunch redroid_arm64-userdebug
+dash@redroid-builder:/src$ m -j12
+
+</code></pre>
+<p>Create docker images:</p>
+<pre><code>dash@aiBox:/media/sda/redroid/redroid11/out/target/product/redroid_arm64$ sudo mount system.img system -o ro
+dash@aiBox:/media/sda/redroid/redroid11/out/target/product/redroid_arm64$ sudo mount vendor.img vendor -o ro
+dash@aiBox:/media/sda/redroid/redroid11/out/target/product/redroid_arm64$ sudo tar --xattrs -c vendor -C system --exclude="./vendor" . | sudo docker import --platform=linux/arm64 -c 'ENTRYPOINT ["/init", "qemu=1", "androidboot.hardware=redroid"]' - redroid11arm64
+
+$ sudo docker images
+REPOSITORY        TAG        IMAGE ID       CREATED          SIZE
+redroid11arm64    latest     d5ad1a357273   11 seconds ago   1.66GB
+</code></pre>
+<p>Inspect the image:</p>
+<pre><code>dash@aiBox:/media/sda/redroid/redroid11/out/target/product/redroid_arm64$ sudo umount system vendor
+dash@aiBox:/media/sda/redroid/redroid11/out/target/product/redroid_arm64$ sudo docker inspect redroid11arm64:latest | jq '.[0].Config.Entrypoint, .[0].Architecture'
+[
+  "/init",
+  "qemu=1",
+  "androidboot.hardware=redroid"
+]
+"arm64"
+
+</code></pre>
+<h3 id="2-build-redroid12"><a class="header" href="#2-build-redroid12">2. build redroid12</a></h3>
+<p>Steps:</p>
+<pre><code>dash@aiBox:/media/sda/redroid$ mkdir redroid12
+dash@aiBox:/media/sda/redroid$ cd redroid12/
+dash@aiBox:/media/sda/redroid/redroid12$ export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+dash@aiBox:/media/sda/redroid/redroid12$ repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest --git-lfs  -b  android-12.0.0_r34
+dash@aiBox:/media/sda/redroid/redroid12$ repo sync -c -j$(nproc)
+
+</code></pre>
+<p>redsocks enabled:</p>
+<pre><code>dash@aiBox:/media/sda/redroid/redroid12$ git clone https://github.com/remote-android/local_manifests.git  .repo/local_manifests -b 12.0.0
+repo sync -c -j$(nproc)
+
+</code></pre>
+<h3 id="3-build-redroid15"><a class="header" href="#3-build-redroid15">3. build redroid15</a></h3>
+<p>Steps:</p>
+<pre><code>mkdir cuttlefish15
+cd cuttlefish15/
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-15.0.0_r22
+</code></pre>
+<p>build:</p>
+<pre><code>sudo docker run -it  --hostname redroid-buildercf15 --name redroid-buildercf15 -v `pwd`:/src redroid-builder
+cd /src
+source build/envsetup.sh
+lunch
+build_build_var_cache
+lunch aosp_cf_arm64_phone-trunk_staging-userdebug
+m -j12 dist
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250405"><a class="header" href="#20250405">20250405</a></h1>
+<h3 id="1-mac-mini-m4"><a class="header" href="#1-mac-mini-m4">1. mac mini m4</a></h3>
+<p>Thinking:</p>
+<pre><code>1. android emulator
+2. cuttlefish
+3. virtualization(run linux/unix/windows)
+4. nix pkgs
+5. redroid on linux on m4
+6. 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250406"><a class="header" href="#20250406">20250406</a></h1>
+<h3 id="typing-game"><a class="header" href="#typing-game">typing game</a></h3>
+<p><code>https://daziya.com/courses</code></p>
 
                     </main>
 
