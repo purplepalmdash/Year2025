@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250406 - year2025</title>
+        <title>20250407 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,21 +155,61 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250406"><a class="header" href="#20250406">20250406</a></h1>
-<h3 id="typing-game"><a class="header" href="#typing-game">typing game</a></h3>
-<p><code>https://daziya.com/courses</code></p>
+                        <h1 id="20250407"><a class="header" href="#20250407">20250407</a></h1>
+<h3 id="1-beisen"><a class="header" href="#1-beisen">1. Beisen</a></h3>
+<p>Update the 1st season's conclusion(1.5 hours)</p>
+<h3 id="2-macos-libvirtvirt-manager"><a class="header" href="#2-macos-libvirtvirt-manager">2. macos libvirt/virt-manager</a></h3>
+<p>Install brew:</p>
+<pre><code>export all_proxy=socks5://192.168.1.6:21080
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+</code></pre>
+<p>Configure zsh:</p>
+<pre><code>echo &gt;&gt; /Users/yangdash/.zprofile
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' &gt;&gt; /Users/yangdash/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+</code></pre>
+<p>relogin with another terminal, then you could use brew.</p>
+<p>Install qemu/libvirt/virt-manager:</p>
+<pre><code>brew install libvirt
+brew install qemu
+brew tap arthurk/homebrew-virt-manager
+brew install virt-manager virt-viewer
+</code></pre>
+<p>Start libvirt and launch virt-manager:</p>
+<pre><code>brew services start libvirt
+virt-manager -c "qemu:///session" --no-fork
+</code></pre>
+<p><img src="./images/2025_04_07_11_34_13_601x578.jpg" alt="./images/2025_04_07_11_34_13_601x578.jpg" /></p>
+<p>Mount the nfs directory :</p>
+<pre><code>sudo mount -t nfs -o resvport,rw  192.168.1.7:/media/big/iso /private/nfs
+</code></pre>
+<p>libvirtd 11.2.0 got bug, solved via:</p>
+<pre><code>yangdash@yangdeMac-mini ~ % libvirtd --version
+libvirtd (libvirt) 11.2.0
+yangdash@yangdeMac-mini ~ % brew unlink libvirt
+Unlinking /opt/homebrew/Cellar/libvirt/11.2.0... 116 symlinks removed.
+export all_proxy=socks5://192.168.1.6:21080
+yangdash@yangdeMac-mini ~ % brew install ./libvirt.rb 
+yangdash@yangdeMac-mini ~ % libvirtd --version
+libvirtd (libvirt) 11.1.0
+
+</code></pre>
+<p>The commit history could be found at:</p>
+<p><code>https://github.com/Homebrew/homebrew-core/commits/0a560012cd157ebab89a130c041988288e2a645f/Formula/lib/libvirt.rb</code></p>
+<h3 id="3-macos-autologin"><a class="header" href="#3-macos-autologin">3. macos autologin</a></h3>
+<p>Close filevault:</p>
+<p><img src="./images/2025_04_07_16_51_20_664x285.jpg" alt="./images/2025_04_07_16_51_20_664x285.jpg" /></p>
+<p>Autologin:</p>
+<p><img src="./images/2025_04_07_16_52_07_695x293.jpg" alt="./images/2025_04_07_16_52_07_695x293.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250405.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250406.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250407.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -177,13 +217,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250405.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250406.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250407.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
