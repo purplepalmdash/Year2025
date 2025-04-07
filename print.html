@@ -4673,6 +4673,52 @@ Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /
 [root@ctyun ~]# docker import android.tar kbox:demo
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250403"><a class="header" href="#20250403">20250403</a></h1>
+<h3 id="1-xxxos-issue"><a class="header" href="#1-xxxos-issue">1. xxxos issue</a></h3>
+<p>xxxos, kernel is the same as SP-1.<br />
+while the kbox based openeuler is SP-3.<br />
+So kbox won't startup on xxxos.</p>
+<h3 id="2-redroid-building"><a class="header" href="#2-redroid-building">2. redroid building</a></h3>
+<p>Modify docker for building:</p>
+<pre><code>dash@ai:~$ cat /etc/docker/daemon.json 
+{
+      "registry-mirrors": [ "https://docker.nju.edu.cn/",
+             "https://hub.uuuadc.top",
+        "https://docker.anyhub.us.kg",
+        "https://dockerhub.jobcher.com",
+        "https://dockerhub.icu",
+        "https://docker.ckyl.me",
+        "https://docker.awsl9527.cn", "https://docker.mirrors.ustc.edu.cn", "https://docker.1ms.run", "https://docker.xuanyuan.me"
+      ]
+}
+</code></pre>
+<p>Build docker-build image:</p>
+<pre><code>git clone https://github.com/remote-android/redroid-doc.git
+cd redroid-doc/android-builder-docker/
+vim Dockerfile
+- # COPY sources.list etc/apt/sources.list
++ COPY sources.list etc/apt/sources.list
+sudo docker build --build-arg userid=$(id -u) --build-arg groupid=$(id -g) --build-arg username=$(id -un) -t redroid-builder .
+</code></pre>
+<p>Fetching the source code:</p>
+<pre><code>mkdir -p /media/nvme/redroid/redroid11
+cd /media/nvme/redroid/redroid11
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-11.0.0_r48
+git clone https://github.com/remote-android/local_manifests.git .repo/local_manifests -b 11.0.0
+repo sync -c
+........ failed with some components
+./redsocks.sh start
+repo sync -c
+cd /media/nvme/redroid
+git clone https://github.com/remote-android/redroid-patches.git
+/media/nvme/redroid/redroid-patches/apply-patch.sh /media/nvme/redroid/redroid11/
+</code></pre>
+<p>Run building:</p>
+<pre><code>sudo docker run -it --hostname redroid-builder --name redroid-builder -v /media/nvme/redroid/redroid11/:/src redroid-builder
+cd /src
+lunch redroid_arm64-userdebug
+m -j20
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250404"><a class="header" href="#20250404">20250404</a></h1>
 <h3 id="1-build-redroid11"><a class="header" href="#1-build-redroid11">1. build redroid11</a></h3>
 <pre><code>mkdir -p /media/sda/redroid/redroid11
