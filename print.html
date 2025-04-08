@@ -4854,6 +4854,39 @@ libvirtd (libvirt) 11.1.0
 <p><img src="./images/2025_04_07_16_51_20_664x285.jpg" alt="./images/2025_04_07_16_51_20_664x285.jpg" /></p>
 <p>Autologin:</p>
 <p><img src="./images/2025_04_07_16_52_07_695x293.jpg" alt="./images/2025_04_07_16_52_07_695x293.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250408"><a class="header" href="#20250408">20250408</a></h1>
+<h3 id="1-chromos-installation"><a class="header" href="#1-chromos-installation">1. chromos Installation</a></h3>
+<p>Create the installation usb disk via:</p>
+<pre><code>$ ls
+brunch_r134_stable_20250322.tar.gz  chromeos_16151.61.0_volteer_recovery_stable-channel_VolteerMPKeys-v12.bin.zip
+$ tar xzvf brunch_r134_stable_20250322.tar.gz
+$ unzip chromeos_16151.61.0_volteer_recovery_stable-channel_VolteerMPKeys-v12.bin.zip
+$  sudo apt -y install pv cgpt tar unzip
+$ sudo bash ./chromeos-install.sh -src chromeos_16151.61.0_volteer_recovery_stable-channel_VolteerMPKeys-v12.bin -dst chromeos.img
+$ sudo dd if=./chromeos.img of=/dev/sdc bs=10M &amp;&amp; sudo sync
+</code></pre>
+<h3 id="2-openwrt-working-tips"><a class="header" href="#2-openwrt-working-tips">2. openwrt working tips</a></h3>
+<p>Host configuration:</p>
+<p><img src="./images/2025_04_08_14_03_24_713x773.jpg" alt="./images/2025_04_08_14_03_24_713x773.jpg" /></p>
+<p>Then <code>pacman -Syu --noconfirm</code> for updating to the latest version of archlinux.<br />
+Edit the dns server:</p>
+<p><img src="./images/2025_04_08_11_43_06_648x505.jpg" alt="./images/2025_04_08_11_43_06_648x505.jpg" /></p>
+<p>Now replace to ustc repository and opkg udpate:</p>
+<pre><code>sed -i 's/downloads.openwrt.org/mirrors.ustc.edu.cn\/openwrt/g' /etc/opkg/distfeeds.conf
+opkg update
+</code></pre>
+<p>Install diskman for resize root partition:</p>
+<pre><code>scp dash@192.168.1.208:~/Downloads/luci-app-diskman_v0.2.11_all.ipk .
+opkg install ./luci-app-diskman_v0.2.11_all.ipk 
+
+</code></pre>
+<p>vt-d not supported on j1900, game over. maybe I should switch to lxd or incus?</p>
+<h3 id="3-archlinux-bootload-recovery"><a class="header" href="#3-archlinux-bootload-recovery">3. archlinux bootload recovery</a></h3>
+<p><img src="./images/2025_04_08_17_19_32_1256x382.jpg" alt="./images/2025_04_08_17_19_32_1256x382.jpg" /></p>
+<p><img src="./images/2025_04_08_17_19_56_566x121.jpg" alt="./images/2025_04_08_17_19_56_566x121.jpg" /></p>
+<p><img src="./images/2025_04_08_17_20_34_895x179.jpg" alt="./images/2025_04_08_17_20_34_895x179.jpg" /></p>
+<p><img src="./images/2025_04_08_17_21_19_611x237.jpg" alt="./images/2025_04_08_17_21_19_611x237.jpg" /></p>
+<p><img src="./images/2025_04_08_17_30_22_680x302.jpg" alt="./images/2025_04_08_17_30_22_680x302.jpg" /></p>
 
                     </main>
 
