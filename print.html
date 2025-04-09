@@ -4887,6 +4887,95 @@ opkg install ./luci-app-diskman_v0.2.11_all.ipk
 <p><img src="./images/2025_04_08_17_20_34_895x179.jpg" alt="./images/2025_04_08_17_20_34_895x179.jpg" /></p>
 <p><img src="./images/2025_04_08_17_21_19_611x237.jpg" alt="./images/2025_04_08_17_21_19_611x237.jpg" /></p>
 <p><img src="./images/2025_04_08_17_30_22_680x302.jpg" alt="./images/2025_04_08_17_30_22_680x302.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250409"><a class="header" href="#20250409">20250409</a></h1>
+<h3 id="1-uefi-recovery"><a class="header" href="#1-uefi-recovery">1. uefi recovery</a></h3>
+<p>Steps:</p>
+<pre><code>fs0:\
+edit FS0:\startup.nsh
+"FS0:\EFI\fuck\grubx64.efi"
+Save
+exit
+reset
+</code></pre>
+<h3 id="2-openwrt-tips"><a class="header" href="#2-openwrt-tips">2. openwrt tips</a></h3>
+<p>refers to <code>https://gist.github.com/pjobson/3584f36dadc8c349fac9abf1db22b5dc</code>.<br />
+Use rescuezilla for writing into the image.<br />
+Use gparted for enlarge the root disk.</p>
+<pre><code>sed -i 's/downloads.openwrt.org/mirrors.ustc.edu.cn\/openwrt/g' /etc/opkg/distfeeds.conf
+opkg update
+opkg install vim-full nano usbutils pciutils
+opkg install bash
+sed -i 's/ash/bash/' /etc/passwd
+opkg install ca-bundle ca-certificates openssl-util
+mkdir ~/bin &amp;&amp; cd ~/bin
+wget https://raw.githubusercontent.com/pjobson/bash-completion/master/bash_completion
+chmod +x ~/bin/bash_completion
+echo ". ~/bin/bash_completion" &gt;&gt; ~/.profile
+opkg install adblock luci-app-adblock
+opkg install git git-http ca-bundle wget
+opkg install kmod-iwlwifi iwlwifi-firmware-iwl6000g2
+</code></pre>
+<p>Install passwall:<br />
+<code>https://github.com/xiaorouji/openwrt-passwall/releases</code></p>
+<pre><code>$ ls
+luci-24.10_luci-app-passwall_25.4.1-r1_all.ipk
+luci-24.10_luci-i18n-passwall-zh-cn_25.091.17880.830805a_all.ipk
+passwall_packages_ipk_x86_64.zip 
+$ unzip *.zip
+$ opkg remove dnsmasq
+$ mv /etc/config/dhcp /etc/config/dhcp.bak
+$ opkg update
+$ opkg install kmod-nft-socket kmod-nft-tproxy
+$ opkg install *.ipk
+
+</code></pre>
+<h3 id="3-chromeos"><a class="header" href="#3-chromeos">3. chromeos</a></h3>
+<p>Boot from usb disk:</p>
+<p><img src="./images/2025_04_09_16_28_53_502x365.jpg" alt="./images/2025_04_09_16_28_53_502x365.jpg" /></p>
+<p>Chrome OS OOBE:</p>
+<p><img src="./images/2025_04_09_16_42_53_940x525.jpg" alt="./images/2025_04_09_16_42_53_940x525.jpg" /></p>
+<p><code>Ctrl + Alt + F2</code>, for entering TTY 2:</p>
+<p><img src="./images/2025_04_09_16_43_47_492x393.jpg" alt="./images/2025_04_09_16_43_47_492x393.jpg" /></p>
+<p>Login with <code>chronos</code>, using lsblk for detecting the disks, then install system:</p>
+<p><img src="./images/2025_04_09_16_45_37_969x552.jpg" alt="./images/2025_04_09_16_45_37_969x552.jpg" /></p>
+<pre><code>sudo chromeos-install -dst /dev/nvme0n1
+</code></pre>
+<p><img src="./images/2025_04_09_16_46_08_831x89.jpg" alt="./images/2025_04_09_16_46_08_831x89.jpg" /></p>
+<p><code>sudo reboot</code> for restarting system.</p>
+<p>Setup:</p>
+<p><img src="./images/2025_04_09_16_50_03_799x222.jpg" alt="./images/2025_04_09_16_50_03_799x222.jpg" /></p>
+<p>Enable debug:</p>
+<p><img src="./images/2025_04_09_16_50_41_663x311.jpg" alt="./images/2025_04_09_16_50_41_663x311.jpg" /></p>
+<p>Personal use:</p>
+<p><img src="./images/2025_04_09_16_51_28_816x483.jpg" alt="./images/2025_04_09_16_51_28_816x483.jpg" /></p>
+<p><img src="./images/2025_04_09_16_52_06_807x522.jpg" alt="./images/2025_04_09_16_52_06_807x522.jpg" /></p>
+<p><img src="./images/2025_04_09_16_53_20_799x491.jpg" alt="./images/2025_04_09_16_53_20_799x491.jpg" /></p>
+<p><img src="./images/2025_04_09_16_53_37_795x465.jpg" alt="./images/2025_04_09_16_53_37_795x465.jpg" /></p>
+<p><img src="./images/2025_04_09_16_54_06_818x474.jpg" alt="./images/2025_04_09_16_54_06_818x474.jpg" /></p>
+<p>Install linux:<br />
+<img src="./images/2025_04_09_17_24_54_1074x831.jpg" alt="./images/2025_04_09_17_24_54_1074x831.jpg" /></p>
+<p><img src="./images/2025_04_09_17_25_18_752x638.jpg" alt="./images/2025_04_09_17_25_18_752x638.jpg" /></p>
+<p>Enable adb:</p>
+<p><img src="./images/2025_04_09_17_29_37_1074x807.jpg" alt="./images/2025_04_09_17_29_37_1074x807.jpg" /></p>
+<p><img src="./images/2025_04_09_17_29_52_803x530.jpg" alt="./images/2025_04_09_17_29_52_803x530.jpg" /></p>
+<p>Install adb:</p>
+<p><img src="./images/2025_04_09_17_33_33_1160x483.jpg" alt="./images/2025_04_09_17_33_33_1160x483.jpg" /></p>
+<p><img src="./images/2025_04_09_17_35_00_1176x699.jpg" alt="./images/2025_04_09_17_35_00_1176x699.jpg" /></p>
+<h3 id="4-enable-ssh-wan"><a class="header" href="#4-enable-ssh-wan">4. enable ssh wan</a></h3>
+<p>enable ssh wan on openwrt:</p>
+<pre><code>To /etc/config/firewall add:
+
+config rule                                     
+        option name             Allow-SSH-WAN   
+        option src              wan             
+        option proto            tcp             
+        option dest_port        22              
+        option target           ACCEPT          
+        option family           ipv4
+Then:
+
+/etc/init.d/firewall restart
+</code></pre>
 
                     </main>
 
