@@ -4976,6 +4976,42 @@ Then:
 
 /etc/init.d/firewall restart
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250410"><a class="header" href="#20250410">20250410</a></h1>
+<h3 id="1-chromeos-cuttlefish"><a class="header" href="#1-chromeos-cuttlefish">1. chromeos cuttlefish</a></h3>
+<p>Run Yuanshen, not OK, cannot enter game.</p>
+<h3 id="2-zkfd-kernel-change"><a class="header" href="#2-zkfd-kernel-change">2. zkfd kernel change</a></h3>
+<p>Change kdump parameters for release memory:</p>
+<pre><code>root@test-PC:/etc/default/grub.d# free -m
+               total        used        free      shared  buff/cache   available
+Mem:            9176        1365        6870          15         939        7492
+Swap:              0           0           0
+root@test-PC:/etc/default# cd grub.d/
+root@test-PC:/etc/default/grub.d# cat kdump-tools.cfg 
+#GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT crashkernel=0M-2G:128M,2G-6G:256M,6G-8G:512M,8G-:768M"
+GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT"
+root@test-PC:/etc/default/grub.d# update-grub2
+root@test-PC:/etc/default/grub.d# reboot
+
+test@test-PC:~$ free -m
+               total        used        free      shared  buff/cache   available
+Mem:            9944        1479        5203          25        3260        8150
+Swap:              0           0           0
+
+</code></pre>
+<h3 id="3-waydroid-on-ft2000"><a class="header" href="#3-waydroid-on-ft2000">3. waydroid on ft2000</a></h3>
+<p>Install via:</p>
+<pre><code>sudo apt install curl ca-certificates lzip python3 python3-pip
+sudo ufw disable
+sudo apt install wl-clipboard xclip
+sudo pip install pyclip
+curl https://repo.waydro.id | sudo bash
+sudo apt install waydroid
+sudo waydroid init -s GAPPS -f
+sudo systemctl start waydroid-container
+sudo systemctl enable waydroid-container
+
+
+</code></pre>
 
                     </main>
 

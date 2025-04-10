@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250409 - year2025</title>
+        <title>20250410 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,107 +155,51 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250409"><a class="header" href="#20250409">20250409</a></h1>
-<h3 id="1-uefi-recovery"><a class="header" href="#1-uefi-recovery">1. uefi recovery</a></h3>
-<p>Steps:</p>
-<pre><code>fs0:\
-edit FS0:\startup.nsh
-"FS0:\EFI\fuck\grubx64.efi"
-Save
-exit
-reset
-</code></pre>
-<h3 id="2-openwrt-tips"><a class="header" href="#2-openwrt-tips">2. openwrt tips</a></h3>
-<p>refers to <code>https://gist.github.com/pjobson/3584f36dadc8c349fac9abf1db22b5dc</code>.<br />
-Use rescuezilla for writing into the image.<br />
-Use gparted for enlarge the root disk.</p>
-<pre><code>sed -i 's/downloads.openwrt.org/mirrors.ustc.edu.cn\/openwrt/g' /etc/opkg/distfeeds.conf
-opkg update
-opkg install vim-full nano usbutils pciutils
-opkg install bash
-sed -i 's/ash/bash/' /etc/passwd
-opkg install ca-bundle ca-certificates openssl-util
-mkdir ~/bin &amp;&amp; cd ~/bin
-wget https://raw.githubusercontent.com/pjobson/bash-completion/master/bash_completion
-chmod +x ~/bin/bash_completion
-echo ". ~/bin/bash_completion" &gt;&gt; ~/.profile
-opkg install adblock luci-app-adblock
-opkg install git git-http ca-bundle wget
-opkg install kmod-iwlwifi iwlwifi-firmware-iwl6000g2
-</code></pre>
-<p>Install passwall:<br />
-<code>https://github.com/xiaorouji/openwrt-passwall/releases</code></p>
-<pre><code>$ ls
-luci-24.10_luci-app-passwall_25.4.1-r1_all.ipk
-luci-24.10_luci-i18n-passwall-zh-cn_25.091.17880.830805a_all.ipk
-passwall_packages_ipk_x86_64.zip 
-$ unzip *.zip
-$ opkg remove dnsmasq
-$ mv /etc/config/dhcp /etc/config/dhcp.bak
-$ opkg update
-$ opkg install kmod-nft-socket kmod-nft-tproxy
-$ opkg install *.ipk
+                        <h1 id="20250410"><a class="header" href="#20250410">20250410</a></h1>
+<h3 id="1-chromeos-cuttlefish"><a class="header" href="#1-chromeos-cuttlefish">1. chromeos cuttlefish</a></h3>
+<p>Run Yuanshen, not OK, cannot enter game.</p>
+<h3 id="2-zkfd-kernel-change"><a class="header" href="#2-zkfd-kernel-change">2. zkfd kernel change</a></h3>
+<p>Change kdump parameters for release memory:</p>
+<pre><code>root@test-PC:/etc/default/grub.d# free -m
+               total        used        free      shared  buff/cache   available
+Mem:            9176        1365        6870          15         939        7492
+Swap:              0           0           0
+root@test-PC:/etc/default# cd grub.d/
+root@test-PC:/etc/default/grub.d# cat kdump-tools.cfg 
+#GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT crashkernel=0M-2G:128M,2G-6G:256M,6G-8G:512M,8G-:768M"
+GRUB_CMDLINE_LINUX_DEFAULT="$GRUB_CMDLINE_LINUX_DEFAULT"
+root@test-PC:/etc/default/grub.d# update-grub2
+root@test-PC:/etc/default/grub.d# reboot
+
+test@test-PC:~$ free -m
+               total        used        free      shared  buff/cache   available
+Mem:            9944        1479        5203          25        3260        8150
+Swap:              0           0           0
 
 </code></pre>
-<h3 id="3-chromeos"><a class="header" href="#3-chromeos">3. chromeos</a></h3>
-<p>Boot from usb disk:</p>
-<p><img src="./images/2025_04_09_16_28_53_502x365.jpg" alt="./images/2025_04_09_16_28_53_502x365.jpg" /></p>
-<p>Chrome OS OOBE:</p>
-<p><img src="./images/2025_04_09_16_42_53_940x525.jpg" alt="./images/2025_04_09_16_42_53_940x525.jpg" /></p>
-<p><code>Ctrl + Alt + F2</code>, for entering TTY 2:</p>
-<p><img src="./images/2025_04_09_16_43_47_492x393.jpg" alt="./images/2025_04_09_16_43_47_492x393.jpg" /></p>
-<p>Login with <code>chronos</code>, using lsblk for detecting the disks, then install system:</p>
-<p><img src="./images/2025_04_09_16_45_37_969x552.jpg" alt="./images/2025_04_09_16_45_37_969x552.jpg" /></p>
-<pre><code>sudo chromeos-install -dst /dev/nvme0n1
-</code></pre>
-<p><img src="./images/2025_04_09_16_46_08_831x89.jpg" alt="./images/2025_04_09_16_46_08_831x89.jpg" /></p>
-<p><code>sudo reboot</code> for restarting system.</p>
-<p>Setup:</p>
-<p><img src="./images/2025_04_09_16_50_03_799x222.jpg" alt="./images/2025_04_09_16_50_03_799x222.jpg" /></p>
-<p>Enable debug:</p>
-<p><img src="./images/2025_04_09_16_50_41_663x311.jpg" alt="./images/2025_04_09_16_50_41_663x311.jpg" /></p>
-<p>Personal use:</p>
-<p><img src="./images/2025_04_09_16_51_28_816x483.jpg" alt="./images/2025_04_09_16_51_28_816x483.jpg" /></p>
-<p><img src="./images/2025_04_09_16_52_06_807x522.jpg" alt="./images/2025_04_09_16_52_06_807x522.jpg" /></p>
-<p><img src="./images/2025_04_09_16_53_20_799x491.jpg" alt="./images/2025_04_09_16_53_20_799x491.jpg" /></p>
-<p><img src="./images/2025_04_09_16_53_37_795x465.jpg" alt="./images/2025_04_09_16_53_37_795x465.jpg" /></p>
-<p><img src="./images/2025_04_09_16_54_06_818x474.jpg" alt="./images/2025_04_09_16_54_06_818x474.jpg" /></p>
-<p>Install linux:<br />
-<img src="./images/2025_04_09_17_24_54_1074x831.jpg" alt="./images/2025_04_09_17_24_54_1074x831.jpg" /></p>
-<p><img src="./images/2025_04_09_17_25_18_752x638.jpg" alt="./images/2025_04_09_17_25_18_752x638.jpg" /></p>
-<p>Enable adb:</p>
-<p><img src="./images/2025_04_09_17_29_37_1074x807.jpg" alt="./images/2025_04_09_17_29_37_1074x807.jpg" /></p>
-<p><img src="./images/2025_04_09_17_29_52_803x530.jpg" alt="./images/2025_04_09_17_29_52_803x530.jpg" /></p>
-<p>Install adb:</p>
-<p><img src="./images/2025_04_09_17_33_33_1160x483.jpg" alt="./images/2025_04_09_17_33_33_1160x483.jpg" /></p>
-<p><img src="./images/2025_04_09_17_35_00_1176x699.jpg" alt="./images/2025_04_09_17_35_00_1176x699.jpg" /></p>
-<h3 id="4-enable-ssh-wan"><a class="header" href="#4-enable-ssh-wan">4. enable ssh wan</a></h3>
-<p>enable ssh wan on openwrt:</p>
-<pre><code>To /etc/config/firewall add:
+<h3 id="3-waydroid-on-ft2000"><a class="header" href="#3-waydroid-on-ft2000">3. waydroid on ft2000</a></h3>
+<p>Install via:</p>
+<pre><code>sudo apt install curl ca-certificates lzip python3 python3-pip
+sudo ufw disable
+sudo apt install wl-clipboard xclip
+sudo pip install pyclip
+curl https://repo.waydro.id | sudo bash
+sudo apt install waydroid
+sudo waydroid init -s GAPPS -f
+sudo systemctl start waydroid-container
+sudo systemctl enable waydroid-container
 
-config rule                                     
-        option name             Allow-SSH-WAN   
-        option src              wan             
-        option proto            tcp             
-        option dest_port        22              
-        option target           ACCEPT          
-        option family           ipv4
-Then:
 
-/etc/init.d/firewall restart
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250408.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250409.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250410.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -263,13 +207,10 @@ Then:
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250408.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250409.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250410.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
