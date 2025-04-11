@@ -5012,6 +5012,81 @@ sudo systemctl enable waydroid-container
 
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250411"><a class="header" href="#20250411">20250411</a></h1>
+<h3 id="1-amd520-using-amdgpu"><a class="header" href="#1-amd520-using-amdgpu">1. amd520 using amdgpu</a></h3>
+<p>Edit grub configuration:</p>
+<pre><code># vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT=" radeon.cik_support=0 amdgpu.cik_support=1 radeon.si_support=0 amdgpu.si_support=1"
+# update-grub2 &amp;&amp; reboot
+</code></pre>
+<p>gpu:</p>
+<pre><code>test@d2000:~$ sudo lspci -vvnn -s 04:00.0 | grep 'in use'
+	Kernel driver in use: amdgpu
+</code></pre>
+<h3 id="2-redroidandroidboot"><a class="header" href="#2-redroidandroidboot">2. redroid(androidboot)</a></h3>
+<p>Step:</p>
+<pre><code>sudo docker run -itd --name redroid12 --privileged   -p 5555:5555 -v  ~/12data:/data redroid/redroid:12.0.0-latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128
+</code></pre>
+<h3 id="3-redroid-on-openeuler"><a class="header" href="#3-redroid-on-openeuler">3. redroid on openeuler</a></h3>
+<p>Step:</p>
+<pre><code>sudo dd if=./openEuler-22.03-LTS-SP3-aarch64-dvd.iso of=/dev/sda bs=10M &amp;&amp; sudo sync
+</code></pre>
+<p>Install system.</p>
+<pre><code>sudo sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#https://mirrors.ustc.edu.cn/openeuler/#g' \
+         -i.bak \
+         /etc/yum.repos.d/openEuler.repo
+Install patched kernel from kbox
+</code></pre>
+<h3 id="4-rebuild-ubuntu2204-kernel"><a class="header" href="#4-rebuild-ubuntu2204-kernel">4. rebuild ubuntu2204 kernel</a></h3>
+<p>Rebuild ubuntu22.04 kernel debs</p>
+<pre><code>sudo apt update
+sudo apt build-dep linux linux-image-$(uname -r)
+
+sudo apt install libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf llvm build-essential libncurses5-dev gcc bc dwarves
+
+# switch to root
+sudo su
+
+# get the current kernel source downloaded and extracted (ignore the end user warning)
+apt source linux-image-unsigned-$(uname -r)
+
+cd /path/to/linux-&lt;version&gt;/
+
+# Give all user execution permissions to scripts (Important, otherwise error will be thrown even if you are running them as root)
+chmod a+x debian/scripts/*
+chmod a+x -R ./scripts
+
+change the source code 
+
+test@d2000:~/Code/newkernel/linux-5.15.0$ cp /boot/config-$(uname -r) ./.config
+test@d2000:~/Code/newkernel/linux-5.15.0$ make oldconfig
+#
+# configuration written to .config
+#
+test@d2000:~/Code/newkernel/linux-5.15.0$ make -j9 deb-pkg LOCALVERSION=-fuck
+
+</code></pre>
+<p>source code changes:</p>
+<pre><code>diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index f1cfb52ba..c6aff6f44 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -45,7 +45,12 @@
+  * TASK_UNMAPPED_BASE - the lower boundary of the mmap VM area.
+  */
+ 
++#ifdef CONFIG_KBOX
++#define DEFAULT_MAP_WINDOW_64	(UL(1) &lt;&lt; 46)
++#else
+ #define DEFAULT_MAP_WINDOW_64	(UL(1) &lt;&lt; VA_BITS_MIN)
++#endif
++
+ #define TASK_SIZE_64		(UL(1) &lt;&lt; vabits_actual)
+ 
+ #ifdef CONFIG_COMPAT
+-- 
+2.33.0
+</code></pre>
 
                     </main>
 
