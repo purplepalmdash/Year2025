@@ -5087,6 +5087,108 @@ index f1cfb52ba..c6aff6f44 100644
 -- 
 2.33.0
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250412"><a class="header" href="#20250412">20250412</a></h1>
+<h3 id="1-openfde-on-ubuntu2204"><a class="header" href="#1-openfde-on-ubuntu2204">1. openfde on ubuntu22.04</a></h3>
+<p>Steps:</p>
+<h3 id="2-building-waydroid"><a class="header" href="#2-building-waydroid">2. Building Waydroid</a></h3>
+<p>redroid building container:</p>
+<pre><code># docke run -it ubuntu:20.04 /bin/bash
+In container
+apt update
+apt install -y vim (Then change the /etc/apt/sources.lists)
+apt-get install openjdk-8-jdk-headless sudo
+sudo apt-get install git-core gnupg flex bison maven gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386  lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache libgl1-mesa-dev libxml2-utils xsltproc unzip squashfs-tools python-mako libssl-dev ninja-build lunzip syslinux syslinux-utils gettext genisoimage gettext bc xorriso libncurses5 xmlstarlet build-essential git imagemagick lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libxml2 lzop pngcrush rsync schedtool python-enum34 python3-mako libelf-dev  net-tools wget 
+sudo apt-get install gcc-10 g++-10
+curl https://mirrors.bfsu.edu.cn/git/git-repo -o /usr/local/bin/repo
+chmod 777 /usr/local/bin/repo
+</code></pre>
+<p>build in docker:</p>
+<pre><code> wget -O - https://raw.githubusercontent.com/waydroid/android_vendor_waydroid/lineage-18.1/manifest_scripts/generate-manifest.sh | bash
+Fetching: 100% (1/1), done in 9m44.211s
+Checking out: 100% (1/1), done in 0.072s
+ERROR: Missing build/make. Please run repo sync has finished successfully. first.    
+root@waydroid-builder:/src# ls        
+Makefile  build                        
+</code></pre>
+<p>manually download the script and run :</p>
+<pre><code>wget https://raw.githubusercontent.com/waydroid/android_vendor_waydroid/lineage-18.1/manifest_scripts/generate-manifest.sh 
+chmod 777 generate-manifest.sh 
+bash generate-manifest.sh
+</code></pre>
+<pre><code>  export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+  repo init -u https://mirrors.bfsu.edu.cn/git/lineageOS/LineageOS/android.git -b lineage-18.1 --git-lfs
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250413"><a class="header" href="#20250413">20250413</a></h1>
+<h3 id="1-build-waydroid-on-ubuntu2004"><a class="header" href="#1-build-waydroid-on-ubuntu2004">1. build waydroid on ubuntu20.04</a></h3>
+<p>Some dependencies revolvement (mesa3d):</p>
+<pre><code>sudo apt install -y glslang-tools
+
+sudo apt install python3-pip
+pip3 install meson
+sudo ln -s /home/dash/.local/bin/meson  /usr/bin/
+pip3 install pycparser
+sudo apt install -y python3.9
+sudo update-alternatives --config python
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+sudo update-alternatives --config python3
+
+</code></pre>
+<h3 id="2-patch-for-waydroid"><a class="header" href="#2-patch-for-waydroid">2. patch for waydroid</a></h3>
+<p><code>android/Android.mk</code>:</p>
+<p><img src="./images/2025_04_13_19_31_26_1299x268.jpg" alt="./images/2025_04_13_19_31_26_1299x268.jpg" /></p>
+<p><code>android/mesa3d_cross.mk</code>:</p>
+<p><img src="./images/2025_04_13_19_32_59_702x555.jpg" alt="./images/2025_04_13_19_32_59_702x555.jpg" /></p>
+<p><code>meson.build</code>:</p>
+<p><img src="./images/2025_04_13_19_35_27_559x209.jpg" alt="./images/2025_04_13_19_35_27_559x209.jpg" /></p>
+<p><img src="./images/2025_04_13_19_36_45_718x317.jpg" alt="./images/2025_04_13_19_36_45_718x317.jpg" /></p>
+<p><code>src/util/xmlconfig.c</code>:<br />
+official:</p>
+<p><img src="./images/2025_04_13_19_38_45_710x387.jpg" alt="./images/2025_04_13_19_38_45_710x387.jpg" /></p>
+<p>fde(current build):</p>
+<p><img src="./images/2025_04_13_19_46_03_692x445.jpg" alt="./images/2025_04_13_19_46_03_692x445.jpg" /></p>
+<h3 id="3-waydroid-pullpush-files"><a class="header" href="#3-waydroid-pullpush-files">3. waydroid pull/push files</a></h3>
+<p>Steps:</p>
+<p>set the adb port:</p>
+<pre><code>sudo waydroid shell
+# setprop service.adb.tcp.port 5555
+# ip 
+2: eth0@if14: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:f9:d3:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.240.112/24 brd 192.168.240.255 scope global eth0
+</code></pre>
+<p>Connect:</p>
+<pre><code>$ adb connect 192.168.240.112:5555
+
+dash@dash-NUC11PAHi5:~/mesa/back/32$ adb pull /vendor/lib/libgallium_dri.so
+/vendor/lib/libgallium_dri.so: 1 file pulled. 818.7 MB/s (40882828 bytes in 0.048s)
+dash@dash-NUC11PAHi5:~/mesa/back/32$ cd ..
+dash@dash-NUC11PAHi5:~/mesa/back$ cd 64
+dash@dash-NUC11PAHi5:~/mesa/back/64$ adb pull /vendor/lib64/libgallium_dri.so
+/vendor/lib64/libgallium_dri.so: 1 file pulled. 1058.8 MB/s (43161792 bytes in 0.039s)
+
+</code></pre>
+<p>push files:</p>
+<pre><code>dash@dash-NUC11PAHi5:~/mesa/64$ adb push libgallium_dri.so /storage/emulated/0/Download/
+libgallium_dri.so: 1 file pushed. 178.2 MB/s (43496784 bytes in 0.233s)
+dash@dash-NUC11PAHi5:~/mesa/64$ cd ../32
+dash@dash-NUC11PAHi5:~/mesa/32$ adb push libgallium_dri.so /storage/emulated/0/Download/libgallium_dri.so.32
+libgallium_dri.so: 1 file pushed. 152.1 MB/s (41276852 bytes in 0.259s)
+</code></pre>
+<p>Then in <code>sudo waydroid shell</code> session:</p>
+<pre><code>/vendor # mount -o rw,remount /vendor
+:/vendor # cp /storage/emulated/0/Download/libgallium_dri.so /vendor/lib64/libgallium_dri.so
+:/vendor # cp /storage/emulated/0/Download/libgallium_dri.so.32 /vendor/lib/libgallium_dri.so
+</code></pre>
+<p>Change the file:</p>
+<pre><code>dash@dash-NUC11PAHi5:~$ wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/main/src/util/00-mesa-defaults.conf
+dash@dash-NUC11PAHi5:~$ sudo ls ~/.local/share/waydroid/data/vendor/
+hardware  tombstones
+dash@dash-NUC11PAHi5:~$ sudo mkdir -p ~/.local/share/waydroid/data/vendor/drirc.d
+dash@dash-NUC11PAHi5:~$ sudo cp 00-mesa-defaults.conf ~/.local/share/waydroid/data/vendor/drirc.d/
+dash@dash-NUC11PAHi5:~$ sudo vim ~/.local/share/waydroid/data/vendor/drirc.d/00-mesa-defaults.conf
+
+</code></pre>
 
                     </main>
 

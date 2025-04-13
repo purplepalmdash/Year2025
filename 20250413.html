@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250411 - year2025</title>
+        <title>20250413 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,93 +155,86 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250411"><a class="header" href="#20250411">20250411</a></h1>
-<h3 id="1-amd520-using-amdgpu"><a class="header" href="#1-amd520-using-amdgpu">1. amd520 using amdgpu</a></h3>
-<p>Edit grub configuration:</p>
-<pre><code># vim /etc/default/grub
-GRUB_CMDLINE_LINUX_DEFAULT=" radeon.cik_support=0 amdgpu.cik_support=1 radeon.si_support=0 amdgpu.si_support=1"
-# update-grub2 &amp;&amp; reboot
-</code></pre>
-<p>gpu:</p>
-<pre><code>test@d2000:~$ sudo lspci -vvnn -s 04:00.0 | grep 'in use'
-	Kernel driver in use: amdgpu
-</code></pre>
-<h3 id="2-redroidandroidboot"><a class="header" href="#2-redroidandroidboot">2. redroid(androidboot)</a></h3>
-<p>Step:</p>
-<pre><code>sudo docker run -itd --name redroid12 --privileged   -p 5555:5555 -v  ~/12data:/data redroid/redroid:12.0.0-latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128
-</code></pre>
-<h3 id="3-redroid-on-openeuler"><a class="header" href="#3-redroid-on-openeuler">3. redroid on openeuler</a></h3>
-<p>Step:</p>
-<pre><code>sudo dd if=./openEuler-22.03-LTS-SP3-aarch64-dvd.iso of=/dev/sda bs=10M &amp;&amp; sudo sync
-</code></pre>
-<p>Install system.</p>
-<pre><code>sudo sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#https://mirrors.ustc.edu.cn/openeuler/#g' \
-         -i.bak \
-         /etc/yum.repos.d/openEuler.repo
-Install patched kernel from kbox
-</code></pre>
-<h3 id="4-rebuild-ubuntu2204-kernel"><a class="header" href="#4-rebuild-ubuntu2204-kernel">4. rebuild ubuntu2204 kernel</a></h3>
-<p>Rebuild ubuntu22.04 kernel debs</p>
-<pre><code>sudo apt update
-sudo apt build-dep linux linux-image-$(uname -r)
+                        <h1 id="20250413"><a class="header" href="#20250413">20250413</a></h1>
+<h3 id="1-build-waydroid-on-ubuntu2004"><a class="header" href="#1-build-waydroid-on-ubuntu2004">1. build waydroid on ubuntu20.04</a></h3>
+<p>Some dependencies revolvement (mesa3d):</p>
+<pre><code>sudo apt install -y glslang-tools
 
-sudo apt install libncurses-dev gawk flex bison openssl libssl-dev dkms libelf-dev libudev-dev libpci-dev libiberty-dev autoconf llvm build-essential libncurses5-dev gcc bc dwarves
-
-# switch to root
-sudo su
-
-# get the current kernel source downloaded and extracted (ignore the end user warning)
-apt source linux-image-unsigned-$(uname -r)
-
-cd /path/to/linux-&lt;version&gt;/
-
-# Give all user execution permissions to scripts (Important, otherwise error will be thrown even if you are running them as root)
-chmod a+x debian/scripts/*
-chmod a+x -R ./scripts
-
-change the source code 
-
-test@d2000:~/Code/newkernel/linux-5.15.0$ cp /boot/config-$(uname -r) ./.config
-test@d2000:~/Code/newkernel/linux-5.15.0$ make oldconfig
-#
-# configuration written to .config
-#
-test@d2000:~/Code/newkernel/linux-5.15.0$ make -j9 deb-pkg LOCALVERSION=-fuck
+sudo apt install python3-pip
+pip3 install meson
+sudo ln -s /home/dash/.local/bin/meson  /usr/bin/
+pip3 install pycparser
+sudo apt install -y python3.9
+sudo update-alternatives --config python
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
+sudo update-alternatives --config python3
 
 </code></pre>
-<p>source code changes:</p>
-<pre><code>diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
-index f1cfb52ba..c6aff6f44 100644
---- a/arch/arm64/include/asm/processor.h
-+++ b/arch/arm64/include/asm/processor.h
-@@ -45,7 +45,12 @@
-  * TASK_UNMAPPED_BASE - the lower boundary of the mmap VM area.
-  */
- 
-+#ifdef CONFIG_KBOX
-+#define DEFAULT_MAP_WINDOW_64	(UL(1) &lt;&lt; 46)
-+#else
- #define DEFAULT_MAP_WINDOW_64	(UL(1) &lt;&lt; VA_BITS_MIN)
-+#endif
-+
- #define TASK_SIZE_64		(UL(1) &lt;&lt; vabits_actual)
- 
- #ifdef CONFIG_COMPAT
--- 
-2.33.0
+<h3 id="2-patch-for-waydroid"><a class="header" href="#2-patch-for-waydroid">2. patch for waydroid</a></h3>
+<p><code>android/Android.mk</code>:</p>
+<p><img src="./images/2025_04_13_19_31_26_1299x268.jpg" alt="./images/2025_04_13_19_31_26_1299x268.jpg" /></p>
+<p><code>android/mesa3d_cross.mk</code>:</p>
+<p><img src="./images/2025_04_13_19_32_59_702x555.jpg" alt="./images/2025_04_13_19_32_59_702x555.jpg" /></p>
+<p><code>meson.build</code>:</p>
+<p><img src="./images/2025_04_13_19_35_27_559x209.jpg" alt="./images/2025_04_13_19_35_27_559x209.jpg" /></p>
+<p><img src="./images/2025_04_13_19_36_45_718x317.jpg" alt="./images/2025_04_13_19_36_45_718x317.jpg" /></p>
+<p><code>src/util/xmlconfig.c</code>:<br />
+official:</p>
+<p><img src="./images/2025_04_13_19_38_45_710x387.jpg" alt="./images/2025_04_13_19_38_45_710x387.jpg" /></p>
+<p>fde(current build):</p>
+<p><img src="./images/2025_04_13_19_46_03_692x445.jpg" alt="./images/2025_04_13_19_46_03_692x445.jpg" /></p>
+<h3 id="3-waydroid-pullpush-files"><a class="header" href="#3-waydroid-pullpush-files">3. waydroid pull/push files</a></h3>
+<p>Steps:</p>
+<p>set the adb port:</p>
+<pre><code>sudo waydroid shell
+# setprop service.adb.tcp.port 5555
+# ip 
+2: eth0@if14: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 00:16:3e:f9:d3:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.240.112/24 brd 192.168.240.255 scope global eth0
+</code></pre>
+<p>Connect:</p>
+<pre><code>$ adb connect 192.168.240.112:5555
+
+dash@dash-NUC11PAHi5:~/mesa/back/32$ adb pull /vendor/lib/libgallium_dri.so
+/vendor/lib/libgallium_dri.so: 1 file pulled. 818.7 MB/s (40882828 bytes in 0.048s)
+dash@dash-NUC11PAHi5:~/mesa/back/32$ cd ..
+dash@dash-NUC11PAHi5:~/mesa/back$ cd 64
+dash@dash-NUC11PAHi5:~/mesa/back/64$ adb pull /vendor/lib64/libgallium_dri.so
+/vendor/lib64/libgallium_dri.so: 1 file pulled. 1058.8 MB/s (43161792 bytes in 0.039s)
+
+</code></pre>
+<p>push files:</p>
+<pre><code>dash@dash-NUC11PAHi5:~/mesa/64$ adb push libgallium_dri.so /storage/emulated/0/Download/
+libgallium_dri.so: 1 file pushed. 178.2 MB/s (43496784 bytes in 0.233s)
+dash@dash-NUC11PAHi5:~/mesa/64$ cd ../32
+dash@dash-NUC11PAHi5:~/mesa/32$ adb push libgallium_dri.so /storage/emulated/0/Download/libgallium_dri.so.32
+libgallium_dri.so: 1 file pushed. 152.1 MB/s (41276852 bytes in 0.259s)
+</code></pre>
+<p>Then in <code>sudo waydroid shell</code> session:</p>
+<pre><code>/vendor # mount -o rw,remount /vendor
+:/vendor # cp /storage/emulated/0/Download/libgallium_dri.so /vendor/lib64/libgallium_dri.so
+:/vendor # cp /storage/emulated/0/Download/libgallium_dri.so.32 /vendor/lib/libgallium_dri.so
+</code></pre>
+<p>Change the file:</p>
+<pre><code>dash@dash-NUC11PAHi5:~$ wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/main/src/util/00-mesa-defaults.conf
+dash@dash-NUC11PAHi5:~$ sudo ls ~/.local/share/waydroid/data/vendor/
+hardware  tombstones
+dash@dash-NUC11PAHi5:~$ sudo mkdir -p ~/.local/share/waydroid/data/vendor/drirc.d
+dash@dash-NUC11PAHi5:~$ sudo cp 00-mesa-defaults.conf ~/.local/share/waydroid/data/vendor/drirc.d/
+dash@dash-NUC11PAHi5:~$ sudo vim ~/.local/share/waydroid/data/vendor/drirc.d/00-mesa-defaults.conf
+
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250410.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250412.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250412.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -249,13 +242,10 @@ index f1cfb52ba..c6aff6f44 100644
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250410.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250412.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250412.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
