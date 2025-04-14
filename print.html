@@ -5394,6 +5394,16 @@ Starting: Intent { cmp=com.miHoYo.Yuanshen/com.miHoYo.GetMobileInfo.MainActivity
 for limit_core in $GI_pid; do taskset -ap ff $limit_core; done
 </code></pre>
 <p>Get the package name via <code>pm list package | grep miH</code>.</p>
+<h3 id="6-buildtime"><a class="header" href="#6-buildtime">6. buildtime</a></h3>
+<p>5600g, 128G mem:</p>
+<pre><code>systemimage
+#### build completed successfully (02:14:27 (hh:mm:ss)) ####
+
+
+real    134m26.626s
+user    1463m49.968s
+sys     104m12.507s
+</code></pre>
 <h3 id="99-chromebook-workingtips"><a class="header" href="#99-chromebook-workingtips">99. chromebook workingtips</a></h3>
 <p>Build docker images under linux-subsystem:</p>
 <p><img src="./images/2025_04_14_09_26_46_714x510.jpg" alt="./images/2025_04_14_09_26_46_714x510.jpg" /></p>
