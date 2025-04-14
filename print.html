@@ -5189,6 +5189,214 @@ dash@dash-NUC11PAHi5:~$ sudo cp 00-mesa-defaults.conf ~/.local/share/waydroid/da
 dash@dash-NUC11PAHi5:~$ sudo vim ~/.local/share/waydroid/data/vendor/drirc.d/00-mesa-defaults.conf
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250414"><a class="header" href="#20250414">20250414</a></h1>
+<h3 id="1-build-waydroid-on-rocklinux"><a class="header" href="#1-build-waydroid-on-rocklinux">1. build waydroid on RockLinux</a></h3>
+<p>Install docker:</p>
+<pre><code>sudo dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+# /etc/yum.repos.d/docker-ce.repo change from "download.docker.com" to "mirrors.ustc.edu.cn/docker-ce"
+sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+</code></pre>
+<p>Change configuration(for crossing gfw) then restart the service:</p>
+<pre><code>$ sudo vim /etc/docker/daemon.json
+$ sudo systemctl daemon-reload
+$ sudo systemctl restart docker
+</code></pre>
+<p>Build the docker building image(on chromebook):</p>
+<pre><code>$ sudo docker load&lt;buildwaydroid.tar 
+[sudo] password for test: 
+3abdd8a5e7a8: Loading layer  80.61MB/80.61MB
+0536e2561aac: Loading layer  5.632kB/5.632kB
+818aa02fabb2: Loading layer  3.194GB/3.194GB
+4b8baaba43a9: Loading layer   2.56kB/2.56kB
+c81a9fa30d90: Loading layer   2.56kB/2.56kB
+278342f56eb6: Loading layer   2.56kB/2.56kB
+d8732c5ad43b: Loading layer   2.56kB/2.56kB
+1846df12125c: Loading layer   2.56kB/2.56kB
+e61f0adf0916: Loading layer   2.56kB/2.56kB
+27ef74451959: Loading layer  48.13kB/48.13kB
+fba4fcc4b42a: Loading layer  19.43MB/19.43MB
+6d91fc990412: Loading layer   2.56kB/2.56kB
+d6e6eed9d41d: Loading layer   2.56kB/2.56kB
+Loaded image: waydroid-build-24.04:latest
+</code></pre>
+<p>Directory structure:</p>
+<p><img src="./images/2025_04_14_09_34_09_954x306.jpg" alt="./images/2025_04_14_09_34_09_954x306.jpg" /></p>
+<p>初始化编译环境:</p>
+<pre><code>$ sudo mkdir -p /media/nvme/ccache/lineage-18.1
+$ sudo chmod 777 -R /media/nvme/ccache/lineage-18.1/
+$ sudo docker create -v /media/nvme/ccache/lineage-18.1:/ccache --name ccache-18.1 waydroid-build-24.04
+c1c9bda86567f5a131df3be2ec8a8dd3aa586f1ffe767e91538fd5051a2bf900
+$ sudo docker run -e CCACHE_DIR=/ccache --volumes-from ccache-18.1 -v $(pwd):/mnt/lineage -it waydroid-build-24.04 /bin/bash
+</code></pre>
+<p>清空上次编译:</p>
+<pre><code>在容器中:    
+. build/envsetup.sh
+make clean
+rm -rf out
+前后:    
+[test@minirocky92 waydroid]$ du -hs lin
+239G	lin
+[test@minirocky92 waydroid]$ du -hs lin
+121G	lin
+</code></pre>
+<p>repo sync again:</p>
+<pre><code>git config --global http.proxy 'socks5://192.168.1.6:21080'
+git config --global --add safe.directory "*"
+repo sync
+</code></pre>
+<p>Manually patch mesa:</p>
+<pre><code>$ cd external/mesa/
+$ vim android/Android.mk 
+$ vim meson.build 
+$ vim src/util/xmlconfig.c 
+$ cd ../../
+$ cd device/waydroid/waydroid/
+$ vim BoardConfig.mk
+###### apply patch
+. build/envsetup.sh
+apply-waydroid-patches
+. build/envsetup.sh &amp;&amp; lunch lineage_waydroid_x86_64-userdebug &amp;&amp;  time make systemimage -j$(nproc --all)
+rm -f external/mesa/subprojects/libarchive.wrap
+time make vendorimage -j$(nproc --all)
+</code></pre>
+<p>Build system/vendor image:</p>
+<pre><code>cd /mnt/lineage &amp;&amp; ccache -M 50G
+. build/envsetup.sh &amp;&amp; lunch lineage_waydroid_x86_64-userdebug
+time make systemimage -j$(nproc --all)
+</code></pre>
+<p>After building, convert images:</p>
+<pre><code>x86:    
+simg2img  out/target/product/waydroid_x86_64/system.img ./system.img
+simg2img  out/target/product/waydroid_x86_64/vendor.img ./vendor.img
+arm64:    
+simg2img out/target/product/waydroid_arm64/system.img ./system.img
+simg2img out/target/product/waydroid_arm64/vendor.img ./vendor.img
+</code></pre>
+<h3 id="2-byobu-on-rocklinux"><a class="header" href="#2-byobu-on-rocklinux">2. byobu on rocklinux</a></h3>
+<p>rocklinux don't have byobu on official repos or epel repos, so build it manually.  Steps(<code>https://blog.entrostat.com/install-byobu-on-any-linux-distro/</code>):</p>
+<pre><code>yum install -y epel-release
+yum install -y tar screen tmux make wget
+cat installbyobu.sh
+
+BYOBU_VERSION=5.133
+
+set -e
+
+echo "Please make sure you have the following dependencies installed:"
+echo "  [+] tar"
+echo "  [+] screen"
+echo "  [+] tmux"
+echo "  [+] make"
+
+which tar
+which screen
+which tmux
+which make
+
+echo "We are going to download version ${BYOBU_VERSION} of byobu and install it..."
+
+
+
+echo "Setting up temporary folder"
+UNIQUE_FOLDER=$(date +%s)
+cd /tmp
+mkdir /tmp/${UNIQUE_FOLDER}
+cd /tmp/${UNIQUE_FOLDER}
+
+echo "Downloading source package"
+wget "https://launchpad.net/byobu/trunk/${BYOBU_VERSION}/+download/byobu_${BYOBU_VERSION}.orig.tar.gz"
+
+echo "Extracting the source files"
+tar -xvf "byobu_${BYOBU_VERSION}.orig.tar.gz"
+BYOBU_FOLDER_NAME=$(ls | grep byobu | grep -v .tar.gz)
+cd "byobu-${BYOBU_VERSION}"
+
+echo "Configuring and building"
+./configure
+sudo make install
+byobu-select-backend tmux
+
+
+echo ""
+echo ""
+echo ""
+echo ""
+echo "You're ready to go! Just type:"
+echo ""
+echo ""
+echo "byobu"
+</code></pre>
+<h3 id="3-s-tui-on-rockylinux"><a class="header" href="#3-s-tui-on-rockylinux">3. s-tui on rockylinux</a></h3>
+<p>Installation steps:</p>
+<pre><code>$ sudo yum install -y python3 python3-pip
+$ sudo pip3 install s-tui -i https://pypi.tuna.tsinghua.edu.cn/simple
+$ which s-tui
+/usr/local/bin/s-tui
+</code></pre>
+<p><img src="./images/2025_04_14_09_42_21_936x988.jpg" alt="./images/2025_04_14_09_42_21_936x988.jpg" /></p>
+<h3 id="4-waydroid-on-ubuntu2204-x86"><a class="header" href="#4-waydroid-on-ubuntu2204-x86">4. waydroid on ubuntu2204 x86</a></h3>
+<p>Using customized image for startup:</p>
+<pre><code>sudo apt install curl ca-certificates lzip python3 python3-pip
+sudo ufw disable
+sudo apt install wl-clipboard xclip
+sudo pip install pyclip
+curl https://repo.waydro.id | sudo bash
+sudo apt install waydroid
+sudo mkdir -p /etc/waydroid-extra/images/
+sudo mv *.img /etc/waydroid-extra/images/
+sudo waydroid init -f
+sudo systemctl start waydroid-container
+sudo systemctl enable waydroid-container
+</code></pre>
+<p>Create the conf file for mesa use:</p>
+<pre><code>test@test-TS660:~$ sudo ls ~/.local/share/waydroid/data/vendor/
+hardware  tombstones
+test@test-TS660:~$ sudo mkdir -p ~/.local/share/waydroid/data/vendor/drirc.d/
+test@test-TS660:~$ sudo ls ~/.local/share/waydroid/data/vendor/
+drirc.d  hardware  tombstones
+test@test-TS660:~$ wget https://gitlab.freedesktop.org/mesa/mesa/-/raw/main/src/util/00-mesa-defaults.conf
+test@test-TS660:~$ sudo cp 00-mesa-defaults.conf ~/.local/share/waydroid/data/vendor/drirc.d/
+</code></pre>
+<p>Add following definitions:</p>
+<pre><code>        &lt;application name="Yuanshen" executable="com.miHoYo.Yuanshen"&gt;
+            &lt;option name="ignore_discard_framebuffer" value="true" /&gt;
+            &lt;option name="force_gl_renderer" value="Adreno (TM) 630"/&gt;
+            &lt;option name="force_gl_vendor" value="Qualcomm"/&gt;
+        &lt;/application&gt;
+
+        &lt;application name="AIDA64" executable="com.finalwire.aida64"&gt;
+            &lt;option name="force_gl_renderer" value="Adreno (TM) 630"/&gt;
+            &lt;option name="force_gl_vendor" value="Qualcomm"/&gt;
+        &lt;/application&gt;
+</code></pre>
+<p>houdini integration:</p>
+<pre><code>git clone https://github.com/casualsnek/waydroid_script
+cd waydroid_script
+sudo  apt install python3.10-venv
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+sudo venv/bin/python3 main.py
+</code></pre>
+<p>Now restart the machine for letting waydroid take effects.</p>
+<pre><code>waydroid show-full-ui
+</code></pre>
+<h3 id="5-yuanshen-issue"><a class="header" href="#5-yuanshen-issue">5. Yuanshen issue</a></h3>
+<p><code>~/.local/share/waydroid/data/vendor/drirc.d/00-mesa-defaults.conf</code> definition is outdated, Changed to Yuanshen.</p>
+<pre><code>test@test-TS660:~$ sudo waydroid shell
+:/ # am start -n com.miHoYo.Yuanshen/com.miHoYo.GetMobileInfo.MainActivity
+Starting: Intent { cmp=com.miHoYo.Yuanshen/com.miHoYo.GetMobileInfo.MainActivity }
+:/ # GI_pid="$(echo `pidof com.miHoYo.Yuanshen`)"
+:/ # for limit_core in $GI_pid; do taskset -ap 1 $limit_core; done
+</code></pre>
+<p>After enter game:</p>
+<pre><code>GI_pid="$(echo `pidof com.miHoYo.Yuanshen`)"
+
+for limit_core in $GI_pid; do taskset -ap ff $limit_core; done
+</code></pre>
+<p>Get the package name via <code>pm list package | grep miH</code>.</p>
+<h3 id="99-chromebook-workingtips"><a class="header" href="#99-chromebook-workingtips">99. chromebook workingtips</a></h3>
+<p>Build docker images under linux-subsystem:</p>
+<p><img src="./images/2025_04_14_09_26_46_714x510.jpg" alt="./images/2025_04_14_09_26_46_714x510.jpg" /></p>
 
                     </main>
 
