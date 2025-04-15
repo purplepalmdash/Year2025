@@ -5415,9 +5415,55 @@ user    1728m9.951s
 sys     64m29.833s
 
 </code></pre>
+<p><code>Intel(R) Core(TM) i9-10900 CPU @ 2.80GHz</code>:</p>
+<pre><code>#### build completed successfully (01:38:09 (hh:mm:ss)) ####
+
+
+real    98m8.745s
+user    1840m27.636s
+sys     78m59.847s
+</code></pre>
+<p><code>13th Gen Intel(R) Core(TM) i5-13400</code>:</p>
+<pre><code>#### build completed successfully (01:33:35 (hh:mm:ss)) ####
+
+
+real    93m34.873s
+user    1333m48.906s
+sys     67m54.397s
+</code></pre>
+<p><code>13900ks</code>:</p>
+<pre><code>#### build completed successfully (36:49 (mm:ss)) ####
+
+
+real    36m48.873s
+user    1013m10.916s
+sys     46m58.391s
+</code></pre>
 <h3 id="99-chromebook-workingtips"><a class="header" href="#99-chromebook-workingtips">99. chromebook workingtips</a></h3>
 <p>Build docker images under linux-subsystem:</p>
 <p><img src="./images/2025_04_14_09_26_46_714x510.jpg" alt="./images/2025_04_14_09_26_46_714x510.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250415"><a class="header" href="#20250415">20250415</a></h1>
+<h3 id="1-build-cuttlefish-13"><a class="header" href="#1-build-cuttlefish-13">1. Build cuttlefish 13</a></h3>
+<p>Build cuttlefish 13 with mesa patch from waydroid.</p>
+<p>not available, for waydroid's mesa is newer than cf's.</p>
+<p>also redroid's mesa is prebuilt.</p>
+<h3 id="2-xxxos-configuration"><a class="header" href="#2-xxxos-configuration">2. xxxOS configuration</a></h3>
+<p>Note:   Not ok for amdgpu, only for nvidia</p>
+<p>For display bootup infos:</p>
+<pre><code>After install kernel
+# grub2-mkconfig -o /boot/efi/xxxxxxx
+# cat /etc/dracut.conf.d/vfio.conf 
+add_drivers+=" vfio vfio_iommu_type1 vfio_pci vfio_virqfd  "
+# dracut -f --kver `uname -r` &amp;&amp; reboot
+# cat /proc/cmdline
+BOOT_IMAGE=/boot/vmlinuz-4.19.90-2102.2.0.0068.ctl2.x86_64 root=UUID=b87c272e-7c6b-4385-bb06-23e98d5e03fd ro crashkernel=512M iommu=pt amd_iommu=on pcie_acs_override=downstream,multifunction net.ifnames=0 biosdevname=0 vga=845
+</code></pre>
+<p>Example for using grubby:</p>
+<pre><code>grubby --args="vga=845" --update-kernel="$(grubby --default-kernel)"
+grubby --update-kernel="$(grubby --default-kernel)"  --remove-args="vfio-pci.ids=1002:6613,1002:aab0,10de:1287,10de:0e0f"
+</code></pre>
+<h3 id="3--grub-recovery"><a class="header" href="#3--grub-recovery">3.  grub recovery</a></h3>
+<p><img src="./images/2025_04_15_17_17_45_726x241.jpg" alt="./images/2025_04_15_17_17_45_726x241.jpg" /></p>
 
                     </main>
 
