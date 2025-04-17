@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250415 - year2025</title>
+        <title>20250416 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,38 +155,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250415"><a class="header" href="#20250415">20250415</a></h1>
-<h3 id="1-build-cuttlefish-13"><a class="header" href="#1-build-cuttlefish-13">1. Build cuttlefish 13</a></h3>
-<p>Build cuttlefish 13 with mesa patch from waydroid.</p>
-<p>not available, for waydroid's mesa is newer than cf's.</p>
-<p>also redroid's mesa is prebuilt.</p>
-<h3 id="2-xxxos-configuration"><a class="header" href="#2-xxxos-configuration">2. xxxOS configuration</a></h3>
-<p>Note:   Not ok for amdgpu, only for nvidia</p>
-<p>For display bootup infos:</p>
-<pre><code>After install kernel
-# grub2-mkconfig -o /boot/efi/xxxxxxx
-# cat /etc/dracut.conf.d/vfio.conf 
-add_drivers+=" vfio vfio_iommu_type1 vfio_pci vfio_virqfd  "
-# dracut -f --kver `uname -r` &amp;&amp; reboot
-# cat /proc/cmdline
-BOOT_IMAGE=/boot/vmlinuz-4.19.90-2102.2.0.0068.ctl2.x86_64 root=UUID=b87c272e-7c6b-4385-bb06-23e98d5e03fd ro crashkernel=512M iommu=pt amd_iommu=on pcie_acs_override=downstream,multifunction net.ifnames=0 biosdevname=0 vga=845
+                        <h1 id="20250416"><a class="header" href="#20250416">20250416</a></h1>
+<h3 id="1-chromebook-sshd"><a class="header" href="#1-chromebook-sshd">1 chromebook sshd</a></h3>
+<p>In linux container, enable sshd step:</p>
+<pre><code>sudo su
+passwd
+passwd &lt;user&gt;
+remove file
+sudo rm /etc/ssh/sshd_not_meant_to_be_run
+vim  /etc/ssh/sshd_config
+AllowAgentForwarding yes
+AllowTcpForwarding yes
+Port 1088 (arbitrary, anything above 1024, port 22 and 2222 are banned for ssh)
+=&gt; In Chrome OS settings add port 1088 (Linux forwarding) and activate it
+sudo systemctl start ssh
+sudo systemctl enable ssh
 </code></pre>
-<p>Example for using grubby:</p>
-<pre><code>grubby --args="vga=845" --update-kernel="$(grubby --default-kernel)"
-grubby --update-kernel="$(grubby --default-kernel)"  --remove-args="vfio-pci.ids=1002:6613,1002:aab0,10de:1287,10de:0e0f"
+<p>Add 1088 port:</p>
+<p><img src="./images/2025_04_16_09_55_25_725x517.jpg" alt="./images/2025_04_16_09_55_25_725x517.jpg" /></p>
+<p>After added:</p>
+<p><img src="./images/2025_04_16_09_55_50_606x235.jpg" alt="./images/2025_04_16_09_55_50_606x235.jpg" /></p>
+<p>ssh -p 1088 xxx@xxx.xxx.xxx.xxx.</p>
+<h3 id="2-dnsmasq-in-lxc"><a class="header" href="#2-dnsmasq-in-lxc">2. dnsmasq in lxc</a></h3>
+<p>Edit <code>/etc/dnsmasq.conf</code>  and add following items:</p>
+<pre><code>dhcp-range=192.168.1.50,192.168.1.150,120h
+dhcp-option=3,192.168.1.33
+interface=eth0
+bind-interfaces
 </code></pre>
-<h3 id="3--grub-recovery"><a class="header" href="#3--grub-recovery">3.  grub recovery</a></h3>
-<p><img src="./images/2025_04_15_17_17_45_726x241.jpg" alt="./images/2025_04_15_17_17_45_726x241.jpg" /></p>
+<p>Then stop the nixos's kea dhcp server, the waydroid could be started.</p>
+<h3 id="3-waydroid-in-nixos"><a class="header" href="#3-waydroid-in-nixos">3. waydroid in nixos</a></h3>
+<p>nixos:</p>
+<pre><code>enable ipv6
+install weston
+disable kea for letting dnsmasq work well
+</code></pre>
+<p>under weston window:</p>
+<pre><code>waydroid session start &amp;
+Start the UI
+waydroid show-full-ui
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250414.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250415.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250416.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250417.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +214,11 @@ grubby --update-kernel="$(grubby --default-kernel)"  --remove-args="vfio-pci.ids
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250414.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250415.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250416.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250417.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
