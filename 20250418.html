@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250417 - year2025</title>
+        <title>20250418 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,116 +155,54 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250417"><a class="header" href="#20250417">20250417</a></h1>
-<h3 id="1-llm-token-test"><a class="header" href="#1-llm-token-test">1. llm token test</a></h3>
-<p>Test via following commands and scripts:</p>
-<pre><code>dash@ai:~$ python test.py 
-使用的模型: deepseek-r1:70b
-输入的提示: 玄武门之变结束的当天，李世民在深夜写下一段独白，你觉得他会写什么？
-开始时间: 2025-04-17 09:57:59
-结束时间: 2025-04-17 09:58:58
-生成时间: 58.51秒
-生成 token 数量: 884
-每秒生成 token 数量: 15.11
-dash@ai:~$ cat test.py
-import requests
-import time
-
-# ollama 的 API 地址
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
-
-# 请求参数
-payload = {
-    "model": "deepseek-r1:70b",  # 替换为你的模型名称
-    "prompt": "玄武门之变结束的当天，李世民在深夜写下一段独白，你觉得他会写什么？",  # 替换为你的输入文本
-    "stream": False,  # 设置为 False，一次性返回完整结果
-    "max_tokens": 3000  # 设置生成的最大 token 数量
-}
-
-# 打印 model 和 prompt 信息
-print(f"使用的模型: {payload['model']}")
-print(f"输入的提示: {payload['prompt']}")
-
-# 记录开始时间
-start_time = time.time()
-print(f"开始时间: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(start_time))}")
-
-# 发送请求
-response = requests.post(OLLAMA_API_URL, json=payload)
-
-# 记录结束时间
-end_time = time.time()
-print(f"结束时间: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(end_time))}")
-
-# 解析响应
-if response.status_code == 200:
-    result = response.json()
-    # print(result)
-    generated_text = result.get("response", "")
-    generated_tokens = result.get("eval_count", 0)  # 获取生成的 token 数量
-    elapsed_time = end_time - start_time
-
-    # 计算每秒生成的 token 数量
-    tokens_per_second = generated_tokens / elapsed_time
-
-    print(f"生成时间: {elapsed_time:.2f}秒")
-    print(f"生成 token 数量: {generated_tokens}")
-    print(f"每秒生成 token 数量: {tokens_per_second:.2f}")
-else:
-    print(f"请求失败，状态码: {response.status_code}")
-    print(f"错误信息: {response.text}")
+                        <h1 id="20250418"><a class="header" href="#20250418">20250418</a></h1>
+<h3 id="1-rpi-image-building-issue"><a class="header" href="#1-rpi-image-building-issue">1. rpi image building issue</a></h3>
+<p>Solved via:</p>
+<pre><code> source build/envsetup.sh 
+ lunch aosp_rpi4-ap1a-userdebug
+ pip3 install meson mako jinja2 ply pyyaml dataclasses --break-system-packages  -i https://pypi.tuna.tsinghua.edu.cn/simple
+ apt install -y genromfs vim dosfstools
+ time make bootimage systemimage vendorimage -j$(nproc)
 </code></pre>
-<h3 id="2-aosp-build-issue"><a class="header" href="#2-aosp-build-issue">2. aosp build issue</a></h3>
-<p>Faster sync and save fq-flow:</p>
-<pre><code>repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-14.0.0_r50
-repo sync
-curl -o .repo/local_manifests/manifest_brcm_rpi.xml -L https://raw.githubusercontent.com/raspberry-vanilla/android_local_manifest/android-14.0/manifest_brcm_rpi.xml --create-dirs
-curl -o .repo/local_manifests/remove_projects.xml -L https://raw.githubusercontent.com/raspberry-vanilla/android_local_manifest/android-14.0/remove_projects.xml
- git config --global http.proxy 'socks5://192.168.1.6:21080'
-repo sync -j1 --force-sync
+<h3 id="2-on-building-lineageos"><a class="header" href="#2-on-building-lineageos">2. on building lineageOS</a></h3>
+<p>Using waydroid docker build image:</p>
+<pre><code>apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev libdw-dev libelf-dev liblz4-tool lz4 libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev meson glslang-tools python3-mako nethogs vim
+git lfs install
+
+root@068ccd2b2fcb:/mnt/lineage# git config --global http.proxy 'socks5://192.168.1.6:21080'
+root@068ccd2b2fcb:/mnt/lineage# breakfast virtio_arm64
+m espimage-install -j32
+
+#### build completed successfully (01:12:12 (hh:mm:ss)) ####
 </code></pre>
-<p>Then:</p>
-<pre><code>source build/envsetup.sh
-lunch aosp_cf_arm64_phone-ap2a-userdebug
-time m -j$(nproc --all)
+<p>build out image:</p>
+<pre><code>$ ls -l -h target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img 
+-rw-r--r-- 1 root root 1.1G Apr 18 14:45 target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img
 </code></pre>
-<p><img src="./images/2025_04_17_17_35_25_1603x496.jpg" alt="./images/2025_04_17_17_35_25_1603x496.jpg" /></p>
-<h3 id="3-repo-sync-at-home"><a class="header" href="#3-repo-sync-at-home">3. repo sync at home</a></h3>
-<p>Change to ustc:</p>
-<pre><code>export REPO_URL=https://gerrit-googlesource.proxy.ustclug.org/git-repo
-root@0e0cea4eee18:/mnt/lineage# repo init --depth 1 -u git://mirrors.ustc.edu.cn/aosp/platform/manifest -b android-14.0.0_r67
-Downloading Repo source from https://gerrit-googlesource.proxy.ustclug.org/git-repo
-
-... A new version of repo (2.54) is available.
-... You should upgrade soon:
-    cp /mnt/lineage/.repo/repo/repo /usr/local/bin/repo
-
-
-Your identity is: YogSottot &lt;7411302+YogSottot@users.noreply.github.com&gt;
-If you want to change this, please re-run 'repo init' with --config-name
-
-repo has been initialized in /mnt/lineage
-root@0e0cea4eee18:/mnt/lineage# mkdir .repo/manifests 
-manifests/     manifests.git/ 
-root@0e0cea4eee18:/mnt/lineage# mkdir .repo/manifests
-manifests/     manifests.git/ 
-root@0e0cea4eee18:/mnt/lineage# mkdir .repo/manifests/local_manifests/
-root@0e0cea4eee18:/mnt/lineage# cp /root/remove_projects.xml .repo/manifests/local_manifests/
-repo sync &amp;&amp; cp /root/manifest_brcm_rpi.xml .repo/local_manifests/ &amp;&amp; git config --global http.proxy 'socks://192.168.1.213:14389' &amp;&amp; repo sync -j1 --force-sync &amp;&amp; repo sync
-
-</code></pre>
+<h3 id="3-libvirt-verify-lineageos"><a class="header" href="#3-libvirt-verify-lineageos">3. libvirt verify lineageOS</a></h3>
+<p>Using the above img:</p>
+<p><img src="./images/2025_04_18_15_28_13_581x517.jpg" alt="./images/2025_04_18_15_28_13_581x517.jpg" /></p>
+<p>usb keyboard/mouse/tablet:</p>
+<p><img src="./images/2025_04_18_15_30_34_362x275.jpg" alt="./images/2025_04_18_15_30_34_362x275.jpg" /></p>
+<p>virtio with <code>3D acceleration</code>:</p>
+<p><img src="./images/2025_04_18_15_31_53_466x408.jpg" alt="./images/2025_04_18_15_31_53_466x408.jpg" /></p>
+<p>spice with OpenGL support:</p>
+<p><img src="./images/2025_04_18_15_33_44_798x326.jpg" alt="./images/2025_04_18_15_33_44_798x326.jpg" /></p>
+<p>sound with AC97:</p>
+<p><img src="./images/2025_04_18_15_34_29_471x215.jpg" alt="./images/2025_04_18_15_34_29_471x215.jpg" /></p>
+<p><img src="./images/2025_04_18_16_38_25_672x486.jpg" alt="./images/2025_04_18_16_38_25_672x486.jpg" /></p>
+<p>usb:</p>
+<p><img src="./images/2025_04_18_17_16_42_765x275.jpg" alt="./images/2025_04_18_17_16_42_765x275.jpg" /></p>
+<p>virtio-disk:</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250416.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250417.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250418.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -272,13 +210,10 @@ repo sync &amp;&amp; cp /root/manifest_brcm_rpi.xml .repo/local_manifests/ &amp;
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250416.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250417.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250418.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

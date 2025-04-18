@@ -5602,6 +5602,45 @@ root@0e0cea4eee18:/mnt/lineage# cp /root/remove_projects.xml .repo/manifests/loc
 repo sync &amp;&amp; cp /root/manifest_brcm_rpi.xml .repo/local_manifests/ &amp;&amp; git config --global http.proxy 'socks://192.168.1.213:14389' &amp;&amp; repo sync -j1 --force-sync &amp;&amp; repo sync
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250418"><a class="header" href="#20250418">20250418</a></h1>
+<h3 id="1-rpi-image-building-issue"><a class="header" href="#1-rpi-image-building-issue">1. rpi image building issue</a></h3>
+<p>Solved via:</p>
+<pre><code> source build/envsetup.sh 
+ lunch aosp_rpi4-ap1a-userdebug
+ pip3 install meson mako jinja2 ply pyyaml dataclasses --break-system-packages  -i https://pypi.tuna.tsinghua.edu.cn/simple
+ apt install -y genromfs vim dosfstools
+ time make bootimage systemimage vendorimage -j$(nproc)
+</code></pre>
+<h3 id="2-on-building-lineageos"><a class="header" href="#2-on-building-lineageos">2. on building lineageOS</a></h3>
+<p>Using waydroid docker build image:</p>
+<pre><code>apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev libdw-dev libelf-dev liblz4-tool lz4 libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev meson glslang-tools python3-mako nethogs vim
+git lfs install
+
+root@068ccd2b2fcb:/mnt/lineage# git config --global http.proxy 'socks5://192.168.1.6:21080'
+root@068ccd2b2fcb:/mnt/lineage# breakfast virtio_arm64
+m espimage-install -j32
+
+#### build completed successfully (01:12:12 (hh:mm:ss)) ####
+</code></pre>
+<p>build out image:</p>
+<pre><code>$ ls -l -h target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img 
+-rw-r--r-- 1 root root 1.1G Apr 18 14:45 target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img
+</code></pre>
+<h3 id="3-libvirt-verify-lineageos"><a class="header" href="#3-libvirt-verify-lineageos">3. libvirt verify lineageOS</a></h3>
+<p>Using the above img:</p>
+<p><img src="./images/2025_04_18_15_28_13_581x517.jpg" alt="./images/2025_04_18_15_28_13_581x517.jpg" /></p>
+<p>usb keyboard/mouse/tablet:</p>
+<p><img src="./images/2025_04_18_15_30_34_362x275.jpg" alt="./images/2025_04_18_15_30_34_362x275.jpg" /></p>
+<p>virtio with <code>3D acceleration</code>:</p>
+<p><img src="./images/2025_04_18_15_31_53_466x408.jpg" alt="./images/2025_04_18_15_31_53_466x408.jpg" /></p>
+<p>spice with OpenGL support:</p>
+<p><img src="./images/2025_04_18_15_33_44_798x326.jpg" alt="./images/2025_04_18_15_33_44_798x326.jpg" /></p>
+<p>sound with AC97:</p>
+<p><img src="./images/2025_04_18_15_34_29_471x215.jpg" alt="./images/2025_04_18_15_34_29_471x215.jpg" /></p>
+<p><img src="./images/2025_04_18_16_38_25_672x486.jpg" alt="./images/2025_04_18_16_38_25_672x486.jpg" /></p>
+<p>usb:</p>
+<p><img src="./images/2025_04_18_17_16_42_765x275.jpg" alt="./images/2025_04_18_17_16_42_765x275.jpg" /></p>
+<p>virtio-disk:</p>
 
                     </main>
 
