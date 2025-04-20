@@ -5621,6 +5621,19 @@ root@068ccd2b2fcb:/mnt/lineage# breakfast virtio_arm64
 m espimage-install -j32
 
 #### build completed successfully (01:12:12 (hh:mm:ss)) ####
+
+
+5600g: 
+
+[100% 151431/151431] Target UTM VM ZIP archive: out/target/product/virtio_arm64only/VirtualMachine/UTM/UTM-VM-lineage-22.2-2050418-UNOFFICIAL-virtio_arm64only.zip (priority: 2)
+
+#### build completed successfully (04:04:47 (hh:mm:ss)) ####
+
+
+real    244m47.296s
+user    2624m41.207s
+sys     224m56.047s
+
 </code></pre>
 <p>build out image:</p>
 <pre><code>$ ls -l -h target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img 
@@ -5641,6 +5654,126 @@ m espimage-install -j32
 <p>usb:</p>
 <p><img src="./images/2025_04_18_17_16_42_765x275.jpg" alt="./images/2025_04_18_17_16_42_765x275.jpg" /></p>
 <p>virtio-disk:</p>
+<h4 id="4-failed-build-on-fedora"><a class="header" href="#4-failed-build-on-fedora">4. failed build on fedora</a></h4>
+<pre><code>linux-x86/bin/pahole -C kernel/virt/virtio O=/mnt/lineage/out/target/product/virtio_arm64only/obj/KERNEL_OBJ ARCH=arm64 CC= c
+lang VARIANT_DEFCONFIG= SELINUX_DEFCONFIG= olddefconfig                                                                      
+20:57:37    → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make -C /mnt/lineage/out/target/product/virtio_arm64only/obj/K
+ERNEL_OBJ -f /mnt/lineage/kernel/virt/virtio/Makefile olddefconfig                                                           
+20:57:37     → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make --no-print-directory -C /mnt/lineage/out/target/product/
+virtio_arm64only/obj/KERNEL_OBJ -f /mnt/lineage/kernel/virt/virtio/Makefile olddefconfig                                     
+20:57:37      → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make -f /mnt/lineage/kernel/virt/virtio/scripts/Makefile.bui
+ld obj=scripts/kconfig olddefconfig                                                                                          
+20:57:37       → scripts/kconfig/conf --olddefconfig Kconfig                                                                 
+20:57:37        → sh -c -- { /mnt/lineage/kernel/virt/virtio/scripts/rust_is_available.sh; } &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo "y" || e
+cho "n"                                                                                                                      
+20:57:37         → /bin/sh /mnt/lineage/kernel/virt/virtio/scripts/rust_is_available.sh                                      
+20:57:37          → rustc --version                                                                                          
+20:58:55 ninja failed with: exit status 1                                                                                    
+There was 1 action that completed after the action that failed. See verbose.log.gz for its output.                           
+                                                                                                                             
+#### failed to build some targets (04:42:54 (hh:mm:ss)) ####                                                                 
+                                                                                                                             
+                                                                                                                             
+real    282m54.217s                                                                                                          
+user    2111m19.887s                                                                                                         
+sys     105m21.785s                                                                                                          
+root@e77d01be6d83:/mnt/lineage#   
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250419"><a class="header" href="#20250419">20250419</a></h1>
+<h3 id="1-using-tuna-for-repo"><a class="header" href="#1-using-tuna-for-repo">1. Using tuna for repo</a></h3>
+<p>Steps:</p>
+<pre><code> export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
+ repo init -u https://mirrors.tuna.tsinghua.edu.cn/git/lineageOS/LineageOS/android.git -b lineage-21.0  --git-lfs --no-clone-bundle
+</code></pre>
+<p>Change the file:</p>
+<pre><code>+&lt;remote  name="github"
++           fetch="https://github.com/" /&gt;
++
++  &lt;remote  name="lineage"
++           fetch="https://mirrors.tuna.tsinghua.edu.cn/git/lineageOS/"
++           review="review.lineageos.org" /&gt;
+
+  &lt;remote  name="private"
+           fetch="ssh://git@github.com" /&gt;
+
+  &lt;remote  name="aosp"
++          fetch="https://mirrors.tuna.tsinghua.edu.cn/git/AOSP"
+           review="android-review.googlesource.com"
+           revision="refs/tags/android-14.0.0_r67" /&gt;
+
+  &lt;default revision="refs/heads/lineage-21.0"
++           remote="lineage"
+           sync-c="true"
+           sync-j="4" /&gt;
+
+</code></pre>
+<h3 id="2-compile-time"><a class="header" href="#2-compile-time">2. compile time</a></h3>
+<p>i5-10400(<code>x86_64 iso</code>,22.2):</p>
+<pre><code>lineage x86_64 iso:   
+
+#### build completed successfully (03:36:51 (hh:mm:ss)) ####
+
+
+real    216m51.282s
+user    2401m5.298s
+sys     113m6.989s
+
+</code></pre>
+<p>i5-10400(arm64 emulator, 22.2):</p>
+<pre><code>2025-04-19 15:00:34 - build_super_image.py - INFO    : Done writing image out/target/product/emu64a/super.img
+[100% 101598/101598] Create system-qemu.img now
+
+#### build completed successfully (02:22:34 (hh:mm:ss)) ####
+
+
+real    142m33.574s
+user    1594m28.974s
+sys     66m36.299s
+
+</code></pre>
+<p>5600G(emulator, 21.0) :</p>
+<pre><code>lineage arm64 img
+
+100% 54426/54426 56m56s remaining] Create system-qemu.img now
+
+#### build completed successfully (01:43:08 (hh:mm:ss)) ####
+
+
+real    103m7.842s
+user    1095m56.990s
+sys     99m0.773s
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250420"><a class="header" href="#20250420">20250420</a></h1>
+<h3 id="1-add-xmlconfig-for-mesa"><a class="header" href="#1-add-xmlconfig-for-mesa">1. Add xmlconfig for mesa</a></h3>
+<p>Edit following file for adding xml config items:</p>
+<pre><code>root@d5c2829ff855:/mnt/lineage/22.1/device# vim virt/virt-common/BoardConfigVirtCommon.mk 
+    # Graphics (Mesa)                                                                                                                                                                                                                                            
+    BOARD_MESA3D_MESON_ARGS := -Dmesa-clc=system -Dxmlconfig=enabled
+    BOARD_MESA3D_USES_MESON_BUILD := true 
+root@d5c2829ff855:/mnt/lineage/22.1/device# cd ../../
+</code></pre>
+<p>Rebuild to view the effects.</p>
+<p>failed with:</p>
+<pre><code>Build type: cross build
+meson.build:4:0: ERROR: Unknown options: "mesa-clc"
+</code></pre>
+<p>Should rebuild again from zero for verification.</p>
+<h3 id="2-build-time"><a class="header" href="#2-build-time">2. build time</a></h3>
+<p><code>i5-10400 building</code>:</p>
+<pre><code>[100% 181309/181309] Target installer ESP image: out/target/product/virtio_arm64/lineage-22.0-20250420-UNOFFICIAL-virtio_arm64.img
+872+0 records in
+872+0 records out
+914358272 bytes (914 MB, 872 MiB) copied, 0.385562 s, 2.4 GB/s
+
+#### build completed successfully (05:36:05 (hh:mm:ss)) ####
+
+
+real    336m5.374s
+user    3759m52.234s
+sys     176m37.094s
+
+</code></pre>
 
                     </main>
 

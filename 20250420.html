@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250418 - year2025</title>
+        <title>20250420 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,95 +155,45 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250418"><a class="header" href="#20250418">20250418</a></h1>
-<h3 id="1-rpi-image-building-issue"><a class="header" href="#1-rpi-image-building-issue">1. rpi image building issue</a></h3>
-<p>Solved via:</p>
-<pre><code> source build/envsetup.sh 
- lunch aosp_rpi4-ap1a-userdebug
- pip3 install meson mako jinja2 ply pyyaml dataclasses --break-system-packages  -i https://pypi.tuna.tsinghua.edu.cn/simple
- apt install -y genromfs vim dosfstools
- time make bootimage systemimage vendorimage -j$(nproc)
+                        <h1 id="20250420"><a class="header" href="#20250420">20250420</a></h1>
+<h3 id="1-add-xmlconfig-for-mesa"><a class="header" href="#1-add-xmlconfig-for-mesa">1. Add xmlconfig for mesa</a></h3>
+<p>Edit following file for adding xml config items:</p>
+<pre><code>root@d5c2829ff855:/mnt/lineage/22.1/device# vim virt/virt-common/BoardConfigVirtCommon.mk 
+    # Graphics (Mesa)                                                                                                                                                                                                                                            
+    BOARD_MESA3D_MESON_ARGS := -Dmesa-clc=system -Dxmlconfig=enabled
+    BOARD_MESA3D_USES_MESON_BUILD := true 
+root@d5c2829ff855:/mnt/lineage/22.1/device# cd ../../
 </code></pre>
-<h3 id="2-on-building-lineageos"><a class="header" href="#2-on-building-lineageos">2. on building lineageOS</a></h3>
-<p>Using waydroid docker build image:</p>
-<pre><code>apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git git-lfs gnupg gperf imagemagick lib32readline-dev lib32z1-dev libdw-dev libelf-dev liblz4-tool lz4 libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev meson glslang-tools python3-mako nethogs vim
-git lfs install
-
-root@068ccd2b2fcb:/mnt/lineage# git config --global http.proxy 'socks5://192.168.1.6:21080'
-root@068ccd2b2fcb:/mnt/lineage# breakfast virtio_arm64
-m espimage-install -j32
-
-#### build completed successfully (01:12:12 (hh:mm:ss)) ####
-
-
-5600g: 
-
-[100% 151431/151431] Target UTM VM ZIP archive: out/target/product/virtio_arm64only/VirtualMachine/UTM/UTM-VM-lineage-22.2-2050418-UNOFFICIAL-virtio_arm64only.zip (priority: 2)
-
-#### build completed successfully (04:04:47 (hh:mm:ss)) ####
-
-
-real    244m47.296s
-user    2624m41.207s
-sys     224m56.047s
-
+<p>Rebuild to view the effects.</p>
+<p>failed with:</p>
+<pre><code>Build type: cross build
+meson.build:4:0: ERROR: Unknown options: "mesa-clc"
 </code></pre>
-<p>build out image:</p>
-<pre><code>$ ls -l -h target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img 
--rw-r--r-- 1 root root 1.1G Apr 18 14:45 target/product/virtio_arm64/lineage-22.2-20250418-UNOFFICIAL-virtio_arm64.img
-</code></pre>
-<h3 id="3-libvirt-verify-lineageos"><a class="header" href="#3-libvirt-verify-lineageos">3. libvirt verify lineageOS</a></h3>
-<p>Using the above img:</p>
-<p><img src="./images/2025_04_18_15_28_13_581x517.jpg" alt="./images/2025_04_18_15_28_13_581x517.jpg" /></p>
-<p>usb keyboard/mouse/tablet:</p>
-<p><img src="./images/2025_04_18_15_30_34_362x275.jpg" alt="./images/2025_04_18_15_30_34_362x275.jpg" /></p>
-<p>virtio with <code>3D acceleration</code>:</p>
-<p><img src="./images/2025_04_18_15_31_53_466x408.jpg" alt="./images/2025_04_18_15_31_53_466x408.jpg" /></p>
-<p>spice with OpenGL support:</p>
-<p><img src="./images/2025_04_18_15_33_44_798x326.jpg" alt="./images/2025_04_18_15_33_44_798x326.jpg" /></p>
-<p>sound with AC97:</p>
-<p><img src="./images/2025_04_18_15_34_29_471x215.jpg" alt="./images/2025_04_18_15_34_29_471x215.jpg" /></p>
-<p><img src="./images/2025_04_18_16_38_25_672x486.jpg" alt="./images/2025_04_18_16_38_25_672x486.jpg" /></p>
-<p>usb:</p>
-<p><img src="./images/2025_04_18_17_16_42_765x275.jpg" alt="./images/2025_04_18_17_16_42_765x275.jpg" /></p>
-<p>virtio-disk:</p>
-<h4 id="4-failed-build-on-fedora"><a class="header" href="#4-failed-build-on-fedora">4. failed build on fedora</a></h4>
-<pre><code>linux-x86/bin/pahole -C kernel/virt/virtio O=/mnt/lineage/out/target/product/virtio_arm64only/obj/KERNEL_OBJ ARCH=arm64 CC= c
-lang VARIANT_DEFCONFIG= SELINUX_DEFCONFIG= olddefconfig                                                                      
-20:57:37    → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make -C /mnt/lineage/out/target/product/virtio_arm64only/obj/K
-ERNEL_OBJ -f /mnt/lineage/kernel/virt/virtio/Makefile olddefconfig                                                           
-20:57:37     → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make --no-print-directory -C /mnt/lineage/out/target/product/
-virtio_arm64only/obj/KERNEL_OBJ -f /mnt/lineage/kernel/virt/virtio/Makefile olddefconfig                                     
-20:57:37      → /mnt/lineage/prebuilts/build-tools/linux-x86/bin/make -f /mnt/lineage/kernel/virt/virtio/scripts/Makefile.bui
-ld obj=scripts/kconfig olddefconfig                                                                                          
-20:57:37       → scripts/kconfig/conf --olddefconfig Kconfig                                                                 
-20:57:37        → sh -c -- { /mnt/lineage/kernel/virt/virtio/scripts/rust_is_available.sh; } &gt;/dev/null 2&gt;&amp;1 &amp;&amp; echo "y" || e
-cho "n"                                                                                                                      
-20:57:37         → /bin/sh /mnt/lineage/kernel/virt/virtio/scripts/rust_is_available.sh                                      
-20:57:37          → rustc --version                                                                                          
-20:58:55 ninja failed with: exit status 1                                                                                    
-There was 1 action that completed after the action that failed. See verbose.log.gz for its output.                           
-                                                                                                                             
-#### failed to build some targets (04:42:54 (hh:mm:ss)) ####                                                                 
-                                                                                                                             
-                                                                                                                             
-real    282m54.217s                                                                                                          
-user    2111m19.887s                                                                                                         
-sys     105m21.785s                                                                                                          
-root@e77d01be6d83:/mnt/lineage#   
+<p>Should rebuild again from zero for verification.</p>
+<h3 id="2-build-time"><a class="header" href="#2-build-time">2. build time</a></h3>
+<p><code>i5-10400 building</code>:</p>
+<pre><code>[100% 181309/181309] Target installer ESP image: out/target/product/virtio_arm64/lineage-22.0-20250420-UNOFFICIAL-virtio_arm64.img
+872+0 records in
+872+0 records out
+914358272 bytes (914 MB, 872 MiB) copied, 0.385562 s, 2.4 GB/s
+
+#### build completed successfully (05:36:05 (hh:mm:ss)) ####
+
+
+real    336m5.374s
+user    3759m52.234s
+sys     176m37.094s
+
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250417.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250419.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250419.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -251,13 +201,10 @@ root@e77d01be6d83:/mnt/lineage#
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250417.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250419.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250419.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
