@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250421 - year2025</title>
+        <title>20250422 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,118 +155,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250421"><a class="header" href="#20250421">20250421</a></h1>
-<h3 id="1-lineage-mesa-patched"><a class="header" href="#1-lineage-mesa-patched">1. Lineage mesa patched</a></h3>
-<p>Build:</p>
-<pre><code>source build/envsetup.sh 
-git config --global --add safe.directory "*"
-breakfast virtio_x86_64
-time m isoimage-install -j32
+                        <h1 id="20250422"><a class="header" href="#20250422">20250422</a></h1>
+<h3 id="1-repo-sync-issue"><a class="header" href="#1-repo-sync-issue">1. repo sync issue</a></h3>
+<p>Directly copy the old .repo folder from other directory:</p>
+<pre><code>[test@minirocky92 22.1]$ sudo cp -r .repo/* /media/sdc/pure/.repo/
 </code></pre>
-<p>Time:</p>
-<pre><code>[100% 147239/147239 24m25s remaining] //frameworks/base/api:system-api-stubs-docs-non-updatabl
-
-#### build completed successfully (01:06:29 (hh:mm:ss)) ####
-real	66m28.882s
-user	1905m31.152s
-sys	104m39.493s
+<p>there are some modification in old directory:</p>
+<pre><code> cd .repo/manifests
+ git reset --hard
+repo sync -c --force-sync
 </code></pre>
-<p>Build arm64:</p>
-<pre><code>breakfast virtio_arm64
-time m espimage-install -j32
-....
-[100% 139777/139777] Target installer ESP image: out/target/product/virtio_arm64/lineage-22.1-20250421-UNOFFICIAL-virtio_arm64.img
-871+0 records in
-871+0 records out
-913309696 bytes (913 MB, 871 MiB) copied, 0.323503 s, 2.8 GB/s
-
-#### build completed successfully (56:20 (mm:ss)) ####
-
-
-real	56m20.066s
-user	1563m22.498s
-sys	95m26.09
+<p>Using <code>repo status</code> for viewing the status.</p>
+<h3 id="2-radeon-added-in-lineageos-virt"><a class="header" href="#2-radeon-added-in-lineageos-virt">2. radeon added in lineageOS virt</a></h3>
+<p><img src="./images/2025_04_22_16_49_21_1423x434.jpg" alt="./images/2025_04_22_16_49_21_1423x434.jpg" /></p>
+<p>Then I added some radeon items under <code>device/virt</code>:</p>
+<pre><code>[test@minirocky92 virt]$ grep -i "vulkan.radeon" . -r
+./virt-common/virt-common.mk:    vulkan.radeon \
+[test@minirocky92 virt]$ grep -i "radeon" ./ -r | grep llvm
+./virt-common/BoardConfigVirtCommon.mk:BOARD_MESA3D_GALLIUM_DRIVERS := llvmpipe softpipe radeonsi 
 </code></pre>
-<h3 id="2-lineage-in-emulator"><a class="header" href="#2-lineage-in-emulator">2. Lineage in Emulator</a></h3>
-<p>Install a ubuntu24.04 desktop on haiguang, failed, changed to ubuntu22.04.</p>
-<pre><code>[100% 143768/143768] run host_apex_verifier
-
-#### build completed successfully (04:26:57 (hh:mm:ss)) ####
-
-
-real    266m57.479s
-user    3845m51.273s
-sys     316m51.598s
-test@test-P860:~/22.1$ 
-</code></pre>
-<p>Build platform:</p>
-<pre><code>model           : 2
-model name      : Hygon C86-3G (OPN:3350)
-test@test-P860:~/22.1$ free -m
-               total        used        free      shared  buff/cache   available
-Mem:           32009         919        7102          18       23987       30612
-Swap:           2047         186        1861
-</code></pre>
-<h3 id="3-drircd"><a class="header" href="#3-drircd">3. drirc.d</a></h3>
-<p>tips:</p>
-<pre><code>test@fedora:~$ adb shell
-virtio_x86_64:/ # mkdir -p /data/vendor/drirc.d                                                                                                                                              
-virtio_x86_64:/ # exit
-test@fedora:~$ adb push 00-mesa-defaults.conf /data/vendor/drirc.d/
-00-mesa-defaults.conf: 1 file pushed, 0 skipped. 649.1 MB/s (65430 bytes in 0.000s)
-
-</code></pre>
-<h3 id="4-pathmod"><a class="header" href="#4-pathmod">4. pathmod</a></h3>
-<p>refreshmod and pathmod:</p>
-<pre><code>root@83712873c508:/mnt/lineage# refreshmod
-Refreshing modules (building module-info.json). Log at /mnt/lineage/out/target/product/waydroid_arm64/module-info.json.build.log.
-08:27:05 Build sandboxing disabled due to nsjail error.
-root@83712873c508:/mnt/lineage# pathmod libxml2
-/mnt/lineage/external/libxml2
-root@83712873c508:/mnt/lineage# pathmod libgallium_dri
-/mnt/lineage/external/mesa/android
-
-</code></pre>
-<p>then readelf:</p>
-<pre><code> readelf -d out/target/product/waydroid_arm64/vendor/lib64/libgallium_dri.so 
-
-Dynamic section at offset 0x1a73738 contains 39 entries:
-  Tag        Type                         Name/Value
- 0x0000000000000001 (NEEDED)             Shared library: [libdrm.so]
- 0x0000000000000001 (NEEDED)             Shared library: [liblog.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libcutils.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libz.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libc++.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libsync.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libdrm_amdgpu.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libdrm_radeon.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libLLVM17.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libc.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libm.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libdl.so]
- 0x0000000000000001 (NEEDED)             Shared library: [libglapi.so]
- 0x000000000000000e (SONAME)             Library soname: [libgallium_dri.so]
- 0x000000000000001e (FLAGS)              BIND_NOW
- 0x000000006ffffffb (FLAGS_1)            Flags: NOW
-.....
-</code></pre>
-<h3 id="5-selinux-item"><a class="header" href="#5-selinux-item">5. selinux item</a></h3>
-<p>detect selinux:</p>
-<pre><code>adb pull /sys/fs/selinux/policy /tmp/selinux.policy
-adb logcat -b events -d | audit2allow -p /tmp/selinux.policy
+<p>Change the definitions under device folder:</p>
+<pre><code>make installclean &amp;&amp; time m espimage-install -j32
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250420.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250421.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250422.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -274,13 +193,10 @@ adb logcat -b events -d | audit2allow -p /tmp/selinux.policy
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250420.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250421.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250422.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

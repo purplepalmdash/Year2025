@@ -5874,6 +5874,28 @@ Dynamic section at offset 0x1a73738 contains 39 entries:
 <pre><code>adb pull /sys/fs/selinux/policy /tmp/selinux.policy
 adb logcat -b events -d | audit2allow -p /tmp/selinux.policy
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250422"><a class="header" href="#20250422">20250422</a></h1>
+<h3 id="1-repo-sync-issue"><a class="header" href="#1-repo-sync-issue">1. repo sync issue</a></h3>
+<p>Directly copy the old .repo folder from other directory:</p>
+<pre><code>[test@minirocky92 22.1]$ sudo cp -r .repo/* /media/sdc/pure/.repo/
+</code></pre>
+<p>there are some modification in old directory:</p>
+<pre><code> cd .repo/manifests
+ git reset --hard
+repo sync -c --force-sync
+</code></pre>
+<p>Using <code>repo status</code> for viewing the status.</p>
+<h3 id="2-radeon-added-in-lineageos-virt"><a class="header" href="#2-radeon-added-in-lineageos-virt">2. radeon added in lineageOS virt</a></h3>
+<p><img src="./images/2025_04_22_16_49_21_1423x434.jpg" alt="./images/2025_04_22_16_49_21_1423x434.jpg" /></p>
+<p>Then I added some radeon items under <code>device/virt</code>:</p>
+<pre><code>[test@minirocky92 virt]$ grep -i "vulkan.radeon" . -r
+./virt-common/virt-common.mk:    vulkan.radeon \
+[test@minirocky92 virt]$ grep -i "radeon" ./ -r | grep llvm
+./virt-common/BoardConfigVirtCommon.mk:BOARD_MESA3D_GALLIUM_DRIVERS := llvmpipe softpipe radeonsi 
+</code></pre>
+<p>Change the definitions under device folder:</p>
+<pre><code>make installclean &amp;&amp; time m espimage-install -j32
+</code></pre>
 
                     </main>
 
