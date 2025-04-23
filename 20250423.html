@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250422 - year2025</title>
+        <title>20250423 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,40 +155,32 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250422"><a class="header" href="#20250422">20250422</a></h1>
-<h3 id="1-repo-sync-issue"><a class="header" href="#1-repo-sync-issue">1. repo sync issue</a></h3>
-<p>Directly copy the old .repo folder from other directory:</p>
-<pre><code>[test@minirocky92 22.1]$ sudo cp -r .repo/* /media/sdc/pure/.repo/
+                        <h1 id="20250423"><a class="header" href="#20250423">20250423</a></h1>
+<h3 id="1-amd520-minimum-vm-qcow2"><a class="header" href="#1-amd520-minimum-vm-qcow2">1. amd520 minimum vm qcow2</a></h3>
+<p>Done in 1.5 hours.</p>
+<h3 id="2-cf13"><a class="header" href="#2-cf13">2. cf13</a></h3>
+<p>Steps:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+root@15fa756bfc8d:/mnt/lineage/cf13# repo init --depth 1 https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b  android-13.0.0_r74
+repo sync
 </code></pre>
-<p>there are some modification in old directory:</p>
-<pre><code> cd .repo/manifests
- git reset --hard
-repo sync -c --force-sync
+<p>Add some config:</p>
+<pre><code>device/google/cuttlefish/AndroidProducts.mk
++       aosp_cf_arm64_only_phone-userdebug \
++       aosp_cf_arm64_only_phone-user \
 </code></pre>
-<p>Using <code>repo status</code> for viewing the status.</p>
-<h3 id="2-radeon-added-in-lineageos-virt"><a class="header" href="#2-radeon-added-in-lineageos-virt">2. radeon added in lineageOS virt</a></h3>
-<p><img src="./images/2025_04_22_16_49_21_1423x434.jpg" alt="./images/2025_04_22_16_49_21_1423x434.jpg" /></p>
-<p>Then I added some radeon items under <code>device/virt</code>:</p>
-<pre><code>[test@minirocky92 virt]$ grep -i "vulkan.radeon" . -r
-./virt-common/virt-common.mk:    vulkan.radeon \
-[test@minirocky92 virt]$ grep -i "radeon" ./ -r | grep llvm
-./virt-common/BoardConfigVirtCommon.mk:BOARD_MESA3D_GALLIUM_DRIVERS := llvmpipe softpipe radeonsi 
-</code></pre>
-<p>Change the definitions under device folder:</p>
-<pre><code>make installclean &amp;&amp; time m espimage-install -j32
+<p>Build:</p>
+<pre><code>lunch aosp_cf_arm64_phone-userdebug &amp;&amp; m -j32
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250421.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250422.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250423.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -196,13 +188,10 @@ repo sync -c --force-sync
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250421.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250422.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250423.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

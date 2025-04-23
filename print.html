@@ -5896,6 +5896,23 @@ repo sync -c --force-sync
 <p>Change the definitions under device folder:</p>
 <pre><code>make installclean &amp;&amp; time m espimage-install -j32
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250423"><a class="header" href="#20250423">20250423</a></h1>
+<h3 id="1-amd520-minimum-vm-qcow2"><a class="header" href="#1-amd520-minimum-vm-qcow2">1. amd520 minimum vm qcow2</a></h3>
+<p>Done in 1.5 hours.</p>
+<h3 id="2-cf13"><a class="header" href="#2-cf13">2. cf13</a></h3>
+<p>Steps:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+root@15fa756bfc8d:/mnt/lineage/cf13# repo init --depth 1 https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b  android-13.0.0_r74
+repo sync
+</code></pre>
+<p>Add some config:</p>
+<pre><code>device/google/cuttlefish/AndroidProducts.mk
++       aosp_cf_arm64_only_phone-userdebug \
++       aosp_cf_arm64_only_phone-user \
+</code></pre>
+<p>Build:</p>
+<pre><code>lunch aosp_cf_arm64_phone-userdebug &amp;&amp; m -j32
+</code></pre>
 
                     </main>
 
