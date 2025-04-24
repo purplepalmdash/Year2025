@@ -4897,6 +4897,15 @@ Save
 exit
 reset
 </code></pre>
+<p>aarch64:</p>
+<pre><code>fs0:\
+edit FS0:\startup.nsh
+"FS0:\EFI\debian\grubaa64.efi"
+Save
+exit
+reset
+
+</code></pre>
 <h3 id="2-openwrt-tips"><a class="header" href="#2-openwrt-tips">2. openwrt tips</a></h3>
 <p>refers to <code>https://gist.github.com/pjobson/3584f36dadc8c349fac9abf1db22b5dc</code>.<br />
 Use rescuezilla for writing into the image.<br />
@@ -5913,6 +5922,108 @@ repo sync
 <p>Build:</p>
 <pre><code>lunch aosp_cf_arm64_phone-userdebug &amp;&amp; m -j32
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250424"><a class="header" href="#20250424">20250424</a></h1>
+<h3 id="1-cuttlefishdebian-testing"><a class="header" href="#1-cuttlefishdebian-testing">1. cuttlefish(Debian testing)</a></h3>
+<p>Write image:</p>
+<pre><code>sudo dd if=/media/nfs/debian-testing-arm64-DVD-1.iso of=/dev/sda bs=10M &amp;&amp; sudo sync
+</code></pre>
+<p><img src="./images/2025_04_24_09_48_21_1390x835.jpg" alt="./images/2025_04_24_09_48_21_1390x835.jpg" /></p>
+<p>Using live cd for text installer.</p>
+<p>After installation, bootloader is not OK.</p>
+<pre><code>fs0:
+cd EFI\debian
+grubaa64.efi
+</code></pre>
+<p>Then you could see the grub items and bootup.</p>
+<pre><code>apt update -y
+apt upgrade -y
+
+# cat /etc/apt/sources.list
+# 默认注释了源码仓库，如有需要可自行取消注释
+deb http://mirrors.ustc.edu.cn/debian testing main contrib non-free non-free-firmware
+# deb-src http://mirrors.ustc.edu.cn/debian testing main contrib non-free non-free-firmware
+deb http://mirrors.ustc.edu.cn/debian testing-updates main contrib non-free non-free-firmware
+# deb-src http://mirrors.ustc.edu.cn/debian testing-updates main contrib non-free non-free-firmware
+
+# backports 软件源，请按需启用
+# deb http://mirrors.ustc.edu.cn/debian testing-backports main contrib non-free non-free-firmware
+# deb-src http://mirrors.ustc.edu.cn/debian testing-backports main contrib non-free non-free-firmware
+</code></pre>
+<p>For installation OK, do following:</p>
+<pre><code>apt remove raspi-firmware
+mv  /etc/initramfs/post-update.d/z50-raspi-firmware /root
+apt remove plymouth culmus
+apt upgrade -y
+reboot
+</code></pre>
+<p>After reboot, no screen output.</p>
+<pre><code>apt install -y lightdm xfce4 xfce4-panel xfce4-session xfce4-settings xfce4-taskmanager xfce4-screenshooter xfce4-goodies xfce4-cpufreq-plugin
+# vim /etc/lightdm/lightdm.conf
+autologin items. 
+
+#  groupadd -r autologin
+# gpasswd -a username autologin
+</code></pre>
+<p>Build/Install cuttlefish, then reboot:</p>
+<pre><code>root@debian:~# qemu-aarch64 --version
+qemu-aarch64 version 9.2.93 (Debian 1:10.0.0~rc3+ds-2)
+Copyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers
+root@debian:~# uname -a
+Linux debian 6.12.22-arm64 #1 SMP Debian 6.12.22-1 (2025-04-10) aarch64 GNU/Linux
+root@debian:~# cat /etc/issue
+Debian GNU/Linux trixie/sid \n \l
+</code></pre>
+<p>Download image:</p>
+<p><img src="./images/2025_04_24_15_49_19_702x286.jpg" alt="./images/2025_04_24_15_49_19_702x286.jpg" /></p>
+<p>Get the file(<code>aosp_cf_x86_64_phone-img-xxxxxx.zip</code>):</p>
+<p><img src="./images/2025_04_24_15_50_54_734x478.jpg" alt="./images/2025_04_24_15_50_54_734x478.jpg" /></p>
+<p>Get the <code>cvd-host_package.tar.gz</code> and <code>aosp_cf_arm64_only_phone-img-13263448.zip</code>:</p>
+<pre><code>scp test@192.168.1.80:/media/sdb/lineage/cf13/./out/host/linux_bionic-arm64/cvd-host_package.tar.gz .
+scp dash@192.168.1.208:~/下载/aosp_cf_arm64_only_phone-img-13263448.zip .
+</code></pre>
+<p>Extrace the files:</p>
+<pre><code>test@debian:~/cf13$ unzip ../aosp_cf_arm64_only_phone-img-13263448.zip 
+Archive:  ../aosp_cf_arm64_only_phone-img-13263448.zip
+  inflating: android-info.txt        
+  inflating: fastboot-info.txt       
+  inflating: boot.img                
+  inflating: bootloader              
+  inflating: init_boot.img           
+  inflating: userdata.img            
+  inflating: vbmeta.img              
+  inflating: vbmeta_system.img       
+  inflating: vbmeta_system_dlkm.img  
+  inflating: vbmeta_vendor_dlkm.img  
+  inflating: vendor_boot.img         
+  inflating: super.img  
+</code></pre>
+<p>New installation:</p>
+<pre><code>test@debian:~$ cd cfown/
+test@debian:~/cfown$ ls
+bin  etc  lib64  nativetest64  usr
+test@debian:~/cfown$ unzip ../aosp_cf_arm64_phone-img-eng.root.zip 
+Archive:  ../aosp_cf_arm64_phone-img-eng.root.zip
+ extracting: android-info.txt        
+  inflating: boot.img                
+  inflating: bootloader              
+  inflating: init_boot.img           
+  inflating: userdata.img            
+  inflating: vbmeta.img              
+  inflating: vbmeta_system.img       
+  inflating: vendor_boot.img         
+  inflating: super.img               
+test@debian:~/cfown$ ls
+android-info.txt  bootloader     lib64         userdata.img  vbmeta_system.img
+bin               etc            nativetest64  usr           vendor_boot.img
+boot.img          init_boot.img  super.img     vbmeta.img
+test@debian:~/cfown$ 
+</code></pre>
+<p>Losts of problem under debian testing, switch to ubuntu24.04.</p>
+<h3 id="2-cuttlefish-ubuntu2204"><a class="header" href="#2-cuttlefish-ubuntu2204">2. cuttlefish ubuntu22.04</a></h3>
+<p>Upgrade to ubuntu24.04:</p>
+<pre><code>sudo do-release-upgrade
+</code></pre>
+<p>Use arm64only.</p>
 
                     </main>
 
