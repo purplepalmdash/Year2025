@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250424 - year2025</title>
+        <title>20250425 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,128 +155,87 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250424"><a class="header" href="#20250424">20250424</a></h1>
-<h3 id="1-cuttlefishdebian-testing"><a class="header" href="#1-cuttlefishdebian-testing">1. cuttlefish(Debian testing)</a></h3>
-<p>Write image:</p>
-<pre><code>sudo dd if=/media/nfs/debian-testing-arm64-DVD-1.iso of=/dev/sda bs=10M &amp;&amp; sudo sync
+                        <h1 id="20250425"><a class="header" href="#20250425">20250425</a></h1>
+<h3 id="1-cf13-arm64only-compilation"><a class="header" href="#1-cf13-arm64only-compilation">1. cf13 arm64only compilation</a></h3>
+<p>Build via:</p>
+<pre><code>lunch aosp_cf_arm64_only_phone-userdebug &amp;&amp; time m dist -j32
 </code></pre>
-<p><img src="./images/2025_04_24_09_48_21_1390x835.jpg" alt="./images/2025_04_24_09_48_21_1390x835.jpg" /></p>
-<p>Using live cd for text installer.</p>
-<p>After installation, bootloader is not OK.</p>
-<pre><code>fs0:
-cd EFI\debian
-grubaa64.efi
+<p>Verify:</p>
+<pre><code> mkdir cf13arm64only
+ cd cf13arm64only/
+ tar xzvf ../cvd-host_package.tar.gz 
+ unzip ../aosp_cf_arm64_only_phone-img-eng.root.zip
 </code></pre>
-<p>Then you could see the grub items and bootup.</p>
-<pre><code>apt update -y
-apt upgrade -y
-
-# cat /etc/apt/sources.list
-# 默认注释了源码仓库，如有需要可自行取消注释
-deb http://mirrors.ustc.edu.cn/debian testing main contrib non-free non-free-firmware
-# deb-src http://mirrors.ustc.edu.cn/debian testing main contrib non-free non-free-firmware
-deb http://mirrors.ustc.edu.cn/debian testing-updates main contrib non-free non-free-firmware
-# deb-src http://mirrors.ustc.edu.cn/debian testing-updates main contrib non-free non-free-firmware
-
-# backports 软件源，请按需启用
-# deb http://mirrors.ustc.edu.cn/debian testing-backports main contrib non-free non-free-firmware
-# deb-src http://mirrors.ustc.edu.cn/debian testing-backports main contrib non-free non-free-firmware
+<p>Using own built <code>cvd-host_package.tar.gz</code>, failed with following infos:</p>
+<pre><code>[ERROR:external/crosvm/src/main.rs:2893] invalid value "/home/test/cf13arm64only/cuttlefish/instances/cvd-1/internal/crosvm_control.sock": this socket path already exists
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6594) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6600) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6606) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6612) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6618) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6624) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6630) has exited with exit code 1
+^Ctest@d3000:~/cf13arm64only$ Failed to read event buffer size: Success
 </code></pre>
-<p>For installation OK, do following:</p>
-<pre><code>apt remove raspi-firmware
-mv  /etc/initramfs/post-update.d/z50-raspi-firmware /root
-apt remove plymouth culmus
-apt upgrade -y
-reboot
+<p>Using the official <code>cvd-host_package.tar.gz</code>:</p>
+<pre><code>mkdir cf13arm64only_official
+cd cf13arm64only_official/
+test@d3000:~/cf13arm64only_official$ tar xzvf ../off/cf13/cvd-host_package.tar.gz 
+test@d3000:~/cf13arm64only_official$ unzip ../aosp_cf_arm64_only_phone-img-eng.root.zip 
+...
+also failed.
+...
 </code></pre>
-<p>After reboot, no screen output.</p>
-<pre><code>apt install -y lightdm xfce4 xfce4-panel xfce4-session xfce4-settings xfce4-taskmanager xfce4-screenshooter xfce4-goodies xfce4-cpufreq-plugin
-# vim /etc/lightdm/lightdm.conf
-autologin items. 
-
-#  groupadd -r autologin
-# gpasswd -a username autologin
+<p>all official items:</p>
+<pre><code>test@d3000:~/cf13arm64only_official$ tar xzvf ../off/cf13/cvd-host_package.tar.gz &amp;&amp; unzip ../off/cf13/aosp_cf_arm64_only_phone-img-13263448.zip 
+test@d3000:~/cf13arm64only_official$ adb connect 0.0.0.0:6520
+already connected to 0.0.0.0:6520
+test@d3000:~/cf13arm64only_official$ adb shell
+vsoc_arm64_only:/ $ dumpsys SurfaceFlinger | grep GLES                                       
+ ------------RE GLES (Ganesh)------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon RX 550 / 550 Series (radeonsi, polaris12, LLVM 19.1.1, DRM 3.57, 6.8.0-58-generic)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 24.2.8-1ubuntu1~24.04.1)
 </code></pre>
-<p>Build/Install cuttlefish, then reboot:</p>
-<pre><code>root@debian:~# qemu-aarch64 --version
-qemu-aarch64 version 9.2.93 (Debian 1:10.0.0~rc3+ds-2)
-Copyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers
-root@debian:~# uname -a
-Linux debian 6.12.22-arm64 #1 SMP Debian 6.12.22-1 (2025-04-10) aarch64 GNU/Linux
-root@debian:~# cat /etc/issue
-Debian GNU/Linux trixie/sid \n \l
+<h3 id="2-ubuntuasahi"><a class="header" href="#2-ubuntuasahi">2. ubuntuasahi</a></h3>
+<p>Not supported yet:</p>
+<p><img src="./images/2025_04_25_08_50_10_389x370.jpg" alt="./images/2025_04_25_08_50_10_389x370.jpg" /></p>
+<p>Better change back to m1 or m2?</p>
+<h3 id="3-repo-sync-issue"><a class="header" href="#3-repo-sync-issue">3. repo sync issue</a></h3>
+<p>repo sync items:</p>
+<pre><code>repo using bfsu
+Change:   
+.repo/manifests.git/config，
+url = https://android.googlesource.com/platform/manifest 
+git config proxy
+repo sync
 </code></pre>
-<p>Download image:</p>
-<p><img src="./images/2025_04_24_15_49_19_702x286.jpg" alt="./images/2025_04_24_15_49_19_702x286.jpg" /></p>
-<p>Get the file(<code>aosp_cf_x86_64_phone-img-xxxxxx.zip</code>):</p>
-<p><img src="./images/2025_04_24_15_50_54_734x478.jpg" alt="./images/2025_04_24_15_50_54_734x478.jpg" /></p>
-<p>Get the <code>cvd-host_package.tar.gz</code> and <code>aosp_cf_arm64_only_phone-img-13263448.zip</code>:</p>
-<pre><code>scp test@192.168.1.80:/media/sdb/lineage/cf13/./out/host/linux_bionic-arm64/cvd-host_package.tar.gz .
-scp dash@192.168.1.208:~/下载/aosp_cf_arm64_only_phone-img-13263448.zip .
+<p>using android 15 build:</p>
+<pre><code>lunch
+build_build_var_cache
+lunch aosp_cf_arm64_phone-trunk_staging-userdebug
+time make dist -j32
 </code></pre>
-<p>Extrace the files:</p>
-<pre><code>test@debian:~/cf13$ unzip ../aosp_cf_arm64_only_phone-img-13263448.zip 
-Archive:  ../aosp_cf_arm64_only_phone-img-13263448.zip
-  inflating: android-info.txt        
-  inflating: fastboot-info.txt       
-  inflating: boot.img                
-  inflating: bootloader              
-  inflating: init_boot.img           
-  inflating: userdata.img            
-  inflating: vbmeta.img              
-  inflating: vbmeta_system.img       
-  inflating: vbmeta_system_dlkm.img  
-  inflating: vbmeta_vendor_dlkm.img  
-  inflating: vendor_boot.img         
-  inflating: super.img  
-</code></pre>
-<p>New installation:</p>
-<pre><code>test@debian:~$ cd cfown/
-test@debian:~/cfown$ ls
-bin  etc  lib64  nativetest64  usr
-test@debian:~/cfown$ unzip ../aosp_cf_arm64_phone-img-eng.root.zip 
-Archive:  ../aosp_cf_arm64_phone-img-eng.root.zip
- extracting: android-info.txt        
-  inflating: boot.img                
-  inflating: bootloader              
-  inflating: init_boot.img           
-  inflating: userdata.img            
-  inflating: vbmeta.img              
-  inflating: vbmeta_system.img       
-  inflating: vendor_boot.img         
-  inflating: super.img               
-test@debian:~/cfown$ ls
-android-info.txt  bootloader     lib64         userdata.img  vbmeta_system.img
-bin               etc            nativetest64  usr           vendor_boot.img
-boot.img          init_boot.img  super.img     vbmeta.img
-test@debian:~/cfown$ 
-</code></pre>
-<p>Losts of problem under debian testing, switch to ubuntu24.04.</p>
-<h3 id="2-cuttlefish-ubuntu2204"><a class="header" href="#2-cuttlefish-ubuntu2204">2. cuttlefish ubuntu22.04</a></h3>
-<p>Upgrade to ubuntu24.04:</p>
-<pre><code>sudo do-release-upgrade
-</code></pre>
-<p>Use arm64only.</p>
-<h3 id="3-some-useful-material"><a class="header" href="#3-some-useful-material">3. some useful material</a></h3>
-<p>Booting a Android Cuttlefish guest directly with QEMU:</p>
-<p><code>https://linaro.atlassian.net/wiki/spaces/ORKO/pages/29093823191/Booting+a+Android+Cuttlefish+guest+directly+with+QEMU</code></p>
-<p><code>start-avm</code>:</p>
-<p><code>https://github.com/slp/start-avm</code></p>
-<p><code>cvd2img</code></p>
-<p><code>https://github.com/slp/cvd2img</code></p>
-<pre><code>cuttlefish image -&gt; cvd2img -&gt; qemuImageFile -&gt; Qemu(mac mini)
-
+<p>Home sync:</p>
+<pre><code>export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
+repo init --depth 1 -u  https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest  -b android-15.0.0_r25
+repo sync
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250423.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250424.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250425.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250426.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -286,11 +245,11 @@ test@debian:~/cfown$
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250423.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250424.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250425.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250426.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

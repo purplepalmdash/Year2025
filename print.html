@@ -6034,6 +6034,319 @@ test@debian:~/cfown$
 <pre><code>cuttlefish image -&gt; cvd2img -&gt; qemuImageFile -&gt; Qemu(mac mini)
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250425"><a class="header" href="#20250425">20250425</a></h1>
+<h3 id="1-cf13-arm64only-compilation"><a class="header" href="#1-cf13-arm64only-compilation">1. cf13 arm64only compilation</a></h3>
+<p>Build via:</p>
+<pre><code>lunch aosp_cf_arm64_only_phone-userdebug &amp;&amp; time m dist -j32
+</code></pre>
+<p>Verify:</p>
+<pre><code> mkdir cf13arm64only
+ cd cf13arm64only/
+ tar xzvf ../cvd-host_package.tar.gz 
+ unzip ../aosp_cf_arm64_only_phone-img-eng.root.zip
+</code></pre>
+<p>Using own built <code>cvd-host_package.tar.gz</code>, failed with following infos:</p>
+<pre><code>[ERROR:external/crosvm/src/main.rs:2893] invalid value "/home/test/cf13arm64only/cuttlefish/instances/cvd-1/internal/crosvm_control.sock": this socket path already exists
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6594) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6600) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6606) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6612) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6618) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6624) has exited with exit code 1
+Detected unexpected exit of monitored subprocess /home/test/cf13arm64only/bin/crosvm
+Subprocess /home/test/cf13arm64only/bin/crosvm (6630) has exited with exit code 1
+^Ctest@d3000:~/cf13arm64only$ Failed to read event buffer size: Success
+</code></pre>
+<p>Using the official <code>cvd-host_package.tar.gz</code>:</p>
+<pre><code>mkdir cf13arm64only_official
+cd cf13arm64only_official/
+test@d3000:~/cf13arm64only_official$ tar xzvf ../off/cf13/cvd-host_package.tar.gz 
+test@d3000:~/cf13arm64only_official$ unzip ../aosp_cf_arm64_only_phone-img-eng.root.zip 
+...
+also failed.
+...
+</code></pre>
+<p>all official items:</p>
+<pre><code>test@d3000:~/cf13arm64only_official$ tar xzvf ../off/cf13/cvd-host_package.tar.gz &amp;&amp; unzip ../off/cf13/aosp_cf_arm64_only_phone-img-13263448.zip 
+test@d3000:~/cf13arm64only_official$ adb connect 0.0.0.0:6520
+already connected to 0.0.0.0:6520
+test@d3000:~/cf13arm64only_official$ adb shell
+vsoc_arm64_only:/ $ dumpsys SurfaceFlinger | grep GLES                                       
+ ------------RE GLES (Ganesh)------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon RX 550 / 550 Series (radeonsi, polaris12, LLVM 19.1.1, DRM 3.57, 6.8.0-58-generic)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 24.2.8-1ubuntu1~24.04.1)
+</code></pre>
+<h3 id="2-ubuntuasahi"><a class="header" href="#2-ubuntuasahi">2. ubuntuasahi</a></h3>
+<p>Not supported yet:</p>
+<p><img src="./images/2025_04_25_08_50_10_389x370.jpg" alt="./images/2025_04_25_08_50_10_389x370.jpg" /></p>
+<p>Better change back to m1 or m2?</p>
+<h3 id="3-repo-sync-issue"><a class="header" href="#3-repo-sync-issue">3. repo sync issue</a></h3>
+<p>repo sync items:</p>
+<pre><code>repo using bfsu
+Change:   
+.repo/manifests.git/config，
+url = https://android.googlesource.com/platform/manifest 
+git config proxy
+repo sync
+</code></pre>
+<p>using android 15 build:</p>
+<pre><code>lunch
+build_build_var_cache
+lunch aosp_cf_arm64_phone-trunk_staging-userdebug
+time make dist -j32
+</code></pre>
+<p>Home sync:</p>
+<pre><code>export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
+repo init --depth 1 -u  https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest  -b android-15.0.0_r25
+repo sync
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250426"><a class="header" href="#20250426">20250426</a></h1>
+<h3 id="1-repo-sync"><a class="header" href="#1-repo-sync">1. repo sync</a></h3>
+<p>cf14:</p>
+<pre><code>export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
+repo init --depth 1 -u  https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest  -b android-14.0.0_r75
+repo sync
+</code></pre>
+<p>cf13:</p>
+<pre><code> export REPO_URL='https://mirrors.tuna.tsinghua.edu.cn/git/git-repo'
+ repo init --depth 1 -u  https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/platform/manifest  -b android-13.0.0_r84
+repo sync
+</code></pre>
+<h3 id="2-qemu-system-aarch64"><a class="header" href="#2-qemu-system-aarch64">2. qemu-system-aarch64</a></h3>
+<p>Working directory items:</p>
+<pre><code>test@d2000:~/qemu$ ls
+flash0.img  flash1.img  start.sh  ubuntu2204.qcow2
+</code></pre>
+<p>start qemu script:</p>
+<pre><code>$ cat start.sh
+qemu-system-aarch64 -nographic -enable-kvm  -machine virt,gic-version=max -m 8192M -cpu max -smp 8 \
+-netdev user,id=vnet,hostfwd=:0.0.0.0:2222-:22 -device virtio-net-pci,netdev=vnet \
+-drive file=ubuntu2204.qcow2,if=none,id=drive0,cache=writeback -device virtio-blk,drive=drive0,bootindex=0 \
+-drive file=flash0.img,format=raw,if=pflash -drive file=flash1.img,format=raw,if=pflash 
+</code></pre>
+<p>the <code>flash0.img</code> and <code>flash1.img</code> is created via:</p>
+<pre><code>dd if=/dev/zero of=flash1.img bs=1M count=64
+dd if=/dev/zero of=flash0.img bs=1M count=64
+dd if=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd of=flash0.img conv=notrunc
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250427"><a class="header" href="#20250427">20250427</a></h1>
+<h3 id="1-cf-on-ubuntu2204"><a class="header" href="#1-cf-on-ubuntu2204">1. cf on ubuntu2204</a></h3>
+<p>cf on ubuntu2204:</p>
+<pre><code>cf13: 
+crosvm+gfx: fail
+crosvm+virgl: fail
+qemu+gfx: fail
+qemu+virgl: fail
+
+cf14: 
+crosvm+gfx: OK
+crosvm+virgl: fail
+qemu+gfx: OK
+qemu+virgl: OK
+
+cf15: 
+crosvm+gfx: OK
+crosvm+virgl: fail
+qemu+gfx: OK
+qemu+virgl: fail
+</code></pre>
+<h3 id="2-cf-verification"><a class="header" href="#2-cf-verification">2. cf verification</a></h3>
+<p>System information:</p>
+<pre><code>test@2004vm:~$ uname -a
+Linux 2004vm 5.4.0-214-generic #234-Ubuntu SMP Fri Mar 14 23:50:24 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+test@2004vm:~$ cat /etc/issue
+Ubuntu 20.04.6 LTS \n \l
+$ dpkg -l | grep cuttlefish
+ii  cuttlefish-base                       0.9.26                               arm64        Cuttlefish Android Virtual Device companion package
+ii  cuttlefish-user                       0.9.26                               arm64        Cuttlefish Android Virtual Device companion package
+</code></pre>
+<h4 id="21-cf13"><a class="header" href="#21-cf13">2.1 cf13</a></h4>
+<p>cf13 materials:</p>
+<pre><code>test@2004vm:~/cf13$ ls -l -h /mnt8/cf13/* 
+-rw-r--r-- 1 root root 911M Apr 26 14:44 /mnt8/cf13/aosp_cf_arm64_phone-img-eng.root.zip
+-rw-r--r-- 1 root root 276M Apr 26 14:44 /mnt8/cf13/cvd-host_package.tar.gz
+test@2004vm:~/cf13$ tar xzvf /mnt8/cf13/cvd-host_package.tar.gz &amp;&amp; unzip /mnt8/cf13/aosp_cf_arm64_phone-img-eng.root.zi
+</code></pre>
+<p>crosvm+gfxstream(failed):</p>
+<p><img src="./images/2025_04_27_14_46_55_578x376.jpg" alt="./images/2025_04_27_14_46_55_578x376.jpg" /></p>
+<p>crosvm+virgl(failed):</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep complete
+[sys.bootstat.first_boot_completed]: [0]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger
+Can't find service: SurfaceFlinger
+</code></pre>
+<p>qemu+gfxstreamer(failed):</p>
+<p><img src="./images/2025_04_27_14_56_28_584x407.jpg" alt="./images/2025_04_27_14_56_28_584x407.jpg" /></p>
+<p>qemu+virgl:</p>
+<pre><code>$ sudo apt install -y virt-manager(This will install qemu-system-aarch64)
+qemu : 100%, won't start
+</code></pre>
+<h4 id="22-cf14"><a class="header" href="#22-cf14">2.2 cf14</a></h4>
+<p>cf14 materials:</p>
+<pre><code>tar xzvf /mnt8/cf14/cvd-host_package.tar.gz &amp;&amp; unzip /mnt8/cf14/aosp_cf_arm64_phone-img-root.zip
+$ ls -l -h /mnt8/cf14/
+total 1.6G
+-rw-r--r-- 1 test test 1.1G Apr 26 14:49 aosp_cf_arm64_phone-img-root.zip
+-rw-r--r-- 1 test test 462M Apr 26 14:48 cvd-host_package.tar.gz
+</code></pre>
+<p>crosvm+gfxstreamer(OK):</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Series (POLARIS12, DRM 3.35.0, 5.4.0-214-generic, LLVM 12.0.0)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 21.2.6)
+</code></pre>
+<p>crosvm+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_01_38_582x339.jpg" alt="./images/2025_04_27_15_01_38_582x339.jpg" /></p>
+<p>qemu+gfxstream(failed):</p>
+<p><img src="./images/2025_04_27_15_03_49_560x363.jpg" alt="./images/2025_04_27_15_03_49_560x363.jpg" /></p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.bootstat.first_boot_completed]: [0]
+</code></pre>
+<p>qemu+virgl(OK):</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.hardware.hwcomposer.mode]: [client]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Mesa/X.org, virgl, OpenGL ES 3.1 Mesa 20.3.4 (git-daa37bee13)
+</code></pre>
+<h3 id="23-cf15"><a class="header" href="#23-cf15">2.3 cf15</a></h3>
+<p>cf15 materials:</p>
+<pre><code># tar xzvf /mnt8/cf15/cvd-host_package.tar.gz &amp;&amp; unzip /mnt8/cf15/aosp_cf_arm64_phone-img-root.zip
+$ ls -l -h /mnt8/cf15/
+total 1.6G
+-rw-r--r-- 1 test test 1.1G Apr 26 14:50 aosp_cf_arm64_phone-img-root.zip
+-rw-r--r-- 1 test test 478M Apr 26 14:50 cvd-host_package.tar.gz
+</code></pre>
+<p>crosvm+gfxstreamer(OK):</p>
+<pre><code>vsoc_arm64:/ $ getprop  | grep boot | grep com                                               
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.hardware.hwcomposer.display_framebuffer_format]: [rgba]
+[ro.boot.vendor.apex.com.android.hardware.gatekeeper]: [com.android.hardware.gatekeeper.nonsecure]
+[ro.boot.vendor.apex.com.android.hardware.keymint]: [com.android.hardware.keymint.rust_nonsecure]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Series (POLARIS12, DRM 3.35.0, 5.4.0-214-generic, LLVM 12.0.0)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 21.2.6)
+</code></pre>
+<p>crosvm+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_06_57_578x364.jpg" alt="./images/2025_04_27_15_06_57_578x364.jpg" /></p>
+<p>qemu+gfxstreamer(failed):</p>
+<p><img src="./images/2025_04_27_15_07_46_573x362.jpg" alt="./images/2025_04_27_15_07_46_573x362.jpg" /></p>
+<p>qemu+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_08_13_571x360.jpg" alt="./images/2025_04_27_15_08_13_571x360.jpg" /></p>
+<h3 id="3-cf-150-verificationubuntu2004"><a class="header" href="#3-cf-150-verificationubuntu2004">3. cf 150 verification(ubuntu2004)</a></h3>
+<p>Install:</p>
+<pre><code>sudo apt install ./cuttlefish-base_1.5.0_arm64.deb ./cuttlefish-user_1.5.0_arm64.deb 
+sudo usermod -aG kvm,cvdnetwork,render $USER
+sudo reboot
+</code></pre>
+<h4 id="31-cf13"><a class="header" href="#31-cf13">3.1 cf13</a></h4>
+<p>crosvm+gfxstreamer:</p>
+<p><img src="./images/2025_04_27_15_22_53_578x358.jpg" alt="./images/2025_04_27_15_22_53_578x358.jpg" /></p>
+<p>crosvm+virgl:</p>
+<p><img src="./images/2025_04_27_15_23_37_566x362.jpg" alt="./images/2025_04_27_15_23_37_566x362.jpg" /></p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[ro.boot.hardware.hwcomposer.mode]: [client]
+[ro.boot.vendor.apex.com.android.wifi.hal]: [com.google.cf.wifi_hwsim]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.bootstat.first_boot_completed]: [0]
+</code></pre>
+<p>qemu+gfxstreamer:</p>
+<p><img src="./images/2025_04_27_15_24_23_572x352.jpg" alt="./images/2025_04_27_15_24_23_572x352.jpg" /></p>
+<p>qemu+virgl:</p>
+<p><img src="./images/2025_04_27_15_26_00_582x359.jpg" alt="./images/2025_04_27_15_26_00_582x359.jpg" /></p>
+<p>After install qemu:</p>
+<p><img src="./images/2025_04_27_15_27_44_570x351.jpg" alt="./images/2025_04_27_15_27_44_570x351.jpg" /></p>
+<p>Keep offline(May take a long time):</p>
+<pre><code> adb devices
+List of devices attached
+192.168.1.78:6520	offline
+</code></pre>
+<p>Updated to 5.15 kernel:</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.mode]: [client]
+[ro.boot.vendor.apex.com.android.wifi.hal]: [com.google.cf.wifi_hwsim]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+GLES: Mesa/X.org, virgl, OpenGL ES 3.1 Mesa 20.3.4 (git-b873e6ad33)
+
+</code></pre>
+<h4 id="32-cf14"><a class="header" href="#32-cf14">3.2 cf14</a></h4>
+<p>crosvm+gfxstreamer(OK):</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Series (POLARIS12, DRM 3.35.0, 5.4.0-214-generic, LLVM 12.0.0)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 21.2.6)
+</code></pre>
+<p>crosvm+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_29_54_570x351.jpg" alt="./images/2025_04_27_15_29_54_570x351.jpg" /></p>
+<p>qemu+gfxstreamer(first boot won't boot complete, failed):</p>
+<pre><code>vsoc_arm64:/ $ getprop  | grep boot | grep com                                               
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.bootstat.first_boot_completed]: [0]
+</code></pre>
+<p>qemu+virgl(OK):</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.hardware.hwcomposer.mode]: [client]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Mesa/X.org, virgl, OpenGL ES 3.1 Mesa 20.3.4 (git-daa37bee13)
+</code></pre>
+<h3 id="33-cf15"><a class="header" href="#33-cf15">3.3 cf15</a></h3>
+<p>crosvm+gfxstreamer:</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep boot | grep com                                                
+[dev.bootcomplete]: [1]
+[ro.boot.hardware.hwcomposer.display_finder_mode]: [drm]
+[ro.boot.hardware.hwcomposer.display_framebuffer_format]: [rgba]
+[ro.boot.vendor.apex.com.android.hardware.gatekeeper]: [com.android.hardware.gatekeeper.nonsecure]
+[ro.boot.vendor.apex.com.android.hardware.keymint]: [com.android.hardware.keymint.rust_nonsecure]
+[ro.boot.vendor.apex.com.google.emulated.camera.provider.hal]: [com.google.emulated.camera.provider.hal]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Series (POLARIS12, DRM 3.35.0, 5.4.0-214-generic, LLVM 12.0.0)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 21.2.6)
+</code></pre>
+<p>crosvm+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_33_44_562x350.jpg" alt="./images/2025_04_27_15_33_44_562x350.jpg" /></p>
+<p>qemu+gfxstreamer(failed):</p>
+<p><img src="./images/2025_04_27_15_34_32_575x348.jpg" alt="./images/2025_04_27_15_34_32_575x348.jpg" /></p>
+<p>qemu+virgl(failed):</p>
+<p><img src="./images/2025_04_27_15_34_58_575x346.jpg" alt="./images/2025_04_27_15_34_58_575x346.jpg" /></p>
 
                     </main>
 
