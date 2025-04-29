@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250428 - year2025</title>
+        <title>20250429 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,29 +155,63 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250428"><a class="header" href="#20250428">20250428</a></h1>
-<h3 id="1-aosp-master"><a class="header" href="#1-aosp-master">1. aosp master</a></h3>
-<p>Not available</p>
-<h3 id="2-build-220-time"><a class="header" href="#2-build-220-time">2. build 22.0 time</a></h3>
-<p>time for building lineageos22.0:</p>
-<pre><code>Writing to 'stdio:out/target/product/virtio_x86_64/lineage-22.0-20250428-UNOFFICIAL-virtio_x86_64.iso' completed successfully.
-#### build completed successfully (01:04:05 (hh:mm:ss)) ####
-real	64m5.368s
-user	1832m39.043s
-sys	99m1.028s
+                        <h1 id="20250429"><a class="header" href="#20250429">20250429</a></h1>
+<h3 id="1-cf14-verification"><a class="header" href="#1-cf14-verification">1. cf14 verification</a></h3>
+<p>Version 14, VannillaIceCream:</p>
+<p><img src="./images/2025_04_29_08_56_52_545x896.jpg" alt="./images/2025_04_29_08_56_52_545x896.jpg" /></p>
+<pre><code>vsoc_arm64:/ $  getprop ro.build.version.release
+14
 </code></pre>
+<p>图形配置:</p>
+<pre><code>vsoc_arm64:/ $ getprop | grep vulkan                                                         
+[ro.cpuvulkan.version]: [0]
+[ro.hardware.vulkan]: [ranchu]
+[ro.hwui.use_vulkan]: []
+[ro.vulkan.apex]: [com.google.cf.vulkan]
+vsoc_arm64:/ $ dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES------------
+GLES: Google (AMD), Android Emulator OpenGL ES Translator (AMD Radeon RX 550 / 550 Series (radeonsi, polaris12, ACO, DRM 3.61, 6.14.0-15-generic)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 25.0.3-1ubuntu2)
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>Game</th><th>Description</th></tr></thead><tbody>
+<tr><td>蛋仔派队</td><td>渲染有黑色</td></tr>
+<tr><td>妄想山海</td><td>不满足配置需求</td></tr>
+<tr><td>逆水寒</td><td>一直处于初始化</td></tr>
+<tr><td>使命召唤手游</td><td>正常</td></tr>
+<tr><td>阴阳师</td><td>渲染异常</td></tr>
+<tr><td>元梦之星</td><td>直接退出</td></tr>
+<tr><td>乱世王者</td><td>无法运行，硬件不满足</td></tr>
+<tr><td>决战！平安京</td><td></td></tr>
+<tr><td>高能英雄</td><td>提示opengles兼容问题，退出</td></tr>
+<tr><td>光遇</td><td>提示不满足opengl条件，退出</td></tr>
+<tr><td>三角洲行动</td><td>Qemu退出</td></tr>
+</tbody></table>
+</div>
+<p>蛋仔：</p>
+<p><img src="./images/2025_04_29_09_25_17_961x517.jpg" alt="./images/2025_04_29_09_25_17_961x517.jpg" /></p>
+<p>妄想:</p>
+<p><img src="./images/2025_04_29_09_30_50_924x506.jpg" alt="./images/2025_04_29_09_30_50_924x506.jpg" /></p>
+<p>使命召唤:</p>
+<p><img src="./images/2025_04_29_10_10_32_975x562.jpg" alt="./images/2025_04_29_10_10_32_975x562.jpg" /></p>
+<p>阴阳师:</p>
+<p><img src="./images/2025_04_29_10_19_28_989x556.jpg" alt="./images/2025_04_29_10_19_28_989x556.jpg" /></p>
+<p>乱世王者:</p>
+<p><img src="./images/2025_04_29_10_27_24_539x416.jpg" alt="./images/2025_04_29_10_27_24_539x416.jpg" /></p>
+<p>高能英雄:</p>
+<p><img src="./images/2025_04_29_10_47_42_759x503.jpg" alt="./images/2025_04_29_10_47_42_759x503.jpg" /></p>
+<p>光遇:</p>
+<p><img src="./images/2025_04_29_10_51_12_842x395.jpg" alt="./images/2025_04_29_10_51_12_842x395.jpg" /></p>
+<p>三角洲行动:</p>
+<p><img src="./images/2025_04_29_10_53_31_607x383.jpg" alt="./images/2025_04_29_10_53_31_607x383.jpg" /></p>
+<h3 id="2-waydroid-on-ubuntu2504"><a class="header" href="#2-waydroid-on-ubuntu2504">2. waydroid on ubuntu2504</a></h3>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250427.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250428.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250429.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -185,13 +219,10 @@ sys	99m1.028s
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250427.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250428.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250429.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
