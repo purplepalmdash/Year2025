@@ -368,6 +368,23 @@ GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Seri
 <p><img src="./images/2025_04_27_15_34_32_575x348.jpg" alt="./images/2025_04_27_15_34_32_575x348.jpg" /></p>
 <p>qemu+virgl(failed):</p>
 <p><img src="./images/2025_04_27_15_34_58_575x346.jpg" alt="./images/2025_04_27_15_34_58_575x346.jpg" /></p>
+<h3 id="4-build-android-cuttlefish"><a class="header" href="#4-build-android-cuttlefish">4. build android cuttlefish</a></h3>
+<p>dnscrypt should be configured at first:</p>
+<pre><code>sudo apt install -y dnscrypt-proxy
+sudo rm -f /etc/resolv.conf
+$ cat /etc/resolv.conf 
+nameserver 127.0.2.1
+
+sudo chattr +i /etc/resolv.conf
+</code></pre>
+<p>Build the specified version of cuttlefish:</p>
+<pre><code>wget https://github.com/google/android-cuttlefish/archive/refs/tags/stable.tar.gz
+tar xzvf android-cuttlefish-1.5.0.tar.gz
+cd android-cuttlefish-1.5.0
+[0.072s] test@2504vm:~/Code/android-cuttlefish-1.5.0$ vim base/debian/control 
+libtinfo5-&gt;libtinfo6
+tools/buildutils/build_packages.sh
+</code></pre>
 
                     </main>
 

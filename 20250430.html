@@ -163,6 +163,67 @@ repo init -u https://gitee.com/openfde/manifests -b fde_w --git-lfs
 repo sync -j6
 </code></pre>
 <p>build with error.</p>
+<pre><code>[100% 105939/105939] Install system fs image: out/target/product/fde_arm64/system.img                                                                                                                                                                        
+
+#### build completed successfully (02:48:06 (hh:mm:ss)) ####
+
+
+real    168m5.875s
+user    1858m49.439s
+sys     124m28.267s
+
+</code></pre>
+<h3 id="2-rpi-glmark2-score"><a class="header" href="#2-rpi-glmark2-score">2. rpi glmark2 score</a></h3>
+<p>result:</p>
+<pre><code>test@rpi2204:~$ DISPLAY=:0 glmark2
+=======================================================
+    glmark2 2021.02
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     Broadcom
+    GL_RENDERER:   V3D 4.2
+    GL_VERSION:    3.1 Mesa 23.2.1-1ubuntu3.1~22.04.2
+=======================================================
+[build] use-vbo=false: FPS: 195 FrameTime: 5.128 ms
+[build] use-vbo=true: FPS: 212 FrameTime: 4.717 ms
+[texture] texture-filter=nearest: FPS: 197 FrameTime: 5.076 ms
+[texture] texture-filter=linear: FPS: 196 FrameTime: 5.102 ms
+[texture] texture-filter=mipmap: FPS: 196 FrameTime: 5.102 ms
+[shading] shading=gouraud: FPS: 174 FrameTime: 5.747 ms
+[shading] shading=blinn-phong-inf: FPS: 171 FrameTime: 5.848 ms
+[shading] shading=phong: FPS: 162 FrameTime: 6.173 ms
+[shading] shading=cel: FPS: 171 FrameTime: 5.848 ms
+[bump] bump-render=high-poly: FPS: 170 FrameTime: 5.882 ms
+[bump] bump-render=normals: FPS: 204 FrameTime: 4.902 ms
+[bump] bump-render=height: FPS: 199 FrameTime: 5.025 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 150 FrameTime: 6.667 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 105 FrameTime: 9.524 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 208 FrameTime: 4.808 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 76 FrameTime: 13.158 ms
+[desktop] effect=shadow:windows=4: FPS: 185 FrameTime: 5.405 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 105 FrameTime: 9.524 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 107 FrameTime: 9.346 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 121 FrameTime: 8.264 ms
+[ideas] speed=duration: FPS: 192 FrameTime: 5.208 ms
+[jellyfish] &lt;default&gt;: FPS: 156 FrameTime: 6.410 ms
+[terrain] &lt;default&gt;: FPS: 20 FrameTime: 50.000 ms
+[shadow] &lt;default&gt;: FPS: 63 FrameTime: 15.873 ms
+[refract] &lt;default&gt;: FPS: 28 FrameTime: 35.714 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 215 FrameTime: 4.651 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 179 FrameTime: 5.587 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 214 FrameTime: 4.673 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 203 FrameTime: 4.926 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 172 FrameTime: 5.814 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 202 FrameTime: 4.950 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 201 FrameTime: 4.975 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 169 FrameTime: 5.917 ms
+=======================================================
+                                  glmark2 Score: 161 
+=======================================================
+</code></pre>
+<p>Ludashi:</p>
+<p><img src="./images/2025_04_30_23_59_47_397x753.jpg" alt="./images/2025_04_30_23_59_47_397x753.jpg" /></p>
+<p><img src="./images/2025_05_01_00_00_01_397x329.jpg" alt="./images/2025_05_01_00_00_01_397x329.jpg" /></p>
 
                     </main>
 
@@ -172,6 +233,9 @@ repo sync -j6
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250501.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -183,6 +247,9 @@ repo sync -j6
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250501.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

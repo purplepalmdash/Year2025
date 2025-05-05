@@ -6347,6 +6347,23 @@ GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Seri
 <p><img src="./images/2025_04_27_15_34_32_575x348.jpg" alt="./images/2025_04_27_15_34_32_575x348.jpg" /></p>
 <p>qemu+virgl(failed):</p>
 <p><img src="./images/2025_04_27_15_34_58_575x346.jpg" alt="./images/2025_04_27_15_34_58_575x346.jpg" /></p>
+<h3 id="4-build-android-cuttlefish"><a class="header" href="#4-build-android-cuttlefish">4. build android cuttlefish</a></h3>
+<p>dnscrypt should be configured at first:</p>
+<pre><code>sudo apt install -y dnscrypt-proxy
+sudo rm -f /etc/resolv.conf
+$ cat /etc/resolv.conf 
+nameserver 127.0.2.1
+
+sudo chattr +i /etc/resolv.conf
+</code></pre>
+<p>Build the specified version of cuttlefish:</p>
+<pre><code>wget https://github.com/google/android-cuttlefish/archive/refs/tags/stable.tar.gz
+tar xzvf android-cuttlefish-1.5.0.tar.gz
+cd android-cuttlefish-1.5.0
+[0.072s] test@2504vm:~/Code/android-cuttlefish-1.5.0$ vim base/debian/control 
+libtinfo5-&gt;libtinfo6
+tools/buildutils/build_packages.sh
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250428"><a class="header" href="#20250428">20250428</a></h1>
 <h3 id="1-aosp-master"><a class="header" href="#1-aosp-master">1. aosp master</a></h3>
 <p>Not available</p>
@@ -6357,6 +6374,28 @@ GLES: Google (AMD), Android Emulator OpenGL ES Translator (Radeon RX550/550 Seri
 real	64m5.368s
 user	1832m39.043s
 sys	99m1.028s
+</code></pre>
+<h3 id="3-cvd-launch-script"><a class="header" href="#3-cvd-launch-script">3. cvd launch script</a></h3>
+<pre><code>test@2504vm:~$ cat qemu_start.sh 
+HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
+test@2504vm:~$ cat qemu_start_virgl.sh 
+HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
+test@2504vm:~$ cat start.sh 
+HOME=$PWD ./bin/launch_cvd  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
+test@2504vm:~$ cat start_virgl.sh 
+HOME=$PWD ./bin/launch_cvd  -gpu_mode drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
+</code></pre>
+<p>cf14 qemu(gfxstreamer) issue:</p>
+<pre><code>starting Rust KeyMint TA implementation in a thread
+starting C++ KeyMint implementation in a thread with FDs in=43, out=42
+KeyMint Rust TA running with infile=49, outfile=48, security_level=TrustedEnvironment
+No secure deletion data file found. Creating one.
+2025-04-28T14:46:58.823302Z qemu-system-aarch64: -device virtio-gpu-rutabaga,x-gfxstream-gles=on,gfxstream-vulkan=on,x-gfxstream-composer=on,hostmem=256M,id=gpu0,addr=02.0,xres=720,yres=1280: 'virtio-gpu-rutabaga' (alias 'virtio-gpu-rutabaga-pci') is not a valid device model name
+Detected unexpected exit of monitored subprocess /usr/bin/qemu-system-aarch64
+Subprocess /usr/bin/qemu-system-aarch64 (9158) has exited with exit code 1
+Stopping all monitored processes due to unexpected exit of critical process
+04-28 14:46:58.840  9329  9330 I stop_cvd: main.cc:124 Requesting stop
+
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250429"><a class="header" href="#20250429">20250429</a></h1>
 <h3 id="1-cf14-verification"><a class="header" href="#1-cf14-verification">1. cf14 verification</a></h3>
@@ -6414,6 +6453,248 @@ repo init -u https://gitee.com/openfde/manifests -b fde_w --git-lfs
 repo sync -j6
 </code></pre>
 <p>build with error.</p>
+<pre><code>[100% 105939/105939] Install system fs image: out/target/product/fde_arm64/system.img                                                                                                                                                                        
+
+#### build completed successfully (02:48:06 (hh:mm:ss)) ####
+
+
+real    168m5.875s
+user    1858m49.439s
+sys     124m28.267s
+
+</code></pre>
+<h3 id="2-rpi-glmark2-score"><a class="header" href="#2-rpi-glmark2-score">2. rpi glmark2 score</a></h3>
+<p>result:</p>
+<pre><code>test@rpi2204:~$ DISPLAY=:0 glmark2
+=======================================================
+    glmark2 2021.02
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     Broadcom
+    GL_RENDERER:   V3D 4.2
+    GL_VERSION:    3.1 Mesa 23.2.1-1ubuntu3.1~22.04.2
+=======================================================
+[build] use-vbo=false: FPS: 195 FrameTime: 5.128 ms
+[build] use-vbo=true: FPS: 212 FrameTime: 4.717 ms
+[texture] texture-filter=nearest: FPS: 197 FrameTime: 5.076 ms
+[texture] texture-filter=linear: FPS: 196 FrameTime: 5.102 ms
+[texture] texture-filter=mipmap: FPS: 196 FrameTime: 5.102 ms
+[shading] shading=gouraud: FPS: 174 FrameTime: 5.747 ms
+[shading] shading=blinn-phong-inf: FPS: 171 FrameTime: 5.848 ms
+[shading] shading=phong: FPS: 162 FrameTime: 6.173 ms
+[shading] shading=cel: FPS: 171 FrameTime: 5.848 ms
+[bump] bump-render=high-poly: FPS: 170 FrameTime: 5.882 ms
+[bump] bump-render=normals: FPS: 204 FrameTime: 4.902 ms
+[bump] bump-render=height: FPS: 199 FrameTime: 5.025 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 150 FrameTime: 6.667 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 105 FrameTime: 9.524 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 208 FrameTime: 4.808 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 76 FrameTime: 13.158 ms
+[desktop] effect=shadow:windows=4: FPS: 185 FrameTime: 5.405 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 105 FrameTime: 9.524 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 107 FrameTime: 9.346 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 121 FrameTime: 8.264 ms
+[ideas] speed=duration: FPS: 192 FrameTime: 5.208 ms
+[jellyfish] &lt;default&gt;: FPS: 156 FrameTime: 6.410 ms
+[terrain] &lt;default&gt;: FPS: 20 FrameTime: 50.000 ms
+[shadow] &lt;default&gt;: FPS: 63 FrameTime: 15.873 ms
+[refract] &lt;default&gt;: FPS: 28 FrameTime: 35.714 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 215 FrameTime: 4.651 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 179 FrameTime: 5.587 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 214 FrameTime: 4.673 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 203 FrameTime: 4.926 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 172 FrameTime: 5.814 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 202 FrameTime: 4.950 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 201 FrameTime: 4.975 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 169 FrameTime: 5.917 ms
+=======================================================
+                                  glmark2 Score: 161 
+=======================================================
+</code></pre>
+<p>Ludashi:</p>
+<p><img src="./images/2025_04_30_23_59_47_397x753.jpg" alt="./images/2025_04_30_23_59_47_397x753.jpg" /></p>
+<p><img src="./images/2025_05_01_00_00_01_397x329.jpg" alt="./images/2025_05_01_00_00_01_397x329.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250501"><a class="header" href="#20250501">20250501</a></h1>
+<h3 id="1-d2000amd520"><a class="header" href="#1-d2000amd520">1. d2000+amd520</a></h3>
+<p>glmark2 score:</p>
+<pre><code>=======================================================
+    glmark2 2021.02
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     AMD
+    GL_RENDERER:   OLAND (oland, LLVM 15.0.7, DRM 3.42, 5.15.0-138-generic)
+    GL_VERSION:    4.6 (Compatibility Profile) Mesa 23.2.1-1ubuntu3.1~22.04.3
+=======================================================
+[build] use-vbo=false: FPS: 1220 FrameTime: 0.820 ms
+[build] use-vbo=true: FPS: 1156 FrameTime: 0.865 ms
+[texture] texture-filter=nearest: FPS: 1026 FrameTime: 0.975 ms
+[texture] texture-filter=linear: FPS: 1025 FrameTime: 0.976 ms
+[texture] texture-filter=mipmap: FPS: 1091 FrameTime: 0.917 ms
+[shading] shading=gouraud: FPS: 1011 FrameTime: 0.989 ms
+[shading] shading=blinn-phong-inf: FPS: 1013 FrameTime: 0.987 ms
+[shading] shading=phong: FPS: 1012 FrameTime: 0.988 ms
+[shading] shading=cel: FPS: 1013 FrameTime: 0.987 ms
+[bump] bump-render=high-poly: FPS: 813 FrameTime: 1.230 ms
+[bump] bump-render=normals: FPS: 1204 FrameTime: 0.831 ms
+[bump] bump-render=height: FPS: 1180 FrameTime: 0.847 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 962 FrameTime: 1.040 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 866 FrameTime: 1.155 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 1069 FrameTime: 0.935 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 463 FrameTime: 2.160 ms
+[desktop] effect=shadow:windows=4: FPS: 583 FrameTime: 1.715 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 524 FrameTime: 1.908 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 703 FrameTime: 1.422 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 772 FrameTime: 1.295 ms
+[ideas] speed=duration: FPS: 1172 FrameTime: 0.853 ms
+[jellyfish] &lt;default&gt;: FPS: 667 FrameTime: 1.499 ms
+[terrain] &lt;default&gt;: FPS: 116 FrameTime: 8.621 ms
+[shadow] &lt;default&gt;: FPS: 455 FrameTime: 2.198 ms
+[refract] &lt;default&gt;: FPS: 109 FrameTime: 9.174 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 1185 FrameTime: 0.844 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 1211 FrameTime: 0.826 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 1208 FrameTime: 0.828 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 1200 FrameTime: 0.833 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 1209 FrameTime: 0.827 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 1206 FrameTime: 0.829 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 1210 FrameTime: 0.826 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 1209 FrameTime: 0.827 ms
+=======================================================
+                                  glmark2 Score: 935 
+=======================================================
+</code></pre>
+<p>ludashi Score:</p>
+<p><img src="./images/2025_05_01_09_23_13_1115x1225.jpg" alt="./images/2025_05_01_09_23_13_1115x1225.jpg" /></p>
+<p><img src="./images/2025_05_01_09_24_17_523x461.jpg" alt="./images/2025_05_01_09_24_17_523x461.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250502"><a class="header" href="#20250502">20250502</a></h1>
+<h3 id="1-archlinux-with-kwin"><a class="header" href="#1-archlinux-with-kwin">1. archlinux with kwin</a></h3>
+<p>format the nvme disk:</p>
+<pre><code>Device           Start        End    Sectors   Size Type
+/dev/nvme0n1p1    2048    2203647    2201600     1G EFI System
+/dev/nvme0n1p2 2203648 2000408575 1998204928 952.8G Linux filesystem
+
+mkfs.ext4 /dev/nvme0n1p2
+mkfs.vfat -F32 /dev/nvme0n1p1
+</code></pre>
+<p>Make dir and mount:</p>
+<pre><code> mount /dev/nvme0n1p2 /mnt
+ mkdir -p /mnt/boot
+ mount /dev/nvme0n1p1 /mnt/boot
+vim /etc/pacman.d/mirrorlist
+pacman -Sy archlinux-keyring
+pacstrap -c /mnt base
+pacstrap -c /mnt linux
+mkdir /mnt/ccc
+rm -rf /var/cache/pacman/pkg
+ln -s /mnt/ccc /var/cache/pacman/pkg
+pacstrap -c /mnt linux-firmware vim base-devel
+genfstab -U /mnt&gt;&gt;/mnt/etc/fstab
+arch-chroot /mnt
+</code></pre>
+<p>In chroot env:</p>
+<pre><code> ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+ vim /etc/locale.gen 
+activate en_US and zh_CN related
+ locale-gen
+ vim /etc/locale.conf
+LANG=en_US.UTF-8
+ vim /etc/hosts 
+127.0.0.1	localhost
+::1	localhost
+127.0.1.1	archwayland
+ vim /etc/hostname
+archwayland
+ mkinitcpio -P
+passwd
+pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+pacman -S xorg
+pacman -S openssh networkmanager
+systemctl enable sshd
+systemctl enable NetworkManager
+pacman -S net-tools iotop nethogs sudo
+useradd -m dash
+passwd dash
+reboot
+</code></pre>
+<p>In archlinux :</p>
+<pre><code>pacman -S byobu plasma firefox chromium sddm
+systemctl enable sddm
+visudo
+  add dash as nopasswd sudoer
+sudo vim /etc/pacman.conf
+......
+  [archlinuxcn]
+  SigLevel = Never
+  Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+sudo pacman -S yay
+yay nomachine
+</code></pre>
+<h3 id="2-systemd-nspawn"><a class="header" href="#2-systemd-nspawn">2. systemd-nspawn</a></h3>
+<p>Tips:</p>
+<pre><code>mkdir MyContainer
+sudo pacstrap -K -c ~/MyContainer base 
+sudo systemd-nspawn -D /home/dash/MyContainer/
+    passwd root
+sudo systemd-nspawn -b -D /home/dash/MyContainer/
+</code></pre>
+<h3 id="3-waydroid-on-archlinux"><a class="header" href="#3-waydroid-on-archlinux">3. waydroid on archlinux</a></h3>
+<p>Install binder linux dkms from yay:</p>
+<pre><code>sudo pacman -S linux-headers dkms
+yay binder_linux-dkms
+sudo dkms status
+binder/1, 6.14.4-arch1-2, x86_64: installed
+</code></pre>
+<p>binder auto start:</p>
+<pre><code>cat /etc/modules-load.d/binder_linux.conf
+  # Load binder_linux at boot
+  binder_linux
+cat /etc/modprobe.d/binder_linux.conf
+  # Options for binder_linux
+  options binder_linux devices=binder,hwbinder,vndbinder
+</code></pre>
+<p>Install waydroid via:</p>
+<pre><code>sudo pacman -S waydroid waydroid-image
+sudo waydroid init
+sudo systemctl enable waydroid-container.service --now
+waydroid show-full-ui
+    [23:26:00] Starting waydroid session
+    [23:26:00] WAYLAND_DISPLAY is not set, defaulting to "wayland-0"
+    [gbinder] Service manager /dev/anbox-binder has appeared
+    [23:26:09] Android with user 0 is ready
+</code></pre>
+<p>waydroid session info:</p>
+<pre><code>$ sudo waydroid shell
+:/ # dumpsys SurfaceFlinger | grep GLES
+GLES: Intel, Mesa Intel(R) UHD Graphics 630 (CML GT2), OpenGL ES 3.2 Mesa 24.3.4
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250503"><a class="header" href="#20250503">20250503</a></h1>
+<h3 id="1-redroid-11-in-virgl"><a class="header" href="#1-redroid-11-in-virgl">1. redroid 11 in virgl</a></h3>
+<p>Run:</p>
+<pre><code>sudo docker run -itd --name  redroid11 --privileged   -p 5555:5555 -v ~/data:/data  redroid/redroid:11.0.0-latest redroid.width=1080 redroid.height=1920 redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128
+</code></pre>
+<p>examine:</p>
+<pre><code>d218007a8018:/ # getprop | grep boot | grep com                                                                              
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [696072955612]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+d218007a8018:/ # dumpsys SurfaceFlinger | grep GLES
+GLES: Mesa, virgl (AMD Radeon Graphics (radeonsi, polaris12, ACO, DRM 3...), OpenGL ES 3.2 Mesa 24.0.8 (git-441f064c1c)
+d218007a8018:/ # dumpsys SurfaceFlinger | grep vukan                                                                         
+1|d218007a8018:/ # getprop | grep vulkan                                                                                     
+[ro.hardware.vulkan]: [virtio]
+[ro.hwui.use_vulkan]: []
+</code></pre>
+<p>三角洲行动:</p>
+<p><img src="./images/2025_05_03_22_51_13_1273x716.jpg" alt="./images/2025_05_03_22_51_13_1273x716.jpg" /></p>
+<h3 id="2-virgl-2404-waydroid"><a class="header" href="#2-virgl-2404-waydroid">2. virgl 2404 waydroid</a></h3>
+<p>蛋仔派对： OK</p>
+<p>Some games could not be launched(could not click for <code>开始</code>)</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250504"><a class="header" href="#20250504">20250504</a></h1>
+<h3 id="1-lindroid-guideline"><a class="header" href="#1-lindroid-guideline">1. lindroid guideline</a></h3>
+<p>URL:</p>
+<p><code>https://gist.github.com/AngelaCooljx/14ba722346da0479050be924d96e8c5e</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
 
                     </main>
 

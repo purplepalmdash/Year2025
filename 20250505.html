@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250428 - year2025</title>
+        <title>20250505 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,51 +155,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250428"><a class="header" href="#20250428">20250428</a></h1>
-<h3 id="1-aosp-master"><a class="header" href="#1-aosp-master">1. aosp master</a></h3>
-<p>Not available</p>
-<h3 id="2-build-220-time"><a class="header" href="#2-build-220-time">2. build 22.0 time</a></h3>
-<p>time for building lineageos22.0:</p>
-<pre><code>Writing to 'stdio:out/target/product/virtio_x86_64/lineage-22.0-20250428-UNOFFICIAL-virtio_x86_64.iso' completed successfully.
-#### build completed successfully (01:04:05 (hh:mm:ss)) ####
-real	64m5.368s
-user	1832m39.043s
-sys	99m1.028s
-</code></pre>
-<h3 id="3-cvd-launch-script"><a class="header" href="#3-cvd-launch-script">3. cvd launch script</a></h3>
-<pre><code>test@2504vm:~$ cat qemu_start.sh 
-HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat qemu_start_virgl.sh 
-HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat start.sh 
-HOME=$PWD ./bin/launch_cvd  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat start_virgl.sh 
-HOME=$PWD ./bin/launch_cvd  -gpu_mode drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-</code></pre>
-<p>cf14 qemu(gfxstreamer) issue:</p>
-<pre><code>starting Rust KeyMint TA implementation in a thread
-starting C++ KeyMint implementation in a thread with FDs in=43, out=42
-KeyMint Rust TA running with infile=49, outfile=48, security_level=TrustedEnvironment
-No secure deletion data file found. Creating one.
-2025-04-28T14:46:58.823302Z qemu-system-aarch64: -device virtio-gpu-rutabaga,x-gfxstream-gles=on,gfxstream-vulkan=on,x-gfxstream-composer=on,hostmem=256M,id=gpu0,addr=02.0,xres=720,yres=1280: 'virtio-gpu-rutabaga' (alias 'virtio-gpu-rutabaga-pci') is not a valid device model name
-Detected unexpected exit of monitored subprocess /usr/bin/qemu-system-aarch64
-Subprocess /usr/bin/qemu-system-aarch64 (9158) has exited with exit code 1
-Stopping all monitored processes due to unexpected exit of critical process
-04-28 14:46:58.840  9329  9330 I stop_cvd: main.cc:124 Requesting stop
-
-</code></pre>
+                        <h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250427.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250504.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250429.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -207,13 +172,10 @@ Stopping all monitored processes due to unexpected exit of critical process
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250427.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250504.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250429.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

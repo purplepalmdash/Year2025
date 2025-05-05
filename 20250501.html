@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250428 - year2025</title>
+        <title>20250501 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,49 +155,67 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250428"><a class="header" href="#20250428">20250428</a></h1>
-<h3 id="1-aosp-master"><a class="header" href="#1-aosp-master">1. aosp master</a></h3>
-<p>Not available</p>
-<h3 id="2-build-220-time"><a class="header" href="#2-build-220-time">2. build 22.0 time</a></h3>
-<p>time for building lineageos22.0:</p>
-<pre><code>Writing to 'stdio:out/target/product/virtio_x86_64/lineage-22.0-20250428-UNOFFICIAL-virtio_x86_64.iso' completed successfully.
-#### build completed successfully (01:04:05 (hh:mm:ss)) ####
-real	64m5.368s
-user	1832m39.043s
-sys	99m1.028s
+                        <h1 id="20250501"><a class="header" href="#20250501">20250501</a></h1>
+<h3 id="1-d2000amd520"><a class="header" href="#1-d2000amd520">1. d2000+amd520</a></h3>
+<p>glmark2 score:</p>
+<pre><code>=======================================================
+    glmark2 2021.02
+=======================================================
+    OpenGL Information
+    GL_VENDOR:     AMD
+    GL_RENDERER:   OLAND (oland, LLVM 15.0.7, DRM 3.42, 5.15.0-138-generic)
+    GL_VERSION:    4.6 (Compatibility Profile) Mesa 23.2.1-1ubuntu3.1~22.04.3
+=======================================================
+[build] use-vbo=false: FPS: 1220 FrameTime: 0.820 ms
+[build] use-vbo=true: FPS: 1156 FrameTime: 0.865 ms
+[texture] texture-filter=nearest: FPS: 1026 FrameTime: 0.975 ms
+[texture] texture-filter=linear: FPS: 1025 FrameTime: 0.976 ms
+[texture] texture-filter=mipmap: FPS: 1091 FrameTime: 0.917 ms
+[shading] shading=gouraud: FPS: 1011 FrameTime: 0.989 ms
+[shading] shading=blinn-phong-inf: FPS: 1013 FrameTime: 0.987 ms
+[shading] shading=phong: FPS: 1012 FrameTime: 0.988 ms
+[shading] shading=cel: FPS: 1013 FrameTime: 0.987 ms
+[bump] bump-render=high-poly: FPS: 813 FrameTime: 1.230 ms
+[bump] bump-render=normals: FPS: 1204 FrameTime: 0.831 ms
+[bump] bump-render=height: FPS: 1180 FrameTime: 0.847 ms
+[effect2d] kernel=0,1,0;1,-4,1;0,1,0;: FPS: 962 FrameTime: 1.040 ms
+[effect2d] kernel=1,1,1,1,1;1,1,1,1,1;1,1,1,1,1;: FPS: 866 FrameTime: 1.155 ms
+[pulsar] light=false:quads=5:texture=false: FPS: 1069 FrameTime: 0.935 ms
+[desktop] blur-radius=5:effect=blur:passes=1:separable=true:windows=4: FPS: 463 FrameTime: 2.160 ms
+[desktop] effect=shadow:windows=4: FPS: 583 FrameTime: 1.715 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 524 FrameTime: 1.908 ms
+[buffer] columns=200:interleave=false:update-dispersion=0.9:update-fraction=0.5:update-method=subdata: FPS: 703 FrameTime: 1.422 ms
+[buffer] columns=200:interleave=true:update-dispersion=0.9:update-fraction=0.5:update-method=map: FPS: 772 FrameTime: 1.295 ms
+[ideas] speed=duration: FPS: 1172 FrameTime: 0.853 ms
+[jellyfish] &lt;default&gt;: FPS: 667 FrameTime: 1.499 ms
+[terrain] &lt;default&gt;: FPS: 116 FrameTime: 8.621 ms
+[shadow] &lt;default&gt;: FPS: 455 FrameTime: 2.198 ms
+[refract] &lt;default&gt;: FPS: 109 FrameTime: 9.174 ms
+[conditionals] fragment-steps=0:vertex-steps=0: FPS: 1185 FrameTime: 0.844 ms
+[conditionals] fragment-steps=5:vertex-steps=0: FPS: 1211 FrameTime: 0.826 ms
+[conditionals] fragment-steps=0:vertex-steps=5: FPS: 1208 FrameTime: 0.828 ms
+[function] fragment-complexity=low:fragment-steps=5: FPS: 1200 FrameTime: 0.833 ms
+[function] fragment-complexity=medium:fragment-steps=5: FPS: 1209 FrameTime: 0.827 ms
+[loop] fragment-loop=false:fragment-steps=5:vertex-steps=5: FPS: 1206 FrameTime: 0.829 ms
+[loop] fragment-steps=5:fragment-uniform=false:vertex-steps=5: FPS: 1210 FrameTime: 0.826 ms
+[loop] fragment-steps=5:fragment-uniform=true:vertex-steps=5: FPS: 1209 FrameTime: 0.827 ms
+=======================================================
+                                  glmark2 Score: 935 
+=======================================================
 </code></pre>
-<h3 id="3-cvd-launch-script"><a class="header" href="#3-cvd-launch-script">3. cvd launch script</a></h3>
-<pre><code>test@2504vm:~$ cat qemu_start.sh 
-HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat qemu_start_virgl.sh 
-HOME=$PWD ./bin/launch_cvd -vm_manager qemu_cli  -gpu_mode   drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat start.sh 
-HOME=$PWD ./bin/launch_cvd  -gpu_mode   gfxstream  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-test@2504vm:~$ cat start_virgl.sh 
-HOME=$PWD ./bin/launch_cvd  -gpu_mode drm_virgl  -enable_gpu_udmabuf -cpus 8 -memory_mb 12480
-</code></pre>
-<p>cf14 qemu(gfxstreamer) issue:</p>
-<pre><code>starting Rust KeyMint TA implementation in a thread
-starting C++ KeyMint implementation in a thread with FDs in=43, out=42
-KeyMint Rust TA running with infile=49, outfile=48, security_level=TrustedEnvironment
-No secure deletion data file found. Creating one.
-2025-04-28T14:46:58.823302Z qemu-system-aarch64: -device virtio-gpu-rutabaga,x-gfxstream-gles=on,gfxstream-vulkan=on,x-gfxstream-composer=on,hostmem=256M,id=gpu0,addr=02.0,xres=720,yres=1280: 'virtio-gpu-rutabaga' (alias 'virtio-gpu-rutabaga-pci') is not a valid device model name
-Detected unexpected exit of monitored subprocess /usr/bin/qemu-system-aarch64
-Subprocess /usr/bin/qemu-system-aarch64 (9158) has exited with exit code 1
-Stopping all monitored processes due to unexpected exit of critical process
-04-28 14:46:58.840  9329  9330 I stop_cvd: main.cc:124 Requesting stop
-
-</code></pre>
+<p>ludashi Score:</p>
+<p><img src="./images/2025_05_01_09_23_13_1115x1225.jpg" alt="./images/2025_05_01_09_23_13_1115x1225.jpg" /></p>
+<p><img src="./images/2025_05_01_09_24_17_523x461.jpg" alt="./images/2025_05_01_09_24_17_523x461.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250427.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250430.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250429.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250502.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -207,11 +225,11 @@ Stopping all monitored processes due to unexpected exit of critical process
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250427.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250430.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250429.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250502.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
