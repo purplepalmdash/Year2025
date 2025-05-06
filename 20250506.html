@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250505 - year2025</title>
+        <title>20250506 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,19 +155,66 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
+                        <h1 id="20250506"><a class="header" href="#20250506">20250506</a></h1>
+<h3 id="1-virgl-based-openfde"><a class="header" href="#1-virgl-based-openfde">1. virgl based openfde</a></h3>
+<p>Install via:</p>
+<pre><code>sudo apt install -y curl
+curl -fsSL https://openfde.com/getopenfde/get-openfde.sh -o get-openfde.sh  
+sudo sh ./get-openfde.sh
+</code></pre>
+<p>netplan configuration:</p>
+<pre><code>test@vm2404:~$ cat /etc/netplan/eth0.yaml 
+network:
+    version: 2
+    ethernets:
+        eth0:
+            dhcp4: true
+test@vm2404:~$ cat /etc/netplan/eth1.yaml 
+network:
+    version: 2
+    ethernets:
+        eth1:
+            dhcp4: true
+</code></pre>
+<p><img src="./images/2025_05_06_14_30_56_614x794.jpg" alt="./images/2025_05_06_14_30_56_614x794.jpg" /></p>
+<p>Testing games:</p>
+<pre><code>和平精英, 正常运行
+蛋仔派对,  正常运行。
+妄想山海, 正常运行。
+逆水寒, 正常游戏
+使命召唤手游, 正常游戏
+阴阳师, 闪退
+元梦之星, 正常运行。
+乱世王者, 正常运行
+决战！平安京
+高能英雄: 正常运行
+光遇: 看到手型图案后闪退。
+三角洲行动, 可正常启动，不崩溃，但因为鼠标无法点击到正确的位置，在openfde下无法点击到正确的位置并开始。（见截图)   
+美职篮全明星，正常启动，但启动后画面为紫色背景(见下面截图), 显卡为rx550.    
+永恒部落, 正常运行。
+英魂之刃, 启动后黑屏(rx550)
+崩坏学园2: 正常运行
+伏魔录, 正常运行。
+巅峰极速
+</code></pre>
+<p>三角洲:</p>
+<p><img src="./images/2025_05_06_15_27_21_1221x786.jpg" alt="./images/2025_05_06_15_27_21_1221x786.jpg" /></p>
+<p>美职:</p>
+<p><img src="./images/2025_05_06_14_50_01_1129x547.jpg" alt="./images/2025_05_06_14_50_01_1129x547.jpg" /></p>
+<p>逆水寒:</p>
+<p><img src="./images/2025_05_06_15_49_23_1099x536.jpg" alt="./images/2025_05_06_15_49_23_1099x536.jpg" /></p>
+<p>英魂之刃:</p>
+<p><img src="./images/2025_05_06_16_39_07_1103x556.jpg" alt="./images/2025_05_06_16_39_07_1103x556.jpg" /></p>
+<h3 id="2"><a class="header" href="#2">2.</a></h3>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250504.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250505.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250506.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -175,13 +222,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250504.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250505.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250506.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
