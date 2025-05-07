@@ -6746,6 +6746,28 @@ network:
 <p>英魂之刃:</p>
 <p><img src="./images/2025_05_06_16_39_07_1103x556.jpg" alt="./images/2025_05_06_16_39_07_1103x556.jpg" /></p>
 <h3 id="2"><a class="header" href="#2">2.</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250507"><a class="header" href="#20250507">20250507</a></h1>
+<h3 id="1-rpi-redroid"><a class="header" href="#1-rpi-redroid">1. RPi redroid</a></h3>
+<p>Most of the games won't run normally.</p>
+<h3 id="2-redroid-12-building"><a class="header" href="#2-redroid-12-building">2. redroid 12 building</a></h3>
+<p>In docker:</p>
+<pre><code>    sudo curl https://mirrors.bfsu.edu.cn/git/git-repo -o /usr/local/bin/repo
+    sudo chmod 777 /usr/local/bin/repo
+    export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+    repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-12.0.0_r32
+    repo sync
+After add the repo
+    git config --global http.proxy 'socks5://192.168.1.6:21080'
+    repo sync -j8
+    sudo apt install -y git-lfs
+    repo forall -c "git lfs pull"
+    repo sync -j1 --force-sync
+</code></pre>
+<h3 id="3-ndk-build-mesa"><a class="header" href="#3-ndk-build-mesa">3. ndk build mesa</a></h3>
+<p>refers to :</p>
+<p><code>https://docs.mesa3d.org/android.html</code>
+and</p>
+<p><code>https://github.com/AOF-Dev/mesa-swdroid/issues/1</code></p>
 
                     </main>
 
