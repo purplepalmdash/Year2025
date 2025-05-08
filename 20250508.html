@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250507 - year2025</title>
+        <title>20250508 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,40 +155,203 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250507"><a class="header" href="#20250507">20250507</a></h1>
-<h3 id="1-rpi-redroid"><a class="header" href="#1-rpi-redroid">1. RPi redroid</a></h3>
-<p>Most of the games won't run normally.</p>
-<h3 id="2-redroid-12-building"><a class="header" href="#2-redroid-12-building">2. redroid 12 building</a></h3>
-<p>In docker:</p>
-<pre><code>    sudo curl https://mirrors.bfsu.edu.cn/git/git-repo -o /usr/local/bin/repo
-    sudo chmod 777 /usr/local/bin/repo
-    export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
-    repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-12.0.0_r32
-    repo sync
-After add the repo
-    git config --global http.proxy 'socks5://192.168.1.6:21080'
-    repo sync -j8
-    sudo apt install -y git-lfs
-    repo forall -c "git lfs pull"
-    repo sync -j1 --force-sync
+                        <h1 id="20250508"><a class="header" href="#20250508">20250508</a></h1>
+<h3 id="1-mesa-building"><a class="header" href="#1-mesa-building">1. mesa building</a></h3>
+<p>Building aosp 9:</p>
+<pre><code>rm -r out/target/common/obj/JAVA_LIBRARIES
 </code></pre>
-<h3 id="3-ndk-build-mesa"><a class="header" href="#3-ndk-build-mesa">3. ndk build mesa</a></h3>
-<p>refers to :</p>
-<p><code>https://docs.mesa3d.org/android.html</code>
-and</p>
-<p><code>https://github.com/AOF-Dev/mesa-swdroid/issues/1</code></p>
+<h3 id="2-ubuntu2004-cross-compilation"><a class="header" href="#2-ubuntu2004-cross-compilation">2. ubuntu2004 cross-compilation</a></h3>
+<p>qcow2 for installation:</p>
+<pre><code>qemu-img create -f qcow2 ubuntu2004buildmesa2.qcow2 80G
+</code></pre>
+<p><img src="./images/2025_05_08_16_54_17_454x373.jpg" alt="./images/2025_05_08_16_54_17_454x373.jpg" /></p>
+<p>Install packages:</p>
+<pre><code>sudo apt install binutils-aarch64-linux-gnu-dbg binutils-aarch64-linux-gnu cpp-aarch64-linux-gnu \
+g++-10-aarch64-linux-gnu g++-9-aarch64-linux-gnu g++-aarch64-linux-gnu g++ \
+gcc-10-aarch64-linux-gnu-base gcc-9-aarch64-linux-gnu-base gcc-aarch64-linux-gnu \
+pkg-config-aarch64-linux-gnu qemu-efi-aarch64 gcc arch-test qemu-user-static debootstrap vim bison flex
+sudo apt install vim libdrm-nouveau2 libdrm-dev libdrm2 libwayland-dev wayland-protocols libmirwayland-bin gir1.2-gtklayershell-0.1 gtk-layer-shell-doc gtk-layer-shell-examples libgtk-layer-shell-dev libgtk-layer-shell0 wayland-scanner++ libwayland-egl-backend-dev libx11-dev libxext-dev libxfixes-dev libxcb-glx0-dev libxcb-shm0-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-present-dev  libxshmfence-dev libxxf86vm-dev libxrandr-dev python3-pip
+</code></pre>
+<p>Create sysroot path aarch64 vm:</p>
+<pre><code>sudo mkdir -p /mnt/data/arm64
+sudo qemu-debootstrap --arch arm64 bullseye /mnt/data/arm64 http://mirrors.ustc.edu.cn/debian/
+sudo chroot /mnt/data/arm64/
+apt install vim libdrm-nouveau2 libdrm-dev libdrm2 libwayland-dev wayland-protocols libmirwayland-bin gir1.2-gtklayershell-0.1 gtk-layer-shell-doc gtk-layer-shell-examples libgtk-layer-shell-dev libgtk-layer-shell0 wayland-scanner++ libwayland-egl-backend-dev libx11-dev libxext-dev libxfixes-dev libxcb-glx0-dev libxcb-shm0-dev libx11-xcb-dev libxcb-dri2-0-dev libxcb-dri3-dev libxcb-present-dev  libxshmfence-dev libxxf86vm-dev libxrandr-dev python3-pip
+apt remove meson
+sudo python3 -m pip install meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+</code></pre>
+<p>Build(22.0.0 failed):</p>
+<pre><code>unzip mesa-mesa-22.0.0.zip
+cd  /home/test/mesa-mesa-22.0.0/subprojects
+scp test@192.168.1.81:/home/test/mesa-mesa-22.0.0/subprojects/expat.wrap .
+scp test@192.168.1.81:/home/test/mesa-mesa-22.0.0/subprojects/zlib.wrap .
+</code></pre>
+<p><img src="./images/2025_05_08_17_37_54_937x327.jpg" alt="./images/2025_05_08_17_37_54_937x327.jpg" /></p>
+<p>Build(21.0.0):</p>
+<pre><code>unzip mesa-mesa-21.0.0.zip 
+cd mesa-mesa-21.0.0/subprojects/
+scp test@192.168.1.81:/home/test/mesa-mesa-21.0.0/subprojects/expat.wrap .
+scp test@192.168.1.81:/home/test/mesa-mesa-21.0.0/subprojects/zlib.wrap .
+</code></pre>
+<p>Create arm64.txt:</p>
+<pre><code>[binaries]
+c = 'aarch64-linux-gnu-gcc'
+cpp = 'aarch64-linux-gnu-g++'
+ar = 'aarch64-linux-gnu-gcc-ar'
+strip = 'aarch64-linux-gnu-strip'
+pkgconfig = 'aarch64-linux-gnu-pkg-config'
+ld = 'aarch64-linux-gnu-ld'
+pcap-config = ''
+cmake = 'cmake'
+
+[properties]
+skip_sanity_check = true
+sys_root = '/mnt/data/arm64'
+# Generate binaries that are portable across all Armv8 machines
+platform = 'generic'
+pkg_config_libdir ='/mnt/data/arm64/usr/lib/aarch64-linux-gnu/pkgconfig:/mnt/data/arm64/usr/share/pkgconfig'
+
+[built-in options]
+c_args = ['--sysroot', '/mnt/data/arm64']
+c_link_args = ['-Wl,-rpath', '/mnt/data/arm64/usr/lib/aarch64-linux-gnu/', '-Wl,--as-needed']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'armv8-a'
+endian = 'little'
+
+test@buildmesa2:~/mesa-mesa-21.0.0$ pwd
+/home/test/mesa-mesa-21.0.0
+test@buildmesa2:~/mesa-mesa-21.0.0$ ls arm64.txt 
+arm64.txt
+</code></pre>
+<p>Build and install:</p>
+<pre><code>/usr/local/bin/meson build  --prefix=/opt/local --cross-file arm64.txt
+ninja -C build
+ninja -C build install
+</code></pre>
+<p>Directory content:</p>
+<pre><code>test@buildmesa2:/opt/local/lib$ tree 
+.
+├── dri
+│   ├── armada-drm_dri.so
+│   ├── etnaviv_dri.so
+│   ├── exynos_dri.so
+│   ├── hx8357d_dri.so
+│   ├── ili9225_dri.so
+│   ├── ili9341_dri.so
+│   ├── imx-dcss_dri.so
+│   ├── imx-drm_dri.so
+│   ├── ingenic-drm_dri.so
+│   ├── kgsl_dri.so
+│   ├── kms_swrast_dri.so
+│   ├── lima_dri.so
+│   ├── mcde_dri.so
+│   ├── mediatek_dri.so
+│   ├── meson_dri.so
+│   ├── mi0283qt_dri.so
+│   ├── msm_dri.so
+│   ├── mxsfb-drm_dri.so
+│   ├── nouveau_dri.so
+│   ├── panfrost_dri.so
+│   ├── pl111_dri.so
+│   ├── repaper_dri.so
+│   ├── rockchip_dri.so
+│   ├── st7586_dri.so
+│   ├── st7735r_dri.so
+│   ├── stm_dri.so
+│   ├── sun4i-drm_dri.so
+│   ├── swrast_dri.so
+│   ├── tegra_dri.so
+│   ├── v3d_dri.so
+│   ├── vc4_dri.so
+│   └── virtio_gpu_dri.so
+├── libEGL.so -&gt; libEGL.so.1
+├── libEGL.so.1 -&gt; libEGL.so.1.0.0
+├── libEGL.so.1.0.0
+├── libexpat.so -&gt; libexpat.so.1
+├── libexpat.so.1 -&gt; libexpat.so.1.6.7
+├── libexpat.so.1.6.7
+├── libgbm.so -&gt; libgbm.so.1
+├── libgbm.so.1 -&gt; libgbm.so.1.0.0
+├── libgbm.so.1.0.0
+├── libglapi.so -&gt; libglapi.so.0
+├── libglapi.so.0 -&gt; libglapi.so.0.0.0
+├── libglapi.so.0.0.0
+├── libGLESv1_CM.so -&gt; libGLESv1_CM.so.1
+├── libGLESv1_CM.so.1 -&gt; libGLESv1_CM.so.1.1.0
+├── libGLESv1_CM.so.1.1.0
+├── libGLESv2.so -&gt; libGLESv2.so.2
+├── libGLESv2.so.2 -&gt; libGLESv2.so.2.0.0
+├── libGLESv2.so.2.0.0
+├── libGL.so -&gt; libGL.so.1
+├── libGL.so.1 -&gt; libGL.so.1.2.0
+├── libGL.so.1.2.0
+├── libvulkan_lvp.so
+├── libxatracker.so -&gt; libxatracker.so.2
+├── libxatracker.so.2 -&gt; libxatracker.so.2.5.0
+├── libxatracker.so.2.5.0
+├── libz.so
+└── pkgconfig
+    ├── dri.pc
+    ├── egl.pc
+    ├── gbm.pc
+    ├── glesv1_cm.pc
+    ├── glesv2.pc
+    ├── gl.pc
+    ├── xatracker.pc
+    └── zlib.pc
+</code></pre>
+<p>Change to ndk:</p>
+<pre><code>scp dash@192.168.1.208:~/android-ndk-r21e-linux-x86_64.zip .
+unzip android-ndk-r21e-linux-x86_64.zip
+
+
+$ cat arm64_ndk.txt 
+[binaries]
+ar = '/home/test/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-ar'
+c = ['ccache', '/home/test/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang']
+cpp = ['ccache', '/home/test/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android26-clang++', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++']
+strip = '/home/test/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android-strip'
+#c = 'aarch64-linux-gnu-gcc'
+#cpp = 'aarch64-linux-gnu-g++'
+#ar = 'aarch64-linux-gnu-gcc-ar'
+#strip = 'aarch64-linux-gnu-strip'
+pkgconfig = 'aarch64-linux-gnu-pkg-config'
+ld = 'aarch64-linux-gnu-ld'
+pcap-config = ''
+cmake = 'cmake'
+
+[properties]
+skip_sanity_check = true
+sys_root = '/mnt/data/arm64'
+# Generate binaries that are portable across all Armv8 machines
+platform = 'generic'
+pkg_config_libdir ='/mnt/data/arm64/usr/lib/aarch64-linux-gnu/pkgconfig:/mnt/data/arm64/usr/share/pkgconfig'
+
+[built-in options]
+c_args = ['--sysroot', '/mnt/data/arm64']
+c_link_args = ['-Wl,-rpath', '/mnt/data/arm64/usr/lib/aarch64-linux-gnu/', '-Wl,--as-needed']
+
+[host_machine]
+system = 'linux'
+cpu_family = 'aarch64'
+cpu = 'armv8-a'
+endian = 'little'
+
+</code></pre>
+<p>Build via <code>/usr/local/bin/meson build  --prefix=/opt/local --cross-file arm64_ndk.txt</code> failed with:</p>
+<p><img src="./images/2025_05_08_17_49_58_937x299.jpg" alt="./images/2025_05_08_17_49_58_937x299.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250506.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250507.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250508.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -196,13 +359,10 @@ and</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250506.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250507.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250508.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
