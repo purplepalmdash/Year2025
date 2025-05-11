@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250509 - year2025</title>
+        <title>20250511 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,75 +155,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250509"><a class="header" href="#20250509">20250509</a></h1>
-<h3 id="1-build-mesa"><a class="header" href="#1-build-mesa">1. build mesa</a></h3>
-<p>Tips:</p>
-<pre><code>sudo apt install -y libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libdrm-dev libx11-dev python3-pip git pkg-config flex bison
-sudo pip3 install mako meson ninja -i https://pypi.mirrors.ustc.edu.cn/simple/
-unzip android-ndk-r27c-linux.zip
-mkdir Code &amp;&amp; cd Code
-git config --global http.proxy 'socks5://192.168.1.6:21080'
-git clone https://gitlab.freedesktop.org/mesa/drm.git
-cd drm
-meson setup "build-android"             --prefix=/tmp/drm-static             --cross-file "../build-crossfile-drm"             -Ddefault_library=static             -Dintel=disabled             -Dradeon=disabled             -Damdgpu=disabled             -Dnouveau=disabled             -Dvmwgfx=disabled             -Dfreedreno=enabled             -Dvc4=disabled             -Detnaviv=disabled             -Dfreedreno-kgsl=true
-git clone --branch mesa-25.0.2 https://gitlab.freedesktop.org/mesa/mesa
-git clone --branch 25.0.2 https://github.com/Vera-Firefly/mesa-build-fix
-cp -rf mesa-build-fix/* mesa
-cd mesa
-meson setup "build-android"             --prefix=/tmp/mesa             --cross-file "../build-crossfile"             -Dplatforms=android             -Dplatform-sdk-version=33             -Dandroid-stub=true             -Dandroid-libbacktrace=disabled             -Dandroid-strict=false             -Dxlib-lease=disabled             -Degl=disabled             -Dgbm=disabled             -Dglx=disabled             -Dllvm=disabled             -Dopengl=true             -Dosmesa=true             -Dvulkan-drivers=             -Dgallium-drivers=zink,panfrost,freedreno             -Dfreedreno-kmds=kgsl,msm             -Dshared-glapi=false             -Dtools=drm-shim             -Dbuildtype=release
-</code></pre>
-<p>The build definition file:</p>
-<pre><code>dash@dash-Standard-PC-Q35-ICH9-2009:~/Code$ cat build-crossfile
-[binaries]
-ndk = '/home/dash/Code/android-ndk-r27c' + '/toolchains/llvm/prebuilt/linux-x86_64/bin'
-ar = ndk + '/llvm-ar'
-c = ['ccache', ndk + '/aarch64-linux-android29-clang', '-O3', '-DVK_USE_PLATFORM_ANDROID_KHR', '-fPIC']
-cpp = ['ccache', ndk + '/aarch64-linux-android29-clang++', '-O3', '-DVK_USE_PLATFORM_ANDROID_KHR', '-fPIC', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++', '-Wno-c++11-narrowing']
-c_ld = 'lld'
-cpp_ld = 'lld'
-strip = ndk + '/aarch64-linux-android-strip'
-pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=.:/tmp/drm-static/lib/pkgconfig', '/usr/bin/pkg-config']
-
-#[properties]
-#pkg_config_libdir ='/tmp/drm-static/lib/pkgconfig/:/usr/lib/x86_64-linux-gnu/pkgconfig/'
-
-[host_machine]
-system = 'android'
-cpu_family = 'arm'
-cpu = 'armv8'
-endian = 'little'
-dash@dash-Standard-PC-Q35-ICH9-2009:~/Code$ cat build-crossfile-drm 
-[binaries]
-ndk = '/home/dash/Code/android-ndk-r27c' + '/toolchains/llvm/prebuilt/linux-x86_64/bin'
-ar = ndk + '/llvm-ar'
-c = ['ccache', ndk + '/aarch64-linux-android29-clang', '-O3', '-DVK_USE_PLATFORM_ANDROID_KHR', '-fPIC']
-cpp = ['ccache', ndk + '/aarch64-linux-android29-clang++', '-O3', '-DVK_USE_PLATFORM_ANDROID_KHR', '-fPIC', '-fno-exceptions', '-fno-unwind-tables', '-fno-asynchronous-unwind-tables', '-static-libstdc++']
-c_ld = 'lld'
-cpp_ld = 'lld'
-strip = ndk + '/aarch64-linux-android-strip'
-pkgconfig = ['env', 'PKG_CONFIG_LIBDIR=.', '/usr/bin/pkg-config']
-[host_machine]
-system = 'android'
-cpu_family = 'arm'
-cpu = 'armv8'
-endian = 'little'
-</code></pre>
-<p>build result:</p>
-<pre><code>$ ls /tmp/mesa/lib/
-libarchive.so  libfreedreno_noop_drm_shim.so  libOSMesa.so  libpanfrost_noop_drm_shim.so  libxatracker.so  libxml2.so  pkgconfig
-</code></pre>
+                        <h1 id="20250511"><a class="header" href="#20250511">20250511</a></h1>
+<h3 id="1-centoslxclibvirt"><a class="header" href="#1-centoslxclibvirt">1. centos/lxc/libvirt</a></h3>
+<p>centos7 5.10 kernel.<br />
+lxc + redroid redroid.<br />
+libvirt</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250508.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250510.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250510.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -231,13 +176,10 @@ libarchive.so  libfreedreno_noop_drm_shim.so  libOSMesa.so  libpanfrost_noop_drm
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250508.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250510.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250510.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

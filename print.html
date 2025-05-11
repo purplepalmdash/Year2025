@@ -6695,6 +6695,18 @@ d218007a8018:/ # dumpsys SurfaceFlinger | grep vukan
 <p>URL:</p>
 <p><code>https://gist.github.com/AngelaCooljx/14ba722346da0479050be924d96e8c5e</code></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
+<h3 id="1-redroid-in-fedorax86_64"><a class="header" href="#1-redroid-in-fedorax86_64">1. redroid in fedora(x86_64)</a></h3>
+<p>Install via <code>sudo dnf install -y waydroid</code>, then <code>sudo systemctl enable waydroid-container --now</code>.</p>
+<p><img src="./images/2025_05_05_16_04_46_817x373.jpg" alt="./images/2025_05_05_16_04_46_817x373.jpg" /></p>
+<p>Houdini:</p>
+<pre><code>git clone https://github.com/casualsnek/waydroid_script
+cd waydroid_script
+sudo  apt install python3.10-venv
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+sudo venv/bin/python3 main.py
+</code></pre>
+<p>network issue.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250506"><a class="header" href="#20250506">20250506</a></h1>
 <h3 id="1-virgl-based-openfde"><a class="header" href="#1-virgl-based-openfde">1. virgl based openfde</a></h3>
 <p>Install via:</p>
@@ -7013,6 +7025,15 @@ endian = 'little'
 <pre><code>$ ls /tmp/mesa/lib/
 libarchive.so  libfreedreno_noop_drm_shim.so  libOSMesa.so  libpanfrost_noop_drm_shim.so  libxatracker.so  libxml2.so  pkgconfig
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250510"><a class="header" href="#20250510">20250510</a></h1>
+<h3 id="1-thinking-on-dockerized-android"><a class="header" href="#1-thinking-on-dockerized-android">1. Thinking on dockerized android</a></h3>
+<p>openstack + lxc + lxcBasedRedroid.<br />
+Redroid should located on centos7</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250511"><a class="header" href="#20250511">20250511</a></h1>
+<h3 id="1-centoslxclibvirt"><a class="header" href="#1-centoslxclibvirt">1. centos/lxc/libvirt</a></h3>
+<p>centos7 5.10 kernel.<br />
+lxc + redroid redroid.<br />
+libvirt</p>
 
                     </main>
 

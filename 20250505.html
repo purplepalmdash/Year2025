@@ -156,6 +156,18 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
+<h3 id="1-redroid-in-fedorax86_64"><a class="header" href="#1-redroid-in-fedorax86_64">1. redroid in fedora(x86_64)</a></h3>
+<p>Install via <code>sudo dnf install -y waydroid</code>, then <code>sudo systemctl enable waydroid-container --now</code>.</p>
+<p><img src="./images/2025_05_05_16_04_46_817x373.jpg" alt="./images/2025_05_05_16_04_46_817x373.jpg" /></p>
+<p>Houdini:</p>
+<pre><code>git clone https://github.com/casualsnek/waydroid_script
+cd waydroid_script
+sudo  apt install python3.10-venv
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+sudo venv/bin/python3 main.py
+</code></pre>
+<p>network issue.</p>
 
                     </main>
 
