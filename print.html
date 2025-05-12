@@ -7034,6 +7034,103 @@ Redroid should located on centos7</p>
 <p>centos7 5.10 kernel.<br />
 lxc + redroid redroid.<br />
 libvirt</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250512"><a class="header" href="#20250512">20250512</a></h1>
+<h3 id="1-centos7-redroid"><a class="header" href="#1-centos7-redroid">1. centos7 redroid</a></h3>
+<p>Initial os/kernel configuration:</p>
+<pre><code>[root@centosredroidbase ~]# cat /etc/redhat-release 
+CentOS Linux release 7.6.1810 (Core) 
+[root@centosredroidbase ~]# uname -a
+Linux centosredroidbase 3.10.0-957.el7.x86_64 #1 SMP Thu Nov 8 23:39:32 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+<p>repo configuration:</p>
+<pre><code>sudo sed -i.bak   -e 's|^mirrorlist=|#mirrorlist=|g'   -e 's|^#baseurl=http://mirror.centos.org/centos|baseurl=https://mirrors.ustc.edu.cn/centos-vault/centos|g'   /etc/yum.repos.d/CentOS-Base.repo
+yum makecache
+yum install -y ncurses-devel openssl-devel elfutils-libelf-devel flex bison perl vim bc
+yum install -y centos-release-scl
+</code></pre>
+<p>sclo repo:</p>
+<pre><code># cat CentOS-SCLo-scl.repo
+[C7.9.2009-centos-sclo-sclo]
+name=CentOS-7.9.2009 - SCLo sclo
+baseurl=http://mirrors.ustc.edu.cn/centos-vault/7.9.2009/sclo/$basearch/sclo/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+# cat CentOS-SCLo-scl-rh.repo
+[C7.9.2009-centos-sclo-rh]
+name=CentOS-7.9.2009 - SCLo rh
+baseurl=http://mirrors.ustc.edu.cn/centos-vault/7.9.2009/sclo/$basearch/rh/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
+# yum makecache
+# sudo yum install -y devtoolset-9-gcc
+</code></pre>
+<p>Activate the devtoolset:</p>
+<pre><code># scl enable devtoolset-9 bash
+# gcc --version
+gcc (GCC) 9.3.1 20200408 (Red Hat 9.3.1-2)
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# scl_source enable devtoolset-9
+# axel https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v5.x/linux-5.10.26.tar.xz
+# tar xJvf linux-5.10.26.tar.xz
+# cp /root/config_5.10.26 .config
+# make menuconfig
+# make -j16
+ # cat /etc/default/grub  | grep DEFAULT
+GRUB_DEFAULT=0
+# make modules_install &amp;&amp; make install &amp;&amp; grub2-mkconfig -o /boot/grub2/grub.cfg
+# curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# vim /etc/yum.repos.d/docker-ce.repo 
+# gpgcheck=1 --&gt; gpgcheck=0
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# systemctl enable docker --now
+# vim /etc/docker/daemon.json
+{
+      "registry-mirrors": [ "https://docker.nju.edu.cn/",
+             "https://hub.uuuadc.top",
+        "https://docker.anyhub.us.kg",
+        "https://dockerhub.jobcher.com",
+        "https://dockerhub.icu",
+        "https://docker.ckyl.me",
+        "https://docker.awsl9527.cn", "https://docker.mirrors.ustc.edu.cn", "https://docker.1ms.run", "https://docker.xuanyuan.me"
+      ]
+}
+# reboot
+</code></pre>
+<p>Run docker(boot complete):</p>
+<pre><code>docker run -itd --privileged --name redroid12 -v ~/data:/data     -p 5555:5555     redroid/redroid:12.0.0-latest
+</code></pre>
+<h3 id="2-lxc-on-centos7"><a class="header" href="#2-lxc-on-centos7">2. lxc on centos7</a></h3>
+<p>lxc build via:</p>
+<pre><code>https://github.com/ppira/rpm-lxc/blob/df7064a484fb1004212a20fcda97d28cc9e0a274/lxc.spec
+</code></pre>
+<p>meson should be installed via:</p>
+<pre><code>meson-0.61.5-1.el7.noarch.rpm
+</code></pre>
+<p>Build:</p>
+<pre><code> rpmdev-setuptree
+ cp rpm/lxc.spec $HOME/rpmbuild/SPECS/
+ cp rpm/lxc-net rpm/lxc-2.0.7-fix-init.patch rpm/lxc-4.0.1-fix-lxc-net.patch $HOME/rpmbuild/SOURCES/
+ cp lxc-5.0.2.tar.gz $HOME/rpmbuild/SOURCES
+ cd  $HOME/rpmbuild/SPECS/
+  rpmbuild -bb lxc.spec 
+
+</code></pre>
+<p>Install:</p>
+<pre><code>sudo yum install ./lxc-5.0.2-2.el7.x86_64.rpm ./lxc-libs-5.0.2-2.el7.x86_64.rpm ./lxc-static-5.0.2-2.el7.x86_64.rpm ./lxc-templates-5.0.2-2.el7.x86_64.rpm
+</code></pre>
+<p>Start lxc-net:</p>
+<pre><code>  sudo vim /usr/libexec/lxc/lxc-net 
+  sudo systemctl start lxc-net.service
+</code></pre>
+<p>Create lxc container via:</p>
+<pre><code> lxc-create -n redroid12 -t oci -- -u docker://swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/redroid/redroid:12.0.0-latest
+ lxc-create -n redroid11 -t oci -- -u docker://swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/redroid/redroid:12.0.0_64only-latest
+</code></pre>
 
                     </main>
 
