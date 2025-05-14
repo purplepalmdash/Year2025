@@ -7136,6 +7136,85 @@ GRUB_DEFAULT=0
 <p>Create image via glance:</p>
 <pre><code>openstack image create "lxc_ubuntu_12.04" --file precise-server-cloudimg-amd64.img --disk-format raw --container-format bare --public
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250514"><a class="header" href="#20250514">20250514</a></h1>
+<h3 id="1-openwrt-issue"><a class="header" href="#1-openwrt-issue">1. openwrt issue</a></h3>
+<p>via following command I could not reached the openwrt's intranet:</p>
+<pre><code>sudo route add -net 10.0.0.0/24 gw 192.168.1.146
+</code></pre>
+<p>solved via:</p>
+<p><img src="./images/2025_05_14_11_25_11_965x446.jpg" alt="./images/2025_05_14_11_25_11_965x446.jpg" /></p>
+<h3 id="2-kolla-ansible"><a class="header" href="#2-kolla-ansible">2. kolla-ansible</a></h3>
+<p>two nics with each node:</p>
+<pre><code>openstack1 enp1s0(192.168.168.2) enp7s0
+openstack2 enp1s0(192.168.168.3) enp7s0
+openstack3 enp1s0(192.168.168.4) enp7s0
+</code></pre>
+<p>On each node:</p>
+<pre><code>rm -f /etc/resolv.conf
+echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
+apt install -y dnscrypt-proxy
+echo "nameserver 127.0.2.1"&gt;/etc/resolv.conf
+chattr +i /etc/resolv.conf
+</code></pre>
+<p>On each node:</p>
+<pre><code># vim /etc/hosts
+......
+192.168.168.2 openstack1
+192.168.168.3 openstack2
+192.168.168.4 openstack3
+# ssh-keygen
+# ssh-copy-id root@openstack1
+# ssh-copy-id root@openstack2
+# ssh-copy-id root@openstack3
+</code></pre>
+<p>On deploy node(openstack1):</p>
+<pre><code>mkdir -p /root/Code/venv
+python3 -m venv /root/Code/venv/
+source /root/Code/venv/bin/activate
+pip install -U pip
+pip install 'ansible&gt;=4,&lt;6'
+git clone https://github.com/openstack/kolla-ansible -b stable/2024.2
+cd kolla-ansible
+pip install kolla-ansible
+pip isntall -r kolla-ansible/requirements.txt
+sudo mkdir -p /etc/kolla
+sudo chown $USER:$USER /etc/kolla
+cp -r kolla-ansible/etc/kolla/* /etc/kolla
+kolla-ansible install-deps
+</code></pre>
+<p>inventory:</p>
+<pre><code>mkdir deploy
+cp kolla-ansible/ansible/inventory/* deploy/
+</code></pre>
+<p><code>vim deploy/multinode</code>:</p>
+<pre><code>[control]
+openstack1
+openstack2
+openstack3
+
+[network]
+openstack1
+openstack2
+openstack3
+
+[compute]
+openstack1
+openstack2
+openstack3
+
+[monitoring]
+openstack1
+openstack2
+openstack3
+</code></pre>
+<p>Generate the password for kolla environment:</p>
+<pre><code># kolla-genpwd
+# vim  /etc/kolla/passwords.yml
+......
+keystone_admin_password: 123456hhh
+......
+
+</code></pre>
 
                     </main>
 
