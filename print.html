@@ -7215,6 +7215,32 @@ keystone_admin_password: 123456hhh
 ......
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250515"><a class="header" href="#20250515">20250515</a></h1>
+<h3 id="1-create-img-for-redroid"><a class="header" href="#1-create-img-for-redroid">1. Create img for redroid</a></h3>
+<p>Make img file:</p>
+<pre><code>dd if=/dev/null of=example.img bs=1M seek=10240
+mkfs.ext4 -F example.img
+mkdir /mnt8
+mount example.img /mnt8
+rsync -av /var/lib/lxc/redroid11/rootfs/* /mnt8
+</code></pre>
+<h3 id="2-change-the-ubuntu-image-password"><a class="header" href="#2-change-the-ubuntu-image-password">2. change the ubuntu image password</a></h3>
+<p>default passwd is not supported, set it via following steps:</p>
+<pre><code>apt install -y libguestfs-tools
+virt-customize -a /home/dash/jammy-server-cloudimg-amd64.img --root-password password:123456
+</code></pre>
+<h3 id="3-lxc-related"><a class="header" href="#3-lxc-related">3. lxc related</a></h3>
+<p>Domain type:</p>
+<pre><code>&lt;domain type='lxc' xmlns:lxc='http://libvirt.org/schemas/domain/lxc/1.0'&gt;
+</code></pre>
+<p>initargs:</p>
+<pre><code>&lt;os&gt;
+  &lt;type arch='x86_64'&gt;exe&lt;/type&gt;
+  &lt;init&gt;/bin/systemd&lt;/init&gt;
+  &lt;initarg&gt;--unit&lt;/initarg&gt;
+  &lt;initarg&gt;emergency.service&lt;/initarg&gt;
+&lt;/os&gt;
+</code></pre>
 
                     </main>
 
