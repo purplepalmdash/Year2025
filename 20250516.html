@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250515 - year2025</title>
+        <title>20250516 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,44 +155,23 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250515"><a class="header" href="#20250515">20250515</a></h1>
-<h3 id="1-create-img-for-redroid"><a class="header" href="#1-create-img-for-redroid">1. Create img for redroid</a></h3>
-<p>Make img file:</p>
-<pre><code>dd if=/dev/null of=example.img bs=1M seek=10240
-mkfs.ext4 -F example.img
-mkdir /mnt8
-mount example.img /mnt8
-rsync -av /var/lib/lxc/redroid11/rootfs/* /mnt8
+                        <h1 id="20250516"><a class="header" href="#20250516">20250516</a></h1>
+<h3 id="1-redroid-on-ubuntu2204-lxc"><a class="header" href="#1-redroid-on-ubuntu2204-lxc">1. redroid on ubuntu2204 lxc</a></h3>
+<pre><code>sudo apt install -y docker.io lxc adb
 </code></pre>
-<h3 id="2-change-the-ubuntu-image-password"><a class="header" href="#2-change-the-ubuntu-image-password">2. change the ubuntu image password</a></h3>
-<p>default passwd is not supported, set it via following steps:</p>
-<pre><code>apt install -y libguestfs-tools
-virt-customize -a /home/dash/jammy-server-cloudimg-amd64.img --root-password password:123456
-</code></pre>
-<h3 id="3-lxc-related"><a class="header" href="#3-lxc-related">3. lxc related</a></h3>
-<p>Domain type:</p>
-<pre><code>&lt;domain type='lxc' xmlns:lxc='http://libvirt.org/schemas/domain/lxc/1.0'&gt;
-</code></pre>
-<p>initargs:</p>
-<pre><code>&lt;os&gt;
-  &lt;type arch='x86_64'&gt;exe&lt;/type&gt;
-  &lt;init&gt;/bin/systemd&lt;/init&gt;
-  &lt;initarg&gt;--unit&lt;/initarg&gt;
-  &lt;initarg&gt;emergency.service&lt;/initarg&gt;
-&lt;/os&gt;
+<h3 id="2-redroid-ubuntu-2004-kernel"><a class="header" href="#2-redroid-ubuntu-2004-kernel">2. redroid ubuntu 2004 kernel</a></h3>
+<p>scrcpy could not connect, reason:</p>
+<pre><code>DMABUF_HEAP and DMABUF_HEAP_SYSTEM
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250514.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250515.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250516.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -200,13 +179,10 @@ virt-customize -a /home/dash/jammy-server-cloudimg-amd64.img --root-password pas
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250514.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250515.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250516.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
