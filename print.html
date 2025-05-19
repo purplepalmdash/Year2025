@@ -7298,6 +7298,30 @@ lxc.mount.entry = /root/data-redroid11 data none bind 0 0
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250518"><a class="header" href="#20250518">20250518</a></h1>
 <h3 id="1-hm-emulator"><a class="header" href="#1-hm-emulator">1. HM emulator</a></h3>
 <p>The emulator need hw account, ignored.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250519"><a class="header" href="#20250519">20250519</a></h1>
+<h3 id="1-redroid-in-openstack-modification"><a class="header" href="#1-redroid-in-openstack-modification">1. redroid in openstack modification</a></h3>
+<p>Modifications in nova:</p>
+<pre><code>root@compute:~# diff config.py /usr/lib/python3/dist-packages/nova/virt/libvirt/config.py
+2823a2824
+&gt;         self.os_init_arg = None
+2907a2909,2910
+&gt;         if self.os_init_arg is not None:
+&gt;             os.append(self._text_node("initarg", self.os_init_arg))
+3028a3032,3033
+&gt;             elif c.tag == 'initarg':
+&gt;                 self.os_init_arg = c.text
+root@compute:~# cat /usr/lib/python3/dist-packages/nova/virt/libvirt/driver.py | grep android -A2 -B3
+                guest.os_bootmenu = image_meta.properties.hw_boot_menu
+        elif CONF.libvirt.virt_type == "lxc":
+            #guest.os_init_path = "/sbin/init"
+            #guest.os_init_path = "/init androidboot.hardware=redroid androidboot.redroid_gpu_mode=guest"
+            #guest.os_init_path = "/init androidboot.hardware=redroid androidboot.redroid_gpu_mode=guest"
+            guest.os_init_path = "/system/bin/init"
+            guest.os_init_arg = "androidboot.hardware=redroid"
+            #guest.os_cmdline = CONSOLE
+            guest.os_init_env["product_name"] = "OpenStack Nova"
+</code></pre>
+<p>I need to configure <code>/dev/dma_heap</code> into the lxc instance, then I could use scrcpy.</p>
 
                     </main>
 
