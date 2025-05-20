@@ -7322,6 +7322,77 @@ root@compute:~# cat /usr/lib/python3/dist-packages/nova/virt/libvirt/driver.py |
             guest.os_init_env["product_name"] = "OpenStack Nova"
 </code></pre>
 <p>I need to configure <code>/dev/dma_heap</code> into the lxc instance, then I could use scrcpy.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250520"><a class="header" href="#20250520">20250520</a></h1>
+<h3 id="1-libvirt-lxc-configuration"><a class="header" href="#1-libvirt-lxc-configuration">1. libvirt lxc configuration</a></h3>
+<p>AIM:</p>
+<pre><code>    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/var/lib/nova/instances/407229eb-3fa3-4452-9a96-6145682f0e77/rootfs'/&gt;
+      &lt;target dir='/'/&gt;
+    &lt;/filesystem&gt;
++    &lt;filesystem type='mount' accessmode='passthrough'&gt;
++      &lt;source dir='/dev/dma_heap'/&gt;
++      &lt;target dir='/dev/dma_heap'/&gt;
++    &lt;/filesystem&gt;
+</code></pre>
+<p>debug log:</p>
+<pre><code>Configuration: &lt;filesystem type="mount"&gt;&lt;source dir="/var/lib/nova/instances/407229eb-3fa3-4452-9a96-6145682f0e77/rootfs"/&gt;&lt;target dir="/"/&gt;&lt;/filesystem&gt;
+Configuration: &lt;class 'nova.virt.libvirt.config.LibvirtConfigGuestFilesys'&gt;
+Configuration: {'root_name': 'filesystem', 'ns_prefix': None, 'ns_uri': None, 'source_type': 'mount', 'source_dir': '/var/lib/nova/instances/407229eb-3fa3-4452-9a96-6145682f0e77/rootfs', 'source_file': None, 'source_dev': None, 'target_dir': '/', 'driver_type': 'loop', 'driver_format': 'raw'}
+Configuration: &lt;filesystem type="mount"&gt;&lt;source dir="/dev/dma_heap"/&gt;&lt;target dir="/dev/dma_heap"/&gt;&lt;/filesystem&gt;
+
+</code></pre>
+<p>Final modification:</p>
+<pre><code># diff /usr/lib/python3/dist-packages/nova/virt/libvirt/driver.py driver.py 
+6515,6518c6515,6516
+&lt;             #guest.os_init_path = "/init androidboot.hardware=redroid androidboot.redroid_gpu_mode=guest"
+&lt;             #guest.os_init_path = "/system/bin/init"
+&lt;             guest.os_init_path = "/init"
+&lt;             guest.os_init_arg = "androidboot.hardware=redroid androidboot.redroid_gpu_mode=guest"
+---
+&gt;             guest.os_init_path = "/system/bin/init"
+&gt;             guest.os_init_arg = "androidboot.hardware=redroid"
+6901,6933c6899,6904
+&lt;         
+&lt;         output_file = '/tmp/storage_configurations.log'
+&lt;         with open(output_file, 'a') as file_handle:
+&lt;             storage_configs = self._get_guest_storage_config(context,
+&lt;                     instance, image_meta, disk_info, rescue, block_device_info,
+&lt;                     flavor, guest.os_type)
+&lt;             for config in storage_configs:
+&lt;                 #guest.add_device(config)
+&lt;                 # add /dev/dma_heap, should only be applied to lxc type
+&lt;                 dma_heap_copy = copy.copy(config)
+&lt;                 dma_source_dir = '/dev/dma_heap'
+&lt;                 dma_target_dir = '/dev/dma_heap'
+&lt;                 dma_heap_copy.source_dir = dma_source_dir
+&lt;                 dma_heap_copy.target_dir = dma_target_dir
+&lt;                 guest.add_device(dma_heap_copy)
+&lt;                 config_str = str(config)
+&lt;                 type_config_str = str(type(config))
+&lt;                 detailed_config_str = str(config.__dict__)
+&lt;                 dma_config_str = str(dma_heap_copy)
+&lt;                 # hacking to local directory
+&lt;                 hack_copy = copy.copy(config)
+&lt;                 hack_source_dir = '/var/lib/lxc/redroid11/rootfs'
+&lt;                 hack_target_dir = '/'
+&lt;                 hack_copy.source_dir = hack_source_dir
+&lt;                 hack_copy.target_dir = hack_target_dir
+&lt;                 guest.add_device(hack_copy)
+&lt;                 hack_config_str = str(hack_copy)
+&lt;                 file_handle.write(f'Configuration: {config_str}\n')
+&lt;                 file_handle.write(f'Configuration: {type_config_str}\n')
+&lt;                 file_handle.write(f'Configuration: {detailed_config_str}\n')
+&lt;                 file_handle.write(f'Configuration: {dma_config_str}\n')
+&lt;                 file_handle.write(f'Configuration: {hack_config_str}\n')
+&lt;                 
+---
+&gt; 
+&gt;         storage_configs = self._get_guest_storage_config(context,
+&gt;                 instance, image_meta, disk_info, rescue, block_device_info,
+&gt;                 flavor, guest.os_type)
+&gt;         for config in storage_configs:
+&gt;             guest.add_device(config)
+</code></pre>
 
                     </main>
 
