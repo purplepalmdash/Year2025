@@ -7393,6 +7393,72 @@ Configuration: &lt;filesystem type="mount"&gt;&lt;source dir="/dev/dma_heap"/&gt
 &gt;         for config in storage_configs:
 &gt;             guest.add_device(config)
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250521"><a class="header" href="#20250521">20250521</a></h1>
+<h3 id="1-redroidlxc-with-gpu"><a class="header" href="#1-redroidlxc-with-gpu">1. redroid/lxc with gpu</a></h3>
+<p>modify: <code>/usr/lib/python3/dist-packages/nova/virt/libvirt/guest.py</code>:</p>
+<pre><code>    @classmethod
+    def create(cls, xml, host):
+        """Create a new Guest
+
+        :param xml: XML definition of the domain to create
+        :param host: host.Host connection to define the guest on
+
+        :returns guest.Guest: Guest ready to be launched
+        """
++        output_file = '/tmp/xmlxml.log'
++        with open(output_file, 'a') as file_handle:
++            try:
++                if isinstance(xml, bytes):
++                    xml = xml.decode('utf-8')
++                # following is for debugging purpose
++                #type_guest_str = str(type(guest))
++                #detailed_guest_str = str(guest.__dict__)
++                type_xml_str = str(type(xml))
++                xml_str = str(xml)
++                #file_handle.write(f'Configuration: {type_guest_str}\n')
++                #file_handle.write(f'Configuration: {detailed_guest_str}\n')
++                file_handle.write(f'Configuration: {type_xml_str}\n')
++                file_handle.write(f'Configuration: {xml_str}\n')
++                ### insert some shit into origin xml.
++                # 1. write origin xml
++                with open('/tmp/originxml.txt', 'w') as f:
++                    f.write(xml)
++                # 2. read and modify
++                with open('/tmp/originxml.txt', 'r') as f:
++                    lines = f.readlines()
++                n = len(lines)
++                if n &gt;= 3:
++                    insert_index = n - 2
++                    lines.insert(insert_index, '&lt;hostdev mode=\'capabilities\' type=\'misc\'&gt;\n')
++                    lines.insert(insert_index + 1, '&lt;source&gt;\n')
++                    lines.insert(insert_index + 2, '&lt;char&gt;/dev/dri/renderD128&lt;/char&gt;\n')
++                    lines.insert(insert_index + 3, '&lt;/source&gt;\n')
++                    lines.insert(insert_index + 4, '&lt;/hostdev&gt;\n')
++                    lines.insert(insert_index + 5, '&lt;hostdev mode=\'capabilities\' type=\'misc\'&gt;\n')
++                    lines.insert(insert_index + 6, '&lt;source&gt;\n')
++                    lines.insert(insert_index + 7, '&lt;char&gt;/dev/tty0&lt;/char&gt;\n')
++                    lines.insert(insert_index + 8, '&lt;/source&gt;\n')
++                    lines.insert(insert_index + 9, '&lt;/hostdev&gt;\n')
++                    lines.insert(insert_index + 10, '&lt;console type=\'pty\'&gt;\n')
++                    lines.insert(insert_index + 11, '&lt;target type=\'lxc\' port=\'1\'/&gt;\n')
++                    lines.insert(insert_index + 12, '&lt;/console&gt;\n')
++                # 3. write back modified content
++                with open('/tmp/originxml.txt', 'w') as f:
++                    f.writelines(lines)
++                # 4. read string from files
++                with open('/tmp/originxml.txt', 'r') as f:
++                    modified_string = f.read()
++                xml = modified_string
++                guest = host.write_instance_config(xml)
+
+            except Exception:
+                with excutils.save_and_reraise_exception():
+                    LOG.error('Error defining a guest with XML: %s',
+                              encodeutils.safe_decode(xml))
+            return guest
+
+
+</code></pre>
 
                     </main>
 
