@@ -7543,6 +7543,42 @@ root@compute:~# cat /etc/addedxml_device.txt
     &lt;/hostdev&gt;
 
 </code></pre>
+<h3 id="2-generate-lxc-mount-items"><a class="header" href="#2-generate-lxc-mount-items">2. Generate lxc mount items</a></h3>
+<p>Script:</p>
+<pre><code>$ cat ~/autocreate.sh
+for i in `ls /dev`
+do
+	if [ -d "/dev/"$i ]; then
+		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=dir
+		#echo $i
+	else
+		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=file
+		#echo kkk $i
+fi
+done
+</code></pre>
+<h3 id="3-3dmark-issue"><a class="header" href="#3-3dmark-issue">3. 3dmark issue</a></h3>
+<p>Solved via:</p>
+<pre><code># vim /var/lib/lxc/xxxx/config
+lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
+
+</code></pre>
+<p>Issue in lxc:</p>
+<pre><code>    &lt;hostdev mode='capabilities' type='misc'&gt;
+      &lt;source&gt;
+        &lt;char&gt;/dev/fuse&lt;/char&gt;
+      &lt;/source&gt;
+    &lt;/hostdev&gt;
+
+
+
+
+[  974.533786] binder_linux: 11387:11387 cannot find target node
+[  974.533793] binder_linux: 11387:11387 transaction async to 0:0 failed 201477/29189/-22, size 92-0 line 3063
+[  974.705152] binder_linux: 13542:11387 cannot find target node
+[  974.705157] binder_linux: 11387:13542 transaction call to 0:0 failed 204744/29189/-22, size 0-0 line 3063
+
+</code></pre>
 
                     </main>
 
