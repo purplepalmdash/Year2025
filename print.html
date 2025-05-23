@@ -7579,6 +7579,42 @@ lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
 [  974.705157] binder_linux: 11387:13542 transaction call to 0:0 failed 204744/29189/-22, size 0-0 line 3063
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250523"><a class="header" href="#20250523">20250523</a></h1>
+<h3 id="1-redroid-lxc-issue-debugging"><a class="header" href="#1-redroid-lxc-issue-debugging">1. redroid lxc issue debugging</a></h3>
+<p>Should start lxc instance without graphical gui under vm(virtio).</p>
+<h3 id="2-arm-environment"><a class="header" href="#2-arm-environment">2. arm environment</a></h3>
+<p>D3000 network configuration:</p>
+<pre><code>test@2504vm:~$ cat /etc/netplan/eth0.yaml 
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+  bridges:
+    br0:
+      interfaces: [eth0]
+      addresses: [10.171.172.4/24]
+
+test@2504vm:~$ cat /etc/issue
+Ubuntu 25.04 \n \l
+
+test@2504vm:~$ uname -a
+Linux 2504vm 6.14.0-15-generic #15-Ubuntu SMP PREEMPT_DYNAMIC Sun Apr  6 14:37:51 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+</code></pre>
+<p>X86 bridged configuration:</p>
+<pre><code>nmcli connection add type bridge ifname br0 stp no
+nmcli conn add type bridge ifname br0 ipv4.method manual ipv4.address "10.171.172.3/24" ipv4.gateway "10.171.172.1" ipv4.dns 223.5.5.5
+nmcli connection add type bridge-slave ifname enp89s0 master br0
+
+root@fedora:~# uname -a
+Linux fedora 6.14.2-300.fc42.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Apr 10 21:50:55 UTC 2025 x86_64 GNU/Linux
+root@fedora:~# cat /etc/redhat-release 
+Fedora release 42 (Adams)
+</code></pre>
+<p>IP configuration:</p>
+<pre><code>x86: 10.171.172.3, br0
+arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
+</code></pre>
 
                     </main>
 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250522 - year2025</title>
+        <title>20250523 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -155,138 +155,51 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250522"><a class="header" href="#20250522">20250522</a></h1>
-<h3 id="1-virsh-xml"><a class="header" href="#1-virsh-xml">1. virsh xml</a></h3>
-<p>Modification:</p>
-<pre><code>    @classmethod
-    def create(cls, xml, host):
-        """Create a new Guest
+                        <h1 id="20250523"><a class="header" href="#20250523">20250523</a></h1>
+<h3 id="1-redroid-lxc-issue-debugging"><a class="header" href="#1-redroid-lxc-issue-debugging">1. redroid lxc issue debugging</a></h3>
+<p>Should start lxc instance without graphical gui under vm(virtio).</p>
+<h3 id="2-arm-environment"><a class="header" href="#2-arm-environment">2. arm environment</a></h3>
+<p>D3000 network configuration:</p>
+<pre><code>test@2504vm:~$ cat /etc/netplan/eth0.yaml 
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+  bridges:
+    br0:
+      interfaces: [eth0]
+      addresses: [10.171.172.4/24]
 
-        :param xml: XML definition of the domain to create
-        :param host: host.Host connection to define the guest on
+test@2504vm:~$ cat /etc/issue
+Ubuntu 25.04 \n \l
 
-        :returns guest.Guest: Guest ready to be launched
-        """
-        output_file = '/tmp/xmlxml.log'
-        with open(output_file, 'a') as file_handle:
-            try:
-                if isinstance(xml, bytes):
-                    xml = xml.decode('utf-8')
-                # following is for debugging purpose
-                #type_guest_str = str(type(guest))
-                #detailed_guest_str = str(guest.__dict__)
-                type_xml_str = str(type(xml))
-                xml_str = str(xml)
-                #file_handle.write(f'Configuration: {type_guest_str}\n')
-                #file_handle.write(f'Configuration: {detailed_guest_str}\n')
-                file_handle.write(f'Configuration: {type_xml_str}\n')
-                file_handle.write(f'Configuration: {xml_str}\n')
-                ### insert some shit into origin xml.
-                # 1. write origin xml
-                with open('/tmp/originxml.txt', 'w') as f:
-                    f.write(xml)
-                #  2.2 Read origin content
-                with open('/tmp/originxml.txt', 'r') as f:
-                    lines = f.readlines()
-                #  2.3 Make sure the inserted position
-                insert_position = len(lines) - 2
-                #  2.4 Read the to be added xml content
-                with open('/etc/addedxml_device.txt', 'r') as f_add:
-                    add_lines = f_add.readlines()
-                #   2.5 insert add_lines to corresponding position
-                lines[insert_position:insert_position] = add_lines
-                #   3 write back modified content to /tmp/originxml.txt
-                with open('/tmp/originxml.txt', 'w') as f:
-                    f.writelines(lines)
-                #### features should be added into len(lines)-1 
-                with open('/tmp/originxml.txt', 'r') as f:
-                    lines = f.readlines()
-                insert_position = len(lines) - 1
-                with open('/etc/addedxml_feature.txt', 'r') as f_add:
-                    add_lines = f_add.readlines()
-                lines[insert_position:insert_position] = add_lines
-                with open('/tmp/originxml.txt', 'w') as f:
-                    f.writelines(lines)
-                # 4. read string from files
-                with open('/tmp/originxml.txt', 'r') as f:
-                    modified_string = f.read()
-                xml = modified_string
-                guest = host.write_instance_config(xml)
-            except Exception:
-                with excutils.save_and_reraise_exception():
-                    LOG.error('Error defining a guest with XML: %s',
-                              encodeutils.safe_decode(xml))
-            return guest
-
+test@2504vm:~$ uname -a
+Linux 2504vm 6.14.0-15-generic #15-Ubuntu SMP PREEMPT_DYNAMIC Sun Apr  6 14:37:51 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
 </code></pre>
-<p>Created 2 files:</p>
-<pre><code>root@compute:~# cat /etc/addedxml_feature.txt 
-  &lt;features&gt;
-    &lt;capabilities policy='allow'&gt;
-      &lt;audit_control state='on'/&gt;
-      &lt;audit_write state='on'/&gt;
-    &lt;/capabilities&gt;
-  &lt;/features&gt;
+<p>X86 bridged configuration:</p>
+<pre><code>nmcli connection add type bridge ifname br0 stp no
+nmcli conn add type bridge ifname br0 ipv4.method manual ipv4.address "10.171.172.3/24" ipv4.gateway "10.171.172.1" ipv4.dns 223.5.5.5
+nmcli connection add type bridge-slave ifname enp89s0 master br0
 
-root@compute:~# cat /etc/addedxml_device.txt 
-    &lt;console type='pty'&gt;
-      &lt;target type='lxc' port='1'/&gt;
-    &lt;/console&gt;
-    &lt;hostdev mode='capabilities' type='misc'&gt;
-      &lt;source&gt;
-        &lt;char&gt;/dev/dri/renderD128&lt;/char&gt;
-      &lt;/source&gt;
-    &lt;/hostdev&gt;
-
+root@fedora:~# uname -a
+Linux fedora 6.14.2-300.fc42.x86_64 #1 SMP PREEMPT_DYNAMIC Thu Apr 10 21:50:55 UTC 2025 x86_64 GNU/Linux
+root@fedora:~# cat /etc/redhat-release 
+Fedora release 42 (Adams)
 </code></pre>
-<h3 id="2-generate-lxc-mount-items"><a class="header" href="#2-generate-lxc-mount-items">2. Generate lxc mount items</a></h3>
-<p>Script:</p>
-<pre><code>$ cat ~/autocreate.sh
-for i in `ls /dev`
-do
-	if [ -d "/dev/"$i ]; then
-		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=dir
-		#echo $i
-	else
-		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=file
-		#echo kkk $i
-fi
-done
-</code></pre>
-<h3 id="3-3dmark-issue"><a class="header" href="#3-3dmark-issue">3. 3dmark issue</a></h3>
-<p>Solved via:</p>
-<pre><code># vim /var/lib/lxc/xxxx/config
-lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
-
-</code></pre>
-<p>Issue in lxc:</p>
-<pre><code>    &lt;hostdev mode='capabilities' type='misc'&gt;
-      &lt;source&gt;
-        &lt;char&gt;/dev/fuse&lt;/char&gt;
-      &lt;/source&gt;
-    &lt;/hostdev&gt;
-
-
-
-
-[  974.533786] binder_linux: 11387:11387 cannot find target node
-[  974.533793] binder_linux: 11387:11387 transaction async to 0:0 failed 201477/29189/-22, size 92-0 line 3063
-[  974.705152] binder_linux: 13542:11387 cannot find target node
-[  974.705157] binder_linux: 11387:13542 transaction call to 0:0 failed 204744/29189/-22, size 0-0 line 3063
-
+<p>IP configuration:</p>
+<pre><code>x86: 10.171.172.3, br0
+arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250521.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250522.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250523.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -294,13 +207,10 @@ lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250521.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250522.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250523.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
