@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250314 - year2025</title>
+        <title>20250525 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,21 +166,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250314"><a class="header" href="#20250314">20250314</a></h1>
-<h3 id="1-awesome"><a class="header" href="#1-awesome">1. awesome</a></h3>
-<p>Change awesome configurations for nixos.</p>
+                        <h1 id="20250525"><a class="header" href="#20250525">20250525</a></h1>
+<h3 id="1-openstack-lxcredroid-arm64"><a class="header" href="#1-openstack-lxcredroid-arm64">1. openstack lxc/redroid arm64</a></h3>
+<p>Steps:</p>
+<pre><code>$ ls
+addedxml_device.txt  bashhistory  config  libvirt  redroid12.img  virt
+</code></pre>
+<p>compute node:</p>
+<pre><code>apt install -y ./libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb
+</code></pre>
+<p>controller, create flavor:</p>
+<pre><code>openstack flavor create --vcpus 4 --ram 6124 --disk 25 C4-6124MB-25G
+</code></pre>
+<p>controller, create image:</p>
+<pre><code>openstack image create "redroid12" --file redroid12.img --disk-format raw --container-format bare --public
+</code></pre>
+<p>Controller/compute:</p>
+<pre><code># cp config.py driver.py guest.py /usr/lib/python3/dist-packages/nova/virt/libvirt/
+# pwd
+/root/ubuntu2204openstack/virt/libvirt
+# cd /usr/lib/python3/dist-packages/nova/ &amp;&amp; find . | grep pyc$ | xargs -I % mv % %.kk
+
+...
+root@controller:~/ubuntu2204openstack# cp addedxml_* /etc/
+
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250313.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250524.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250315.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -188,13 +207,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250313.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250524.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250315.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

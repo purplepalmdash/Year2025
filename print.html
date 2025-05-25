@@ -42,6 +42,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -119,7 +130,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -7393,6 +7404,18 @@ Configuration: &lt;filesystem type="mount"&gt;&lt;source dir="/dev/dma_heap"/&gt
 &gt;         for config in storage_configs:
 &gt;             guest.add_device(config)
 </code></pre>
+<p>modifications for adding initarg:</p>
+<pre><code> diff /usr/lib/python3/dist-packages/nova/virt/libvirt/config.py /root/config.py 
+2824d2823
+&lt;         self.os_init_arg = None
+2909,2910d2907
+&lt;         if self.os_init_arg is not None:
+&lt;             os.append(self._text_node("initarg", self.os_init_arg))
+3032,3033d3028
+&lt;             elif c.tag == 'initarg':
+&lt;                 self.os_init_arg = c.text
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250521"><a class="header" href="#20250521">20250521</a></h1>
 <h3 id="1-redroidlxc-with-gpu"><a class="header" href="#1-redroidlxc-with-gpu">1. redroid/lxc with gpu</a></h3>
 <p>modify: <code>/usr/lib/python3/dist-packages/nova/virt/libvirt/guest.py</code>:</p>
@@ -7594,6 +7617,7 @@ network:
     br0:
       interfaces: [eth0]
       addresses: [10.171.172.4/24]
+      gateway4: 10.171.172.1
 
 test@2504vm:~$ cat /etc/issue
 Ubuntu 25.04 \n \l
@@ -7614,6 +7638,191 @@ Fedora release 42 (Adams)
 <p>IP configuration:</p>
 <pre><code>x86: 10.171.172.3, br0
 arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
+</code></pre>
+<p>Create x86(controller) environment:</p>
+<pre><code>qemu-img create -f qcow2 openstack_controller.qcow2 -b ubuntu2204amd64_150G.qcow2 -F qcow2
+</code></pre>
+<p>Ubuntu22.04 arm64 vm failed. so should switches to host machine(physical machine).</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250524"><a class="header" href="#20250524">20250524</a></h1>
+<h3 id="1-arm64-nova-libvirt-lxc"><a class="header" href="#1-arm64-nova-libvirt-lxc">1. arm64-nova-libvirt-lxc</a></h3>
+<p>Working tips:</p>
+<p>machine configuration, compute/controller node:</p>
+<pre><code># crontab -e
+@reboot sleep 10 &amp;&amp; modprobe binder_linux devices="binder,hwbinder,vndbinder" &amp;&amp; modprobe nbd
+</code></pre>
+<p>Image test:</p>
+<pre><code>wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-arm64.tar.gz
+source /etc/keystone/admin-openrc.sh 
+openstack image create "lxc_ubuntu_22.04" --file jammy-server-cloudimg-arm64.img --disk-format raw --container-format bare --public
+
+# openstack image list
++--------------------------------------+------------------+--------+
+| ID                                   | Name             | Status |
++--------------------------------------+------------------+--------+
+| a0011671-0e42-416e-87bc-eead6ee5431d | lxc_ubuntu_22.04 | active |
++--------------------------------------+------------------+--------+
+</code></pre>
+<p>Compute node install lxc:</p>
+<pre><code>apt install -y nova-compute-lxc
+...
+Configuration file '/etc/nova/nova-compute.conf'
+ ==&gt; Modified (by you or by a script) since installation.
+ ==&gt; Package distributor has shipped an updated version.
+   What would you like to do about it ?  Your options are:
+    Y or I  : install the package maintainer's version
+    N or O  : keep your currently-installed version
+      D     : show the differences between the versions
+      Z     : start a shell to examine the situation
+ The default action is to keep your current version.
+*** nova-compute.conf (Y/I/N/O/D/Z) [default=N] ? Y
+...
+
+service nova-compute restart
+</code></pre>
+<p>After installation of <code>nova-compute-lxc</code>:</p>
+<pre><code>openstack compute service list
++--------------------------------------+----------------+------------+----------+---------+-------+----------------------------+
+| ID                                   | Binary         | Host       | Zone     | Status  | State | Updated At                 |
++--------------------------------------+----------------+------------+----------+---------+-------+----------------------------+
+| d23f2977-5a64-4161-81aa-56bc57470a38 | nova-scheduler | controller | internal | enabled | up    | 2025-05-24T01:46:06.000000 |
+| 41520a5c-740f-4922-b0d1-50b671408bca | nova-conductor | controller | internal | enabled | up    | 2025-05-24T01:45:58.000000 |
+| 8e25e510-9a39-433f-bd0f-4737e0082121 | nova-compute   | compute    | nova     | enabled | up    | 2025-05-24T01:45:48.000000 |
++--------------------------------------+----------------+------------+----------+---------+-------+----------------------------+
+openstack flavor create --vcpus 4 --ram 6124 --disk 25 C4-6124MB-25G
+
+</code></pre>
+<p>Replace the lxc package:</p>
+<pre><code>apt remove libvirt-daemon-driver-lxc --purge
+apt install -y ./libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb 
+reboot
+</code></pre>
+<h3 id="2-build-libvirt-with-lxc-patch"><a class="header" href="#2-build-libvirt-with-lxc-patch">2. build libvirt with lxc patch</a></h3>
+<p>Steps:</p>
+<pre><code># vim /etc/apt/sources.list
+uncomment all of the "# deb-src"
+# apt update -y
+mkdir libvirt
+cd libvirt/
+apt source libvirt-daemon-driver-lxc
+apt install -y build-essential pbuilder
+apt-get build-dep libvirt-daemon-driver-lxc
+</code></pre>
+<p>Code modification:</p>
+<pre><code>libvirt-8.0.0# cat src/lxc/lxc_controller.c | grep -i 25000000 -B1 -A1
+    /*opts = g_strdup_printf("mode=755,size=65536%s", mount_options);*/
+    opts = g_strdup_printf("mode=755,size=25000000%s", mount_options);
+</code></pre>
+<p>Build deb:</p>
+<pre><code>root@compute:~/Code/libvirt/libvirt-8.0.0# pwd
+/root/Code/libvirt/libvirt-8.0.0
+root@compute:~/Code/libvirt/libvirt-8.0.0# ls
+AUTHORS.rst     configmake.h.in   docs                 libvirt-lxc.pc.in   meson.build            README.rst  tools
+AUTHORS.rst.in  CONTRIBUTING.rst  examples             libvirt.pc.in       meson_options.txt      run.in
+build-aux       COPYING           gitdm.config         libvirt-qemu.pc.in  mingw-libvirt.spec.in  scripts
+ci              COPYING.LESSER    include              libvirt.spec        NEWS.rst               src
+config.h        debian            libvirt-admin.pc.in  libvirt.spec.in     po                     tests
+root@compute:~/Code/libvirt/libvirt-8.0.0# dpkg-source --commit
+root@compute:~/Code/libvirt/libvirt-8.0.0# debuild -us -uc
+# ls ../*.deb
+../libnss-libvirt_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt0_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-clients_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-config-network_8.0.0-1ubuntu7.11_all.deb
+../libvirt-daemon-config-nwfilter_8.0.0-1ubuntu7.11_all.deb
+../libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-qemu_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-storage-gluster_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-storage-iscsi-direct_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-storage-rbd_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-storage-zfs_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-driver-xen_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-system_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-daemon-system-systemd_8.0.0-1ubuntu7.11_all.deb
+../libvirt-daemon-system-sysv_8.0.0-1ubuntu7.11_all.deb
+../libvirt-dev_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-doc_8.0.0-1ubuntu7.11_all.deb
+../libvirt-login-shell_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-sanlock_8.0.0-1ubuntu7.11_arm64.deb
+../libvirt-wireshark_8.0.0-1ubuntu7.11_arm64.deb
+
+</code></pre>
+<p>Install deb steps see above</p>
+<h3 id="3-generate-arm64-lxc-image"><a class="header" href="#3-generate-arm64-lxc-image">3. generate arm64 lxc image</a></h3>
+<p>Create lxc instance:</p>
+<pre><code>modprobe binder_linux devices="binder,hwbinder,vndbinder"
+apt install -y skopeo umoci jq
+sed -i 's/set -eu/set -u/g' /usr/share/lxc/templates/lxc-oci
+lxc-create -n redroid12 -t oci -- -u docker://docker.io/redroid/redroid:12.0.0_64only-latest
+rm /var/lib/lxc/redroid12/rootfs/vendor/bin/ipconfigstore
+</code></pre>
+<p>added patched:</p>
+<pre><code>$ sed -i '/lxc.include/d' /var/lib/lxc/redroid12/config
+$ vim /var/lib/lxc/redroid12/config
+......
+### hacked
+lxc.init.cmd = /init androidboot.hardware=redroid androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/ren
+derD128
+lxc.apparmor.profile = unconfined
+#lxc.autodev = 1
+lxc.autodev.tmpfs.size = 25000000
+lxc.mount.entry = /dev/dma_heap dev/dma_heap none bind,optional,create=dir
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry = /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,create=file
+lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
+
+</code></pre>
+<p>After examine the lxc instance, convert it into openstack img:</p>
+<pre><code>dd if=/dev/null of=redroid12.img bs=1M seek=10240
+mkfs.ext4 -F redroid12.img 
+mount redroid12.img  /mnt8
+rsync -av /var/lib/lxc/redroid12/rootfs/* /mnt8
+sync
+umount /mnt8
+</code></pre>
+<p>Create openstack usable disk image:</p>
+<pre><code>openstack image create "redroid12" --file redroid12.img --disk-format raw --container-format bare --public
+</code></pre>
+<h3 id="4-docker-issue"><a class="header" href="#4-docker-issue">4. docker issue</a></h3>
+<p>Ubuntu22.04 5.15 kernel, install docker cause:</p>
+<pre><code>May 24 10:56:41 compute dockerd[32267]: failed to start daemon: Error initializing network controller: error creating default "bridge" network: Failed to program NAT chain: failed to inject DOCKER in PREROUTING chain: iptables failed: iptables --wait -t nat -A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER: iptables v1.8.7 (nf_tables): Couldn't load match `addrtype':No such file or directory
+May 24 10:56:41 compute dockerd[32267]: Try `iptables -h' or 'iptables --help' for more information.
+May 24 10:56:41 compute dockerd[32267]:  (exit status 2)
+May 24 10:56:41 compute dockerd[32267]: time="2025-05-24T10:56:41.210508600+08:00" level=info msg="stopping event stream following graceful shutdown" error="context canceled" module=libcontainerd namespace=plugins.moby
+May 24 10:56:41 compute systemd[1]: docker.service: Main process exited, code=exited, status=1/FAILURE
+</code></pre>
+<p>Solved via:</p>
+<pre><code>echo "blacklist x_tables&gt;&gt;/etc/modprobe.d/blacklist.conf
+``
+### 5. horizon 
+
+![./images/2025_05_24_13_08_39_1111x837.jpg](./images/2025_05_24_13_08_39_1111x837.jpg)
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250525"><a class="header" href="#20250525">20250525</a></h1>
+<h3 id="1-openstack-lxcredroid-arm64"><a class="header" href="#1-openstack-lxcredroid-arm64">1. openstack lxc/redroid arm64</a></h3>
+<p>Steps:</p>
+<pre><code>$ ls
+addedxml_device.txt  bashhistory  config  libvirt  redroid12.img  virt
+</code></pre>
+<p>compute node:</p>
+<pre><code>apt install -y ./libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb
+</code></pre>
+<p>controller, create flavor:</p>
+<pre><code>openstack flavor create --vcpus 4 --ram 6124 --disk 25 C4-6124MB-25G
+</code></pre>
+<p>controller, create image:</p>
+<pre><code>openstack image create "redroid12" --file redroid12.img --disk-format raw --container-format bare --public
+</code></pre>
+<p>Controller/compute:</p>
+<pre><code># cp config.py driver.py guest.py /usr/lib/python3/dist-packages/nova/virt/libvirt/
+# pwd
+/root/ubuntu2204openstack/virt/libvirt
+# cd /usr/lib/python3/dist-packages/nova/ &amp;&amp; find . | grep pyc$ | xargs -I % mv % %.kk
+
+...
+root@controller:~/ubuntu2204openstack# cp addedxml_* /etc/
+
 </code></pre>
 
                     </main>

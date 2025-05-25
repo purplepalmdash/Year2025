@@ -41,6 +41,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -118,7 +129,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -170,6 +181,7 @@ network:
     br0:
       interfaces: [eth0]
       addresses: [10.171.172.4/24]
+      gateway4: 10.171.172.1
 
 test@2504vm:~$ cat /etc/issue
 Ubuntu 25.04 \n \l
@@ -191,6 +203,10 @@ Fedora release 42 (Adams)
 <pre><code>x86: 10.171.172.3, br0
 arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
 </code></pre>
+<p>Create x86(controller) environment:</p>
+<pre><code>qemu-img create -f qcow2 openstack_controller.qcow2 -b ubuntu2204amd64_150G.qcow2 -F qcow2
+</code></pre>
+<p>Ubuntu22.04 arm64 vm failed. so should switches to host machine(physical machine).</p>
 
                     </main>
 
@@ -200,6 +216,9 @@ arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250524.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -211,6 +230,9 @@ arm64: d3000: 10.171.172.4, br0, ubuntu24.04 host
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250524.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
