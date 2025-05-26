@@ -7824,6 +7824,54 @@ addedxml_device.txt  bashhistory  config  libvirt  redroid12.img  virt
 root@controller:~/ubuntu2204openstack# cp addedxml_* /etc/
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250526"><a class="header" href="#20250526">20250526</a></h1>
+<h3 id="1-arm64-openstack-neutron"><a class="header" href="#1-arm64-openstack-neutron">1. arm64 openstack neutron</a></h3>
+<p>home image:</p>
+<pre><code>ubuntu 2504 host:    
+inner, could be ping, OK
+external, not OK
+
+fedora 42 host:  
+inner , could also be pinged.   
+</code></pre>
+<div class="table-wrapper"><table><thead><tr><th>host</th><th>how-to</th></tr></thead><tbody>
+<tr><td>arm64 d3000</td><td>ubuntu 2504 host+ubuntu2204 guest(terminal)</td></tr>
+<tr><td>arm64 d3000</td><td>ctyunos host+ubuntu2204 guest(graphical)</td></tr>
+<tr><td>windows arm11</td><td>hyper-v + ubuntu2204 guest</td></tr>
+</tbody></table>
+</div>
+<h3 id="2-openstack-installation-steps"><a class="header" href="#2-openstack-installation-steps">2. openstack installation steps</a></h3>
+<p>two nodes, ubuntu22.04 vm, configuration for network:</p>
+<pre><code>controller:   
+# cat /etc/netplan/enp3s0.yaml 
+network:
+  version: 2
+  ethernets:
+    enp3s0:
+      dhcp4: false
+      addresses: [192.168.200.40/24]
+      gateway4: 192.168.200.1
+    enp4s0:
+      dhcp4: false
+# touch /etc/cloud/cloud-init.disabled
+compute:    
+# cat /etc/netplan/enp3s0.yaml 
+network:
+  version: 2
+  ethernets:
+    enp3s0:
+      dhcp4: false
+      addresses: [192.168.200.50/24]
+      gateway4: 192.168.200.1
+    enp4s0:
+      dhcp4: false
+hostnamectl set-hostname controller
+hostnamectl set-hostname compute
+</code></pre>
+<h4 id="21-clientmariadb"><a class="header" href="#21-clientmariadb">2.1 client/mariadb</a></h4>
+<pre><code>root@controller:~# apt install -y python3-openstackclient mariadb-server python3-pymysql
+</code></pre>
+<p>Ignored...</p>
 
                     </main>
 
