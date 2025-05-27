@@ -315,13 +315,10 @@ May 24 10:56:41 compute dockerd[32267]: time="2025-05-24T10:56:41.210508600+08:0
 May 24 10:56:41 compute systemd[1]: docker.service: Main process exited, code=exited, status=1/FAILURE
 </code></pre>
 <p>Solved via:</p>
-<pre><code>echo "blacklist x_tables&gt;&gt;/etc/modprobe.d/blacklist.conf
-``
-### 5. horizon 
-
-![./images/2025_05_24_13_08_39_1111x837.jpg](./images/2025_05_24_13_08_39_1111x837.jpg)
-
+<pre><code>echo "blacklist x_tables"&gt;&gt;/etc/modprobe.d/blacklist.conf
 </code></pre>
+<h3 id="5-horizon"><a class="header" href="#5-horizon">5. horizon</a></h3>
+<p><img src="./images/2025_05_24_13_08_39_1111x837.jpg" alt="./images/2025_05_24_13_08_39_1111x837.jpg" /></p>
 
                     </main>
 
