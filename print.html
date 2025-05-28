@@ -9021,6 +9021,78 @@ ufw disable
 <p><img src="./images/2025_05_27_17_45_38_563x914.jpg" alt="./images/2025_05_27_17_45_38_563x914.jpg" /></p>
 <p><img src="./images/2025_05_27_17_46_12_546x591.jpg" alt="./images/2025_05_27_17_46_12_546x591.jpg" /></p>
 <p><img src="./images/2025_05_27_17_50_02_524x882.jpg" alt="./images/2025_05_27_17_50_02_524x882.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250528"><a class="header" href="#20250528">20250528</a></h1>
+<h3 id="1-redroidlxc-in-sr-iov-gpu"><a class="header" href="#1-redroidlxc-in-sr-iov-gpu">1. redroid/lxc in sr-iov gpu</a></h3>
+<p>Enable vfs:</p>
+<pre><code> apt install build-* dkms linux-headers-$(uname -r) linux-modules-extra-$(uname -r)
+   wget -O /tmp/i915-sriov-dkms_2025.05.18_amd64.deb "https://github.com/strongtz/i915-sriov-dkms/releases/download/2025.05.18/i915-sriov-dkms_2025.05.18_amd64.deb"
+   dpkg -i /tmp/i915-sriov-dkms_2025.05.18_amd64.deb
+   GRUB_CMDLINE_LINUX_DEFAULT="intel_iommu=on i915.enable_guc=3 module_blacklist=xe"
+   update-grub
+   update-initramfs -u
+</code></pre>
+<p>Now reboot, disable secure boot in bios.</p>
+<pre><code>   apt install intel-opencl-icd
+   apt install clinfo
+   clinfo
+</code></pre>
+<p>Install docker, run redroid with following command:</p>
+<pre><code>sudo docker run -itd --privileged \
+    -v ~/data:/data \
+    -p 5555:5555 \
+    teddynight/redroid:latest \
+    androidboot.redroid_net_proxy_type=static \
+    androidboot.hardware=mt6891 \
+    ro.product.cpu.abilist=x86_64,arm64-v8a,x86,armeabi-v7a,armeabi \
+    ro.product.cpu.abilist64=x86_64,arm64-v8a \
+    ro.product.cpu.abilist32=x86,armeabi-v7a,armeabi \
+    ro.dalvik.vm.isa.arm=x86 \
+    ro.dalvik.vm.isa.arm64=x86_64 \
+    ro.enable.native.bridge.exec=1 \
+    ro.enable.native.bridge.exec64=1 \
+    ro.dalvik.vm.native.bridge=libhoudini.so redroid.fps=120 ro.sf.lcd_density=240 redroid.width=1080 redroid.height=1920 redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128 androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_fps=120
+</code></pre>
+<h3 id="2-local-registry"><a class="header" href="#2-local-registry">2. local registry</a></h3>
+<p>Start a local registry in <code>192.168.1.7</code>:</p>
+<pre><code>$ sudo docker run -d -p 5000:5000 --restart always --name registry registry:2
+$ cat /etc/docker/daemon.json
+{
+......
+       "insecure-registries": ["192.168.1.7:5000"]
+......
+}
+$ sudo systemctl restart docker
+$ sudo docker tag xxx 192.168.1.7:5000/xxx
+$ sudo docker push 192.168.1.7:5000/xxx
+</code></pre>
+<p>In lxc host:</p>
+<pre><code>$ vim /usr/share/lxc/templates/lxc-oci
+  skopeo_args+=(--insecure-policy --src-creds "${CREDENTIALS}")
+$  cat /etc/containers/registries.conf
+[[registry]]
+prefix = "192.168.1.7:5000"
+location = "192.168.1.7:5000"
+insecure = true
+$ lxc-create -n redroidhoudini -t oci -- -u docker://192.168.1.7:5000/teddynight/redroid:latest
+$ sed -i '/lxc.include/d' /var/lib/lxc/redroidhoudini/config
+$ vim /var/lib/lxc/redroidhoudini/config
+......
+lxc.init.cmd = /init androidboot.hardware=redroid androidboot.redroid_gpu_mode=host redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128
+lxc.apparmor.profile = unconfined
+lxc.autodev = 1
+lxc.autodev.tmpfs.size = 25000000
+
+lxc.mount.entry = /dev/dma_heap dev/dma_heap none bind,optional,create=dir
+#lxc.mount.entry = /dev/ dev none bind,optional,create=dir
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry = /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,create=file
+lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
+$ lxc-start -l debug -o  houdini.log -n redroidhoudini
+</code></pre>
+<p>Got some issue with init command:</p>
+<pre><code>lxc.init.cmd = /init androidboot.hardware=redroid redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128 androidboot.redroid_net_proxy_type=static androidboot.hardware=mt6891 ro.product.cpu.abilist=x86_64,arm64-v8a,x86,armeabi-v7a,armeabi ro.product.cpu.abilist64=x86_64,arm64-v8a ro.product.cpu.abilist32=x86,armeabi-v7a,armeabi ro.dalvik.vm.isa.arm=x86 ro.dalvik.vm.isa.arm64=x86_64 ro.enable.native.bridge.exec=1 ro.enable.native.bridge.exec64=1 ro.dalvik.vm.native.bridge=libhoudini.so 
+
+</code></pre>
 
                     </main>
 
