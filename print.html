@@ -9093,6 +9093,98 @@ $ lxc-start -l debug -o  houdini.log -n redroidhoudini
 <pre><code>lxc.init.cmd = /init androidboot.hardware=redroid redroid.gpu.mode=host redroid.gpu.node=/dev/dri/renderD128 androidboot.redroid_net_proxy_type=static androidboot.hardware=mt6891 ro.product.cpu.abilist=x86_64,arm64-v8a,x86,armeabi-v7a,armeabi ro.product.cpu.abilist64=x86_64,arm64-v8a ro.product.cpu.abilist32=x86,armeabi-v7a,armeabi ro.dalvik.vm.isa.arm=x86 ro.dalvik.vm.isa.arm64=x86_64 ro.enable.native.bridge.exec=1 ro.enable.native.bridge.exec64=1 ro.dalvik.vm.native.bridge=libhoudini.so 
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250529"><a class="header" href="#20250529">20250529</a></h1>
+<h3 id="1-redroid12-with-h"><a class="header" href="#1-redroid12-with-h">1. redroid12 with H</a></h3>
+<p>Fetch the Code in redroid build docker, then:</p>
+<pre><code>git clone https://github.com/remote-android/redroid-patches.git ~/redroid-patches
+~/redroid-patches/apply-patch.sh ~/src
+</code></pre>
+<p>Then apply H patch, building:</p>
+<pre><code>cd /src
+. build/envsetup.sh
+lunch redroid_x86_64-userdebug
+m -j32
+
+</code></pre>
+<h3 id="2-fio-test"><a class="header" href="#2-fio-test">2. fio test</a></h3>
+<p>Command:</p>
+<pre><code>[root@minirocky92 nvme]# fio -name=test -ioengine=libaio -bs=4k -iodepth=32 -filename=/media/nvme/test -size=2G -rw=randwrite -direct=1
+test: (g=0): rw=randwrite, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32
+fio-3.35
+Starting 1 process
+test: Laying out IO file (1 file / 2048MiB)
+Jobs: 1 (f=1): [w(1)][100.0%][w=333MiB/s][w=85.3k IOPS][eta 00m:00s]
+test: (groupid=0, jobs=1): err= 0: pid=1520033: Thu May 29 14:33:14 2025
+  write: IOPS=101k, BW=393MiB/s (413MB/s)(2048MiB/5206msec); 0 zone resets
+    slat (usec): min=2, max=7765, avg= 8.76, stdev=13.71
+    clat (usec): min=50, max=7221, avg=307.99, stdev=175.64
+     lat (usec): min=53, max=9938, avg=316.75, stdev=177.25
+    clat percentiles (usec):
+     |  1.00th=[  176],  5.00th=[  217], 10.00th=[  227], 20.00th=[  239],
+     | 30.00th=[  245], 40.00th=[  249], 50.00th=[  258], 60.00th=[  302],
+     | 70.00th=[  375], 80.00th=[  396], 90.00th=[  412], 95.00th=[  424],
+     | 99.00th=[  457], 99.50th=[  474], 99.90th=[ 2868], 99.95th=[ 5014],
+     | 99.99th=[ 7046]
+   bw (  KiB/s): min=311528, max=485808, per=97.98%, avg=394683.20, stdev=51371.80, samples=10
+   iops        : min=77882, max=121452, avg=98671.00, stdev=12842.96, samples=10
+  lat (usec)   : 100=0.01%, 250=40.72%, 500=59.00%, 750=0.12%, 1000=0.02%
+  lat (msec)   : 2=0.02%, 4=0.05%, 10=0.08%
+  cpu          : usr=9.32%, sys=72.10%, ctx=87833, majf=0, minf=11
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=100.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%
+     issued rwts: total=0,524288,0,0 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=32
+
+Run status group 0 (all jobs):
+  WRITE: bw=393MiB/s (413MB/s), 393MiB/s-393MiB/s (413MB/s-413MB/s), io=2048MiB (2147MB), run=5206-5206msec
+
+Disk stats (read/write):
+  nvme1n1: ios=0/509352, merge=0/1340, ticks=0/13209, in_queue=13211, util=97.09%
+[root@minirocky92 nvme]# 
+[root@minirocky92 nvme]# 
+[root@minirocky92 nvme]# fio -name=test -ioengine=libaio -bs=4k -iodepth=32 -filename=/media/nvme/test -size=2G -rw=randwrite -direct=1 -fsync=1
+test: (g=0): rw=randwrite, bs=(R) 4096B-4096B, (W) 4096B-4096B, (T) 4096B-4096B, ioengine=libaio, iodepth=32
+fio-3.35
+Starting 1 process
+Jobs: 1 (f=1): [w(1)][100.0%][w=1117KiB/s][w=279 IOPS][eta 00m:00s]
+test: (groupid=0, jobs=1): err= 0: pid=1520618: Thu May 29 14:56:58 2025
+  write: IOPS=369, BW=1479KiB/s (1515kB/s)(2048MiB/1417562msec); 0 zone resets
+    slat (nsec): min=1871, max=6858.4k, avg=27965.24, stdev=15988.73
+    clat (usec): min=24, max=165059, avg=83816.46, stdev=11598.42
+     lat (usec): min=60, max=165086, avg=83844.43, stdev=11602.25
+    clat percentiles (msec):
+     |  1.00th=[   69],  5.00th=[   74], 10.00th=[   75], 20.00th=[   77],
+     | 30.00th=[   80], 40.00th=[   81], 50.00th=[   82], 60.00th=[   83],
+     | 70.00th=[   83], 80.00th=[   84], 90.00th=[  106], 95.00th=[  112],
+     | 99.00th=[  121], 99.50th=[  123], 99.90th=[  125], 99.95th=[  127],
+     | 99.99th=[  138]
+   bw (  KiB/s): min=  755, max= 2008, per=100.00%, avg=1480.11, stdev=182.24, samples=2834
+   iops        : min=  188, max=  502, avg=369.89, stdev=45.57, samples=2834
+  lat (usec)   : 50=0.01%
+  lat (msec)   : 4=0.01%, 10=0.01%, 20=0.01%, 50=0.01%, 100=85.51%
+  lat (msec)   : 250=14.48%
+  fsync/fdatasync/sync_file_range:
+    sync (msec): min=7, max=253, avg=86.48, stdev=11.96
+    sync percentiles (msec):
+     |  1.00th=[   71],  5.00th=[   77], 10.00th=[   78], 20.00th=[   80],
+     | 30.00th=[   82], 40.00th=[   83], 50.00th=[   84], 60.00th=[   85],
+     | 70.00th=[   86], 80.00th=[   86], 90.00th=[  109], 95.00th=[  115],
+     | 99.00th=[  125], 99.50th=[  127], 99.90th=[  129], 99.95th=[  131],
+     | 99.99th=[  142]
+  cpu          : usr=0.67%, sys=1.35%, ctx=639434, majf=1, minf=10
+  IO depths    : 1=0.1%, 2=0.1%, 4=0.1%, 8=0.1%, 16=0.1%, 32=200.0%, &gt;=64=0.0%
+     submit    : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.0%, 64=0.0%, &gt;=64=0.0%
+     complete  : 0=0.0%, 4=100.0%, 8=0.0%, 16=0.0%, 32=0.1%, 64=0.0%, &gt;=64=0.0%
+     issued rwts: total=0,524288,0,524257 short=0,0,0,0 dropped=0,0,0,0
+     latency   : target=0, window=0, percentile=100.00%, depth=32
+
+Run status group 0 (all jobs):
+  WRITE: bw=1479KiB/s (1515kB/s), 1479KiB/s-1479KiB/s (1515kB/s-1515kB/s), io=2048MiB (2147MB), run=1417562-1417562msec
+
+Disk stats (read/write):
+  nvme1n1: ios=0/1402691, merge=0/355052, ticks=0/1402232, in_queue=2526697, util=100.00%
+</code></pre>
 
                     </main>
 
