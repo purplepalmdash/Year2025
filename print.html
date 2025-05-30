@@ -9185,6 +9185,47 @@ Run status group 0 (all jobs):
 Disk stats (read/write):
   nvme1n1: ios=0/1402691, merge=0/355052, ticks=0/1402232, in_queue=2526697, util=100.00%
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250530"><a class="header" href="#20250530">20250530</a></h1>
+<h3 id="1-redroid12-in-lxcx86"><a class="header" href="#1-redroid12-in-lxcx86">1. redroid12 in lxc(x86)</a></h3>
+<p>Change the H related:</p>
+<pre><code># vim /var/lib/lxc/redroiidhoudini/rootfs/system/build.prop
+......
+ro.product.cpu.abi=x86_64
++ro.product.cpu.abilist=x86_64,arm64-v8a,x86,armeabi-v7a,armeabi
++ro.product.cpu.abilist32=x86,armeabi-v7a,armeabi
++ro.product.cpu.abilist64=x86_64,arm64-v8a
++ro.dalvik.vm.isa.arm=x86 
++ro.dalvik.vm.isa.arm64=x86_64
++ro.enable.native.bridge.exec=1
++ro.enable.native.bridge.exec64=1
++ro.dalvik.vm.native.bridge=libhoudini.so
+</code></pre>
+<p>repack for the lxc image.</p>
+<p>Create the image with:</p>
+<pre><code> openstack image create "redroid11withhoudini" --file redroidhoudini.img --disk-format raw --container-format bare --public
+</code></pre>
+<p>Recover network:<br />
+Delete instance:</p>
+<p><img src="./images/2025_05_30_14_40_24_734x449.jpg" alt="./images/2025_05_30_14_40_24_734x449.jpg" /></p>
+<p>Delete router:</p>
+<p><img src="./images/2025_05_30_14_39_54_1111x337.jpg" alt="./images/2025_05_30_14_39_54_1111x337.jpg" /></p>
+<p>Delete Networks:</p>
+<p><img src="./images/2025_05_30_14_41_12_974x467.jpg" alt="./images/2025_05_30_14_41_12_974x467.jpg" /></p>
+<p>Examine the network topology:</p>
+<p><img src="./images/2025_05_30_14_41_41_1064x472.jpg" alt="./images/2025_05_30_14_41_41_1064x472.jpg" /></p>
+<p>Re-create the network:</p>
+<pre><code>source /etc/keystone/admin-openrc.sh
+openstack router create Ext-Router
+openstack network create --internal --provider-network-type vxlan int-net
+openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+openstack router add subnet Ext-Router int-net-sub
+openstack network create --provider-physical-network physnet1 --provider-network-type flat  --external ext-net
+openstack subnet create ext-net-sub --network ext-net --subnet-range 192.168.200.40/24  --allocation-pool start=192.168.200.100,end=192.168.200.200 --gateway 192.168.200.1 --dns-nameserver 114.114.114.114 --dhcp
+openstack router set Ext-Router --external-gateway ext-net
+</code></pre>
+<p>Network topology:</p>
+<p><img src="./images/2025_05_30_14_44_46_489x608.jpg" alt="./images/2025_05_30_14_44_46_489x608.jpg" /></p>
+<p>lxc based, OK, but libvirt based, failed.</p>
 
                     </main>
 
