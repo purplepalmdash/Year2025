@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250602 - year2025</title>
+        <title>20250603 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,40 +166,183 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250602"><a class="header" href="#20250602">20250602</a></h1>
-<h3 id="1-cgroup-working-tips"><a class="header" href="#1-cgroup-working-tips">1. cgroup working tips</a></h3>
-<p><code>https://serverfault.com/questions/501196/allowed-cgroup-devices-for-libvirt-lxc-container</code>.<br />
-In Ubun22.04:</p>
-<pre><code>vim /etc/cgconfig.conf
-group libvirt/lxc {
-    devices {
-            devices.allow="c 10:200 rwm";
-    }
-}
-
-c 1:3 rwm
-c 1:5 rwm
-c 1:7 rwm
-c 1:8 rwm
-c 1:9 rwm
-c 5:0 rwm
-c 5:2 rwm
-c 136:* rwm
-c 10:200 rwm
+                        <h1 id="20250603"><a class="header" href="#20250603">20250603</a></h1>
+<h3 id="1-privileged-vs-unprivileged"><a class="header" href="#1-privileged-vs-unprivileged">1. privileged vs unprivileged</a></h3>
+<p>Create debian lxc instance:</p>
+<pre><code>lxc-create -n debian-sid -t download -- --dist debian --release trixie --arch amd64
+Result:     
+root@compute:~# lxc-attach -n debian-sid
+root@debian-sid:~# ls
+root@debian-sid:~# capsh --print
+Current: =ep cap_sys_module,cap_sys_rawio,cap_sys_time,cap_mac_override,cap_mac_admin-ep
+Bounding set =cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_linux_immutable,cap_net_bind_service,cap_net_broadcast,cap_net_admin,cap_net_raw,cap_ipc_lock,cap_ipc_owner,cap_sys_chroot,cap_sys_ptrace,cap_sys_pacct,cap_sys_admin,cap_sys_boot,cap_sys_nice,cap_sys_resource,cap_sys_tty_config,cap_mknod,cap_lease,cap_audit_write,cap_audit_control,cap_setfcap,cap_syslog,cap_wake_alarm,cap_block_suspend,cap_audit_read,cap_perfmon,cap_bpf,cap_checkpoint_restore
+Ambient set =
+Current IAB: !cap_sys_module,!cap_sys_rawio,!cap_sys_time,!cap_mac_override,!cap_mac_admin
+Securebits: 00/0x0/1'b0 (no-new-privs=0)
+ secure-noroot: no (unlocked)
+ secure-no-suid-fixup: no (unlocked)
+ secure-keep-caps: no (unlocked)
+ secure-no-ambient-raise: no (unlocked)
+uid=0(root) euid=0(root)
+gid=0(root)
+groups=
+Guessed mode: HYBRID (4)
 </code></pre>
-<p>But after reboot didn't take effects.</p>
+<p>Create docker instance:</p>
+<pre><code>docker run -it debian:trixie /bin/bash
+# in docker
+apt update -y
+apt install -y libcap2-bin
+capsh --print
+capsh --print
+Current: cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap=ep
+Bounding set =cap_chown,cap_dac_override,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_net_bind_service,cap_net_raw,cap_sys_chroot,cap_mknod,cap_audit_write,cap_setfcap
+Ambient set =
+Current IAB: !cap_dac_read_search,!cap_linux_immutable,!cap_net_broadcast,!cap_net_admin,!cap_ipc_lock,!cap_ipc_owner,!cap_sys_module,!cap_sys_rawio,!cap_sys_ptrace,!cap_sys_pacct,!cap_sys_admin,!cap_sys_boot,!cap_sys_nice,!cap_sys_resource,!cap_sys_time,!cap_sys_tty_config,!cap_lease,!cap_audit_control,!cap_mac_override,!cap_mac_admin,!cap_syslog,!cap_wake_alarm,!cap_block_suspend,!cap_audit_read,!cap_perfmon,!cap_bpf,!cap_checkpoint_restore
+Securebits: 00/0x0/1'b0 (no-new-privs=0)
+ secure-noroot: no (unlocked)
+ secure-no-suid-fixup: no (unlocked)
+ secure-keep-caps: no (unlocked)
+ secure-no-ambient-raise: no (unlocked)
+uid=0(root) euid=0(root)
+gid=0(root)
+groups=0(root)
+Guessed mode: HYBRID (4)
+</code></pre>
+<p>run with <code>--privileged</code>:</p>
+<pre><code>Current: =ep
+Bounding set =cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_linux_immutable,cap_net_bind_service,cap_net_broadcast,cap_net_admin,cap_net_raw,cap_ipc_lock,cap_ipc_owner,cap_sys_module,cap_sys_rawio,cap_sys_chroot,cap_sys_ptrace,cap_sys_pacct,cap_sys_admin,cap_sys_boot,cap_sys_nice,cap_sys_resource,cap_sys_time,cap_sys_tty_config,cap_mknod,cap_lease,cap_audit_write,cap_audit_control,cap_setfcap,cap_mac_override,cap_mac_admin,cap_syslog,cap_wake_alarm,cap_block_suspend,cap_audit_read,cap_perfmon,cap_bpf,cap_checkpoint_restore
+Ambient set =
+Current IAB: 
+Securebits: 00/0x0/1'b0 (no-new-privs=0)
+ secure-noroot: no (unlocked)
+ secure-no-suid-fixup: no (unlocked)
+ secure-keep-caps: no (unlocked)
+ secure-no-ambient-raise: no (unlocked)
+uid=0(root) euid=0(root)
+gid=0(root)
+groups=0(root)
+Guessed mode: HYBRID (4)
+</code></pre>
+<p>lxc based virsh:</p>
+<pre><code>root@debian-sid:~# capsh --print
+Current: =ep
+Bounding set =cap_chown,cap_dac_override,cap_dac_read_search,cap_fowner,cap_fsetid,cap_kill,cap_setgid,cap_setuid,cap_setpcap,cap_linux_immutable,cap_net_bind_service,cap_net_broadcast,cap_net_admin,cap_net_raw,cap_ipc_lock,cap_ipc_owner,cap_sys_module,cap_sys_rawio,cap_sys_chroot,cap_sys_ptrace,cap_sys_pacct,cap_sys_admin,cap_sys_boot,cap_sys_nice,cap_sys_resource,cap_sys_time,cap_sys_tty_config,cap_mknod,cap_lease,cap_audit_write,cap_audit_control,cap_setfcap,cap_mac_override,cap_mac_admin,cap_syslog,cap_wake_alarm,cap_block_suspend,cap_audit_read,cap_perfmon,cap_bpf,cap_checkpoint_restore
+Ambient set =
+Current IAB: 
+Securebits: 00/0x0/1'b0 (no-new-privs=0)
+ secure-noroot: no (unlocked)
+ secure-no-suid-fixup: no (unlocked)
+ secure-keep-caps: no (unlocked)
+ secure-no-ambient-raise: no (unlocked)
+uid=0(root) euid=0(root)
+gid=0(root)
+groups=
+Guessed mode: HYBRID (4)
+</code></pre>
+<p>privileged docker, could use <code>fdisk -l</code>.</p>
+<h3 id="2-adb-shell-issue"><a class="header" href="#2-adb-shell-issue">2. adb shell issue</a></h3>
+<p>lxc based redroid:</p>
+<pre><code>After boot completed:    
+console:/ # ls /dev/pts/                                                                     
+ptmx
+
+adb connect lxc_ip:5555
+adb -s lxc_ip:5555 shell
+
+console:/ # ls /dev/pts/                                                                     
+0  ptmx
+console:/ # id
+uid=0(root) gid=0(root) groups=0(root),1007(log),3009(readproc)
+
+After exit:    
+
+console:/ # ls /dev/pts/                                                                     
+ptmx
+
+</code></pre>
+<p>Docker based redroid(privileged):</p>
+<pre><code>2eaf2af9586a:/ # ls /dev/pts/                                                                
+0  ptmx
+
+adb connect docker_ip:5555
+adb -s docker_ip:5555 shell
+
+2eaf2af9586a:/ # ls /dev/pts/                                                                
+0  1  ptmx
+2eaf2af9586a:/ # id
+uid=0(root) gid=0(root) groups=0(root)
+
+After exit
+2eaf2af9586a:/ # ls /dev/pts
+0  ptmx  
+</code></pre>
+<p>virsh based lxc(redroid):</p>
+<pre><code>17: eth0@if18: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether fa:16:3e:5d:b5:19 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 192.168.200.199/24 brd 192.168.200.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::55a4:3868:90d5:7e9b/64 scope link stable-privacy 
+       valid_lft forever preferred_lft forever
+console:/ $ ls /dev/pts/
+ptmx
+
+root@compute:~# adb -s 192.168.200.199:5555 shell
+error: child failed to open pseudo-term slave /dev/pts/1: No such file or directory
+                                                                                   
+console:/ $ ls /dev/pts/                                                       
+ptmx
+
+console:/ # id
+uid=0(root) gid=0(root) groups=0(root),1007(log),3009(readproc)
+
+</code></pre>
+<h3 id="3-lxclibvirtlxc-on-archlinux"><a class="header" href="#3-lxclibvirtlxc-on-archlinux">3. lxc/libvirtLXC on archlinux</a></h3>
+<p>In archlinux:</p>
+<pre><code>sudo pacman -Syu --noconfirm &amp;&amp; sudo pacman -S linux-zen &amp;&amp; sudo grub-mkconfig -o /boot/grub/grub.cfg &amp;&amp; sudo reboot
+# After reboot
+[dash@archlxc ~]$ uname -a
+Linux archlxc 6.14.9-zen1-1-zen #1 ZEN SMP PREEMPT_DYNAMIC Thu, 29 May 2025 21:42:00 +0000 x86_64 GNU/Linux
+</code></pre>
+<p>Run aosp with houdini :</p>
+<pre><code>apt install -y docker
+</code></pre>
+<p>Ignore the verification, for I have solved the adb shell issue.</p>
+<h3 id="4--workable-libvirt"><a class="header" href="#4--workable-libvirt">4.  workable libvirt</a></h3>
+<p>modification for libvirt:</p>
+<pre><code>diff -r Code/libvirt-8.0.0/src/lxc/lxc_container.c Code1/libvirt-8.0.0/src/lxc/lxc_container.c
+741c741
+&lt;     { "/proc/sys", "/proc/sys", "none", MS_BIND|MS_NOSUID|MS_NOEXEC|MS_NODEV, false, false, false },
+---
+&gt;     { "/proc/sys", "/proc/sys", "none", MS_BIND|MS_NOSUID|MS_NOEXEC|MS_NODEV|MS_RDONLY, false, false, false },
+744c744
+&lt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV, false, false, false },
+---
+&gt;     { "sysfs", "/sys", "sysfs", MS_NOSUID|MS_NOEXEC|MS_NODEV|MS_RDONLY, false, false, false },
+1031,1032c1031,1032
+&lt;     //if (virFileBindMountDevice("/dev/pts/ptmx", "/dev/ptmx") &lt; 0)
+&lt;     //    return -1;
+---
+&gt;     if (virFileBindMountDevice("/dev/pts/ptmx", "/dev/ptmx") &lt; 0)
+&gt;         return -1;
+diff -r Code/libvirt-8.0.0/src/lxc/lxc_controller.c Code1/libvirt-8.0.0/src/lxc/lxc_controller.c
+1439,1440c1439
+&lt;     /* opts = g_strdup_printf("mode=755,size=65536%s", mount_options);*/
+&lt;     opts = g_strdup_printf("mode=755,size=25000000%s", mount_options);
+---
+&gt;     opts = g_strdup_printf("mode=755,size=65536%s", mount_options);
+2137d2135
+&lt;     //opts = g_strdup_printf("newinstance,ptmxmode=0000,mode=0644,gid=%u%s", ptsgid,
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250601.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250602.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250603.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -207,13 +350,10 @@ c 10:200 rwm
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250601.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250602.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250603.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
