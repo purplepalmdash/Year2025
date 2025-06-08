@@ -9738,6 +9738,25 @@ lxc.mount.entry = /dev/ashmem dev/ashmem none bind,optional,create=file
 :/data # screenrecord --time-limit 5 11.mp4                                                            
 Encoder failed (err=-38)
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250607"><a class="header" href="#20250607">20250607</a></h1>
+<h3 id="1-mpp-issue"><a class="header" href="#1-mpp-issue">1. mpp issue</a></h3>
+<p>lxc(redroid), not OK.<br />
+docke(redroid), mpp works well.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250608"><a class="header" href="#20250608">20250608</a></h1>
+<h3 id="1-possible-solution-for-rk"><a class="header" href="#1-possible-solution-for-rk">1. possible solution for rk</a></h3>
+<p><code>https://github.com/redroid-rockchip</code>.</p>
+<pre><code>sudo docker run -itd --privileged \
+    --name redroid \
+    -v ~/data:/data \
+    -v /dev/mali0:/dev/mali0 \
+    -p 5555:5555 \
+    iceblacktea/redroid-arm64:12.0.0-250116 \
+    androidboot.redroid_gpu_mode=mali \
+    androidboot.redroid_radio=1 \
+    androidboot.redroid_wifi=1 \
+    androidboot.redroid_wifi_gateway=10.100.200.1/24 \
+    androidboot.redroid_magisk=1
+</code></pre>
 
                     </main>
 

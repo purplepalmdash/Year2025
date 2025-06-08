@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250606 - year2025</title>
+        <title>20250607 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,129 +166,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250606"><a class="header" href="#20250606">20250606</a></h1>
-<h3 id="1-rk3588-openstack-tips"><a class="header" href="#1-rk3588-openstack-tips">1. rk3588 openstack tips</a></h3>
-<p>Steps for configuration:</p>
-<pre><code># apt install -y vim nethogs iotop net-tools s-tui iperf3
-# crontab -e
-@reboot sleep 10 &amp;&amp; sysctl -p &amp;&amp; modprobe nbd &amp;&amp;  modprobe binder_linux devices="binder,hwbinder,vndbinder"
-# vim /etc/modprobe.d/blacklist.conf
-blacklist x_tables
-
-cat &gt;&gt; /etc/hosts &lt;&lt; EOF
-10.171.172.21 controller
-10.171.172.22 compute
-10.171.172.23 gpu
-10.171.172.25 rk3588
-EOF
-
-timedatectl set-ntp true
-timedatectl set-timezone Asia/Shanghai
-apt install chrony -y
-
-reboot
-</code></pre>
-<p>Then refers to <code>20250527</code> for detailed configuration for nova/neutron.<br />
-After configuration of nova:</p>
-<pre><code>root@controller:~# openstack compute service list --service nova-compute
-+--------------------------------------+--------------+-------------+------+---------+-------+----------------------------+
-| ID                                   | Binary       | Host        | Zone | Status  | State | Updated At                 |
-+--------------------------------------+--------------+-------------+------+---------+-------+----------------------------+
-| 083e7170-9d65-4ab7-8ad9-50a6639480be | nova-compute | compute     | nova | enabled | down  | 2025-06-04T11:14:16.000000 |
-| cc6cc325-5483-4929-b437-36a1260db353 | nova-compute | gpu         | nova | enabled | down  | 2025-06-04T11:14:12.000000 |
-| 840ba248-2666-4f02-8b37-7261f92bffe8 | nova-compute | virglgpux86 | nova | enabled | down  | 2025-06-04T11:14:11.000000 |
-| 52b1af69-3d7a-4bde-b459-6acce24ef6ae | nova-compute | rk3588      | nova | enabled | up    | 2025-06-06T00:55:02.000000 |
-+--------------------------------------+--------------+-------------+------+---------+-------+----------------------------+
-
-</code></pre>
-<p>Then configure neutron, remove lxc-net, reconfigure the network in openstack.</p>
-<pre><code>apt remove lxc-utils lxc
-</code></pre>
-<p>lxc related:</p>
-<pre><code>apt install -y nova-compute-lxc
-scp dash@192.168.1.8:/media/sda/iso/houdini12/libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb .
-apt remove libvirt-daemon-driver-lxc --purge
-apt install -y ./libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb
-scp -r dash@192.168.1.8:/media/sda/iso/houdini12/configs .
-cp configs/*.py /usr/lib/python3/dist-packages/nova/virt/libvirt/
-cp configs/addedxml_* /etc
-</code></pre>
-<p>Adjust for py and addedxml:</p>
-<pre><code>$ vim /usr/lib/python3/dist-packages/nova/virt/libvirt/driver.py
- 6515             guest.os_init_arg = "androidboot.hardware=redroid androidboot.redroid_height=1920 androidboot.redroid_width=1080"
-$ 
-</code></pre>
-<p>Compute node, create:</p>
-<pre><code> openstack server create --flavor C4-6124MB-25G --image   rk3588 --security-group f37134a8-0e72-4102-8473-7a147e60d81d --nic net-id=ext-net --key-name mykey --os-compute-api-version 2.74 --hypervisor-host  rk3588 testrk3588
-</code></pre>
-<p>game3588 :</p>
-<pre><code>guest.os_init_arg = "androidboot.hardware=rk30board androidboot.redroid_height=1920 androidboot.redroid_width=1080 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=      host"
-
-
-  scp game3588.img dash@192.168.1.8://media/sda/iso/houdini12/
-# create instance via:    
-    openstack server create --flavor C4-6124MB-25G --image   game3588 --security-group f37134a8-0e72-4102-8473-7a147e60d81d --nic net-id=ext-net --key-name mykey --os-compute-api-version 2.74 --hypervisor-host  rk3588   gameout
-
-</code></pre>
-<p>lxc for game3588:</p>
-<pre><code>root@rk3588:~# cat /var/lib/lxc/game3588/config 
-# Template used to create this container: /usr/share/lxc/templates/lxc-oci
-# Parameters passed to the template: -u docker://192.168.1.7:5000/chisbread/rk3588-gaming:redroid-firefly
-# For additional config options, please look at lxc.container.conf(5)
-
-# Uncomment the following line to support nesting containers:
-#lxc.include = /usr/share/lxc/config/nesting.conf
-# (Be aware this has security implications)
-
-lxc.net.0.type = veth
-lxc.net.0.link = virbr0
-lxc.net.0.flags = up
-lxc.net.0.hwaddr = 00:16:3e:dc:70:b8
-lxc.rootfs.path = dir:/var/lib/lxc/game3588/rootfs
-lxc.execute.cmd = '"/init" "androidboot.hardware=rk30board" '
-lxc.mount.auto = proc:rw sys:rw cgroup:rw
-lxc.environment = 
-lxc.uts.name = game3588
-lxc.init.uid = 0
-lxc.init.gid = 0
-lxc.init.cwd = /
-
-lxc.init.cmd = /init androidboot.hardware=rk30board androidboot.redroid_gpu_mode=host
-lxc.apparmor.profile = unconfined
-#lxc.autodev = 1
-lxc.autodev.tmpfs.size = 25000000
-
-lxc.mount.entry = /dev/dma_heap dev/dma_heap none bind,optional,create=dir
-#lxc.mount.entry = /dev/ dev none bind,optional,create=dir
-lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
-lxc.mount.entry = /dev/dri/renderD128 dev/dri/renderD128 none bind,optional,create=file
-lxc.mount.entry = /dev/dri/renderD129 dev/dri/renderD129 none bind,optional,create=file
-lxc.mount.entry = /dev/dri/card0 dev/dri/card0 none bind,optional,create=file
-lxc.mount.entry = /dev/dri/card1 dev/dri/card1 none bind,optional,create=file
-lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
-lxc.mount.entry = /dev/mali0 dev/mali0 none bind,optional,create=file
-lxc.mount.entry = /dev/video-dec0 dev/video-dec0 none bind,optional,create=file
-lxc.mount.entry = /dev/video-enc0 dev/video-enc0 none bind,optional,create=file
-lxc.mount.entry = /dev/ashmem dev/ashmem none bind,optional,create=file
-</code></pre>
-<p>Create via:</p>
-<pre><code>lxc-create -n game3588 -t oci -- -u docker://192.168.1.7:5000/chisbread/rk3588-gaming:redroid-firefly
-</code></pre>
-<p>issue:</p>
-<pre><code>screencap     screenrecord
-:/data # screenrecord --time-limit 5 11.mp4                                                            
-Encoder failed (err=-38)
-</code></pre>
+                        <h1 id="20250607"><a class="header" href="#20250607">20250607</a></h1>
+<h3 id="1-mpp-issue"><a class="header" href="#1-mpp-issue">1. mpp issue</a></h3>
+<p>lxc(redroid), not OK.<br />
+docke(redroid), mpp works well.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250605.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250606.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250607.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250608.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -298,11 +189,11 @@ Encoder failed (err=-38)
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250605.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250606.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250607.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250608.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
