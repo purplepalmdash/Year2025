@@ -9757,6 +9757,54 @@ docke(redroid), mpp works well.</p>
     androidboot.redroid_wifi_gateway=10.100.200.1/24 \
     androidboot.redroid_magisk=1
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250609"><a class="header" href="#20250609">20250609</a></h1>
+<h3 id="1-rk3588-container-verification"><a class="header" href="#1-rk3588-container-verification">1. rk3588 container verification</a></h3>
+<p>Steps:</p>
+<pre><code> docker tag iceblacktea/redroid-arm64:12.0.0-250116 192.168.1.7:5000/iceblacktea/redroid-arm64:12.0.0-250116
+docker push 192.168.1.7:5000/iceblacktea/redroid-arm64:12.0.0-250116
+lxc-create -n  iceblacktea3588 -t oci -- -u docker://192.168.1.7:5000/iceblacktea/redroid-arm64:12.0.0-250116
+
+modification of lxc.    
+
+lxc-attach -n iceblacktea3588,   
+REsult:    
+
+ getprop | grep boot | grep com                                                                                                                                                                                                                                           
+[ro.boottime.vendor.hwcomposer-2-1]: [4441550169946]
+[sys.bootstat.first_boot_completed]: [0]
+</code></pre>
+<h3 id="2-rocky92-verification"><a class="header" href="#2-rocky92-verification">2. rocky92 verification</a></h3>
+<p>Install via:</p>
+<p><img src="./images/2025_06_09_11_44_15_990x638.jpg" alt="./images/2025_06_09_11_44_15_990x638.jpg" /></p>
+<p>autossh configuration:</p>
+<pre><code># cat /lib/systemd/system/autossh.service
+[Unit]
+Description=Auto SSH Tunnel
+After=network-online.target
+[Service]
+User=test
+Type=simple
+ExecStart=/usr/bin/autossh -M 28800 -NR '*:21022:0.0.0.0:22' xxxx@192.168.1.xx -i ~/.ssh/id_rsa
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+StartLimitIntervalSec=5
+StartLimitBurst=12
+Restart=always
+[Install]
+WantedBy=multi-user.target
+WantedBy=graphical.target
+# systemctl daemon-reload
+# systemctl enable autossh --now
+</code></pre>
+<p>On 192.168.1.xx, sshd should be configurated via:</p>
+<pre><code>$ sudo vim /etc/ssh/sshd_config
+GetewayPorts yes
+TCPKeepAlive yes
+ClientAliveInterval 60
+ClientAliveCountMax 3
+</code></pre>
+<h3 id="3-flex170-redroid-issue"><a class="header" href="#3-flex170-redroid-issue">3. flex170 redroid issue</a></h3>
+<p>redroid won't start, maybe missing the driver in aosp.</p>
 
                     </main>
 
