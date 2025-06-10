@@ -9805,6 +9805,56 @@ ClientAliveCountMax 3
 </code></pre>
 <h3 id="3-flex170-redroid-issue"><a class="header" href="#3-flex170-redroid-issue">3. flex170 redroid issue</a></h3>
 <p>redroid won't start, maybe missing the driver in aosp.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250610"><a class="header" href="#20250610">20250610</a></h1>
+<h3 id="1-otii-with-w5100"><a class="header" href="#1-otii-with-w5100">1. otii with w5100</a></h3>
+<p>change w5100 to vfio mode:</p>
+<pre><code># grubby --update-kernel="/boot/vmlinuz-5.14.284-1_rc2.zdyun.x86_64" --args="vfio-pci.ids=1002:67c7,1002:aaf0"
+[root@minirocky92 ~]# cat /etc/modprobe.d/vfio.conf
+options vfio-pci ids=1002:67c7,1002:aaf0
+[root@minirocky92 ~]# cat /etc/modules-load.d/vfio.conf
+vfio-pci
+[root@minirocky92 ~]# cat /etc/dracut.conf.d/vfio.conf
+add_drivers+=" vfio vfio_iommu_type1 vfio_pci vfio_virqfd  "
+# dracut -f --kver `uname -r`
+# reboot
+</code></pre>
+<p>after reboot:</p>
+<pre><code>[root@minirocky92 ~]# lspci -nn | grep 6f:00
+6f:00.0 VGA compatible controller [0300]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere [Radeon Pro WX 5100] [1002:67c7]
+6f:00.1 Audio device [0403]: Advanced Micro Devices, Inc. [AMD/ATI] Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] [1002:aaf0]
+[root@minirocky92 ~]# lspci -vvnn -s 6f:00.0 | grep -i 'in use'
+	Kernel driver in use: vfio-pci
+[root@minirocky92 ~]# lspci -vvnn -s 6f:00.1 | grep -i 'in use'
+	Kernel driver in use: vfio-pci
+</code></pre>
+<p>Add gpu to vm:</p>
+<p><img src="./images/2025_06_10_09_36_01_811x552.jpg" alt="./images/2025_06_10_09_36_01_811x552.jpg" /></p>
+<h3 id="2-jumper-configuration"><a class="header" href="#2-jumper-configuration">2. jumper configuration</a></h3>
+<p>os info:</p>
+<pre><code>test@debian:~$ cat /etc/issue
+Debian GNU/Linux 12 \n \l
+test@debian:~$ uname -a
+Linux debian 6.1.0-35-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.137-1 (2025-05-07) x86_64 GNU/Linux
+</code></pre>
+<p>Steps:</p>
+<pre><code># vim /etc/apt/sources.list
+    # 默认注释了源码仓库，如有需要可自行取消注释
+    deb http://mirrors.ustc.edu.cn/debian bookworm main contrib non-free non-free-firmware
+    # deb-src http://mirrors.ustc.edu.cn/debian bookworm main contrib non-free non-free-firmware
+    deb http://mirrors.ustc.edu.cn/debian bookworm-updates main contrib non-free non-free-firmware
+    # deb-src http://mirrors.ustc.edu.cn/debian bookworm-updates main contrib non-free non-free-firmware
+    
+    # backports 软件源，请按需启用
+    # deb http://mirrors.ustc.edu.cn/debian bookworm-backports main contrib non-free non-free-firmware
+    # deb-src http://mirrors.ustc.edu.cn/debian bookworm-backports main contrib non-free non-free-firmware
+# apt update -y
+# apt install -y vim nethogs iotop s-tui xrdp autossh
+# apt install -y adb
+manually import scrcpy
+</code></pre>
+<h3 id="3-lab-environment"><a class="header" href="#3-lab-environment">3 lab environment</a></h3>
+<p>(br0)10.171.172.3: otii server
+(br0)10.171.172.31: d3000no1</p>
 
                     </main>
 
