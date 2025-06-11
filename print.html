@@ -10081,6 +10081,14 @@ mkdir -p /etc/qemu
 echo "allow br0" &gt; /etc/qemu/bridge.conf
 </code></pre>
 <p>refers to <code>https://bbs.archlinux.org/viewtopic.php?id=299452</code></p>
+<h3 id="5-ubuntu2204-compute-node-workingtips"><a class="header" href="#5-ubuntu2204-compute-node-workingtips">5. ubuntu2204 compute node workingtips</a></h3>
+<p>Steps:</p>
+<pre><code>sudo apt update -y &amp;&amp; sudo apt upgrade -y
+sudo su
+systemctl stop apt-daily.timer;systemctl disable apt-daily.timer ; systemctl stop apt-daily-upgrade.timer ; systemctl disable apt-daily-upgrade.timer; systemctl stop apt-daily.service;  systemctl mask apt-daily.service; systemctl daemon-reload
+sudo apt install -y nethogs vim iotop s-tui ansible
+
+</code></pre>
 
                     </main>
 
