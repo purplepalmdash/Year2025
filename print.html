@@ -10089,6 +10089,28 @@ systemctl stop apt-daily.timer;systemctl disable apt-daily.timer ; systemctl sto
 sudo apt install -y nethogs vim iotop s-tui ansible
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250612"><a class="header" href="#20250612">20250612</a></h1>
+<h3 id="1-ansible-deployment-of-os"><a class="header" href="#1-ansible-deployment-of-os">1. ansible deployment of OS</a></h3>
+<p>Deploy:</p>
+<pre><code># hostnamectl set-hostname autodeploy1
+# vim /etc/hosts
+127.0.1.1.1 autodeploy1
+10.171.172.21   controller
+# ./0_sysctl.sh
+# ./2_runansible.sh
+</code></pre>
+<p>Then in controller node:</p>
+<pre><code># openstack compute service list --service nova-compute | grep autodeploy1
+| 411bb3b0-5575-4c10-bd84-25ccd30b317a | nova-compute | autodeploy1 | nova | enabled | up    | 2025-06-12T03:03:51.000000 |
+</code></pre>
+<h3 id="2-nvidia-working-items"><a class="header" href="#2-nvidia-working-items">2. nvidia working items</a></h3>
+<p>Tips for working.</p>
+<pre><code>test@compute:~$ sudo rm -f /etc/resolv.conf 
+test@compute:~$ sudo su
+root@nvidiahope:/home/test# echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
+root@nvidiahope:/home/test# apt update -y &amp;&amp; apt install -y linux-image-generic
+
+</code></pre>
 
                     </main>
 
