@@ -10111,6 +10111,56 @@ root@nvidiahope:/home/test# echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
 root@nvidiahope:/home/test# apt update -y &amp;&amp; apt install -y linux-image-generic
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250613"><a class="header" href="#20250613">20250613</a></h1>
+<h3 id="1-ansible-for-openstack-deployment"><a class="header" href="#1-ansible-for-openstack-deployment">1. ansible for openstack deployment</a></h3>
+<p>Test network environment:</p>
+<p><img src="./images/2025_06_13_11_06_54_420x504.jpg" alt="./images/2025_06_13_11_06_54_420x504.jpg" /></p>
+<pre><code>qemu-img create -f qcow2 -b ubuntu220405openstackcompute_autodeploy1.qcow2 -F qcow2 testansible_controller.qcow2
+qemu-img create -f qcow2 -b ubuntu220405openstackcompute_autodeploy1.qcow2 -F qcow2 testansible_compute.qcow2
+</code></pre>
+<p>Create vms:</p>
+<p><img src="./images/2025_06_13_11_15_06_992x743.jpg" alt="./images/2025_06_13_11_15_06_992x743.jpg" /></p>
+<p>Manually setup ip addr on controller(192.168.150.40), then transfer deploy materials to controller.</p>
+<pre><code>test@compute:~$ tar xzvf openstack_deployment.tar.gz 
+root@compute:/etc/netplan# cat /etc/netplan/eth0.yaml 
+network:
+  version: 2
+  ethernets:
+    eth0:
+#      dhcp4: true
+      dhcp4: false
+      addresses: [192.168.150.40/24]
+      gateway4: 192.168.150.1
+    eth1:
+      dhcp4: false
+root@compute:/etc/netplan# netplan apply --debug
+### Change  `192.168.200`-&gt;`192.168.150` in Controller_0.sh
+./Controller_0.sh
+### Relogin
+test@controller:~$ sudo vim /etc/hosts
+127.0.1.1 controller
+</code></pre>
+<p>Change inventory definitions:</p>
+<p><img src="./images/2025_06_13_11_22_28_436x274.jpg" alt="./images/2025_06_13_11_22_28_436x274.jpg" /></p>
+<p>should add mykey:</p>
+<pre><code> ssh-keygen -N ""
+ openstack keypair create --public-key ~/.ssh/id_rsa.pub mykey
+
+openstack image create "redroid12" --file redroid12.img --disk-format raw --container-format bare --public
+</code></pre>
+<p>Compute node:</p>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0 i915.force_probe=* i915.enable_guc=7 module_blacklist=xe"
+# uname -a
+Linux compute 5.15.113-lts2021-iotg #1 SMP Fri May 30 16:09:38 CST 2025 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+<p>network, create security group:</p>
+<pre><code>openstack security group rule create --protocol tcp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --ingress default
+openstack security group rule create --protocol tcp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --egress default
+openstack security group rule create --protocol udp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --egress default
+openstack security group rule create --protocol udp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --ingress default
+openstack security group rule create --protocol icmp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --ingress default
+openstack security group rule create --protocol icmp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --egress default
+</code></pre>
 
                     </main>
 
