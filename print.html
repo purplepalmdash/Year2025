@@ -10161,6 +10161,15 @@ openstack security group rule create --protocol udp --dst-port 20:65535 --remote
 openstack security group rule create --protocol icmp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --ingress default
 openstack security group rule create --protocol icmp --dst-port 20:65535 --remote-ip 0.0.0.0/0 --egress default
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250614"><a class="header" href="#20250614">20250614</a></h1>
+<h3 id="1-rk3588-610-verification"><a class="header" href="#1-rk3588-610-verification">1. rk3588 6.1.0 verification</a></h3>
+<p>Run docker instance via:</p>
+<pre><code>  docker run -itd  --privileged -v /data:/data -p 5555:5555 chisbread/rk3588-gaming:redroid-firefly androidboot.redroid_height=1600 androidboot.redroid_width=2560 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host --mount=type=bind，source=/dev/mali0，destination=/dev/mali0
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250615"><a class="header" href="#20250615">20250615</a></h1>
+<h3 id="openstack-c-version"><a class="header" href="#openstack-c-version">Openstack C version</a></h3>
+<p><code>https://blog.csdn.net/m0_56363537/article/details/139628175</code></p>
 
                     </main>
 
