@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250615 - year2025</title>
+        <title>20250616 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,21 +166,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250615"><a class="header" href="#20250615">20250615</a></h1>
-<h3 id="openstack-c-version"><a class="header" href="#openstack-c-version">Openstack C version</a></h3>
-<p><code>https://blog.csdn.net/m0_56363537/article/details/139628175</code></p>
+                        <h1 id="20250616"><a class="header" href="#20250616">20250616</a></h1>
+<h3 id="1-fantancy-gpu"><a class="header" href="#1-fantancy-gpu">1. fantancy gpu</a></h3>
+<p>Install ubuntu20.04.3 arm64 iso.</p>
+<p>fantancy-II, no arm64 gpu driver.</p>
+<p>should use fantancy -I</p>
+<h3 id="2-zkfdfantancyii"><a class="header" href="#2-zkfdfantancyii">2. zkfd(fantancyII)</a></h3>
+<p>Changed to zkfd, the /dev/dri works well, but could not install binder/binderfs.</p>
+<h3 id="3-bbb-debian"><a class="header" href="#3-bbb-debian">3. bbb debian</a></h3>
+<p>Write sd card:</p>
+<pre><code>$ sudo dd if=./am335x-debian-12.11-base-vscode-v6.12-armhf-2025-05-29-4gb.img of=/dev/sda bs=10M &amp;&amp; sudo sync
+
+</code></pre>
+<h3 id="4-uosfantancyii"><a class="header" href="#4-uosfantancyii">4. uos(fantancyII)</a></h3>
+<p>kernel info:</p>
+<pre><code>root@test-PC:~# dmesg | grep PVR
+[    2.922011] PVR_K:  263: Read BVNC 35.4.1632.23 from HW device registers
+[    2.922128] PVR_K:  263: RGX Device registered BVNC 35.4.1632.23 with 1 core in the system
+[    5.276161] PVR_K:  954: AXI fabric coherency (RGX_CR_SOC_AXI): 0xc
+[    5.279720] PVR_K:  954: RGX Firmware image 'innogpu/fh2m.fw' loaded
+[    5.287702] PVR_K:  954: Shader binary image 'innogpu/fh2m.sh' loaded
+root@test-PC:~# ls /dev/dri/
+by-path  card0	renderD128
+root@test-PC:~# find /dev | grep -i pvr
+</code></pre>
+<h3 id="5-modinfo-result"><a class="header" href="#5-modinfo-result">5. modinfo result</a></h3>
+<p>fantancy II:</p>
+<pre><code>root@test-PC:~# modinfo /lib/modules/5.10.0-arm64-desktop/kernel/drivers/gpu/drm/innogpu//innogpu.ko  | grep -i 1ec8
+alias:          pci:v00001EC8d00009810sv*sd*bc*sc*i*
+alias:          pci:v00001EC8d00001EB8sv*sd*bc*sc*i*
+alias:          pci:v00001EC8d00001EA8sv*sd*bc*sc*i*
+root@test-PC:~# lspci -nn | grep -i vga
+07:00.0 VGA compatible controller [0300]: Innosilicon Co Ltd Fantasy II-M [1ec8:9810] (rev 01)
+</code></pre>
+<p>While the dkms tree built:</p>
+<pre><code>root@test-PC:~# modinfo innogpu | grep -i 1ec8
+alias:          pci:v00001EC8d00008811sv*sd*bc*sc*i*
+alias:          pci:v00001EC8d00008810sv*sd*bc*sc*i*
+alias:          pci:v00001EC8d00001EB8sv*sd*bc*sc*i*
+alias:          pci:v00001EC8d00001EA8sv*sd*bc*sc*i*
+</code></pre>
+<p><img src="./images/2025_06_16_18_21_58_1156x580.jpg" alt="./images/2025_06_16_18_21_58_1156x580.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250614.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250615.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250616.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -188,13 +223,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250614.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250615.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250616.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
