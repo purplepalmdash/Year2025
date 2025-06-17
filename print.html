@@ -10211,6 +10211,28 @@ alias:          pci:v00001EC8d00001EB8sv*sd*bc*sc*i*
 alias:          pci:v00001EC8d00001EA8sv*sd*bc*sc*i*
 </code></pre>
 <p><img src="./images/2025_06_16_18_21_58_1156x580.jpg" alt="./images/2025_06_16_18_21_58_1156x580.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250617"><a class="header" href="#20250617">20250617</a></h1>
+<h3 id="1-virglspice-on-rockylinux"><a class="header" href="#1-virglspice-on-rockylinux">1. virgl/spice on RockyLinux</a></h3>
+<p>Install via:</p>
+<pre><code>dnf -y copr enable ligenix/enterprise-qemu-spice ; dnf update
+dnf install virt-manager
+</code></pre>
+<p>But after this installation, the mesa and related packages will be upgraded, so virgl wont' working:</p>
+<pre><code>[  598.672335] systemd-journald[1040]: Successfully sent stream file descriptor to service manager.
+[  598.793852] qemu-kvm[3329]: segfault at 40 ip 00007f28e274f3cc sp 00007ffeb248c7c0 error 6 in libgallium-24.2.8.so[7f28e1a81000+1597000]
+[  598.793869] Code: 41 5d 41 5e 41 5f c3 0f 1f 80 00 00 00 00 45 8b 75 10 41 8d 46 40 3d 00 00 04 00 77 41 f3 0f 6f 03 49 8b 45 08 45 89 f7 89 ee &lt;42&gt; 0f 11 04 38 49 8b 5d 08 49 8b 7d 18 41 83 45 10 40 4c 01 fb 48
+[  598.811742] systemd-journald[1040]: Successfully sent stream file descriptor to service manager.
+[  598.854914] systemd-journald[1040]: Compressed data object 5567 -&gt; 1726 using ZSTD
+</code></pre>
+<h3 id="2-flex170-virgl"><a class="header" href="#2-flex170-virgl">2. flex170 virgl</a></h3>
+<p>Remove repository related, Install released rpms:</p>
+<pre><code>rpm -e --nodeps mesa-filesystem-24.2.8-2.el9_6.x86_64 mesa-libgbm-24.2.8-2.el9_6.x86_64 mesa-libEGL-24.2.8-2.el9_6.x86_64 mesa-dri-drivers-24.2.8-2.el9_6.x86_64 mesa-libglapi-24.2.8-2.el9_6.x86_64 mesa-libGL-24.2.8-2.el9_6.x86_64 mesa-libgbm-devel-24.2.8-2.el9_6.x86_64 mesa-vulkan-drivers-24.2.8-2.el9_6.x86_64 mesa-libxatracker-24.2.8-2.el9_6.x86_64
+yum install ./pkgs/mesa/mesa-dri-drivers-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./pkgs/mesa/mesa-filesystem-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./pkgs/mesa/mesa-libgbm-24.1.0.1.1-dgfx11319.el9.x86_64.rpm  ./pkgs/mesa/mesa-libEGL-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./pkgs/mesa/mesa-dri-drivers-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./pkgs/mesa/mesa-libglapi-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./pkgs/mesa/mesa-libGL-24.1.0.1.1-dgfx11319.el9.x86_64.rpm
+</code></pre>
+<p>dmesg to show the rpm related:</p>
+<pre><code>yum whatprovides /usr/lib64/libgallium-24.2.8.so
+yum whatprovides /usr/lib64/dri/iris_dri.so
+</code></pre>
 
                     </main>
 
