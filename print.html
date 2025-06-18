@@ -10233,6 +10233,31 @@ yum install ./pkgs/mesa/mesa-dri-drivers-24.1.0.1.1-dgfx11319.el9.x86_64.rpm ./p
 <pre><code>yum whatprovides /usr/lib64/libgallium-24.2.8.so
 yum whatprovides /usr/lib64/dri/iris_dri.so
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250618"><a class="header" href="#20250618">20250618</a></h1>
+<h3 id="1-aic-in-vm"><a class="header" href="#1-aic-in-vm">1. aic in vm</a></h3>
+<p>Install driver:</p>
+<pre><code>wget -qO - https://repositories.intel.com/gpu/intel-graphics.key |
+    sudo gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+sudo apt update
+sudo apt install -y gpg-agent wget
+. /etc/os-release
+if [[ ! " jammy " =~ " ${VERSION_CODENAME} " ]]; then
+    echo "Ubuntu version ${VERSION_CODENAME} not supported"
+else
+    wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
+    sudo gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
+    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu ${VERSION_CODENAME}/lts/2350 unified" | \
+    sudo tee /etc/apt/sources.list.d/intel-gpu-${VERSION_CODENAME}.list
+    sudo apt update
+fi
+sudo apt install -y \
+    linux-headers-$(uname -r) \
+    linux-modules-extra-$(uname -r) \
+    flex bison \
+    intel-fw-gpu intel-i915-dkms xpu-smi
+sudo reboot
+
+</code></pre>
 
                     </main>
 
