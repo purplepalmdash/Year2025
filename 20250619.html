@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250618 - year2025</title>
+        <title>20250619 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,43 +166,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250618"><a class="header" href="#20250618">20250618</a></h1>
-<h3 id="1-aic-in-vm"><a class="header" href="#1-aic-in-vm">1. aic in vm</a></h3>
-<p>Install driver:</p>
-<pre><code>wget -qO - https://repositories.intel.com/gpu/intel-graphics.key |
-    sudo gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
-sudo apt update
-sudo apt install -y gpg-agent wget
-. /etc/os-release
-if [[ ! " jammy " =~ " ${VERSION_CODENAME} " ]]; then
-    echo "Ubuntu version ${VERSION_CODENAME} not supported"
-else
-    wget -qO - https://repositories.intel.com/gpu/intel-graphics.key | \
-    sudo gpg --yes --dearmor --output /usr/share/keyrings/intel-graphics.gpg
-    echo "deb [arch=amd64 signed-by=/usr/share/keyrings/intel-graphics.gpg] https://repositories.intel.com/gpu/ubuntu ${VERSION_CODENAME}/lts/2350 unified" | \
-    sudo tee /etc/apt/sources.list.d/intel-gpu-${VERSION_CODENAME}.list
-    sudo apt update
-fi
-sudo apt install -y \
-    linux-headers-$(uname -r) \
-    linux-modules-extra-$(uname -r) \
-    flex bison \
-    intel-fw-gpu intel-i915-dkms xpu-smi
-sudo reboot
-
-</code></pre>
+                        <h1 id="20250619"><a class="header" href="#20250619">20250619</a></h1>
+<h3 id="1-dp-hdmi"><a class="header" href="#1-dp-hdmi">1. dp-&gt;hdmi</a></h3>
+<p>port failed, buy one for enterprise.</p>
+<h3 id="2-mbox-testing"><a class="header" href="#2-mbox-testing">2. Mbox testing</a></h3>
+<p>Copy the data folder(sharing downloaded games).</p>
+<p>Use scripts for copying.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250617.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250618.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250619.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -210,13 +188,10 @@ sudo reboot
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250617.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250618.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250619.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
