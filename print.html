@@ -10264,6 +10264,71 @@ sudo reboot
 <h3 id="2-mbox-testing"><a class="header" href="#2-mbox-testing">2. Mbox testing</a></h3>
 <p>Copy the data folder(sharing downloaded games).</p>
 <p>Use scripts for copying.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250620"><a class="header" href="#20250620">20250620</a></h1>
+<h3 id="1-lxcredroid-on-fh"><a class="header" href="#1-lxcredroid-on-fh">1. lxc(redroid) on fh</a></h3>
+<p>system info:</p>
+<pre><code>root@fenghua:~# cat /etc/issue
+Ubuntu 20.04.3 LTS \n \l
+root@fenghua:~# uname -a
+Linux fenghua 5.4.93 #1 SMP Sun Feb 19 08:29:12 UTC 2023 aarch64 aarch64 aarch64 GNU/Linux
+</code></pre>
+<p>Build skopeo on ubuntu20.04:</p>
+<pre><code># cat skopeo/Dockerfile 
+FROM golang:1.18 AS skopeo-build
+WORKDIR /usr/src/skopeo
+
+ARG SKOPEO_VERSION="1.8.0"
+RUN curl -fsSL "https://github.com/containers/skopeo/archive/v${SKOPEO_VERSION}.tar.gz" \
+  | tar -xzf - --strip-components=1
+RUN CGO_ENABLED=0 DISABLE_DOCS=1 make BUILDTAGS=containers_image_openpgp GO_DYN_FLAGS=
+RUN ./bin/skopeo --version
+
+FROM scratch AS skopeo-rootfs
+COPY --from=skopeo-build /usr/src/skopeo/bin/skopeo /usr/local/bin/
+COPY --from=skopeo-build /usr/src/skopeo/default-policy.json /etc/containers/policy.json
+
+FROM ubuntu:20.04
+COPY --from=skopeo-rootfs / /
+RUN skopeo --version
+# apt install docker-buildx
+# DOCKER_BUILDKIT=1  docker build . --target skopeo-rootfs --output=/
+# skopeo --version
+skopeo version 1.8.0
+# which skopeo
+/usr/local/bin/skopeo
+</code></pre>
+<h3 id="2-autocreate-lxc-config-file"><a class="header" href="#2-autocreate-lxc-config-file">2. autocreate lxc config file</a></h3>
+<p>script for adding:</p>
+<pre><code>$ cat autocreate.sh
+for i in `ls /dev`
+do
+	if [ -d "/dev/"$i ]; then
+		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=dir
+		#echo $i
+	else
+		echo lxc.mount.entry = /dev/$i dev/$i none bind,optional,create=file
+		#echo kkk $i
+fi
+done
+</code></pre>
+<h3 id="3-hack-for-innogpu"><a class="header" href="#3-hack-for-innogpu">3. hack for innogpu</a></h3>
+<p>Added following items :</p>
+<pre><code>lxc.init.cmd = /init  androidboot.hardware=innogpu
+lxc.apparmor.profile = unconfined
+lxc.autodev = 1
+lxc.autodev.tmpfs.size = 25000000
+lxc.mount.entry = /root/DRIVER/scripts/data/2 data none bind,optional,create=dir
+
+lxc.mount.entry = /dev/ashmem dev/ashmem none bind,optional,create=file
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir
+lxc.mount.entry = /dev/fuse dev/fuse none bind,optional,create=file
+lxc.mount.entry = /dev/ion-0 dev/ion-0 none bind,optional,create=file
+lxc.mount.entry = /dev/pvr_sync dev/pvr_sync none bind,optional,create=file
+lxc.mount.entry = /dev/vpu0 dev/vpu0 none bind,optional,create=file
+
+</code></pre>
+<h3 id="4-libvirt-lxc-building-on-ubuntu2004"><a class="header" href="#4-libvirt-lxc-building-on-ubuntu2004">4. libvirt-lxc building on ubuntu20.04</a></h3>
+<p>virsh start failed, reason unknown.</p>
 
                     </main>
 
