@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250614 - year2025</title>
+        <title>20250621 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,16 +166,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250614"><a class="header" href="#20250614">20250614</a></h1>
-<h3 id="1-rk3588-610-verification"><a class="header" href="#1-rk3588-610-verification">1. rk3588 6.1.0 verification</a></h3>
-<p>Run docker instance via:</p>
-<pre><code>  docker run -itd  --privileged -v /data:/data -p 5555:5555 chisbread/rk3588-gaming:redroid-firefly androidboot.redroid_height=1600 androidboot.redroid_width=2560 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host --mount=type=bind，source=/dev/mali0，destination=/dev/mali0
+                        <h1 id="20250621"><a class="header" href="#20250621">20250621</a></h1>
+<h3 id="1-archlinux-update-issue"><a class="header" href="#1-archlinux-update-issue">1. archlinux update issue</a></h3>
+<p>pacman issue:</p>
+<pre><code>错误：无法准备事务处理 (无法满足依赖关系)
+:: 安装 wxwidgets-gtk3 (3.2.8.1-2) 破坏依赖 'wxgtk3' （python2-wxpython3 需要）
+:: 安装 libxml2 (2.14.4-1) 破坏依赖 'libxml2.so=2-64' （rest 需要）
 </code></pre>
-<p>arbian:</p>
-<pre><code>root@rock-5b-plus:/home/test/3588# uname -a
-Linux rock-5b-plus 6.1.115-vendor-rk35xx #1 SMP Thu May  8 06:01:30 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
-root@rock-5b-plus:/home/test/3588# cat /etc/issue
-Armbian 25.5.1 Noble \l 
+<p>Solved via:</p>
+<pre><code>  sudo pacman -R rest
+  sudo pacman -R python2-wxpython3 playonlinux
 
 </code></pre>
 
@@ -183,11 +183,11 @@ Armbian 25.5.1 Noble \l
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250613.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250620.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250615.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20250622.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -197,11 +197,11 @@ Armbian 25.5.1 Noble \l
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250613.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250620.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250615.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20250622.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

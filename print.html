@@ -10165,6 +10165,12 @@ openstack security group rule create --protocol icmp --dst-port 20:65535 --remot
 <h3 id="1-rk3588-610-verification"><a class="header" href="#1-rk3588-610-verification">1. rk3588 6.1.0 verification</a></h3>
 <p>Run docker instance via:</p>
 <pre><code>  docker run -itd  --privileged -v /data:/data -p 5555:5555 chisbread/rk3588-gaming:redroid-firefly androidboot.redroid_height=1600 androidboot.redroid_width=2560 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host --mount=type=bind，source=/dev/mali0，destination=/dev/mali0
+</code></pre>
+<p>arbian:</p>
+<pre><code>root@rock-5b-plus:/home/test/3588# uname -a
+Linux rock-5b-plus 6.1.115-vendor-rk35xx #1 SMP Thu May  8 06:01:30 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+root@rock-5b-plus:/home/test/3588# cat /etc/issue
+Armbian 25.5.1 Noble \l 
 
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250615"><a class="header" href="#20250615">20250615</a></h1>
@@ -10329,6 +10335,21 @@ lxc.mount.entry = /dev/vpu0 dev/vpu0 none bind,optional,create=file
 </code></pre>
 <h3 id="4-libvirt-lxc-building-on-ubuntu2004"><a class="header" href="#4-libvirt-lxc-building-on-ubuntu2004">4. libvirt-lxc building on ubuntu20.04</a></h3>
 <p>virsh start failed, reason unknown.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250621"><a class="header" href="#20250621">20250621</a></h1>
+<h3 id="1-archlinux-update-issue"><a class="header" href="#1-archlinux-update-issue">1. archlinux update issue</a></h3>
+<p>pacman issue:</p>
+<pre><code>错误：无法准备事务处理 (无法满足依赖关系)
+:: 安装 wxwidgets-gtk3 (3.2.8.1-2) 破坏依赖 'wxgtk3' （python2-wxpython3 需要）
+:: 安装 libxml2 (2.14.4-1) 破坏依赖 'libxml2.so=2-64' （rest 需要）
+</code></pre>
+<p>Solved via:</p>
+<pre><code>  sudo pacman -R rest
+  sudo pacman -R python2-wxpython3 playonlinux
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250622"><a class="header" href="#20250622">20250622</a></h1>
+<h3 id="awesome-wm-mouse-cursor"><a class="header" href="#awesome-wm-mouse-cursor">awesome wm mouse cursor</a></h3>
+<p>should be downloaded from gnome-look then apply</p>
 
                     </main>
 
