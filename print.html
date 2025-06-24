@@ -10587,6 +10587,278 @@ IP:
 172.28.5.0 
 172.28.5.1 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250624"><a class="header" href="#20250624">20250624</a></h1>
+<h3 id="1-redroidlxc-aosp11-verification"><a class="header" href="#1-redroidlxc-aosp11-verification">1. redroid(lxc) aosp11 verification</a></h3>
+<p>Tested on <code>5.15.0-139-generic</code>:</p>
+<div class="table-wrapper"><table><thead><tr><th>Kind</th><th>Result</th></tr></thead><tbody>
+<tr><td>lxc(11)</td><td>OK</td></tr>
+<tr><td>lxc(12)</td><td>OK</td></tr>
+<tr><td>libvirt_lxc(12), reuse lxc(12) folder</td><td>OK</td></tr>
+<tr><td>libvirt_lxc(11), reuse lxc(11) folder</td><td>Failed</td></tr>
+</tbody></table>
+</div>
+<h3 id="2-redroid-testinglxc"><a class="header" href="#2-redroid-testinglxc">2. redroid testing(lxc)</a></h3>
+<p>redroid 13:</p>
+<pre><code>lxc-create -n redroid13 -t oci -- -u docker://docker.io/redroid/redroid:13.0.0-latest
+</code></pre>
+<p>redroid 14:</p>
+<pre><code>lxc-create -n redroid14 -t oci -- -u docker://docker.io/redroid/redroid:14.0.0-latest
+</code></pre>
+<p>redroid12/13/14 would be OK under lxc/<code>libvirt_lxc</code>, while 11/9 failed under <code>libvirt_lxc</code></p>
+<h3 id="3-redroid-under-archlinux"><a class="header" href="#3-redroid-under-archlinux">3. redroid under archlinux</a></h3>
+<p>Installation:</p>
+<pre><code>fdisk /dev/vda
+....
+# lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+loop0    7:0    0 853.9M  1 loop /run/archiso/airootfs
+sr0     11:0    1   1.2G  0 rom  /run/archiso/bootmnt
+vda    254:0    0   200G  0 disk 
+└─vda1 254:1    0   200G  0 part 
+root@archiso ~ # mkfs.ext4 /dev/vda1
+root@archiso ~ # mount /dev/vda1 /mnt
+root@archiso ~ # rm -f /etc/resolv.conf 
+root@archiso ~ # echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
+root@archiso ~ # pacstrap -c /mnt base linux linux-firmware base-devel
+</code></pre>
+<p>pacstrap issue:</p>
+<pre><code> pacstrap -c /mnt linux-firmware-amdgpu
+ rm -f /var/cache/pacman/pkg/*
+ pacstrap -c /mnt linux-firmware-intel linux-firmware-other linux-firmware-radeon
+ rm -f /var/cache/pacman/pkg/*
+ pacstrap -c /mnt linux-firmware
+ rm -f /var/cache/pacman/pkg/*
+ pacstrap -c /mnt base-devel
+</code></pre>
+<p>Continue:</p>
+<pre><code>root@archiso /var/cache # genfstab -U /mnt &gt;&gt; /mnt/etc/fstab 
+root@archiso /var/cache # arch-chroot /mnt
+</code></pre>
+<p>After installation:</p>
+<pre><code>pacman -S docker lxc lxcfs linux-zen
+</code></pre>
+<p>Run reroid:</p>
+<pre><code>docker run -itd --privileged -p 5555:5555 --name redroid12 redroid/redroid:12.0.0_64only-latest
+</code></pre>
+<p>Result:</p>
+<pre><code>[root@archredroid ~]# docker ps
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+778c7ad3d756   redroid/redroid:12.0.0_64only-latest   "/init qemu=1 androi…"   31 seconds ago   Up 30 seconds   0.0.0.0:5555-&gt;5555/tcp, [::]:5555-&gt;5555/tcp   redroid12
+[root@archredroid ~]# docker exec -it redroid12 sh
+778c7ad3d756:/ # getprop | grep boot | grep com                                              
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [144504997268]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+</code></pre>
+<p>setup lxc:</p>
+<pre><code>pacman -S dnsmasq
+
+# cat /etc/default/lxc-net 
+USE_LXC_BRIDGE="true"
+
+# If you change the LXC_BRIDGE to something other than lxcbr0, then
+# you will also need to update your /etc/lxc/default.conf as well as the
+# configuration (/var/lib/lxc/&lt;container&gt;/config) for any containers
+# already created using the default config to reflect the new bridge
+# name.
+# If you have the dnsmasq daemon installed, you'll also have to update
+# /etc/dnsmasq.d/lxc and restart the system wide dnsmasq daemon.
+LXC_BRIDGE="lxcbr0"
+LXC_ADDR="10.0.3.1"
+LXC_NETMASK="255.255.255.0"
+LXC_NETWORK="10.0.3.0/24"
+LXC_DHCP_RANGE="10.0.3.2,10.0.3.254"
+LXC_DHCP_MAX="253"
+# systemctl enable lxc-net
+</code></pre>
+<p>Create test lxc instance:</p>
+<pre><code>lxc-create --name playtime --template download -- --dist archlinux --release current --arch amd64
+lxc-start -n playtime
+lxc-ls -f
+NAME     STATE   AUTOSTART GROUPS IPV4       IPV6                                    UNPRIVILEGED 
+playtime RUNNING 0         -      10.0.3.154 fc42:5009:ba4b:5ab0:1266:6aff:fec5:42a7 false       
+</code></pre>
+<p>redroid/lxc work tips:</p>
+<pre><code>pacman -S jq umoci skopeo
+sed -i 's/set -eu/set -u/g' /usr/share/lxc/templates/lxc-oci
+lxc-create -n redroid12 -t oci -- -u docker://docker.io/redroid/redroid:12.0.0_64only-latest
+rm -f /var/lib/lxc/redroid12/rootfs/vendor/bin/ipconfigstore 
+vim /var/lib/lxc/redroid12/config 
+
+....
+lxc.init.cmd = /init androidboot.hardware=redroid androidboot.redroid_gpu_mode=guest
+lxc.apparmor.profile = unconfined
+lxc.autodev = 1
+lxc.autodev.tmpfs.size = 25000000
+....
+lxc-start -n redroid12
+lxc-ls -f
+......get the ip addr
+pacman -S android-tools
+adb connect ip:5555
+adb shell
+</code></pre>
+<p>redroid 11:</p>
+<pre><code>Create :      
+
+ lxc-create -n redroid11 -t oci -- -u docker://docker.io/redroid/redroid:11.0.0-latest
+ rm -f /var/lib/lxc/redroid11/rootfs/vendor/bin/ipconfigstore 
+ vim /var/lib/lxc/redroid11/config 
+
+[root@archredroid ~]# lxc-ls -f
+NAME      STATE   AUTOSTART GROUPS IPV4       IPV6                                                                            UNPRIVILEGED 
+playtime  STOPPED 0         -      -          -                                                                               false        
+redroid11 RUNNING 0         -      10.0.3.86  fc42:5009:ba4b:5ab0:6cde:4aa5:3abf:be86, fc42:5009:ba4b:5ab0:d3cf:882:b445:5991 false        
+redroid12 RUNNING 0         -      10.0.3.216 fc42:5009:ba4b:5ab0:3798:9fa6:45a2:5f1, fc42:5009:ba4b:5ab0:dde8:1423:7dec:7b91 false        
+redroid14 STOPPED 0         -      -          -                                                                               false        
+[root@archredroid ~]# adb connect 10.0.3.86:5555
+connected to 10.0.3.86:5555
+[root@archredroid ~]# adb -s 10.0.3.86:5555 shell
+redroid_x86_64:/ $ getprop | grep boot | grep com                                            
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [439648830440]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+
+</code></pre>
+<p>libvirt/lxc related:</p>
+<pre><code># pacman -S libvirt
+# systemctl enable libvirtd --now
+# systemctl start libvirtd
+# virsh -c lxc:/// list
+ Id   Name   State
+--------------------
+# virsh net-autostart default
+# reboot
+</code></pre>
+<p>Create first virsh based instance:</p>
+<pre><code>[root@archredroid ~]# cat playtime.xml 
+&lt;domain type='lxc'&gt;
+  &lt;name&gt;playtime&lt;/name&gt;
+  &lt;memory unit='KiB'&gt;6270976&lt;/memory&gt;
+  &lt;currentMemory unit='KiB'&gt;6270976&lt;/currentMemory&gt;
+  &lt;vcpu placement='static'&gt;4&lt;/vcpu&gt;
+  &lt;resource&gt;
+    &lt;partition&gt;/machine&lt;/partition&gt;
+  &lt;/resource&gt;
+  &lt;os&gt;
+    &lt;type arch='x86_64'&gt;exe&lt;/type&gt;
+    &lt;init&gt;/lib/systemd/systemd&lt;/init&gt;
+  &lt;/os&gt;
+  &lt;features&gt;
+    &lt;capabilities policy='allow'&gt;
+      &lt;audit_control state='on'/&gt;
+      &lt;audit_write state='on'/&gt;
+      &lt;block_suspend state='on'/&gt;
+      &lt;chown state='on'/&gt;
+      &lt;dac_override state='on'/&gt;
+      &lt;dac_read_search state='on'/&gt;
+      &lt;fowner state='on'/&gt;
+      &lt;fsetid state='on'/&gt;
+      &lt;ipc_lock state='on'/&gt;
+      &lt;ipc_owner state='on'/&gt;
+      &lt;kill state='on'/&gt;
+      &lt;lease state='on'/&gt;
+      &lt;linux_immutable state='on'/&gt;
+      &lt;mac_admin state='on'/&gt;
+      &lt;mac_override state='on'/&gt;
+      &lt;mknod state='on'/&gt;
+      &lt;net_admin state='on'/&gt;
+      &lt;net_bind_service state='on'/&gt;
+      &lt;net_broadcast state='on'/&gt;
+      &lt;net_raw state='on'/&gt;
+      &lt;setgid state='on'/&gt;
+      &lt;setfcap state='on'/&gt;
+      &lt;setpcap state='on'/&gt;
+      &lt;setuid state='on'/&gt;
+      &lt;sys_admin state='on'/&gt;
+      &lt;sys_boot state='on'/&gt;
+      &lt;sys_chroot state='on'/&gt;
+      &lt;sys_module state='on'/&gt;
+      &lt;sys_nice state='on'/&gt;
+      &lt;sys_pacct state='on'/&gt;
+      &lt;sys_ptrace state='on'/&gt;
+      &lt;sys_rawio state='on'/&gt;
+      &lt;sys_resource state='on'/&gt;
+      &lt;sys_time state='on'/&gt;
+      &lt;sys_tty_config state='on'/&gt;
+      &lt;syslog state='on'/&gt;
+      &lt;wake_alarm state='on'/&gt;
+    &lt;/capabilities&gt;
+  &lt;/features&gt;
+  &lt;clock offset='utc'/&gt;
+  &lt;on_poweroff&gt;destroy&lt;/on_poweroff&gt;
+  &lt;on_reboot&gt;restart&lt;/on_reboot&gt;
+  &lt;on_crash&gt;destroy&lt;/on_crash&gt;
+  &lt;devices&gt;
+    &lt;emulator&gt;/usr/lib/libvirt/libvirt_lxc&lt;/emulator&gt;
+    &lt;filesystem type='mount' accessmode='passthrough'&gt;
+      &lt;source dir='/var/lib/lxc/playtime/rootfs'/&gt;
+      &lt;target dir='/'/&gt;
+    &lt;/filesystem&gt;
+    &lt;interface type='network'&gt;
+      &lt;mac address='52:54:00:5d:0b:a8'/&gt;
+      &lt;source network='default'/&gt;
+    &lt;/interface&gt;
+    &lt;console type='pty'&gt;
+      &lt;target type='lxc' port='0'/&gt;
+    &lt;/console&gt;
+  &lt;/devices&gt;
+&lt;/domain&gt;
+# virsh -c lxc:/// define playtime.xml
+# virsh -c lxc:/// start playtime
+# virsh -c lxc:/// console playtime
+</code></pre>
+<h3 id="3-rebuild-pkg-in-arch"><a class="header" href="#3-rebuild-pkg-in-arch">3. rebuild pkg in arch</a></h3>
+<p>Use archlinuxcn:</p>
+<pre><code># vim /etc/pacman.conf
+[archlinuxcn]
+Server = https://repo.archlinuxcn.org/$arch
+# sudo pacman -Sy &amp;&amp; sudo pacman -S archlinuxcn-keyring yay sudo
+</code></pre>
+<p>Add user(for yay):</p>
+<pre><code>[root@archredroid ~]# useradd -m dash
+[root@archredroid ~]# passwd dash
+New password: 
+Retype new password:
+[root@archredroid ~]# visudo
+... add dash to nopasswd sudo
+# su dash
+$ yay asp
+$ which asp
+/usr/bin/asp
+</code></pre>
+<p>Create folder and checkout:</p>
+<pre><code>$ mkdir Code &amp;&amp; cd Code
+$ asp checkout libvirt
+
+</code></pre>
+<p>build steps:</p>
+<pre><code>$ cd trunk
+$ makepkg --clean --syncdeps  --nocheck
+
+ libvirt-9.3.0.tar.xz ... FAILED (unknown public key CA68BE8010084C9C)
+==&gt; ERROR: One or more PGP signatures could not be verified!
+[dash@archredroid trunk]$ gpg --recv-keys CA68BE8010084C9C
+gpg: key CA68BE8010084C9C: public key "Jiří Denemark &lt;jdenemar@redhat.com&gt;" imported
+gpg: Total number processed: 1
+gpg:               imported: 1
+[dash@archredroid trunk]$  makepkg --clean --syncdeps 
+</code></pre>
+<p>make source code changes and re-compile:</p>
+<pre><code> makepkg  --syncdeps  --nocheck -f
+vim src/libvirt-9.3.0/src/lxc/lxc_container.c
+vim src/libvirt-9.3.0/src/lxc/lxc_controller.c 
+makepkg  --nocheck -ef
+sudo pacman -U libvirt-1\:9.3.0-1-x86_64.pkg.tar.zst
+</code></pre>
+<p>Issue:</p>
+<pre><code># virsh -c lxc:/// start playtime
+error: Failed to start domain 'playtime'
+error: Requested operation is not valid: System lacks NETNS support
+
+</code></pre>
 
                     </main>
 
