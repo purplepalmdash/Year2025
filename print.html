@@ -10859,6 +10859,13 @@ error: Failed to start domain 'playtime'
 error: Requested operation is not valid: System lacks NETNS support
 
 </code></pre>
+<h3 id="4-rebuild-libvirt"><a class="header" href="#4-rebuild-libvirt">4. rebuild libvirt</a></h3>
+<p>Install devtools:</p>
+<pre><code># pacman -S devtools
+$ pkgctl repo clone --protocol=https libvirt
+$ cd libvirt
+$ makepkg --syncdeps --nocheck
+</code></pre>
 
                     </main>
 
