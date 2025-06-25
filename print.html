@@ -10924,6 +10924,17 @@ log_outputs="1:file:/var/log/libvirt/libvirtd.log"
 <p><img src="./images/2025_06_25_17_42_19_768x841.jpg" alt="./images/2025_06_25_17_42_19_768x841.jpg" /></p>
 <p>lxc ways:</p>
 <p><img src="./images/2025_06_25_17_51_40_1099x697.jpg" alt="./images/2025_06_25_17_51_40_1099x697.jpg" /></p>
+<h3 id="4-rebuild-lxc"><a class="header" href="#4-rebuild-lxc">4. rebuild lxc</a></h3>
+<p>Steps:</p>
+<pre><code>mkdir -p Code/lxc
+apt-get source
+apt-get install -y build-essential pbuilder
+apt build-dep lxc-utils
+apt-get source lxc-utils
+ dpkg-source --no-check -x lxc_5.0.0~git2209-g5a7b9ce67-0ubuntu1.1.dsc 
+cd /root/Code/lxc/lxc-5.0.0~git2209-g5a7b9ce67
+debuild -us -uc
+</code></pre>
 
                     </main>
 
