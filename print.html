@@ -9508,7 +9508,7 @@ diff -r Code/libvirt-8.0.0/src/lxc/lxc_controller.c Code1/libvirt-8.0.0/src/lxc/
 apt-get source libvirt-daemon-driver-lxc
 apt-get build-dep libvirt-daemon-driver-lxc
 # make modifications
-dpkg-source commit
+dpkg-source --commit
 debuild -us -uc
 apt remove libvirt-daemon-driver-lxc --purge &amp;&amp; apt install ../libvirt-daemon-driver-lxc_8.0.0-1ubuntu7.11_arm64.deb
 reboot
@@ -10866,6 +10866,64 @@ $ pkgctl repo clone --protocol=https libvirt
 $ cd libvirt
 $ makepkg --syncdeps --nocheck
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250625"><a class="header" href="#20250625">20250625</a></h1>
+<h3 id="1-main-difference-on-fs"><a class="header" href="#1-main-difference-on-fs">1. main difference on fs</a></h3>
+<p>Comparison on mount:</p>
+<pre><code>lxc(redroid11): 
+devpts on /dev/console type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+none on /dev type tmpfs (rw,relatime,size=24416k,mode=755,inode64)
+
+libvirt_lxc(redroid11): 
+devpts on /dev/pts type devpts (rw,nosuid,relatime,gid=5,mode=620,ptmxmode=666)
+devfs on /dev type tmpfs (rw,nosuid,relatime,size=24416k,mode=755,inode64)
+
+libvirt_lxc(redroid12): 
+devpts on /dev/pts type devpts (rw,nosuid,relatime,gid=5,mode=620,ptmxmode=666)
+devfs on /dev type tmpfs (rw,nosuid,relatime,size=24416k,mode=755,inode64)
+</code></pre>
+<p>Related code:</p>
+<pre><code>int
+virFileSetupDev(const char *path,
+                const char *mount_options)
+{
+    const unsigned long mount_flags = MS_NOSUID;
+    //const char *mount_fs = "tmpfs";
+    const char *mount_fs = "none";
+
+    if (g_mkdir_with_parents(path, 0777) &lt; 0) {
+        virReportSystemError(errno,
+                             _("Failed to make path %s"), path);
+        return -1;
+    }
+
+    VIR_DEBUG("Mount devfs on %s type=tmpfs flags=0x%lx, opts=%s",
+              path, mount_flags, mount_options);
+    if (mount("devfs", path, mount_fs, mount_flags, mount_options) &lt; 0) {
+        virReportSystemError(errno,
+                             _("Failed to mount devfs on %s type %s (%s)"),
+                             path, mount_fs, mount_options);
+        return -1;
+    }
+</code></pre>
+<p>lxc implementation:</p>
+<pre><code>
+ret = safe_mount("none", "dev", "tmpfs", 0, mount_options, NULL);
+int safe_mount(const char *src, const char *dest, const char *fstype,
+		unsigned long flags, const void *data, const char *rootfs)
+
+</code></pre>
+<h3 id="2-enable-libvirtd-log"><a class="header" href="#2-enable-libvirtd-log">2. enable libvirtd log</a></h3>
+<p>Edit:</p>
+<pre><code># vim /etc/libvirt/libvirtd.conf
+log_level = 1
+log_outputs="1:file:/var/log/libvirt/libvirtd.log"
+
+</code></pre>
+<h3 id="3-possible-modification"><a class="header" href="#3-possible-modification">3. Possible modification</a></h3>
+<p>libvirt ways:</p>
+<p><img src="./images/2025_06_25_17_42_19_768x841.jpg" alt="./images/2025_06_25_17_42_19_768x841.jpg" /></p>
+<p>lxc ways:</p>
+<p><img src="./images/2025_06_25_17_51_40_1099x697.jpg" alt="./images/2025_06_25_17_51_40_1099x697.jpg" /></p>
 
                     </main>
 
