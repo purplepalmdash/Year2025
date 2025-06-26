@@ -10935,6 +10935,31 @@ apt-get source lxc-utils
 cd /root/Code/lxc/lxc-5.0.0~git2209-g5a7b9ce67
 debuild -us -uc
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250626"><a class="header" href="#20250626">20250626</a></h1>
+<h3 id="1-lxc-debugging"><a class="header" href="#1-lxc-debugging">1. lxc debugging</a></h3>
+<p>Start lxc instance with debugging:</p>
+<pre><code>lxc-start -n redroid11 --logfile=./redroid11.log --logpriority=DEBUG
+lxc-start -n redroid11 --logfile=./redroid11.log --logpriority=TRACE
+</code></pre>
+<h3 id="2-cgroup"><a class="header" href="#2-cgroup">2. cgroup</a></h3>
+<p>Install <code>libcgroup</code> under archlinux, then use <code>lscgroup</code> to view the difference between lxc and <code>libvirt_lxc</code>.</p>
+<p>virsh based:</p>
+<p><img src="./images/2025_06_26_16_42_32_733x972.jpg" alt="./images/2025_06_26_16_42_32_733x972.jpg" /></p>
+<p>lxc based:</p>
+<p><img src="./images/2025_06_26_16_43_01_1288x806.jpg" alt="./images/2025_06_26_16_43_01_1288x806.jpg" /></p>
+<p>ubuntu based:</p>
+<pre><code>root@2c245635395c:/# lscgroup 
+cpuset,cpu,io,memory,hugetlb,pids,rdma,misc,dmem:/
+</code></pre>
+<p>arch/ubuntu based(privileged):</p>
+<pre><code># docker run --privileged  -it archlinux:latest /bin/bash
+[root@4803b7b9d788 /]# lscgroup 
+cpuset,cpu,io,memory,hugetlb,pids,rdma,misc,dmem://
+</code></pre>
+<h3 id="3-libcgroup"><a class="header" href="#3-libcgroup">3. libcgroup</a></h3>
+<p>Install via yay:</p>
+<pre><code>yay -S libcgroup --mflags "--skippgpcheck"
+</code></pre>
 
                     </main>
 
