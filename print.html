@@ -10960,6 +10960,106 @@ cpuset,cpu,io,memory,hugetlb,pids,rdma,misc,dmem://
 <p>Install via yay:</p>
 <pre><code>yay -S libcgroup --mflags "--skippgpcheck"
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250627"><a class="header" href="#20250627">20250627</a></h1>
+<h3 id="1-lxclibvirt-verificationubuntu2004"><a class="header" href="#1-lxclibvirt-verificationubuntu2004">1. lxc/libvirt verification(ubuntu20.04)</a></h3>
+<p>Steps:</p>
+<pre><code>modprobe binder_linux devices="binder,hwbinder,vndbinder"
+$ uname -r
+5.4.0-216-generic
+</code></pre>
+<p>Under the 5.4.x kernel(won't start up):</p>
+<pre><code>root        6352       1  0 03:53 ?        00:00:00 /usr/libexec/libvirt_lxc --name redroid12hw --console 20 --security=none --handshakefds 28:27 --veth vnet335
+root        6355    6352  0 03:53 ?        00:00:00  \_ /usr/libexec/libvirt_lxc --name redroid12hw --console 20 --security=none --handshakefds 28:27 --veth vnet335
+</code></pre>
+<p>Change to 5.15.0-139 via <code>apt install -y linux-image-generic-hwe-20.04</code>, could not run libvirt_lxc(official 6.0.0.).</p>
+<p>Download libvirt-6 and verify:</p>
+<pre><code>tar xJvf libvirt-6.6.0.tar.xz
+cd  libvirt-6.6.0
+mkdir build
+apt install -y python3-pip libtirpc-dev
+cd build
+ ../configure  --with-lxc --with-interface --with-init-script=systemd  --prefix=/usr
+make -j8
+make install
+systemctl enable libvirtd
+systemctl enable --now virtqemud.socket
+systemctl enable --now virtlxcd.socket
+systemctl enable --now virtnetworkd
+reboot
+</code></pre>
+<p>Change to  <code>/usr/libexec/libvirt_lxc</code>, then start the instance.</p>
+<pre><code>Stuck on :   
+root        5971       1  0 06:22 ?        00:00:00 /usr/libexec/libvirt_lxc --name redroid11 
+</code></pre>
+<p>Build 8.0.0 version:</p>
+<pre><code> tar xJvf libvirt-8.0.0.tar.xz 
+ cd libvirt-8.0.0
+
+make modifications(`https://bugzilla.opensuse.org/attachment.cgi?id=863686&amp;action=diff`):    
+
+root@cgroup:/home/test# diff libvirt-8.0.0/src/lxc/lxc_process.c 8/libvirt-8.0.0/src/lxc/lxc_process.c 
+56,58d55
+&lt; #include "virstring.h"
+&lt; #include "vircgroupbackend.h"
+&lt; #include "virsystemd.h"
+1202,1206d1198
+&lt; 	    virCgroupBackend **cgroupBackends = virCgroupBackendGetAll();
+&lt; 	    g_autofree char *pidFile = NULL;
+&lt; 	    g_autofree char *pidStr = NULL;
+&lt; 	    g_auto(GStrv) pidList = NULL;
+&lt; 	    pid_t checkPid = 0;
+1476,1497d1467
+&lt;     /* In an environment with hybrid cgroups and systemd the v2 backend is not available.
+&lt; 	     * Systemd however depends on V2 for unit naming. This causes the next two checks to fail.
+&lt; 	     * To work around this issue we retrieve the actual container pid and check on that instead. */
+&lt; 	    if (virSystemdHasMachined() == 0 &amp;&amp; cgroupBackends[VIR_CGROUP_BACKEND_TYPE_V2]-&gt;available() == false) {
+&lt; 	        pidFile = g_strdup_printf("/proc/%lld/task/%lld/children", (long long int)vm-&gt;pid, (long long int)vm-&gt;pid);
+&lt; 	        if (virFileReadAll(pidFile, 1024 * 1024, &amp;pidStr) &lt; 0)
+&lt; 	            goto cleanup;
+&lt; 	
+&lt; 	        virTrimSpaces(pidStr, NULL);
+&lt; 	
+&lt; 	        pidList = g_strsplit(pidStr, " ", 2);
+&lt; 	        if (!pidList)
+&lt; 	            goto cleanup;
+&lt; 	
+&lt; 	        if (virStrToLong_i(pidList[0], NULL, 10, &amp;checkPid) &lt; 0)
+&lt; 	            goto cleanup;
+&lt; 	
+&lt; 	    } else {
+&lt; 	        checkPid = vm-&gt;pid;
+&lt; 	    }
+&lt; 
+&lt; 
+1507c1477
+&lt;                                   checkPid, -1, priv-&gt;machineName,
+---
+&gt;                                   vm-&gt;pid, -1, priv-&gt;machineName,
+
+configure/build/make install
+</code></pre>
+<p>Result: redroid11 still not start OK.</p>
+<p><img src="./images/2025_06_27_14_37_05_1137x728.jpg" alt="./images/2025_06_27_14_37_05_1137x728.jpg" /></p>
+<p>Change the kernel options:</p>
+<pre><code>systemd.unified_cgroup_hierarchy=1
+update-grub2 &amp;&amp; reboot
+</code></pre>
+<p>Lots of defucnct in redroid11:</p>
+<p><img src="./images/2025_06_27_14_42_38_927x736.jpg" alt="./images/2025_06_27_14_42_38_927x736.jpg" /></p>
+<p>redroid12, also not ok:</p>
+<p><img src="./images/2025_06_27_14_43_05_930x682.jpg" alt="./images/2025_06_27_14_43_05_930x682.jpg" /></p>
+<p>Reverse the changes for <code>lxc_process.c</code> and rebuild, reboot.</p>
+<pre><code>root@cgroup:/home/test# virsh -c lxc:/// start redroid12hw
+error: Failed to start domain 'redroid12hw'
+error: error from service: GDBus.Error:org.freedesktop.machine1.NoMachineForPID: PID 1360 does not belong to any known machine
+
+</code></pre>
+<p>have to adjust the cgroupfs now.</p>
+<h3 id="2-xrandr-set"><a class="header" href="#2-xrandr-set">2. xrandr set</a></h3>
+<p>for getting 1920x1080 resolution commands:</p>
+<pre><code>  xrandr --newmode $(gtf 1920 1080 60 | grep Modeline | sed s/Modeline\ // | tr -d '"')
+  xrandr --addmode VGA-1 1920x1080_60.00
+</code></pre>
 
                     </main>
 
