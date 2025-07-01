@@ -11060,6 +11060,87 @@ error: error from service: GDBus.Error:org.freedesktop.machine1.NoMachineForPID:
 <pre><code>  xrandr --newmode $(gtf 1920 1080 60 | grep Modeline | sed s/Modeline\ // | tr -d '"')
   xrandr --addmode VGA-1 1920x1080_60.00
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250630"><a class="header" href="#20250630">20250630</a></h1>
+<h3 id="1-16virtio-gpu"><a class="header" href="#1-16virtio-gpu">1. 16virtio gpu</a></h3>
+<p>configuration:</p>
+<p><img src="./images/2025_06_30_09_03_57_777x591.jpg" alt="./images/2025_06_30_09_03_57_777x591.jpg" /></p>
+<p><img src="./images/2025_06_30_09_04_34_507x415.jpg" alt="./images/2025_06_30_09_04_34_507x415.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250701"><a class="header" href="#20250701">20250701</a></h1>
+<h3 id="1-idmap-modification"><a class="header" href="#1-idmap-modification">1. idmap modification</a></h3>
+<p>Tips:</p>
+<pre><code>  &lt;/os&gt;
+  &lt;idmap&gt;
+    &lt;uid start='0' target='100000' count='65536'/&gt;
+    &lt;gid start='0' target='100000' count='65536'/&gt;
+  &lt;/idmap&gt;
+  &lt;features&gt;
+
+</code></pre>
+<h3 id="2-purge-apparmor"><a class="header" href="#2-purge-apparmor">2. purge apparmor</a></h3>
+<p>Steps:</p>
+<pre><code>apt-get -y -f purge apparmor
+apt-mark -y hold apparmor
+rm -rf /var/cache/apparmor
+rm -rf /etc/apparmor.d
+cat &gt; /etc/apt/apt.conf.d/01autoremove &lt;&lt; END
+APT
+{
+  NeverAutoRemove
+  {
+        "^firmware-linux.*";
+        "^linux-firmware$";
+        "^linux-image-[a-z0-9]*$";
+        "^linux-image-[a-z0-9]*-[a-z0-9]*$";
+  };
+
+  VersionedKernelPackages
+  {
+        # kernels
+        "linux-.*";
+        "kfreebsd-.*";
+        "gnumach-.*";
+        # (out-of-tree) modules
+        ".*-modules";
+        ".*-kernel";
+  };
+
+  Never-MarkAuto-Sections
+  {
+        "metapackages";
+        "contrib/metapackages";
+        "non-free/metapackages";
+        "restricted/metapackages";
+        "universe/metapackages";
+        "multiverse/metapackages";
+        "apparmor*";
+  };
+
+  Move-Autobit-Sections
+  {
+        "oldlibs";
+        "contrib/oldlibs";
+        "non-free/oldlibs";
+        "restricted/oldlibs";
+        "universe/oldlibs";
+        "multiverse/oldlibs";
+  };
+};
+END
+apt-get -y update
+apt-get -y autoremove
+apt-get -y autoclean
+</code></pre>
+<h3 id="3-idmap-on-debian"><a class="header" href="#3-idmap-on-debian">3. idmap on debian</a></h3>
+<p>Verification:</p>
+<pre><code>$ sudo apt install -y lxc virt-manager docker.io
+</code></pre>
+<p>Verify redroid via:</p>
+<pre><code>modprobe binder_linux devices=binder1,binder2,binder3,binder4,binder5,binder6
+chmod 666 /dev/binder*
+docker run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/dev/hwbinder     -v /dev/binder3:/dev/vndbinder -p 5555:5555 --name redroid11 redroid/redroid:11.0.0-latest
+docker run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/dev/hwbinder     -v /dev/binder3:/dev/vndbinder -p 5555:5555 --name redroid12 redroid/redroid:12.0.0_64only-latest
+</code></pre>
+<p>both could be OK for running.</p>
 
                     </main>
 
