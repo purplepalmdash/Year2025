@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250701 - year2025</title>
+        <title>20250702 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,94 +166,60 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250701"><a class="header" href="#20250701">20250701</a></h1>
-<h3 id="1-idmap-modification"><a class="header" href="#1-idmap-modification">1. idmap modification</a></h3>
-<p>Tips:</p>
-<pre><code>  &lt;/os&gt;
-  &lt;idmap&gt;
-    &lt;uid start='0' target='100000' count='65536'/&gt;
-    &lt;gid start='0' target='100000' count='65536'/&gt;
-  &lt;/idmap&gt;
-  &lt;features&gt;
+                        <h1 id="20250702"><a class="header" href="#20250702">20250702</a></h1>
+<h3 id="1-rebuild-redroid11"><a class="header" href="#1-rebuild-redroid11">1. rebuild redroid11</a></h3>
+<p>Create build guest:</p>
+<pre><code>docker load&lt;wayrdoirbuilder.tar
+docker run  -v $(pwd):/mnt/lineage -it waydroid-build-24.04 /bin/bash
+</code></pre>
+<p>In build guest:</p>
+<pre><code>cd /mnt/lineage/
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-11.0.0_r48
+git clone https://github.com/remote-android/local_manifests.git .repo/local_manifests -b 11.0.0
+repo sync -c
+cd /root/
+git clone https://github.com/remote-android/redroid-patches.git
+cd -
+/root/redroid-patches/apply-patch.sh /mnt/lineage/
+repo forall -c "git lfs pull"
+source build/envsetup.sh 
+lunch redroid_x86_64-userdebug
+time m -j32
+</code></pre>
+<p>Generate image:</p>
+<pre><code>root@i9workstation:/media/sdc/redroid11/out/target/product/redroid_x86_64# ls *.img
+system.img  vendor.img
+root@i9workstation:/media/sdc/redroid11/out/target/product/redroid_x86_64# mount system.img system -o ro
+root@i9workstation:/media/sdc/redroid11/out/target/product/redroid_x86_64# mount vendor.img vendor -o ro
+root@i9workstation:/media/sdc/redroid11/out/target/product/redroid_x86_64# tar --xattrs -c vendor -C system --exclude="./vendor" . | docker import -c 'ENTRYPOINT ["/init", "androidboot.hardware=redroid"]' - redroid11
+sha256:171a7f51b0b74f9d5cc1331d400cc783bbda3b2caf73509c69b139dc2e142d69
+
+docker save -o redroid11build.tar redroid11:latest
+</code></pre>
+<p>tag/push to private repository:</p>
+<pre><code>docker tag redroid11:latest 192.168.1.7:5000/redroid11:built
+ docker push 192.168.1.7:5000/redroid11:built
+apt install -y jq umoci skopeo
+
+$  cat /etc/containers/registries.conf
+[[registry]]
+prefix = "192.168.1.7:5000"
+location = "192.168.1.7:5000"
+insecure = true
+
+ sed -i 's/set -eu/set -u/g' /usr/share/lxc/templates/lxc-oci
+ lxc-create -n redroid11built -t oci -- -u docker://192.168.1.7:5000/redroid11:built
 
 </code></pre>
-<h3 id="2-purge-apparmor"><a class="header" href="#2-purge-apparmor">2. purge apparmor</a></h3>
-<p>Steps:</p>
-<pre><code>apt-get -y -f purge apparmor
-apt-mark -y hold apparmor
-rm -rf /var/cache/apparmor
-rm -rf /etc/apparmor.d
-cat &gt; /etc/apt/apt.conf.d/01autoremove &lt;&lt; END
-APT
-{
-  NeverAutoRemove
-  {
-        "^firmware-linux.*";
-        "^linux-firmware$";
-        "^linux-image-[a-z0-9]*$";
-        "^linux-image-[a-z0-9]*-[a-z0-9]*$";
-  };
-
-  VersionedKernelPackages
-  {
-        # kernels
-        "linux-.*";
-        "kfreebsd-.*";
-        "gnumach-.*";
-        # (out-of-tree) modules
-        ".*-modules";
-        ".*-kernel";
-  };
-
-  Never-MarkAuto-Sections
-  {
-        "metapackages";
-        "contrib/metapackages";
-        "non-free/metapackages";
-        "restricted/metapackages";
-        "universe/metapackages";
-        "multiverse/metapackages";
-        "apparmor*";
-  };
-
-  Move-Autobit-Sections
-  {
-        "oldlibs";
-        "contrib/oldlibs";
-        "non-free/oldlibs";
-        "restricted/oldlibs";
-        "universe/oldlibs";
-        "multiverse/oldlibs";
-  };
-};
-END
-apt-get -y update
-apt-get -y autoremove
-apt-get -y autoclean
-</code></pre>
-<h3 id="3-idmap-on-debian"><a class="header" href="#3-idmap-on-debian">3. idmap on debian</a></h3>
-<p>Verification:</p>
-<pre><code>$ sudo apt install -y lxc virt-manager docker.io
-</code></pre>
-<p>Verify redroid via:</p>
-<pre><code>modprobe binder_linux devices=binder1,binder2,binder3,binder4,binder5,binder6
-chmod 666 /dev/binder*
-docker run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/dev/hwbinder     -v /dev/binder3:/dev/vndbinder -p 5555:5555 --name redroid11 redroid/redroid:11.0.0-latest
-docker run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/dev/hwbinder     -v /dev/binder3:/dev/vndbinder -p 5555:5555 --name redroid12 redroid/redroid:12.0.0_64only-latest
-</code></pre>
-<p>both could be OK for running.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250630.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250701.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250702.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -261,13 +227,10 @@ docker run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/de
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250630.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250701.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250702.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
