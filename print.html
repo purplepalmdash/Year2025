@@ -11311,6 +11311,96 @@ insecure = true
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250704"><a class="header" href="#20250704">20250704</a></h1>
 <h3 id="1-vcpu-limitation"><a class="header" href="#1-vcpu-limitation">1. vcpu limitation</a></h3>
 <p>In aosp12, vcpu limitation won't take effects.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250705"><a class="header" href="#20250705">20250705</a></h1>
+<h3 id="1-n100-openwrt"><a class="header" href="#1-n100-openwrt">1. N100 openwrt</a></h3>
+<p>nixos configuration changes(/etc/nixos/configuration.nix):</p>
+<pre><code>
+### virt-manager and virtialization
+   # virt-manager and virtualization
+   programs.virt-manager.enable = true;
+   users.groups.libvirtd.members = ["dash"];
+   virtualisation.libvirtd.enable = true;
+   virtualisation.spiceUSBRedirection.enable = true;
+
+### sshd X11 forwarding
+   services.openssh.enable = true;
+   services.openssh.settings = {
+   UseDns = false;
+   X11Forwarding = true;
+   };
+
+</code></pre>
+<p>Download the openwrt img file:</p>
+<pre><code>qemu-img resize -f raw openwrt-24.10.2-x86-64-generic-ext4-combined-efi.img 512M
+loop_device=$(losetup -f)
+losetup $loop_device  openwrt-24.10.2-x86-64-generic-ext4-combined-efi.img
+echo -e "OK\nFix"  /etc/profiles/per-user/dash/bin/parted ---pretend-input-tty "$loop_device" print
+/etc/profiles/per-user/dash/bin/parted /dev/loop0 resizepart 2 100%
+/etc/profiles/per-user/dash/bin/parted /dev/loop0 print
+</code></pre>
+<p>import the file as an uefi vm, then startup .</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250706"><a class="header" href="#20250706">20250706</a></h1>
+<h3 id="1-n100-openwrt-1"><a class="header" href="#1-n100-openwrt-1">1. n100 openwrt</a></h3>
+<p>Enable <code>intel_iommu</code>:</p>
+<pre><code># cat /etc/nix/configuration.nix
+......
+    boot.kernelParams = [
+    "quiet"
+    "splash"
+    "net.ifnames=0"
+    "biosdevname=0"
+    "ipv6.disable=1"
+    "i915.force_probe=46d1"
+    "intel_iommu=on"
+    "intel_iommu=pt"
+    #"usbcore.quirks=0bda:8153:k"
+    #"drm_kms_helper.edid_firmware=edid/1920x1080.bin"
+    #"video=DP-1:e"
+  ];
+
+</code></pre>
+<p>Added eth0, passthrough to vm ,then in vm:</p>
+<p><img src="./images/2025_07_06_09_04_56_835x594.jpg" alt="./images/2025_07_06_09_04_56_835x594.jpg" /></p>
+<p>Default network configuration:</p>
+<p><img src="./images/2025_07_06_09_25_21_391x356.jpg" alt="./images/2025_07_06_09_25_21_391x356.jpg" /></p>
+<p>Make modifications to networking:</p>
+<p><img src="./images/2025_07_06_09_29_15_414x450.jpg" alt="./images/2025_07_06_09_29_15_414x450.jpg" /></p>
+<p>Apply the modifications via <code>service networking restart</code>. Then setup the passwd for root <code>passwd root</code>.</p>
+<p>Enable access luci from wan:</p>
+<pre><code>uci set firewall.wan_https_allow=rule
+uci set firewall.wan_https_allow.name='Allow Luci from WAN'
+uci set firewall.wan_https_allow.src='wan'
+uci set firewall.wan_https_allow.proto='tcp'
+uci set firewall.wan_https_allow.dest_port='80 443'
+uci set firewall.wan_https_allow.target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall reload
+
+</code></pre>
+<p>Enable ssh from wan:</p>
+<pre><code>uci add firewall wan_ssh_allow
+uci set firewall.wan_ssh_allow=rule
+uci set firewall.wan_ssh_allow.name='Allow SSH from WAN'
+uci set firewall.wan_ssh_allow.src='wan'
+uci set firewall.wan_ssh_allow.proto='tcp'
+uci set firewall.wan_ssh_allow.dest_port='22'
+uci set firewall.wan_ssh_allow.target='ACCEPT'
+/etc/init.d/firewall reload
+</code></pre>
+<p>On nixos, do port forwarding:</p>
+<pre><code>ssh -L 0.0.0.0:18880:192.168.122.2:80 root@192.168.122.2
+</code></pre>
+<p><img src="./images/2025_07_06_10_34_04_929x453.jpg" alt="./images/2025_07_06_10_34_04_929x453.jpg" /></p>
+<p>Configuration for passwall:</p>
+<p><img src="./images/2025_07_06_12_05_21_1030x580.jpg" alt="./images/2025_07_06_12_05_21_1030x580.jpg" /></p>
+<p>no passwd:</p>
+<p><img src="./images/2025_07_06_12_05_39_959x505.jpg" alt="./images/2025_07_06_12_05_39_959x505.jpg" /></p>
+<p>Add a socks config, and check <code>Main switch</code>:</p>
+<p><img src="./images/2025_07_06_12_06_12_998x872.jpg" alt="./images/2025_07_06_12_06_12_998x872.jpg" /></p>
+<p>Check status:</p>
+<p><img src="./images/2025_07_06_12_06_34_952x257.jpg" alt="./images/2025_07_06_12_06_34_952x257.jpg" /></p>
+<p>Disable default dhcp server on this server:</p>
+<p><img src="./images/2025_07_06_12_07_13_913x472.jpg" alt="./images/2025_07_06_12_07_13_913x472.jpg" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250707"><a class="header" href="#20250707">20250707</a></h1>
 <h3 id="1-ibox-on-openeuler"><a class="header" href="#1-ibox-on-openeuler">1. ibox on openeuler</a></h3>
 <p>Install OpenEuler 22.03.4(<code>sudo dd if=./openEuler-22.03-LTS-SP4-aarch64-dvd.iso of=/dev/sdb bs=10M &amp;&amp; sudo sync</code>):</p>

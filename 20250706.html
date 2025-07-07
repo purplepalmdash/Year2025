@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250707 - year2025</title>
+        <title>20250706 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -166,193 +166,80 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250707"><a class="header" href="#20250707">20250707</a></h1>
-<h3 id="1-ibox-on-openeuler"><a class="header" href="#1-ibox-on-openeuler">1. ibox on openeuler</a></h3>
-<p>Install OpenEuler 22.03.4(<code>sudo dd if=./openEuler-22.03-LTS-SP4-aarch64-dvd.iso of=/dev/sdb bs=10M &amp;&amp; sudo sync</code>):</p>
-<p><img src="./images/2025_07_07_09_00_19_914x247.jpg" alt="./images/2025_07_07_09_00_19_914x247.jpg" /></p>
-<p>disk layout:</p>
-<p><img src="./images/2025_07_07_09_01_49_769x313.jpg" alt="./images/2025_07_07_09_01_49_769x313.jpg" /></p>
-<p><img src="./images/2025_07_07_09_02_09_619x360.jpg" alt="./images/2025_07_07_09_02_09_619x360.jpg" /></p>
-<p><img src="./images/2025_07_07_09_02_39_617x377.jpg" alt="./images/2025_07_07_09_02_39_617x377.jpg" /></p>
-<p>Replace repository:</p>
-<pre><code>sudo sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#https://mirrors.ustc.edu.cn/openeuler/#g' \
-         -i.bak \
-         /etc/yum.repos.d/openEuler.repo$a
-yum makecache
-scp root@192.168.1.33:/home/xxx/2.4.zip .
-yum install -y tar unzip vim net-tools pciutils
+                        <h1 id="20250706"><a class="header" href="#20250706">20250706</a></h1>
+<h3 id="1-n100-openwrt"><a class="header" href="#1-n100-openwrt">1. n100 openwrt</a></h3>
+<p>Enable <code>intel_iommu</code>:</p>
+<pre><code># cat /etc/nix/configuration.nix
+......
+    boot.kernelParams = [
+    "quiet"
+    "splash"
+    "net.ifnames=0"
+    "biosdevname=0"
+    "ipv6.disable=1"
+    "i915.force_probe=46d1"
+    "intel_iommu=on"
+    "intel_iommu=pt"
+    #"usbcore.quirks=0bda:8153:k"
+    #"drm_kms_helper.edid_firmware=edid/1920x1080.bin"
+    #"video=DP-1:e"
+  ];
+
 </code></pre>
-<p>Kernel related:</p>
-<pre><code>yum update -y
-# cat /etc/selinux/config | grep disable
-SELINUX=disabled
-# systemctl disable --now firewalld.service
-# vim /etc/yum.repos.d/docker-ce.repo
-[docker-ce-stable]
-name=Docker CE Stable - $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/$basearch/stable
-enabled=1
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-stable-debuginfo]
-name=Docker CE Stable - Debuginfo $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/debug-$basearch/stable
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-stable-source]
-name=Docker CE Stable - Sources
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/source/stable
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-test]
-name=Docker CE Test - $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/$basearch/test
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-test-debuginfo]
-name=Docker CE Test - Debuginfo $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/debug-$basearch/test
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-test-source]
-name=Docker CE Test - Sources
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/source/test
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-nightly]
-name=Docker CE Nightly - $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/$basearch/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-nightly-debuginfo]
-name=Docker CE Nightly - Debuginfo $basearch
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/debug-$basearch/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
- 
-[docker-ce-nightly-source]
-name=Docker CE Nightly - Sources
-baseurl=https://repo.huaweicloud.com/docker-ce/linux/centos/7/source/nightly
-enabled=0
-gpgcheck=1
-gpgkey=https://repo.huaweicloud.com/docker-ce/linux/centos/gpg
-# yum makecache
-# yum install docker-ce docker-ce-cli containerd.io
-# systemctl enable docker
-# systemctl start docker
+<p>Added eth0, passthrough to vm ,then in vm:</p>
+<p><img src="./images/2025_07_06_09_04_56_835x594.jpg" alt="./images/2025_07_06_09_04_56_835x594.jpg" /></p>
+<p>Default network configuration:</p>
+<p><img src="./images/2025_07_06_09_25_21_391x356.jpg" alt="./images/2025_07_06_09_25_21_391x356.jpg" /></p>
+<p>Make modifications to networking:</p>
+<p><img src="./images/2025_07_06_09_29_15_414x450.jpg" alt="./images/2025_07_06_09_29_15_414x450.jpg" /></p>
+<p>Apply the modifications via <code>service networking restart</code>. Then setup the passwd for root <code>passwd root</code>.</p>
+<p>Enable access luci from wan:</p>
+<pre><code>uci set firewall.wan_https_allow=rule
+uci set firewall.wan_https_allow.name='Allow Luci from WAN'
+uci set firewall.wan_https_allow.src='wan'
+uci set firewall.wan_https_allow.proto='tcp'
+uci set firewall.wan_https_allow.dest_port='80 443'
+uci set firewall.wan_https_allow.target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall reload
+
 </code></pre>
-<p>Build dkms:</p>
-<pre><code>cd dkms_target
-dkms add .
-dkms install -m innogpu-kernel -v 2.4.4.17
-reboot
+<p>Enable ssh from wan:</p>
+<pre><code>uci add firewall wan_ssh_allow
+uci set firewall.wan_ssh_allow=rule
+uci set firewall.wan_ssh_allow.name='Allow SSH from WAN'
+uci set firewall.wan_ssh_allow.src='wan'
+uci set firewall.wan_ssh_allow.proto='tcp'
+uci set firewall.wan_ssh_allow.dest_port='22'
+uci set firewall.wan_ssh_allow.target='ACCEPT'
+/etc/init.d/firewall reload
 </code></pre>
-<p>Check the status:</p>
-<pre><code>[root@euler ~]# lspci -vvnn -s 07:00.0 | grep -i Kernel
-	Kernel driver in use: inno-drv
-	Kernel modules: innogpu
-[root@euler ~]# lspci | grep -i vga
-07:00.0 VGA compatible controller: Device 1ec8:8810
+<p>On nixos, do port forwarding:</p>
+<pre><code>ssh -L 0.0.0.0:18880:192.168.122.2:80 root@192.168.122.2
 </code></pre>
-<p>Import docker images:</p>
-<pre><code># cat inno-11-arm64-release-redroid_2.4.4.17.tar | docker import -c 'ENTRYPOINT ["/init", "qemu=1","androidboot.hardware=innogpu"]' - inno-11-arm64-release-redroid_2.4.4.17
-sha256:d7008492c97f9ed42fef05c8d53ecab858e0d95eea57afae9a7d99e700784288
-# docker images
-REPOSITORY                               TAG       IMAGE ID       CREATED          SIZE
-inno-11-arm64-release-redroid_2.4.4.17   latest    d7008492c97f   37 seconds ago   1.71GB
-</code></pre>
-<p>kernel rebuild:</p>
-<pre><code># pahole related: 
-yum install -y cmake
-wget https://git.kernel.org/pub/scm/devel/pahole/pahole.git/snapshot/pahole-1.23.tar.gz
-cd pahole-1.23.tar.gz 
-tar xzvf pahole-1.23.tar.gz 
-cd pahole-1.23
-cd lib/bpf/
-wget https://github.com/libbpf/libbpf/archive/refs/tags/v0.6.0.zip
-unzip v0.6.0.zip 
-mv libbpf-0.6.0/* .
-cd ../../
-mkdir build
-cd build
- cmake -D__LIB=lib -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_SHARED_LIBS=ON ..
-make install
-cp /usr/lib/libdwarves* /usr/lib64/
-# kernel rebuild
-dnf install -y kernel-source
-dnf install -y rpm-build openssl-devel bc rsync gcc gcc-c++ flex bison m4 elfutils-libelf-devel
-cd /usr/src/linux-5.10.0-270.0.0.173.oe2203sp4.aarch64/
-vim Makefile 
-make openeuler_defconfig
-make menuconfig
-make binrpm-pkg -j8
-ls /root/rpmbuild/RPMS/aarch64/ -l -h
-# kernel output rpms
-total 645M
--rw-r--r-- 1 root root 643M Jul  7 14:13 kernel-5.10.1-2.aarch64.rpm
--rw-r--r-- 1 root root 1.4M Jul  7 14:08 kernel-headers-5.10.1-2.aarch64.rpm
-# Install kernel
-yum install ./kernel-5.10.1-2.aarch64.rpm ./kernel-headers-5.10.1-2.aarch64.rpm
-grubby --set-default /boot/vmlinuz-5.10.1 
-# After reboot
-[root@euler ~]# uname -a
-Linux euler 5.10.1 #2 SMP Mon Jul 7 14:05:22 CST 2025 aarch64 aarch64 aarch64 GNU/Linux
-[root@euler ~]# grep "ashmem" /proc/misc
- 61 ashmem
-</code></pre>
-<p>make modifications for env:</p>
-<pre><code># vim env
-CONTAINER_DNS=10.0.110.2
-BINDER_KO_PATH=/root/Code/2.4.4.17/drivers/binderfs/5.10/
-AOSP_BINDER_KO_PATH=/root/DRIVER/drivers/aosp_binder
-#ASHMEM_KO_PATH=/root/DRIVER/drivers/ashmem/5.4
-INNGPU_KO_PATH=/root/Code/2.4.4.17/dkms_target/
-#INNGPU_KO_PATH=/lib/modules/5.4.93/updates/dkms/
-CONTAINER_DATA_PATH=`pwd`/data/
-ANDROID_IMG=inno-11-arm64-release-redroid_2.4.4.17
-</code></pre>
-<p>Change modifications:</p>
-<p><img src="./images/2025_07_07_16_51_41_483x358.jpg" alt="./images/2025_07_07_16_51_41_483x358.jpg" /></p>
-<p>Make modifications to <code>/root/Code/2.4.4.17/drivers/binderfs/5.10/Makefile</code>:</p>
-<p><img src="./images/2025_07_07_16_53_20_678x93.jpg" alt="./images/2025_07_07_16_53_20_678x93.jpg" /></p>
-<p>Create ibox:</p>
-<pre><code>./ibox.sh install
-./ibox.sh start 1 2
-</code></pre>
-<p>Result:</p>
-<p><img src="./images/2025_07_07_17_21_59_503x853.jpg" alt="./images/2025_07_07_17_21_59_503x853.jpg" /></p>
-<h3 id="2-zue-on-openstack"><a class="header" href="#2-zue-on-openstack">2. zue on openstack</a></h3>
-<p>Followed via <code>https://asterfusion.com/blog20240802-openstack-zun/?srsltid=AfmBOorLissgEI9JbeZp4MZJKlvECiwKRjGk8lAQvXMCPWyvOYzRUB4n</code>, but failed with many issues:</p>
-<p><img src="./images/2025_07_07_16_14_48_394x518.jpg" alt="./images/2025_07_07_16_14_48_394x518.jpg" /></p>
-<pre><code>docker run --net test_net -it cirros /bin/sh
-docker: Error response from daemon: failed to create endpoint nifty_bell on network test_net: NetworkDriver.CreateEndpoint: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
-ERRO[0001] error waiting for container: context canceled 
-</code></pre>
-<p>Environment:</p>
-<p><img src="./images/2025_07_07_16_15_24_529x371.jpg" alt="./images/2025_07_07_16_15_24_529x371.jpg" /></p>
+<p><img src="./images/2025_07_06_10_34_04_929x453.jpg" alt="./images/2025_07_06_10_34_04_929x453.jpg" /></p>
+<p>Configuration for passwall:</p>
+<p><img src="./images/2025_07_06_12_05_21_1030x580.jpg" alt="./images/2025_07_06_12_05_21_1030x580.jpg" /></p>
+<p>no passwd:</p>
+<p><img src="./images/2025_07_06_12_05_39_959x505.jpg" alt="./images/2025_07_06_12_05_39_959x505.jpg" /></p>
+<p>Add a socks config, and check <code>Main switch</code>:</p>
+<p><img src="./images/2025_07_06_12_06_12_998x872.jpg" alt="./images/2025_07_06_12_06_12_998x872.jpg" /></p>
+<p>Check status:</p>
+<p><img src="./images/2025_07_06_12_06_34_952x257.jpg" alt="./images/2025_07_06_12_06_34_952x257.jpg" /></p>
+<p>Disable default dhcp server on this server:</p>
+<p><img src="./images/2025_07_06_12_07_13_913x472.jpg" alt="./images/2025_07_06_12_07_13_913x472.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250706.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250705.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250707.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -360,10 +247,13 @@ ERRO[0001] error waiting for container: context canceled
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250706.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250705.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250707.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
