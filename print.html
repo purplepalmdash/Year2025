@@ -12018,6 +12018,56 @@ kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
 
 </code></pre>
 <p><img src="./images/2025_07_08_17_45_11_1144x337.jpg" alt="./images/2025_07_08_17_45_11_1144x337.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250709"><a class="header" href="#20250709">20250709</a></h1>
+<h3 id="1-kolla20241"><a class="header" href="#1-kolla20241">1. kolla(2024.1)</a></h3>
+<p>Deployment for kolla(zun disabled), succeed:</p>
+<pre><code>vim /etc/kolla//globals.yml
+    enable_zun: "no"
+kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
+kolla-ansible pull -i ./multinode 
+kolla-ansible deploy -i ./multinode 
+kolla-ansible post-deploy -i ./multinode 
+cat /etc/kolla/admin-openrc.sh 
+pip3 install python-openstackclient
+. kolla-ansible/tools/init-runonce 
+</code></pre>
+<p>Deployment for kolla(zun enabled):</p>
+<p>Succeed.</p>
+<p>Create network:</p>
+<p><img src="./images/2025_07_09_10_16_52_712x810.jpg" alt="./images/2025_07_09_10_16_52_712x810.jpg" /></p>
+<p><img src="./images/2025_07_09_10_18_44_721x574.jpg" alt="./images/2025_07_09_10_18_44_721x574.jpg" /></p>
+<p><img src="./images/2025_07_09_10_19_16_550x575.jpg" alt="./images/2025_07_09_10_19_16_550x575.jpg" /></p>
+<p>NOT OK via webpage.</p>
+<p>commands for creating network:</p>
+<pre><code> openstack router create Ext-Router
+ openstack network create --internal --provider-network-type vxlan int-net
+ openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+ openstack router add subnet Ext-Router int-net-sub
+ openstack network create --provider-physical-network physnet1 --provider-network-type flat  --external ext-net
+ openstack subnet create ext-net-sub --network ext-net --subnet-range 192.168.150.40/24  --allocation-pool start=192.168.150.100,end=192.168.150.200 --gateway 192.168.150.1 --dns-nameserver 114.114.114.114 --dhcp
+ openstack router set Ext-Router --external-gateway ext-net
+
+</code></pre>
+<h3 id="2-run-redroid-under-zun"><a class="header" href="#2-run-redroid-under-zun">2. run redroid under zun</a></h3>
+<p>Command:</p>
+<pre><code>docker run -itd --privileged --name redroid12 -v ~/data:/data     -p 5555:5555      redroid12houdini:latest
+</code></pre>
+<p>openstack appcontainer:</p>
+<pre><code>openstack appcontainer run --privileged --name mm --image-pull-policy=never --net network=bb819c23-cdfc-43b4-8de9-928332045211  --cpu 4 --memory 8192  redroid12houdini:latest
+</code></pre>
+<p>???</p>
+<h3 id="3-kolla-ansible-testing"><a class="header" href="#3-kolla-ansible-testing">3. kolla ansible testing</a></h3>
+<p>Testing:</p>
+<pre><code>cp /media/sda/images/kolla_ansible1.qcow2.beforezun /media/sda/images/kolla_ansible1.qcow2 &amp;&amp; cp /media/sdb/images/kolla_ansible2.qcow2.beforezun /media/sdb/images/kolla_ansible2.qcow2 &amp;&amp; cp /media/sdc/images/kolla_ansible3.qcow2.beforezun /media/sdc/images/kolla_ansible3.qcow2 &amp;&amp; virsh start kolla_ansible1 &amp;&amp; virsh start kolla_ansible2 &amp;&amp; virsh start kolla_ansible3
+</code></pre>
+<p>After pull image, then :</p>
+<pre><code>cp /media/sda/images/kolla_ansible1.qcow2 /media/sda/images/kolla_ansible1.qcow2.pullimage &amp;&amp; cp /media/sdb/images/kolla_ansible2.qcow2 /media/sdb/images/kolla_ansible2.qcow2.pullimage  &amp;&amp; cp /media/sdc/images/kolla_ansible3.qcow2 /media/sdc/images/kolla_ansible3.qcow2.pullimage &amp;&amp; virsh start kolla_ansible1 &amp;&amp; virsh start kolla_ansible2 &amp;&amp; virsh start kolla_ansible3
+</code></pre>
+<p>Redeploy:</p>
+<pre><code>cp /media/sda/images/kolla_ansible1.qcow2.pullimage /media/sda/images/kolla_ansible1.qcow2 &amp;&amp; virsh start kolla_ansible1
+cp /media/sdb/images/kolla_ansible2.qcow2.pullimage /media/sdb/images/kolla_ansible2.qcow2 &amp;&amp; virsh start kolla_ansible2
+cp /media/sdc/images/kolla_ansible3.qcow2.pullimage /media/sdc/images/kolla_ansible3.qcow2 &amp;&amp; virsh start kolla_ansible3
+</code></pre>
 
                     </main>
 
