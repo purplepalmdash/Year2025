@@ -177,7 +177,9 @@ kolla-ansible deploy -i ./multinode
 kolla-ansible post-deploy -i ./multinode 
 cat /etc/kolla/admin-openrc.sh 
 pip3 install python-openstackclient
-. kolla-ansible/tools/init-runonce 
+pip3 install python-zunclient
+###. kolla-ansible/tools/init-runonce 
+
 </code></pre>
 <p>Deployment for kolla(zun enabled):</p>
 <p>Succeed.</p>
@@ -225,6 +227,9 @@ cp /media/sdc/images/kolla_ansible3.qcow2.pullimage /media/sdc/images/kolla_ansi
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250710.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -236,6 +241,9 @@ cp /media/sdc/images/kolla_ansible3.qcow2.pullimage /media/sdc/images/kolla_ansi
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250710.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

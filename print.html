@@ -12029,7 +12029,9 @@ kolla-ansible deploy -i ./multinode
 kolla-ansible post-deploy -i ./multinode 
 cat /etc/kolla/admin-openrc.sh 
 pip3 install python-openstackclient
-. kolla-ansible/tools/init-runonce 
+pip3 install python-zunclient
+###. kolla-ansible/tools/init-runonce 
+
 </code></pre>
 <p>Deployment for kolla(zun enabled):</p>
 <p>Succeed.</p>
@@ -12068,6 +12070,133 @@ pip3 install python-openstackclient
 cp /media/sdb/images/kolla_ansible2.qcow2.pullimage /media/sdb/images/kolla_ansible2.qcow2 &amp;&amp; virsh start kolla_ansible2
 cp /media/sdc/images/kolla_ansible3.qcow2.pullimage /media/sdc/images/kolla_ansible3.qcow2 &amp;&amp; virsh start kolla_ansible3
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250710"><a class="header" href="#20250710">20250710</a></h1>
+<h3 id="1-zun-privileged"><a class="header" href="#1-zun-privileged">1. zun privileged</a></h3>
+<p><code>policy.json</code> is fetched from <code>https://opendev.org/openstack/zun/src/commit/83d525c42541774cc07cf31f551551af34370993/etc/zun/policy.json</code>, added <code>"container:create:privileged": "rule:admin_or_user",</code>.</p>
+<pre><code>{
+    "context_is_admin":  "role:admin",
+    "admin_or_owner":  "is_admin:True or project_id:%(project_id)s",
+    "default": "rule:admin_or_owner",
+    "admin_api": "rule:context_is_admin",
+    "admin_or_user": "is_admin:True or user_id:%(user_id)s",
+
+    "container:create": "rule:default",
++++    "container:create:privileged": "rule:admin_or_user",
+    "container:delete": "rule:admin_or_user",
+    "container:get": "rule:default",
+    "container:get_all": "rule:default",
+    "container:update": "rule:admin_or_user",
+    "container:start": "rule:admin_or_user",
+    "container:stop": "rule:admin_or_user",
+    "container:reboot": "rule:admin_or_user",
+    "container:pause": "rule:admin_or_user",
+    "container:unpause": "rule:admin_or_user",
+    "container:logs": "rule:admin_or_user",
+    "container:execute": "rule:admin_or_user",
+    "container:execute_resize": "rule:admin_or_user",
+    "container:kill": "rule:admin_or_user",
+    "container:update": "rule:admin_or_user",
+    "container:rename": "rule:admin_or_user",
+    "container:attach": "rule:admin_or_user",
+    "container:resize": "rule:admin_or_user",
+    "container:top": "rule:admin_or_user",
+    "container:get_archive": "rule:admin_or_user",
+    "container:put_archive": "rule:admin_or_user",
+    "container:stats": "rule:admin_or_user",
+    "container:commit": "rule:admin_or_user",
+    "image:pull": "rule:default",
+    "image:get_all": "rule:default",
+    "image:search": "rule:default",
+
+
+    "zun-service:delete": "rule:admin_api",
+    "zun-service:disable": "rule:admin_api",
+    "zun-service:enable": "rule:admin_api",
+    "zun-service:get_all": "rule:admin_api"
+}
+</code></pre>
+<p>Controller node:</p>
+<pre><code># docker ps | grep zun
+02e8cb126ffa   quay.nju.edu.cn/openstack.kolla/zun-wsproxy:2024.1-ubuntu-jammy                 "dumb-init --single-…"   3 hours ago   Up 27 minutes (healthy)             zun_wsproxy
+12c14cefb9bb   quay.nju.edu.cn/openstack.kolla/zun-api:2024.1-ubuntu-jammy                     "dumb-init --single-…"   3 hours ago   Up 28 minutes (healthy)             zun_api
+# docker cp policy.json zun_api:/etc/zun/
+# docker cp policy.json zun_wsproxy:/etc/zun/
+#  ls /etc/kolla/ | grep zun
+zun-api
+zun-wsproxy
+# vim /etc/kolla/zun-api/zun.conf
+# vim /etc/kolla/zun-wsproxy/zun.conf
+Added:    
+[oslo_policy]
+policy_file = /etc/zun/policy.json
+# docker restart zun_api &amp;&amp; docker restart zun_wxproxy
+</code></pre>
+<p>Compute node:</p>
+<pre><code># docker ps | grep zun
+804fa4b38e9b   quay.nju.edu.cn/openstack.kolla/zun-cni-daemon:2024.1-ubuntu-jammy              "dumb-init --single-…"   3 hours ago   Up 27 minutes (healthy)             zun_cni_daemon
+9a43a16a3c98   quay.nju.edu.cn/openstack.kolla/zun-compute:2024.1-ubuntu-jammy                 "dumb-init --single-…"   3 hours ago   Up 27 minutes (healthy)             zun_compute
+# docker cp policy.json zun_cni_daemon:/etc/zun/
+# docker cp policy.json zun_compute:/etc/zun/
+# ls /etc/kolla/ | grep zun
+zun-cni-daemon
+zun-compute
+# vim /etc/kolla/zun-cni-daemon/zun.conf
+# vim /etc/kolla/zun-wcompute/zun.conf
+Added:    
+[oslo_policy]
+policy_file = /etc/zun/policy.json
+# docker restart zun_compute &amp;&amp; docker restart zun_cni_daemon
+</code></pre>
+<p>Create privileged docker instance:</p>
+<pre><code># openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| aa723767-ec93-4963-a3e0-3f1e6b028b1c | int-net | 6cac1cc1-644e-467c-9232-bafe1f035e54 |
+| c58aec55-4e70-47e9-8222-89aed074217b | ext-net | 9506046d-ad61-441a-a63b-66b57d6e8143 |
++--------------------------------------+---------+--------------------------------------+
+# openstack appcontainer run --privileged --name mm --image-pull-policy=never --net network=aa723767-ec93-4963-a3e0-3f1e6b028b1c --cpu 4 --memory 8192  xxxxx
+</code></pre>
+<p><img src="./images/2025_07_10_10_54_55_1187x771.jpg" alt="./images/2025_07_10_10_54_55_1187x771.jpg" /></p>
+<p>aosp instance:</p>
+<p><img src="./images/2025_07_10_10_58_48_943x333.jpg" alt="./images/2025_07_10_10_58_48_943x333.jpg" /></p>
+<p>Specify the host and init parameters:</p>
+<pre><code>openstack appcontainer run --privileged --name mmk --image-pull-policy=never --net network=1cd5bde1-6151-4ea6-9429-b74f7b467f99 --cpu 4 --memory 8192 --host openstack3 redroid12houdini:latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480
+</code></pre>
+<h3 id="2-change-machine-id"><a class="header" href="#2-change-machine-id">2. change machine id</a></h3>
+<p>via:</p>
+<pre><code>sudo rm -f /etc/machine-id
+sudo dbus-uuidgen --ensure=/etc/machine-id
+sudo rm /var/lib/dbus/machine-id
+sudo dbus-uuidgen --ensure
+sudo reboot
+</code></pre>
+<h3 id="3-virgl-kolla-node"><a class="header" href="#3-virgl-kolla-node">3. virgl kolla node</a></h3>
+<p>Specify user session:</p>
+<p><img src="./images/2025_07_10_14_20_52_302x139.jpg" alt="./images/2025_07_10_14_20_52_302x139.jpg" /></p>
+<p><img src="./images/2025_07_10_14_21_01_614x202.jpg" alt="./images/2025_07_10_14_21_01_614x202.jpg" /></p>
+<p><img src="./images/2025_07_10_14_22_11_680x407.jpg" alt="./images/2025_07_10_14_22_11_680x407.jpg" /></p>
+<p>So it won't be attached to virbr1(192.168.150.2/24) network.</p>
+<p>Changed to:</p>
+<p><img src="./images/2025_07_10_14_23_23_624x529.jpg" alt="./images/2025_07_10_14_23_23_624x529.jpg" /></p>
+<p>or :</p>
+<p><img src="./images/2025_07_10_14_23_40_344x143.jpg" alt="./images/2025_07_10_14_23_40_344x143.jpg" /></p>
+<p>Won't use nvidia card.</p>
+<pre><code>test@openstack3:~$ sudo dmesg | grep -i virgl
+[    1.280751] [drm] features: +virgl +edid -resource_blob -host_visible
+</code></pre>
+<p>houdini workable:</p>
+<pre><code># openstack appcontainer run --privileged --name mmk --image-pull-policy=never --net network=1cd5bde1-6151-4ea6-9429-b74f7b467f99 --cpu 4 --memory 8192 --host openstack3 redroidhoudini12:latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128  androidboot.redroid_fps=120
+# openstack appcontainer list
++--------------------------------------+---------------+-------------------------+----------+--------------------+-----------------+-------+
+| uuid                                 | name          | image                   | status   | task_state         | addresses       | ports |
++--------------------------------------+---------------+-------------------------+----------+--------------------+-----------------+-------+
+| a54f636e-0113-42b8-88b8-433f2ed0b386 | mmk           | redroidhoudini12:latest | Deleting | container_deleting | 192.168.150.150 | []    |
+| ffeaa2d0-1d07-4c1c-8746-5bf14e1fbf6a | redroid120fps | redroidhoudini12:latest | Running  | None               | 192.168.150.127 | []    |
++--------------------------------------+---------------+-------------------------+----------+--------------------+-----------------+-------+
+</code></pre>
+<p><img src="./images/2025_07_10_15_22_58_519x864.jpg" alt="./images/2025_07_10_15_22_58_519x864.jpg" /></p>
+<p><img src="./images/2025_07_10_15_23_10_514x395.jpg" alt="./images/2025_07_10_15_23_10_514x395.jpg" /></p>
 
                     </main>
 
