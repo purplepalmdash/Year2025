@@ -12197,6 +12197,40 @@ sudo reboot
 </code></pre>
 <p><img src="./images/2025_07_10_15_22_58_519x864.jpg" alt="./images/2025_07_10_15_22_58_519x864.jpg" /></p>
 <p><img src="./images/2025_07_10_15_23_10_514x395.jpg" alt="./images/2025_07_10_15_23_10_514x395.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250711"><a class="header" href="#20250711">20250711</a></h1>
+<h3 id="1-zun-cpu-limitation"><a class="header" href="#1-zun-cpu-limitation">1. zun cpu limitation</a></h3>
+<p>Create a docker instance via zun:</p>
+<pre><code>openstack appcontainer run --privileged --name ubuntustress --net network=1cd5bde1-6151-4ea6-9429-b74f7b467f99 --cpu 1 --memory 1024 --host openstack3 ubuntu:latest sleep 36000
+</code></pre>
+<p>On host(<code>openstack3</code>), inspect the docker instance:</p>
+<pre><code># docker inspect 7ba1489669f7
+......
+            "CpuShares": 1024,
+            "Memory": 1073741824,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+......
+</code></pre>
+<p>Line 309-310 means <code>--cpu 1</code> --&gt; 1024(CpuShares):</p>
+<p><img src="./images/2025_07_11_10_30_33_807x288.jpg" alt="./images/2025_07_11_10_30_33_807x288.jpg" /></p>
+<p><code>stress -c 8</code> in docker instance will result <code>8*100%</code> in top.</p>
+<p>Solution(manually binding cpu core):</p>
+<pre><code>$ sudo docker info --format '{{.CgroupDriver}}'
+systemd
+$ sudo su
+# cd /sys/fs/cgroup/system.slice
+# echo "0-1" &gt; docker-7ba1489669f71014023acc44afff8f6a1f60830b9c18398e2150c4e80a6c3e42.scope/cpuset.cpus
+</code></pre>
+<p>Stress 8:</p>
+<p><img src="./images/2025_07_11_10_34_14_770x344.jpg" alt="./images/2025_07_11_10_34_14_770x344.jpg" /></p>
+<p>Stress 2:</p>
+<p><img src="./images/2025_07_11_10_34_44_784x296.jpg" alt="./images/2025_07_11_10_34_44_784x296.jpg" /></p>
+<p>run stress command:</p>
+<p><img src="./images/2025_07_11_10_34_58_655x177.jpg" alt="./images/2025_07_11_10_34_58_655x177.jpg" /></p>
+<p>Possible modification, update the client for sending more parametes to zun:</p>
+<p><code>https://github.com/openstack/python-zunclient</code></p>
+<h3 id="2-kollaqueen"><a class="header" href="#2-kollaqueen">2. kolla(Queen)</a></h3>
+<p>centos7, use source related.</p>
 
                     </main>
 
