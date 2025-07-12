@@ -200,6 +200,36 @@ $ sudo su
 <p><code>https://github.com/openstack/python-zunclient</code></p>
 <h3 id="2-kollaqueen"><a class="header" href="#2-kollaqueen">2. kolla(Queen)</a></h3>
 <p>centos7, use source related.</p>
+<p>docker-ce related:</p>
+<pre><code>yum install -y net-tools wget
+wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+yum makecache
+yum list available docker-ce --showduplicates
+yum list available docker-ce-cli --showduplicates
+yum list available containerd.io --showduplicates
+yum install docker-ce-19.03.0-3.el7 docker-ce-cli-19.03.0-3.el7 containerd.io-1.5.10-3.1.el7
+</code></pre>
+<p>each node for adding hostname:</p>
+<pre><code># cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.150.71  queen1
+192.168.150.72  queen2
+192.168.150.73  queen3
+# ssh root@queen1
+then exit
+# ssh root@queen2
+then exit
+# ssh root@queen2
+then exit
+</code></pre>
+<p>each node install pip:</p>
+<pre><code>yum install -y epel-release
+yum install -y python-pip
+pip install --upgrade pip==20.0
+yum install python-devel libffi-devel gcc openssl-devel libselinux-python -y
+
+</code></pre>
 
                     </main>
 
@@ -209,6 +239,9 @@ $ sudo su
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250712.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -220,6 +253,9 @@ $ sudo su
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250712.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

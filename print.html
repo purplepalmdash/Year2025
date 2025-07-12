@@ -12231,6 +12231,135 @@ $ sudo su
 <p><code>https://github.com/openstack/python-zunclient</code></p>
 <h3 id="2-kollaqueen"><a class="header" href="#2-kollaqueen">2. kolla(Queen)</a></h3>
 <p>centos7, use source related.</p>
+<p>docker-ce related:</p>
+<pre><code>yum install -y net-tools wget
+wget -P /etc/yum.repos.d/ https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+yum makecache
+yum list available docker-ce --showduplicates
+yum list available docker-ce-cli --showduplicates
+yum list available containerd.io --showduplicates
+yum install docker-ce-19.03.0-3.el7 docker-ce-cli-19.03.0-3.el7 containerd.io-1.5.10-3.1.el7
+</code></pre>
+<p>each node for adding hostname:</p>
+<pre><code># cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.150.71  queen1
+192.168.150.72  queen2
+192.168.150.73  queen3
+# ssh root@queen1
+then exit
+# ssh root@queen2
+then exit
+# ssh root@queen2
+then exit
+</code></pre>
+<p>each node install pip:</p>
+<pre><code>yum install -y epel-release
+yum install -y python-pip
+pip install --upgrade pip==20.0
+yum install python-devel libffi-devel gcc openssl-devel libselinux-python -y
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250712"><a class="header" href="#20250712">20250712</a></h1>
+<h3 id="1-kolla-queencontinued"><a class="header" href="#1-kolla-queencontinued">1. kolla queen(continued)</a></h3>
+<p>ansible and kolla-ansible related:</p>
+<pre><code>curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+python2.7 get-pip.py 
+pip install ansible==2.9.0
+yum install -y ansible
+ git clone https://github.com/openstack/kolla-ansible
+cd kolla-ansible/
+ git checkout tags/queens-eol -b queen
+pip install pbr
+pip install .   
+
+Error message:    
+ERROR: pip's legacy dependency resolver does not consider dependency conflicts when selecting packages. This behaviour is the source of the following dependency conflicts.
+oslo-config 7.0.0 requires PyYAML&gt;=3.12, but you'll have pyyaml 3.10 which is incompatible.
+
+</code></pre>
+<p>docker related operation:</p>
+<pre><code> mkdir -p /etc/systemd/system/docker.service.d
+vim /etc/systemd/system/docker.service.d/kolla.conf
+systemctl daemon-reload &amp;&amp; systemctl restart docker &amp;&amp; systemctl status docker
+docker load&lt;node_combine.tar 
+</code></pre>
+<h3 id="2-kolla-queenubuntu1804"><a class="header" href="#2-kolla-queenubuntu1804">2. kolla queen(ubuntu1804)</a></h3>
+<p>Steps:</p>
+<pre><code> apt install -y python-pip
+ pip install virtualenv
+ mkdir ~/kolla
+ virtualenv ~/kolla/virtualenv
+ source ~/kolla/virtualenv/bin/activate
+ apt-get install python-dev libffi-dev gcc libssl-dev python-selinux python-setuptools
+ apt-cache policy ansible ---&gt; should be 2.5
+ apt install ansible
+ pvcreate /dev/vdb
+ vgcreate cinder-volumes /dev/vdb
+</code></pre>
+<p>Clone kolla-ansible source code:</p>
+<pre><code>git clone https://github.com/openstack/kolla-ansible
+cd kolla-ansible/
+git checkout tags/queens-eol -b queen
+pip install -r requirements.txt 
+
+### Install kolla-ansible
+pip install .
+(virtualenv) root@ubuntu1:~/kolla-ansible# which kolla-ansible
+/root/kolla/virtualenv/bin/kolla-ansible
+</code></pre>
+<p>Create deployment config folder:</p>
+<pre><code>mkdir -p /etc/kolla
+cp etc/kolla/* /etc/kolla/
+
+</code></pre>
+<h3 id="3-kolla-queen-issue"><a class="header" href="#3-kolla-queen-issue">3. kolla queen issue</a></h3>
+<p>both centos/ubuntu got same issue:</p>
+<pre><code>root@ubuntu1:~# openstack appcontainer list
++--------------------------------------+---------+---------------+--------+------------+-----------+-------+
+| uuid                                 | name    | image         | status | task_state | addresses | ports |
++--------------------------------------+---------+---------------+--------+------------+-----------+-------+
+| f8ef809a-9f27-4e07-a42c-91c7b39ca80e | ubuntu1 | ubuntu:latest | Error  | None       |           | []    |
++--------------------------------------+---------+---------------+--------+------------+-----------+-------+
+root@ubuntu1:~# openstack appcontainer show ubuntu1
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Field             | Value                                                                                                                                                                                                                           |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| addresses         |                                                                                                                                                                                                                                 |
+| links             | [{u'href': u'http://192.168.150.152:9517/v1/containers/f8ef809a-9f27-4e07-a42c-91c7b39ca80e', u'rel': u'self'}, {u'href': u'http://192.168.150.152:9517/containers/f8ef809a-9f27-4e07-a42c-91c7b39ca80e', u'rel': u'bookmark'}] |
+| image             | ubuntu:latest                                                                                                                                                                                                                   |
+| labels            | {}                                                                                                                                                                                                                              |
+| disk              | 0                                                                                                                                                                                                                               |
+| networks          |                                                                                                                                                                                                                                 |
+| security_groups   | []                                                                                                                                                                                                                              |
+| image_pull_policy | None                                                                                                                                                                                                                            |
+| user_id           | e1d7fa33232840ddb62861291a5e25bf                                                                                                                                                                                                |
+| uuid              | f8ef809a-9f27-4e07-a42c-91c7b39ca80e                                                                                                                                                                                            |
+| hostname          | None                                                                                                                                                                                                                            |
+| environment       | {}                                                                                                                                                                                                                              |
+| memory            | 1024M                                                                                                                                                                                                                           |
+| project_id        | 6896b4eaaef746438c953cc6c0e58f8e                                                                                                                                                                                                |
+| status            | Error                                                                                                                                                                                                                           |
+| workdir           | None                                                                                                                                                                                                                            |
+| auto_remove       | False                                                                                                                                                                                                                           |
+| status_detail     | None                                                                                                                                                                                                                            |
+| host              | None                                                                                                                                                                                                                            |
+| image_driver      | docker                                                                                                                                                                                                                          |
+| task_state        | None                                                                                                                                                                                                                            |
+| status_reason     | Docker internal error: 500 Server Error: Internal Server Error ("This node is not a swarm manager. Use "docker swarm init" or "docker swarm join" to connect this node to swarm and try again.").                               |
+| name              | ubuntu1                                                                                                                                                                                                                         |
+| restart_policy    | {}                                                                                                                                                                                                                              |
+| ports             | []                                                                                                                                                                                                                              |
+| command           | "sleep" "3600"                                                                                                                                                                                                                  |
+| runtime           | None                                                                                                                                                                                                                            |
+| cpu               | 1.0                                                                                                                                                                                                                             |
+| interactive       | False                                                                                                                                                                                                                           |
++-------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+root@ubuntu1:~# 
+
+</code></pre>
+<p>maybe I should try docker-ce rather than docker.io?</p>
 
                     </main>
 
