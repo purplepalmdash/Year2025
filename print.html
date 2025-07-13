@@ -12360,6 +12360,44 @@ root@ubuntu1:~#
 
 </code></pre>
 <p>maybe I should try docker-ce rather than docker.io?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250713"><a class="header" href="#20250713">20250713</a></h1>
+<h3 id="1-yogaubuntu"><a class="header" href="#1-yogaubuntu">1. yoga(ubuntu)</a></h3>
+<p>Using docker-ce, configuration for docker is:</p>
+<pre><code>mkdir -p /etc/systemd/system/docker.service.d
+vim /etc/systemd/system/docker.service.d/kolla.conf
+[Service]
+ExecStart=
+# ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://192.168.150.29:2375
+# reboot
+</code></pre>
+<h3 id="2-queensubuntu-1804"><a class="header" href="#2-queensubuntu-1804">2. queens(ubuntu 18.04)</a></h3>
+<p>Install docker-ce via:</p>
+<pre><code>apt remove docker.io
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh 
+apt install docker-ce
+vim /etc/systemd/system/docker.service.d/kolla.conf
+    [Service]
+    MountFlags=shared
+    ExecStart=
+    # ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+    ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://192.168.150.82:2375
+</code></pre>
+<p>Create an instance using ext-net:</p>
+<pre><code>openstack appcontainer run --name ubuntuexternal --net network=d3fc91e7-631e-4229-abf1-3ce773ddf164 --cpu 1 --memory 1024 ubuntu:latest sleep 3600
+</code></pre>
+<p>Result:</p>
+<pre><code>root@ubuntu1:~# openstack appcontainer list
++--------------------------------------+----------------+---------------+---------+------------+-----------------+-------+
+| uuid                                 | name           | image         | status  | task_state | addresses       | ports |
++--------------------------------------+----------------+---------------+---------+------------+-----------------+-------+
+| 4e3f13b5-fc95-4b9a-a41e-2e64db633969 | ubuntu         | ubuntu:latest | Running | None       | 177.77.77.9     | []    |
+| fd89a81f-b749-476d-a3e3-bad7a4188bdd | ubuntuexternal | ubuntu:latest | Running | None       | 192.168.150.171 | []    |
++--------------------------------------+----------------+---------------+---------+------------+-----------------+-------+
+</code></pre>
+<h3 id="3-queenscentos-761810"><a class="header" href="#3-queenscentos-761810">3. queens(centos 7.6.1810)</a></h3>
+<p>Install docker-ce, then zun will acts like queens in ubuntu 18.04. inner-network is ok, while external network will encounter some failure.</p>
 
                     </main>
 
