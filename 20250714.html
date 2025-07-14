@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20250714 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20250714"><a class="header" href="#20250714">20250714</a></h1>
+<h3 id="1-centos7-virgl-redroid"><a class="header" href="#1-centos7-virgl-redroid">1. centos7 virgl redroid</a></h3>
+<p>Create a vm using import disk:</p>
+<p><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg" /></p>
+<p>Q35/bios:</p>
+<p><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg" /></p>
+<p>Change IP:</p>
+<p><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg" /></p>
+<p>change hostname to <code>nvidiaredroidcentos</code>.</p>
+<p>Login the vm, then install kernel:</p>
+<pre><code># scp -r dash@192.168.1.8:/media/sda/iso/houdini12/centos .
+# ls centos/
+kernel-5.10.26-2.x86_64.rpm  kernel-headers-5.10.26-2.x86_64.rpm
+# yum install ./kernel-5.10.26-2.x86_64.rpm  ./kernel-headers-5.10.26-2.x86_64.rpm 
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+# shutdown -h now
+</code></pre>
+<p>Change setting to virgl:</p>
+<p><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg" /></p>
+<p>Using nvidia card:</p>
+<p><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg" /></p>
+<pre><code># dmesg | grep -i virgl
+[    1.861350] [drm] features: +virgl +edid
+# ls /dev/dri/
+card0  renderD128
+</code></pre>
+<p>Install docker-ce, then import docker image:</p>
+<pre><code># curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# vim /etc/yum.repos.d/docker-ce.repo 
+# gpgcheck=1 --&gt; gpgcheck=0
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# systemctl enable docker --now
+# docker load&lt;redroidhoudini12intel.tar
+</code></pre>
+<p>Run redroid instance:</p>
+<pre><code># docker run -itd --privileged  -p 5555:5555 --name redroid12  redroidhoudini12:latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128  androidboot.redroid_fps=120
+# docker exec -it redroid12 sh
+8a5eabf67563:/ # getprop | grep boot | grep com                                              
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [299011048305]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+redroid_x86_64:/ # dumpsys SurfaceFlinger | grep GLES                                                                                                                                        
+GLES: Mesa, virgl (NVIDIA GeForce RTX 4070/PCIe/SSE2), OpenGL ES 3.2 Mesa 24.0.8 (git-441f064c1c)
+</code></pre>
+<p>Issue(Ludashi download issue):</p>
+<p><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg" /></p>
+<h3 id="2-centos7-openstack-queens--zun--redroid12"><a class="header" href="#2-centos7-openstack-queens--zun--redroid12">2. (centos7) OpenStack queens + zun + redroid12</a></h3>
+<h4 id="21-base-image"><a class="header" href="#21-base-image">2.1 Base image</a></h4>
+<p>AIM: 5.10 as the default kernel, docker-ce installed and configured.</p>
+<pre><code>cp centos7_base.qcow2 centos7_510_docker_base.qcow2
+</code></pre>
+<p>Install kernel as above steps.<br />
+Install docker as above steps.</p>
+<p>load the redroid12 images then docker pull nginx/ubuntu.</p>
+<p>docker configuration.</p>
+<pre><code>[root@queenbase ~]# cat /etc/systemd/system/docker.service.d/kolla.conf 
+[Service]
+MountFlags=shared
+[Service]
+ExecStart=
+# ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375
+</code></pre>
+<p>undefine the vm, get the qcow2 file.</p>
+<h4 id="22-create-vms"><a class="header" href="#22-create-vms">2.2 Create vms</a></h4>
+<p>queens1:</p>
+<p><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg" /></p>
+<p><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg" /></p>
+<p><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg" /></p>
+<p>queens2:</p>
+<p><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg" /></p>
+<p>queen3:</p>
+<p><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg" /></p>
+<h4 id="23-deployment"><a class="header" href="#23-deployment">2.3. deployment</a></h4>
+<p>Each node install pip:</p>
+<pre><code>yum install python-devel libffi-devel gcc openssl-devel libselinux-python lvm2 -y
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+[root@queen1 ~]# python2.7 get-pip.py
+[root@queen1 ~]# which pip
+/usr/bin/pip
+[root@queen1 ~]# pip --version
+pip 20.3.4 from /usr/lib/python2.7/site-packages/pip (python 2.7)
+</code></pre>
+<p>Each node install ansible:</p>
+<pre><code>pip install -U ansible==2.7.0
+pip install docker
+</code></pre>
+<p>Each node add following items to <code>/etc/hosts</code>:</p>
+<pre><code>10.171.172.21	queen1
+10.171.172.22	queen2
+10.171.172.23	queen3
+</code></pre>
+<p>password-less login:</p>
+<p><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg" /></p>
+<p>queen1 node:</p>
+<pre><code>git clone https://github.com/openstack/kolla-ansible
+cd kolla-ansible
+git checkout tags/queens-eol -b queen
+pip install pbr
+pip install .
+mkdir -p /etc/kolla
+cp etc/kolla/* /etc/kolla/
+cp ansible/inventory/multinode /etc/kolla/
+</code></pre>
+<p>Edit multinode like following:</p>
+<pre><code>[control]
+queen1
+
+[network]
+queen1
+queen2
+queen3
+
+[external-compute]
+queen1
+queen2
+queen3
+
+[monitoring]
+queen1
+
+[storage]
+queen1
+queen2
+queen3
+</code></pre>
+<p>globals.yml modifications:</p>
+<pre><code>kolla_base_distro: "centos"
+kolla_install_type: "source"
+openstack_release: "queens"
+docker_namespace: "kolla"
+network_interface: "eth0"
+neutron_external_interface: "eth1"
+neutron_plugin_agent: "openvswitch"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
+enable_haproxy: "yes"
+enable_horizon: "yes"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_kuryr: "yes"
+enable_zun: "yes"
+fernet_token_expiry: 86400
+nova_compute_virt_type: "kvm"
+cinder_volume_group: "cinder-volumes"
+</code></pre>
+<p>generate the password:</p>
+<pre><code>kolla-genpwd
+</code></pre>
+<p>load docker images:</p>
+<pre><code>docker load&lt;centoscontroller.tar
+# for queen2/3
+docker load&lt;node.tar
+</code></pre>
+<p>Modifications for kolla-ansible:</p>
+<pre><code>mkdir /root/origin
+cd /usr/share/kolla-ansible/
+# backup
+cp ./ansible/roles/prechecks/tasks/service_checks.yml /root/origin/
+cp ./ansible/roles/prechecks/tasks/package_checks.yml /root/origin/
+cp ./ansible/roles/prechecks/tasks/user_checks.yml /root/origin/
+cp ./ansible/roles/keystone/tasks/precheck.yml /root/origin/keystone_precheck.yml
+cp ./ansible/roles/cinder/tasks/precheck.yml /root/origin/cinder_precheck.yml
+# modification
+cp /root/modifications/service_checks.yml ./ansible/roles/prechecks/tasks/service_checks.yml
+cp /root/modifications/package_checks.yml ./ansible/roles/prechecks/tasks/package_checks.yml
+cp /root/modifications/user_checks.yml ./ansible/roles/prechecks/tasks/user_checks.yml
+cp /root/modifications/keystone_precheck.yml ./ansible/roles/keystone/tasks/precheck.yml
+cp /root/modifications/cinder_precheck.yml ./ansible/roles/cinder/tasks/precheck.yml
+</code></pre>
+<p>deploy openstack:</p>
+<pre><code>cd /etc/kolla/
+kolla-ansible -i ./multinode prechecks -vv
+kolla-ansible -i ./multinode deploy -vv 
+kolla-ansible -i ./multinode post-deploy -vv
+</code></pre>
+<p>Install openstack client:</p>
+<pre><code>#  cat /etc/yum.repos.d/CentOS-OpenStack-train.repo
+    # CentOS-OpenStack-train.repo
+    #
+    # Please see http://wiki.centos.org/SpecialInterestGroup/Cloud for more
+    # information
+    
+    [centos-openstack-train]
+    name=CentOS-7 - OpenStack train
+    baseurl=https://dl.rockylinux.org/vault/centos/7/cloud/$basearch/openstack-train/
+    gpgcheck=0
+    enabled=1
+    gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud
+    exclude=sip,PyQt4
+# yum install python2-openstackclient
+# pip install python-zunclient
+</code></pre>
+<h4 id="24-openstack-admin"><a class="header" href="#24-openstack-admin">2.4 OpenStack Admin</a></h4>
+<p>Visit <code>10.171.172.24</code>(admin, password is listed as following):</p>
+<pre><code>cat /etc/kolla/passwords.yml | grep -i keystone_admin
+keystone_admin_password: 5zGzqMear5ZVltRtRpETFiggoXiz0fmY7TZ1e7iV
+</code></pre>
+<p>horizon with zun ui supportd:</p>
+<p><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg" /></p>
+<p>Create network(int/ext):</p>
+<pre><code>openstack router create Ext-Router
+openstack network create --internal --provider-network-type vxlan int-net
+openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+openstack router add subnet Ext-Router int-net-sub
+openstack network create --provider-physical-network physnet1 --provider-network-type flat  --external ext-net
+openstack subnet create ext-net-sub --network ext-net --subnet-range 10.171.172.24/24 --allocation-pool start=10.171.172.160,end=10.171.172.220 --gateway 10.171.172.1 --dns-nameserver 114.114.114.114 --dhcp
+openstack router set Ext-Router --external-gateway ext-net
+</code></pre>
+<p>Network topology:</p>
+<p><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg" /></p>
+<h4 id="25-zun-instance"><a class="header" href="#25-zun-instance">2.5 zun instance</a></h4>
+<p>Get the network infos:</p>
+<pre><code># openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 5678d45a-4903-4f17-9266-bded57efba34 | int-net | efc9b0f3-2f5b-4102-b856-44169b518b4e |
+| d27c46dc-4dde-4c04-af16-1104f0270e61 | ext-net | e63d1f7f-ded0-4fe3-a6fb-736ff7c3ec30 |
++--------------------------------------+---------+--------------------------------------+
+</code></pre>
+<p>Create the int zun instance:</p>
+<pre><code># openstack appcontainer run --name ubuntuint --net network=5678d45a-4903-4f17-9266-bded57efba34  --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+</code></pre>
+<p>Create the int zun instance and specify its running node:</p>
+<pre><code># openstack appcontainer run --name ubuntuintHostQueen3 --net network=5678d45a-4903-4f17-9266-bded57efba34  --cpu 1 --memory 1024 --host queen3  ubuntu:latest sleep 3600
+</code></pre>
+<p>Examine the instance:</p>
+<pre><code>[root@queen3 ~]# docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                   CREATED              STATUS              PORTS     NAMES
+a0f3d7caa4b8   ubuntu:latest                                          "sleep 3600"              About a minute ago   Up About a minute             zun-a7d168ad-2322-4cf8-a5a1-5beb933e91f4
+[root@queen3 ~]# docker exec -it a0f3d7caa4b8 bash
+root@queen3:/#  apt update -y &amp;&amp; apt install -y net-tools
+root@queen3:/#  ifconfig
+</code></pre>
+<p><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg" /></p>
+<p>instance stop:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| db03c512-7553-4e22-b41d-5dc925608b5c | ubuntuint           | ubuntu:latest | Running | None       | 177.77.77.4 | []    |
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+[root@queen1 kolla]# openstack appcontainer delete ubuntuint
+Delete for container ubuntuint failed: Cannot delete container db03c512-7553-4e22-b41d-5dc925608b5c in Running state (HTTP 409) (Request-ID: req-efc9ca30-6732-4f07-8161-0a7344e88bc4)
+[root@queen1 kolla]# openstack appcontainer stop ubuntuint
+Request to stop container ubuntuint has been accepted.
+[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state         | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+| db03c512-7553-4e22-b41d-5dc925608b5c | ubuntuint           | ubuntu:latest | Running | container_stopping | 177.77.77.4 | []    |
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None               | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+</code></pre>
+<p>delete instance:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer delete ubuntuint
+Request to delete container ubuntuint has been accepted.
+[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+</code></pre>
+<p>external instance test with issue(first container will cause the VIP not accessable, thus the second one will failed):</p>
+<pre><code># openstack appcontainer run --name ubuntuext --net network=d27c46dc-4dde-4c04-af16-1104f0270e61 --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+# openstack appcontainer run --name ubuntuextHostQueen3 --net network=d27c46dc-4dde-4c04-af16-1104f0270e61 --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+Failed to discover available identity versions when contacting http://10.171.172.24:35357/v3. Attempting to parse version from URL.
+Unable to establish connection to http://10.171.172.24:35357/v3/auth/tokens: HTTPConnectionPool(host='10.171.172.24', port=35357): Max retries exceeded with url: /v3/auth/tokens (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x7f83e4df4190&gt;: Failed to establish a new connection: [Errno 113] \xe6\xb2\xa1\xe6\x9c\x89\xe5\x88\xb0\xe4\xb8\xbb\xe6\x9c\xba\xe7\x9a\x84\xe8\xb7\xaf\xe7\x94\xb1',))
+</code></pre>
+<h4 id="26-floating-ip-allocation"><a class="header" href="#26-floating-ip-allocation">2.6 floating ip allocation</a></h4>
+<p>Create an zun instance:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses    | ports |
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+| 9edef92d-39cf-4020-bfa2-f2f2fd65d7bd | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.23 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+</code></pre>
+<p>Allocating a floating IP :</p>
+<p><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg" /></p>
+<p>Recreate the security group:</p>
+<p><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg" /></p>
+<p>In docker instance:</p>
+<pre><code>root@queen3:/# apt update -y &amp;&amp; apt install -y net-tools iputils-ping
+root@queen3:/# ping -c2 223.5.5.5
+PING 223.5.5.5 (223.5.5.5) 56(84) bytes of data.
+64 bytes from 223.5.5.5: icmp_seq=1 ttl=111 time=12.0 ms
+64 bytes from 223.5.5.5: icmp_seq=2 ttl=111 time=8.64 ms
+
+--- 223.5.5.5 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 8.644/10.306/11.968/1.662 ms
+root@queen3:/# cat /etc/issue
+Ubuntu 24.04.2 LTS \n \l
+</code></pre>
+<p>Ping from outside world(same ethernet):</p>
+<pre><code>root@i9workstation:~# ping -c2 10.171.172.177
+PING 10.171.172.177 (10.171.172.177) 56(84) bytes of data.
+64 bytes from 10.171.172.177: icmp_seq=1 ttl=63 time=2.44 ms
+64 bytes from 10.171.172.177: icmp_seq=2 ttl=63 time=1.40 ms
+
+--- 10.171.172.177 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 1.396/1.919/2.442/0.523 
+</code></pre>
+<h4 id="27-zun-privileged-mode"><a class="header" href="#27-zun-privileged-mode">2.7 zun privileged mode</a></h4>
+<p>Create privileged container instance:</p>
+<pre><code># openstack appcontainer run  --name ubuntuint  --net network=5678d45a-4903-4f17-9266-bded57efba34 --privileged --cpu 1 --memory 1024 ubuntu:latest sleep 3600
+Additional properties are not allowed (u'privileged' was unexpected)
+
+Failed validating 'additionalProperties' in schema:
+    {'additionalProperties': False,
+     'properties': {'auto_remove': {'type': ['boolean', 'null']},
+                    'command': {'type': ['string', 'null']},
+                    'cpu': {'minLength': 1,
+</code></pre>
+<p>Reason(Queen version):</p>
+<pre><code>(zun-compute)[root@queen1 /]# ls /zun-base-source/
+zun-1.0.1
+(zun-api)[root@queen1 /]# ls /zun-base-source/
+zun-1.0.1
+</code></pre>
+<p>Release note(<code>https://fossies.org/linux/zun/ChangeLog</code>):</p>
+<p><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg" /></p>
+<p>Rocky version:</p>
+<pre><code>[root@queen1 ~]# docker run -it kolla/centos-source-zun-api:rocky /bin/bash
+()[root@46e8671fcd28 /]# ls zun-base-source/
+zun-2.1.0
+</code></pre>
+<p>So we need to backport the <code>--privileged code</code> into zun-1.0.1....</p>
+<h3 id="3-systemd-stop-timeout"><a class="header" href="#3-systemd-stop-timeout">3. systemd stop timeout</a></h3>
+<p>Issue:</p>
+<pre><code>A stop job is running for Session c2 of user ... (1min 30s)
+</code></pre>
+<p>Changed:</p>
+<pre><code># vim /etc/systemd/system.conf
+# cat /etc/systemd/system.conf |grep -i timeoutstop
+DefaultTimeoutStopSec=20s
+# systemctl daemon-reload
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20250713.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20250713.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
