@@ -411,6 +411,43 @@ pip3 install python-zunclient
 <pre><code>for i in {1..30}; do openstack appcontainer run --name sss$i --net network=783e5e92-e7df-4906-a5ce-15a26b4ac28a --image-pull-policy=never --cpu 1 --memory 512  ubuntu:latest sleep 3600; done
 </code></pre>
 <p><img src="./images/2025_07_16_17_31_20_1160x489.jpg" alt="./images/2025_07_16_17_31_20_1160x489.jpg" /></p>
+<h3 id="2-queens-ubuntu1804-verification"><a class="header" href="#2-queens-ubuntu1804-verification">2. queens ubuntu1804 verification</a></h3>
+<p>Added etcd related configuration:</p>
+<pre><code># cat /etc/systemd/system/docker.service.d/kolla.conf 
+[Service]
+MountFlags=shared
+ExecStart=
+# ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://192.168.150.81:2375 --cluster-store=etcd://192.168.150.81:2379
+
+</code></pre>
+<p>Need to specify docker version:</p>
+<pre><code>apt install docker-ce=5:20.10.24~3-0~ubuntu-bionic
+</code></pre>
+<p><code>globals.yml</code> configuration:</p>
+<pre><code>kolla_base_distro: "ubuntu"
+kolla_install_type: "source"
+openstack_release: "queens"
+kolla_internal_vip_address: "192.168.150.152"
+docker_namespace: "kolla"
+network_interface: "eth0"
+neutron_external_interface: "eth1"
+neutron_plugin_agent: "openvswitch"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
+enable_etcd: "yes"
+enable_haproxy: "yes"
+enable_horizon: "yes"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_kuryr: "yes"
+enable_zun: "yes"
+fernet_token_expiry: 86400
+cinder_volume_group: "cinder-volumes"
+nova_compute_virt_type: "kvm"
+</code></pre>
+<p>related docker image:</p>
+<pre><code>kolla/ubuntu-source-etcd                        queens    45d1a8604e18   5 years ago   311MB
+</code></pre>
 
                     </main>
 
