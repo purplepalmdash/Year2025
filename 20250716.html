@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20250716 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20250716"><a class="header" href="#20250716">20250716</a></h1>
+<h3 id="1-ubuntu2204-yoga-verification"><a class="header" href="#1-ubuntu2204-yoga-verification">1. ubuntu2204 yoga verification</a></h3>
+<p>environment info:</p>
+<pre><code># cat /etc/hosts
+....
+192.168.150.11  yoga1
+192.168.150.12  yoga2
+192.168.150.13  yoga3
+</code></pre>
+<p>(control node):</p>
+<pre><code>rm -f /etc/resolv.conf &amp;&amp; echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf &amp;&amp; apt update -y
+ufw disable
+apt remove apparmor --purge
+apt install -y git python3-dev libffi-dev build-essential libssl-dev
+apt install python3-venv python3-pip -y
+apt install -y dnscrypt-proxy
+echo "nameserver 127.0.2.1"&gt;/etc/resolv.conf
+chattr +i /etc/resolv.conf
+pvcreate /dev/vdb
+vgcreate cinder-volumes /dev/vdb
+reboot
+python3 -m venv .venv/kolla
+source ~/.venv/kolla/bin/activate
+pip3 install -U pip
+pip3 install 'ansible-core&gt;=2.11,&lt;2.12'
+git clone https://github.com/openstack/kolla-ansible.git
+cd kolla-ansible
+git checkout tags/yoga-eol -b yoga
+pip install -r requirements.txt 
+pip install .
+mkdir -p /etc/kolla
+cp etc/kolla/* /etc/kolla/
+</code></pre>
+<p>The globals.yml is listed as:</p>
+<pre><code># grep -v '^#' /etc/kolla/globals.yml  | grep -v "^$"
+---
+kolla_base_distro: "ubuntu"
+kolla_install_type: "source"
+openstack_release: "yoga"
+kolla_internal_vip_address: "192.168.150.14"
+docker_configure_for_zun: "yes"
+containerd_configure_for_zun: "yes"
+network_interface: "eth0"
+neutron_external_interface: "eth1"
+neutron_plugin_agent: "linuxbridge"
+enable_openstack_core: "yes"
+enable_haproxy: "yes"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_kuryr: "yes"
+enable_zun: "yes"
+fernet_token_expiry: 86400
+cinder_volume_group: "cinder-volumes"
+nova_compute_virt_type: "kvm"
+
+</code></pre>
+<p>Edit the <code>/etc/kolla/multinode</code> file for definition of deployment.</p>
+<p>Install all of the nodes python deps:</p>
+<pre><code># pip3 freeze&gt;requirements.txt
+comment all of the ansible items
+scp to other 2 nodes
+</code></pre>
+<p>Install pip deps:</p>
+<pre><code>(kolla) [root@yoga1 ~]# deactivate 
+# pip3 install -r /tmp/requirements.txt
+root@yoga2:/home/test# pip3 install -r /home/test/requirements.txt 
+root@yoga3:/home/test# pip3 install -r /home/test/requirements.txt 
+</code></pre>
+<p>copy ssh identifier files to <code>yoga1-3</code>,</p>
+<pre><code>kolla-ansible bootstrap-servers -i ./multinode
+kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
+</code></pre>
+<p>Prepare deps(using 2023.1 for downloading, then replace):</p>
+<pre><code># kolla-ansible install-deps
+Failed with: 
+error: pathspec 'unmaintained/yoga' did not match any file(s) known to git
+ERROR! Failed to switch a cloned Git repo `https://opendev.org/openstack/ansible-collection-kolla` to the requested revision `unmaintained/yoga`.
+# cat ~/.venv/kolla/share/kolla-ansible/requirements.yml
+---
+collections:
+  - name: https://opendev.org/openstack/ansible-collection-kolla
+    type: git
+    version: unmaintained/2023.1
+    #version: unmaintained/yoga
+### install 2023.1
+# kolla-ansible install-deps
+Installing 'openstack.kolla:1.0.0' to '/root/.ansible/collections/ansible_collections/openstack/kolla'
+Created collection for openstack.kolla:1.0.0 at /root/.ansible/collections/ansible_collections/openstack/kolla
+openstack.kolla:1.0.0 was installed successfully
+###  Fetch the yoga-eol deps
+# git clone https://opendev.org/openstack/ansible-collection-kolla
+#   cd ansible-collection-kolla/
+#  git checkout tags/yoga-eol -b yoga
+# cd /root/.ansible/collections/ansible_collections/openstack/kolla/
+# rm -rf roles/*
+#  cp -ar /root/ansible-collection-kolla/roles/* roles/
+# ls roles/
+baremetal  docker_sdk  kolla_user 
+</code></pre>
+<p>(all node):</p>
+<pre><code># pip3 install 'pyopenssl&gt;=23.2.0'
+
+</code></pre>
+<p>Begin install:</p>
+<pre><code># cd /etc/kolla/
+# pip install 'ansible&gt;=4,&lt;6'
+# pip install 'pyopenssl&gt;=23.2.0'
+</code></pre>
+<p>Source code changes:</p>
+<pre><code># vim /root/.ansible/collections/ansible_collections/openstack/kolla/roles/baremetal/defaults/main.yml
+docker_apt_package: "docker-ce=5:20.10.24~3-0~ubuntu-jammy"
+</code></pre>
+<p>deploy:</p>
+<pre><code>cd /etc/kolla
+kolla-ansible -i ./multinode bootstrap-servers
+kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
+</code></pre>
+<p>(all nodes), add registry:</p>
+<pre><code># vim /etc/docker/daemon.json , add following:   
+      "registry-mirrors": [ "https://docker.nju.edu.cn/",
+             "https://hub.uuuadc.top",
+        "https://docker.anyhub.us.kg",
+        "https://dockerhub.jobcher.com",
+        "https://dockerhub.icu",
+        "https://docker.ckyl.me",
+        "https://docker.awsl9527.cn", "https://docker.mirrors.ustc.edu.cn", "https://docker.1ms.run", "https://docker.xuanyuan.me"
+      ]
+# systemctl daemon-reload &amp;&amp; systemctl restart docke
+</code></pre>
+<p>load images, then pull/deploy/post-deploy</p>
+<pre><code>cd /etc/kolla
+kolla-ansible -i ./multinode pull
+kolla-ansible -i ./multinode deploy &amp;&amp; kolla-ansible -i ./multinode post-deploy
+apt install -y python3-openstackclient
+pip3 install python-zunclient
+reboot
+</code></pre>
+<p>After reboot, create network, test the zun.</p>
+<p>Change some items:</p>
+<pre><code>neutron_plugin_agent: "openvswitch"
+enable_etcd: "yes"
+</code></pre>
+<p>Test:</p>
+<pre><code>for i in {1..5}; do openstack appcontainer run --name sss$i --net network=24f240b1-319d-40fc-acf5-bf970027737f --image-pull-policy=never --cpu 1 --memory 1024 --host yoga3 ubuntu:latest sleep 3600; done
+for i in {1..3}; do openstack appcontainer run --name ttt$i --net network=24f240b1-319d-40fc-acf5-bf970027737f --image-pull-policy=never --cpu 1 --memory 1024 --host yoga1 ubuntu:latest sleep 3600; done
+</code></pre>
+<p>Test ext net:</p>
+<pre><code> for i in {1..3}; do openstack appcontainer run --name sss$i --net network=9c5c9066-c2dd-4beb-8407-3652fe0036a0 --image-pull-policy=never --cpu 1 --memory 1024 --host yoga3 ubuntu:latest sleep 3600; done
+ for i in {4..6}; do openstack appcontainer run --name sss$i --net network=9c5c9066-c2dd-4beb-8407-3652fe0036a0 --image-pull-policy=never --cpu 1 --memory 1024 --host yoga2 ubuntu:latest sleep 3600; done
+ for i in {7..9}; do openstack appcontainer run --name sss$i --net network=9c5c9066-c2dd-4beb-8407-3652fe0036a0 --image-pull-policy=never --cpu 1 --memory 1024 --host yoga1 ubuntu:latest sleep 3600; done
+
+</code></pre>
+<p><img src="./images/2025_07_16_12_00_28_1145x392.jpg" alt="./images/2025_07_16_12_00_28_1145x392.jpg" /></p>
+<h3 id="2-docker-ce-downgrade"><a class="header" href="#2-docker-ce-downgrade">2. docker-ce downgrade</a></h3>
+<p>docker-ce downgrade:</p>
+<pre><code>apt remove  docker-ce docker-ce-cli docker-ce-rootless-extras
+apt autoremove
+apt install docker-ce=5:20.10.24~3-0~ubuntu-jammy
+</code></pre>
+<h3 id="3-openstacktrain-deployment"><a class="header" href="#3-openstacktrain-deployment">3. openstack(train) deployment</a></h3>
+<p>Install ubuntu200406 vm.</p>
+<pre><code># /etc/hosts
+192.168.150.21	train1
+192.168.150.22	train2
+192.168.150.23	train3
+</code></pre>
+<p>configuration:</p>
+<pre><code># cat /etc/kolla/globals.yml | grep -v '^#' | grep -v '^$'
+---
+kolla_base_distro: "ubuntu"
+kolla_install_type: "source"
+openstack_release: "train"
+kolla_internal_vip_address: "192.168.150.24"
+docker_configure_for_zun: "yes"
+neutron_external_interface: "eth1"
+neutron_plugin_agent: "openvswitch"
+enable_openstack_core: "yes"
+enable_haproxy: "yes"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
+enable_etcd: "yes"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_kuryr: "yes"
+enable_zun: "yes"
+fernet_token_expiry: 86400
+cinder_volume_group: "cinder-volumes"
+nova_compute_virt_type: "kvm"
+</code></pre>
+<p>(all nodes):</p>
+<pre><code>ls /usr/lib/python3/dist-packages/OpenSSL
+ mv /usr/lib/python3/dist-packages/OpenSSL /root/
+ sudo pip3 install pyopenssl
+ sudo pip3 install pyopenssl --upgrade
+</code></pre>
+<p>Change baremetal related:</p>
+<pre><code># vim /root/.venv/kolla/share/kolla-ansible/ansible/roles/baremetal/defaults/main.yml
+ 10 docker_apt_package: "docker-ce=5:20.10.24~3-0~ubuntu-focal"
+</code></pre>
+<p>Remove:</p>
+<pre><code>apt remove docker-buildx-plugin docker-ce docker-ce-cli docker-ce-rootless-extras docker-compose-plugin
+apt autoremove
+cd /etc/kolla
+ kolla-ansible bootstrap-servers -i ./multinode
+</code></pre>
+<p>Solved issue:</p>
+<pre><code>failed: [train3] (item={'key': 'cron', 'value': {'container_name': 'cron', 'group': 'all', 'enabled': True, 'image': 'kolla/ubuntu-source-cron:train', 'environment': {'DUMMY_ENVIRONMENT': 'kolla_useless_env'}, 'volumes': ['/etc/kolla/cron/:/var/lib/kolla/config_files/:ro', '/etc/localtime:/etc/localtime:ro', '/etc/timezone:/etc/timezone:ro', 'kolla_logs:/var/log/kolla/'], 'dimensions': {}}}) =&gt; {"ansible_loop_var": "item", "changed": true, "item": {"key": "cron", "value": {"container_name": "cron", "dimensions": {}, "enabled": true, "environment": {"DUMMY_ENVIRONMENT": "kolla_useless_env"}, "group": "all", "image": "kolla/ubuntu-source-cron:train", "volumes": ["/etc/kolla/cron/:/var/lib/kolla/config_files/:ro", "/etc/localtime:/etc/localtime:ro", "/etc/timezone:/etc/timezone:ro", "kolla_logs:/var/log/kolla/"]}}, "msg": "'Traceback (most recent call last):\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/adapters.py\", line 633, in send\\n    conn = self.get_connection_with_tls_context(\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/adapters.py\", line 489, in get_connection_with_tls_context\\n    conn = self.poolmanager.connection_from_host(\\n  File \"/usr/local/lib/python3.8/dist-packages/urllib3/poolmanager.py\", line 303, in connection_from_host\\n    return self.connection_from_context(request_context)\\n  File \"/usr/local/lib/python3.8/dist-packages/urllib3/poolmanager.py\", line 325, in connection_from_context\\n    raise URLSchemeUnknown(scheme)\\nurllib3.exceptions.URLSchemeUnknown: Not supported URL scheme http+docker\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/api/client.py\", line 214, in _retrieve_server_version\\n    return self.version(api_version=False)[\"ApiVersion\"]\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/api/daemon.py\", line 181, in version\\n    return self._result(self._get(url), json=True)\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/utils/decorators.py\", line 46, in inner\\n    return f(self, *args, **kwargs)\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/api/client.py\", line 237, in _get\\n    return self.get(url, **self._set_request_timeout(kwargs))\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/sessions.py\", line 602, in get\\n    return self.request(\"GET\", url, **kwargs)\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/sessions.py\", line 589, in request\\n    resp = self.send(prep, **send_kwargs)\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/sessions.py\", line 703, in send\\n    r = adapter.send(request, **kwargs)\\n  File \"/usr/local/lib/python3.8/dist-packages/requests/adapters.py\", line 637, in send\\n    raise InvalidURL(e, request=request)\\nrequests.exceptions.InvalidURL: Not supported URL scheme http+docker\\n\\nDuring handling of the above exception, another exception occurred:\\n\\nTraceback (most recent call last):\\n  File \"/tmp/ansible_kolla_docker_payload_t4b_6om5/ansible_kolla_docker_payload.zip/ansible/modules/kolla_docker.py\", line 1023, in main\\n  File \"/tmp/ansible_kolla_docker_payload_t4b_6om5/ansible_kolla_docker_payload.zip/ansible/modules/kolla_docker.py\", line 265, in __init__\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/api/client.py\", line 197, in __init__\\n    self._version = self._retrieve_server_version()\\n  File \"/usr/local/lib/python3.8/dist-packages/docker/api/client.py\", line 221, in _retrieve_server_version\\n    raise DockerException(\\ndocker.errors.DockerException: Error while fetching server API version: Not supported URL scheme http+docker\\n'"}
+
+allnodes:    
+
+pip install 'requests==2.25.0'
+
+kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
+</code></pre>
+<p>Pull images:</p>
+<pre><code>kolla-ansible pull -i ./multinode 
+kolla-ansible deploy -i ./multinode 
+# hang on 
+</code></pre>
+<p>Solved via:</p>
+<pre><code>TASK [haproxy : Waiting for virtual IP to appear]
+Here is how I fixed it:
+1. Because, another service in the network may use the same Virtual Router ID, It is 51 by default. So, change the default "keepalived_virtual_router_id" to another value (free and in the range of 0-255)
+$ sudo vi /etc/kolla/globals.yml
+...
+keepalived_virtual_router_id: "251"
+</code></pre>
+<p>post deploy:</p>
+<pre><code>kolla-ansible post-deploy -i ./multinode 
+apt install python3-openstackclient
+pip3 install python-zunclient
+</code></pre>
+<p>Create network, then create instance:</p>
+<pre><code>for i in {1..30}; do openstack appcontainer run --name sss$i --net network=783e5e92-e7df-4906-a5ce-15a26b4ac28a --image-pull-policy=never --cpu 1 --memory 512  ubuntu:latest sleep 3600; done
+</code></pre>
+<p><img src="./images/2025_07_16_17_31_20_1160x489.jpg" alt="./images/2025_07_16_17_31_20_1160x489.jpg" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20250715.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20250715.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
