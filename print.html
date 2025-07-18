@@ -13504,6 +13504,18 @@ redroid_x86_64:/ $ dumpsys SurfaceFlinger |grep GLES
 GLES: Google Inc. (Google), ANGLE (Google, Vulkan 1.2.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver-5.0.0), OpenGL ES 3.1.0 (ANGLE 2.1.1 git hash: e37c6dd2e0e8)
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250718"><a class="header" href="#20250718">20250718</a></h1>
+<h3 id="1-kollaubuntu1804queenszunkuryrrocky"><a class="header" href="#1-kollaubuntu1804queenszunkuryrrocky">1. kolla(ubuntu1804+queens+zun/kuryrRocky)</a></h3>
+<p>Re-deploy, then everything goes well.</p>
+<h3 id="2-modprobe-at-boot"><a class="header" href="#2-modprobe-at-boot">2. modprobe at boot</a></h3>
+<p>Edit following files and added :</p>
+<pre><code># vim /etc/modules-load.d/modules.conf
+binder_linux
+# vim /etc/modprobed/mdadm.conf
+...
+options binder_linux devices="binder,hwbinder,vndbinder"
+# update-initramfs -u -k all
+</code></pre>
 
                     </main>
 
