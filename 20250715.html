@@ -299,6 +299,10 @@ globals.yml  multinode  passwords.yml
   #deb {{ docker_apt_url }}/repo {{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }} main
 # vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/install.yml
   # comment line 67-89
+# vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/post-install.yml
+# comment line 19-24
+# vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/pre-install.yml
+  # comment line 93-114
 #  vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/defaults/main.yml
   debian_pkg_install:
   # - "{{ 'docker-ce' if ansible_architecture == 'aarch64' else 'docker-engine=1.12.*' }}"
@@ -325,7 +329,7 @@ kolla-ansible  -i ./multinode bootstrap-servers
 [Service]
 MountFlags=shared
 ExecStart=
-ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://10.171.172.33:2375
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://10.171.172.33:2375 --cluster-store=etcd://10.xxx.xxx.xxx:2379
 root@ubuntu3:~# systemctl daemon-reload &amp;&amp; systemctl restart docker &amp;&amp; reboot
 </code></pre>
 <p>(all node) after reboot, load images:</p>
@@ -358,7 +362,8 @@ docker cp policy.json zun_api:/etc/zun/
 apt install -y python-openstackclient &amp;&amp; pip install python-zunclient
 </code></pre>
 <p>bug fix for zun:</p>
-<pre><code>docker exec -it --user root zun_api/zun_compute bash 
+<pre><code>docker exec -it --user root zun_compute bash 
+docker exec -it --user root zun_api bash 
 sed -i 's|^exec_dirs.*|exec_dirs=/var/lib/kolla/venv/bin,/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin|g' /etc/zun/rootwrap.conf
 mkdir -p /var/lib/docker
 chmod 777 -R /var/lib/docker

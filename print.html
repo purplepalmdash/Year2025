@@ -12875,6 +12875,10 @@ globals.yml  multinode  passwords.yml
   #deb {{ docker_apt_url }}/repo {{ ansible_distribution | lower }}-{{ ansible_distribution_release | lower }} main
 # vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/install.yml
   # comment line 67-89
+# vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/post-install.yml
+# comment line 19-24
+# vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/tasks/pre-install.yml
+  # comment line 93-114
 #  vim /root/kolla/./virtualenv/share/kolla-ansible/ansible/roles/baremetal/defaults/main.yml
   debian_pkg_install:
   # - "{{ 'docker-ce' if ansible_architecture == 'aarch64' else 'docker-engine=1.12.*' }}"
@@ -12901,7 +12905,7 @@ kolla-ansible  -i ./multinode bootstrap-servers
 [Service]
 MountFlags=shared
 ExecStart=
-ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://10.171.172.33:2375
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://10.171.172.33:2375 --cluster-store=etcd://10.xxx.xxx.xxx:2379
 root@ubuntu3:~# systemctl daemon-reload &amp;&amp; systemctl restart docker &amp;&amp; reboot
 </code></pre>
 <p>(all node) after reboot, load images:</p>
@@ -12934,7 +12938,8 @@ docker cp policy.json zun_api:/etc/zun/
 apt install -y python-openstackclient &amp;&amp; pip install python-zunclient
 </code></pre>
 <p>bug fix for zun:</p>
-<pre><code>docker exec -it --user root zun_api/zun_compute bash 
+<pre><code>docker exec -it --user root zun_compute bash 
+docker exec -it --user root zun_api bash 
 sed -i 's|^exec_dirs.*|exec_dirs=/var/lib/kolla/venv/bin,/sbin,/usr/sbin,/bin,/usr/bin,/usr/local/bin,/usr/local/sbin|g' /etc/zun/rootwrap.conf
 mkdir -p /var/lib/docker
 chmod 777 -R /var/lib/docker
@@ -13515,6 +13520,60 @@ binder_linux
 ...
 options binder_linux devices="binder,hwbinder,vndbinder"
 # update-initramfs -u -k all
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250721"><a class="header" href="#20250721">20250721</a></h1>
+<h3 id="1-centos-queens-zun-deployment"><a class="header" href="#1-centos-queens-zun-deployment">1. CentOS queens zun deployment</a></h3>
+<p>3 nodes with replaced docker images(<code>rocky-&gt;queens</code>):</p>
+<pre><code>[root@queen1 kolla]# docker images | grep zun | grep rocky
+kolla/centos-source-zun-compute                   rocky           384975e8ebb3   5 years ago     1.07GB
+kolla/centos-source-zun-api                       rocky           4293ca2bb6b1   5 years ago     1.04GB
+[root@queen1 kolla]# docker images | grep kuryr | grep rocky
+kolla/centos-source-kuryr-libnetwork              rocky           1eb87543a31b   5 years ago     953MB
+</code></pre>
+<p>When create ext nework , failed  with :</p>
+<p><img src="./images/2025_07_21_09_26_16_648x206.jpg" alt="./images/2025_07_21_09_26_16_648x206.jpg" /></p>
+<p>issue:</p>
+<pre><code>Unable to establish connection to http://10.171.172.24:9517/v1/containers?run=true: ('Connection aborted.', error(110, '\xe8\xbf\x9e\xe6\x8e\xa5\xe8\xb6\x85\xe6\x97\xb6'))
+Failed to discover available identity versions when contacting http://10.171.172.24:35357/v3. Attempting to parse version from URL.
+Unable to establish connection to http://10.171.172.24:35357/v3/auth/tokens: HTTPConnectionPool(host='10.171.172.24', port=35357): Max retries exceeded with url: /v3/auth/tokens (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x7f60a3d8c0d0&gt;: Failed to establish a new connection: [Errno 113] \xe6\xb2\xa1\xe6\x9c\x89\xe5\x88\xb0\xe4\xb8\xbb\xe6\x9c\xba\xe7\x9a\x84\xe8\xb7\xaf\xe7\x94\xb1',))
+Failed to discover available identity versions when contacting http://10.171.172.24:35357/v3. Attempting to parse version from URL.
+Unable to establish connection to http://10.171.172.24:35357/v3/auth/tokens: HTTPConnectionPool(host='10.171.172.24', port=35357): Max retries exceeded with url: /v3/auth/tokens (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x7f529babd0d0&gt;: Failed to establish a new connection: [Errno 113] \xe6\xb2\xa1\xe6\x9c\x89\xe5\x88\xb0\xe4\xb8\xbb\xe6\x9c\xba\xe7\x9a\x84\xe8\xb7\xaf\xe7\x94\xb1',))
+
+</code></pre>
+<h3 id="2-centos-queens-zun-deploymentlinuxbridge-mode"><a class="header" href="#2-centos-queens-zun-deploymentlinuxbridge-mode">2. CentOS queens zun deployment(linuxbridge mode)</a></h3>
+<p>The same issue as above./</p>
+<h3 id="3-dadfailed-issue"><a class="header" href="#3-dadfailed-issue">3. dadfailed issue</a></h3>
+<p>issue:</p>
+<pre><code>2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 52:54:00:f1:14:6a brd ff:ff:ff:ff:ff:ff
+    inet 10.171.172.23/24 brd 10.171.172.255 scope global noprefixroute eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::43ae:554e:9564:d787/64 scope link tentative noprefixroute dadfailed 
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f07e:e9f6:352b:994c/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+
+</code></pre>
+<p>solved via:</p>
+<pre><code>[root@queen3 ~]# cat /etc/machine-id 
+334e69d6bacf423a8b821ba7a3cdd9a4
+[root@queen3 ~]# sudo chmod ugo+w /etc/machine-id
+[root@queen3 ~]# sudo cat /dev/null &gt; /etc/machine-id
+[root@queen3 ~]# sudo systemd-machine-id-setup
+Initializing machine ID from KVM UUID.
+[root@queen3 ~]# sudo chmod ugo-w /etc/machine-id
+[root@queen3 ~]# cat /etc/machine-id 
+ec8dd68a129e4eeab9b31bbf9e5701a5
+</code></pre>
+<h3 id="4-enable-virsh-console"><a class="header" href="#4-enable-virsh-console">4. enable virsh console</a></h3>
+<p>Via:</p>
+<pre><code>sudo systemctl enable serial-getty@ttyS0.service --now
+</code></pre>
+<p>Then <code>virsh console vmname</code> you could get a console login.</p>
+<h3 id="5-redeploy-queensubuntu"><a class="header" href="#5-redeploy-queensubuntu">5. redeploy queens(ubuntu)</a></h3>
+<p>Use docker images then retag:</p>
+<pre><code>docker load&lt;1804zunphoneimages.tar &amp;&amp; docker load&lt;etcd.tar &amp;&amp; docker load&lt;rocky.tar
+docker rmi kolla/ubuntu-source-zun-api:queens kolla/ubuntu-source-zun-api:queensback kolla/ubuntu-source-zun-compute:queens kolla/ubuntu-source-zun-compute:queensback &amp;&amp; docker tag kolla/ubuntu-source-zun-compute:rocky kolla/ubuntu-source-zun-compute:queens &amp;&amp; docker tag kolla/ubuntu-source-zun-api:rocky kolla/ubuntu-source-zun-api:queens &amp;&amp; docker rmi kolla/ubuntu-source-kuryr-libnetwork:queens &amp;&amp; docker tag kolla/ubuntu-source-kuryr-libnetwork:rocky kolla/ubuntu-source-kuryr-libnetwork:queens
 </code></pre>
 
                     </main>
