@@ -13691,6 +13691,46 @@ ubuntu3:/ # getprop |grep boot | grep com
 <pre><code> for i in {1..3}; do openstack appcontainer stop redroid9_ubuntu$i; done
  for i in {1..3}; do openstack appcontainer delete redroid9_ubuntu$i; done
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250722"><a class="header" href="#20250722">20250722</a></h1>
+<h3 id="1-queens-deployment-with-arm64"><a class="header" href="#1-queens-deployment-with-arm64">1. queens deployment with arm64</a></h3>
+<p>Install ubuntu18.04, make serial port as the default output.</p>
+<p>1804 arm64 pip install:</p>
+<pre><code>apt install -y python-pip
+pip install docker
+pip install --upgrade pip
+apt-get install -y python-dev libffi-dev gcc libssl-dev python-selinux python-setuptools build-essential
+pip install  netaddr 
+pip install pyyaml==5.3.1
+pip install wrapt==1.8.0
+pip install   oslo_config
+</code></pre>
+<p>destroy the cluster, then, in controller node:</p>
+<pre><code>vim /etc/kolla/multinode
+kolla-ansible  -i ./multinode bootstrap-servers
+kolla-ansible -i ./multinode prechecks
+kolla-ansible -i ./multinode pull
+</code></pre>
+<p>Before deployment, pull the rocky version docker image, tag to queens version:</p>
+<pre><code>docker pull kolla/ubuntu-source-kuryr-libnetwork:rocky &amp;&amp; docker pull kolla/ubuntu-source-zun-compute:rocky
+docker tag kolla/ubuntu-source-kuryr-libnetwork:rocky kolla/ubuntu-source-kuryr-libnetwork:queens
+docker tag kolla/ubuntu-source-zun-compute:rocky kolla/ubuntu-source-zun-compute:queens
+</code></pre>
+<p>Deploy failed with:</p>
+<pre><code>RUNNING HANDLER [common : Initializing toolbox container using normal user] ******************************************************************************************************************
+fatal: [ubuntuarm]: FAILED! =&gt; {"changed": false, "cmd": ["docker", "exec", "-t", "kolla_toolbox", "ansible", "--version"], "delta": "0:00:00.022448", "end": "2025-07-22 10:39:15.421532", "msg": "non-zero return code", "rc": 1, "start": "2025-07-22 10:39:15.399084", "stderr": "Error response from daemon: Container b53c68d0a320a92bc4d642acd8a7a6801fd62a9cbfa67ccc0c345c990081edcc is restarting, wait until the container is running", "stderr_lines": ["Error response from daemon: Container b53c68d0a320a92bc4d642acd8a7a6801fd62a9cbfa67ccc0c345c990081edcc is restarting, wait until the container is running"], "stdout": "", "stdout_lines": []}
+ok: [ubuntu3]
+ok: [ubuntu1]
+ok: [ubuntu2]
+</code></pre>
+<p>Reason:</p>
+<pre><code>root@ubuntuarm:~# docker run -it kolla/ubuntu-source-kolla-toolbox:queens /bin/bash
+WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested
+exec /usr/local/bin/dumb-init: exec format error
+
+</code></pre>
+<h3 id="2-openstack-ansible-deployment"><a class="header" href="#2-openstack-ansible-deployment">2. OpenStack-Ansible deployment</a></h3>
+<p>Refers to:</p>
+<p><code>https://docs.openstack.org//project-deploy-guide/openstack-ansible/latest/deploy-guide-openstack-ansible.pdf</code></p>
 
                     </main>
 
