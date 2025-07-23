@@ -13731,6 +13731,59 @@ exec /usr/local/bin/dumb-init: exec format error
 <h3 id="2-openstack-ansible-deployment"><a class="header" href="#2-openstack-ansible-deployment">2. OpenStack-Ansible deployment</a></h3>
 <p>Refers to:</p>
 <p><code>https://docs.openstack.org//project-deploy-guide/openstack-ansible/latest/deploy-guide-openstack-ansible.pdf</code></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250723"><a class="header" href="#20250723">20250723</a></h1>
+<h3 id="1-bug-fix-for-queens-deploy"><a class="header" href="#1-bug-fix-for-queens-deploy">1. bug-fix for queens deploy</a></h3>
+<p>Change <code>zun.conf.j2</code> for adding [oslo] related items.</p>
+<p>enable policy :</p>
+<pre><code># ls /etc/kolla/config/zun/policy.json 
+/etc/kolla/config/zun/policy.json
+</code></pre>
+<h3 id="2-queens-base-image"><a class="header" href="#2-queens-base-image">2. queens base image</a></h3>
+<p>Install minimum ubuntu18.04.6 with hwe kernel , then :</p>
+<pre><code>sudo passwd root
+sudo vim /etc/ssh/sshd_config
+    PermitRootLogin
+ssh-keygen
+ssh-copy-id root@127.0.0.1
+</code></pre>
+<p>Install docker:</p>
+<pre><code>export DOWNLOAD_URL="https://mirrors.tuna.tsinghua.edu.cn/docker-ce"
+curl -fsSL https://raw.githubusercontent.com/docker/docker-install/master/install.sh | sh
+apt install docker-ce=5:20.10.24~3-0~ubuntu-bionic
+ufw disable
+apt update -y
+apt-mark hold docker-ce
+apt upgrade -y
+vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="net.ifnames=0 biosdevname=0"
+update-grub2
+reboot
+</code></pre>
+<p>After reboot:</p>
+<pre><code>apt install -y python-pip
+apt install -y git python3-dev libffi-dev build-essential libssl-dev
+mkdir -p /etc/systemd/system/docker.service.d/
+vim /etc/systemd/system/docker.service.d/kolla.conf
+    [Service]
+    MountFlags=shared
+    ExecStart=
+    # ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+    ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375 
+    #--cluster-store=etcd://192.168.150.81:2379
+systemctl daemon-reload
+systemctl restart docker
+apt install python3-openstackclient
+pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install netaddr -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install python-zunclient -i https://pypi.tuna.tsinghua.edu.cn/simple
+apt install -y nfs-common
+mount 192.168.1.8:/media/sda /mnt
+docker load&lt;/mnt/iso/kolla_queens_ubuntu.tar
+apt remove apparmor --purge
+vim /etc/systemd/system.conf
+systemctl daemon-reload
+</code></pre>
+<p>Deploy:</p>
 
                     </main>
 
