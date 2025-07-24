@@ -13784,6 +13784,60 @@ vim /etc/systemd/system.conf
 systemctl daemon-reload
 </code></pre>
 <p>Deploy:</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250724"><a class="header" href="#20250724">20250724</a></h1>
+<h3 id="1-deploy-tips"><a class="header" href="#1-deploy-tips">1. deploy tips</a></h3>
+<p>Record as following:</p>
+<pre><code>  vim /etc/systemd/system/docker.service.d/kolla.conf 
+  systemctl daemon-reload&amp;&amp; systemctl restart docker
+  scp dash@192.168.1.208:~/kolla_deploy_20250723.tar.gz .
+  tar xzvf kolla_deploy_20250723.tar.gz 
+  tar xzvf deploy/kolla-ansible.tar.gz 
+  rm -f /etc/resolv.conf  &amp;&amp; echo 'nameserver 223.5.5.5'&gt;/etc/resolv.conf &amp;&amp; chattr +i /etc/resolv.conf 
+  pip install virtualenv -i https://pypi.tuna.tsinghua.edu.cn/simple
+  mkdir ~/kolla &amp;&amp; virtualenv ~/kolla/virtualenv &amp;&amp; source ~/kolla/virtualenv/bin/activate
+  cd ~/kolla-ansible/
+  pip install -r requirements.txt  -i https://pypi.tuna.tsinghua.edu.cn/simple &amp;&amp; pip install .
+  mkdir -p /etc/kolla
+  cp etc/kolla/* /etc/kolla/
+  rm -rf /root/kolla/./virtualenv/share/kolla-ansible/ansible
+  tar xzvf /root/deploy/ansible.tar.gz  -C /root/kolla/./virtualenv/share/kolla-ansible/
+  cd /etc/kolla/
+  cp -r /root/deploy/config/ .
+  cp /root/deploy/multinode  .
+  cp /root/deploy/globals.yml  .
+  vim globals.yml 
+  pvcreate /dev/vdb &amp;&amp; vgcreate cinder-volumes /dev/vdb
+  ssh root@kolla1
+  ssh root@kolla2
+  ssh root@kolla3
+  apt install -y ansible
+  kolla-genpwd 
+  kolla-ansible  -i ./multinode bootstrap-servers
+  kolla-ansible prechecks -i ./multinode -e prechecks_enable_host_ntp_checks=false
+  kolla-ansible  -i ./multinode deploy &amp;&amp; kolla-ansible  -i ./multinode post-deploy
+
+  pip install keystoneauth1==4.0.0
+  source /etc/kolla/admin-openrc.sh 
+  openstack endpoint list
+  vim /usr/local/lib/python2.7/dist-packages/openstack/utils.py
+  vim /usr/local/lib/python2.7/dist-packages/openstack/cloud/openstackcloud.py
+  openstack endpoint list
+  openstack appcontainer host list
+  docker exec -it --user root zun_api bash 
+  docker exec -it --user root zun_compute bash 
+  docker restart zun_compute
+  docker restart zun_api
+  modprobe binder_linux devices="binder,hwbinder,vndbinder" ; modprobe ashmem_linux
+  openstack router create Ext-Router
+  openstack network create --internal --provider-network-type vxlan int-net
+  openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+  openstack router add subnet Ext-Router int-net-sub
+  openstack network create --provider-physical-network physnet1 --provider-network-type flat  --external ext-net
+  openstack subnet create ext-net-sub --network ext-net --subnet-range 192.168.150.24/24 --allocation-pool start=192.168.150.160,end=192.168.150.220 --gateway 192.168.150.1 --dns-nameserver 114.114.114.114 --dhcp
+  openstack router set Ext-Router --external-gateway ext-net
+  openstack network list
+  for i in {1..3}; do openstack appcontainer run --name redroid12_$i --image-pull-policy=ifnotpresent --net network=9ee027de-771c-4025-a351-ef2e21efc2b3 --cpu 4 --memory 8192 --privileged redroid/redroid:9.0.0-latest  androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=guest; done
+</code></pre>
 
                     </main>
 
