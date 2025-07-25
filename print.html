@@ -13838,6 +13838,18 @@ systemctl daemon-reload
   openstack network list
   for i in {1..3}; do openstack appcontainer run --name redroid12_$i --image-pull-policy=ifnotpresent --net network=9ee027de-771c-4025-a351-ef2e21efc2b3 --cpu 4 --memory 8192 --privileged redroid/redroid:9.0.0-latest  androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=guest; done
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250725"><a class="header" href="#20250725">20250725</a></h1>
+<h3 id="1-kolla-ansible-on-arm64"><a class="header" href="#1-kolla-ansible-on-arm64">1. kolla-ansible on arm64</a></h3>
+<p>x86 cluster:</p>
+<pre><code>10.171.172.51   kolla1
+10.171.172.52   kolla2
+10.171.172.53   kolla3
+</code></pre>
+<p>Deploy cluster as before.</p>
+<p>Add a new node:</p>
+<pre><code>10.171.172.53   kollaarm
+</code></pre>
+<p>No docker image for ubuntu aarch64.</p>
 
                     </main>
 
