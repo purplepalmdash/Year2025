@@ -2653,7 +2653,6 @@ root@debianlxc:~# vim /etc/subuid
 root@debianlxc:~# vim /etc/subgid
 root@debianlxc:~# vim /usr/share/lxc/config/common.conf
 root@debianlxc:~# vim /usr/share/lxc/config/common.conf
-
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250220"><a class="header" href="#20250220">20250220</a></h1>
 <h3 id="1-arm64-lxc-images"><a class="header" href="#1-arm64-lxc-images">1. arm64-lxc images</a></h3>
@@ -13850,6 +13849,102 @@ systemctl daemon-reload
 <pre><code>10.171.172.53   kollaarm
 </code></pre>
 <p>No docker image for ubuntu aarch64.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250728"><a class="header" href="#20250728">20250728</a></h1>
+<h3 id="1-debianarm64-kolla"><a class="header" href="#1-debianarm64-kolla">1. debian(arm64) kolla</a></h3>
+<p>Debian arm, system info:</p>
+<pre><code>root@debiankolla:~# free -m
+               total        used        free      shared  buff/cache   available
+Mem:           19972         339       19731           4         108       19633
+Swap:            976           0         976
+root@debiankolla:~# cat /etc/issue
+Debian GNU/Linux 12 \n \l
+root@debiankolla:~# uname -a
+Linux debiankolla 6.1.0-35-arm64 #1 SMP Debian 6.1.137-1 (2025-05-07) aarch64 GNU/Linux
+</code></pre>
+<p>Install required packages:</p>
+<pre><code>apt install -y vim nethogs sudo iotop
+sudo apt install git python3-dev libffi-dev python3-venv gcc libssl-dev git python3-pip python3-full
+</code></pre>
+<p>Virtual env:</p>
+<pre><code>python3 -m venv $HOME/kolla-openstack
+source $HOME/kolla-openstack/bin/activate
+pip install -U pip
+pip install 'ansible&gt;=8,&lt;9'
+vim $HOME/ansible.cfg
+[defaults]
+host_key_checking=False
+pipelining=True
+forks=100
+pip install git+https://opendev.org/openstack/kolla-ansible@stable/2024.2
+</code></pre>
+<p>Create the kolla deployment files:</p>
+<pre><code># mkdir /etc/kolla
+# cp /root/kolla-openstack/share/kolla-ansible/etc_examples/kolla/* /etc/kolla/
+# ls /etc/kolla/
+globals.yml  passwords.yml
+# cp /root/kolla-openstack/share/kolla-ansible/ansible/inventory/all-in-one .
+</code></pre>
+<p>Create lvm:</p>
+<pre><code>apt install -y lvm2
+Create lvms as before.  
+</code></pre>
+<p>Gen password:</p>
+<pre><code>kolla-genpwd
+export LC_ALL="en_US.UTF-8"
+export LC_CTYPE="en_US.UTF-8"
+sudo dpkg-reconfigure locales
+reboot
+ kolla-ansible install-deps
+</code></pre>
+<p>Deploy:</p>
+<pre><code>cd /etc/kolla
+kolla-ansible bootstrap-servers -i all-in-one
+apt install -y servers servers servers
+pip install docker
+pip install dbus-python
+kolla-ansible prechecks -i all-in-one
+kolla-ansible deploy -i all-in-one
+kolla-ansible post-deploy -i all-in-one
+pip install python-zunclient
+openstack appcontainer host list
+</code></pre>
+<p>Upgrade kernel for supporing redroid:</p>
+<pre><code>sudo apt-get install build-essential linux-source bc kmod cpio flex libncurses5-dev libelf-dev libssl-dev dwarves bison
+cd /usr/src
+tar xJvf linux-source-6.1.tar.xz
+cd linux-source-6.1
+make menuconfig
+### Open some configs
+make -j`nproc` bindeb-pkg
+ls ../*.deb
+../linux-headers-6.1.137hhhddd_6.1.137hhhddd-2_arm64.deb
+../linux-image-6.1.137hhhddd_6.1.137hhhddd-2_arm64.deb
+../linux-image-6.1.137hhhddd-dbg_6.1.137hhhddd-2_arm64.deb
+../linux-libc-dev_6.1.137hhhddd-2_arm64.deb
+cd ..
+apt install ./linux-headers-6.1.137hhhddd_6.1.137hhhddd-2_arm64.deb ./linux-image-6.1.137hhhddd_6.1.137hhhddd-2_arm64.deb
+reboot
+</code></pre>
+<p>Examine the result:</p>
+<pre><code># cat /boot/config-6.1.137hhhddd | grep -i binder
+CONFIG_ANDROID_BINDER_IPC=y
+CONFIG_ANDROID_BINDERFS=y
+CONFIG_ANDROID_BINDER_DEVICES="binder,hwbinder,vndbinder"
+</code></pre>
+<p>Edit privileged related items:</p>
+<pre><code>cd /etc/kolla
+vim zun-api/zun.conf 
+vim zun-compute/zun.conf 
+vim zun-wsproxy/zun.conf 
+vim zun-cni-daemon/zun.conf
+
+docker cp policy.json zun_api:/etc/zun/
+docker cp policy.json zun_compute:/etc/zun/
+docker cp policy.json zun_wsproxy:/etc/zun/
+docker cp policy.json zun_cni_daemon:/etc/zun
+
+docker restart zun_compute &amp;&amp; docker restart zun_api &amp;&amp; docker restart zun_wsproxy &amp;&amp; docker restart zun_cni_daemon
+</code></pre>
 
                     </main>
 
