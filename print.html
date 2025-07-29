@@ -13899,7 +13899,7 @@ reboot
 <p>Deploy:</p>
 <pre><code>cd /etc/kolla
 kolla-ansible bootstrap-servers -i all-in-one
-apt install -y servers servers servers
+apt install -y pkg-config libdbus-1-dev libglib2.0-dev
 pip install docker
 pip install dbus-python
 kolla-ansible prechecks -i all-in-one
@@ -13944,6 +13944,50 @@ docker cp policy.json zun_wsproxy:/etc/zun/
 docker cp policy.json zun_cni_daemon:/etc/zun
 
 docker restart zun_compute &amp;&amp; docker restart zun_api &amp;&amp; docker restart zun_wsproxy &amp;&amp; docker restart zun_cni_daemon
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250729"><a class="header" href="#20250729">20250729</a></h1>
+<h3 id="1-macos-partition"><a class="header" href="#1-macos-partition">1. macos partition</a></h3>
+<p>Wipe:</p>
+<p><img src="./images/2025_07_29_08_47_12_505x313.jpg" alt="./images/2025_07_29_08_47_12_505x313.jpg" /></p>
+<h3 id="2-macos-virt-manager"><a class="header" href="#2-macos-virt-manager">2. macos virt-manager</a></h3>
+<p>Add a bridge interface:</p>
+<p><img src="./images/2025_07_29_09_37_43_534x438.jpg" alt="./images/2025_07_29_09_37_43_534x438.jpg" /></p>
+<p>Use qemu for installation of debian:</p>
+<pre><code>sudo /opt/homebrew/bin/qemu-system-aarch64  -M virt,highmem=on,gic-version=3 \
+  -cpu cortex-a72 \
+-smp 8 -m 12800M -accel hvf \
+  -bios /opt/homebrew/share/qemu/edk2-aarch64-code.fd \
+  -device virtio-scsi-device \
+  -device scsi-hd,drive=hd0 \
+  -drive if=none,id=hd0,format=qcow2,file=/Volumes/fsy/images/debian.qcow2 \
+  -device scsi-cd,drive=cd0 \
+  -drive if=none,id=cd0,format=raw,media=cdrom,readonly=on,file=/Volumes/fsy/images/debian-12.9.0-arm64-DVD-1.iso \
+  -netdev vmnet-bridged,id=net0,ifname=en0 \
+  -device virtio-net-pci,netdev=net0,mac=42:5c:38:00:09:f3 \
+  -nographic \
+  -monitor none \
+  -serial stdio
+</code></pre>
+<p>After installation, change iso from debian to virtio.</p>
+<p>openstack node configuration:</p>
+<pre><code>sudo /opt/homebrew/bin/qemu-system-aarch64  -M virt,highmem=on,gic-version=3 \
+  -cpu cortex-a72 \
+-smp 10 -m 12800M -accel hvf \
+  -bios /opt/homebrew/share/qemu/edk2-aarch64-code.fd \
+  -device virtio-scsi-device \
+  -device scsi-hd,drive=hd0 \
+  -drive if=none,id=hd0,format=qcow2,file=/Volumes/fsy/images/debian.qcow2 \
+  -device scsi-hd,drive=hd1 \
+  -drive if=none,id=hd1,format=qcow2,file=/Volumes/fsy/images/debianvdb.qcow2 \
+  -device scsi-cd,drive=cd0 \
+  -drive if=none,id=cd0,format=raw,media=cdrom,readonly=on,file=/Volumes/fsy/images/virtio-win-0.1.266.iso \
+  -netdev vmnet-bridged,id=net0,ifname=en0 \
+  -device virtio-net-pci,netdev=net0,mac=42:5c:38:00:09:f3 \
+  -netdev vmnet-bridged,id=net1,ifname=en0 \
+  -device virtio-net-pci,netdev=net1,mac=42:5c:38:00:09:33 \
+  -nographic \
+  -monitor none \
+  -serial stdio
 </code></pre>
 
                     </main>
