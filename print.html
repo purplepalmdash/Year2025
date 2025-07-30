@@ -13989,6 +13989,21 @@ docker restart zun_compute &amp;&amp; docker restart zun_api &amp;&amp; docker r
   -monitor none \
   -serial stdio
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250730"><a class="header" href="#20250730">20250730</a></h1>
+<h3 id="1-debian12x86-kolla-deployment"><a class="header" href="#1-debian12x86-kolla-deployment">1. debian12(x86) kolla deployment</a></h3>
+<p>3 nodes, for verification of networking.</p>
+<p>After deployment, do following:</p>
+<pre><code># openstack key delete mykey
+# openstack image delete cirros
+# ./init-runonce 
+</code></pre>
+<p>3 nodes, network won't acts well.</p>
+<h3 id="2-ubuntux86-kolla-allinone"><a class="header" href="#2-ubuntux86-kolla-allinone">2. ubuntu(x86) kolla allinone</a></h3>
+<p>works well.</p>
+<h3 id="3-redroid-tips"><a class="header" href="#3-redroid-tips">3. redroid tips</a></h3>
+<p>Create via:</p>
+<pre><code>openstack appcontainer run --name  testredroid --image-pull-policy=ifnotpresent --net network=81bf642a-72c6-4222-acb8-68ff89abe231 --cpu 4 --memory 4096 redroid/redroid:13.0.0-latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=guest
+</code></pre>
 
                     </main>
 
