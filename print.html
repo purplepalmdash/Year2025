@@ -14016,6 +14016,25 @@ debiankolla                : ok=160  changed=25   unreachable=0    failed=1    s
 </code></pre>
 <h3 id="2-kolla-ansible-arm64"><a class="header" href="#2-kolla-ansible-arm64">2. kolla-ansible arm64</a></h3>
 <p>two nodes verification, deploy OK.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250801"><a class="header" href="#20250801">20250801</a></h1>
+<h3 id="1-tips-for-deployment"><a class="header" href="#1-tips-for-deployment">1. Tips for deployment</a></h3>
+<pre><code>yum update -y
+yum install -y vim  tar unzip
+systemctl disable firewalld
+vim /etc/selinux/config
+...
+SELINUX=disabled
+...
+</code></pre>
+<p>Install kernel and upgrade, then:</p>
+<pre><code>yum install -y dpkg dpkg-devel openssl openssl-devel
+yum install -y ncurses ncurses-devel bison flex bc libdrm build elfutils-libelf-devel
+yum install -y git htop tmux vim net-tools numactl
+yum install -y docker make gcc kexec-tools
+yum install -y lxc lxcfs lxcfs-tools
+yum install -y libseccomp-devel
+
+</code></pre>
 
                     </main>
 
