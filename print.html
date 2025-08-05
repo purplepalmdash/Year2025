@@ -14035,6 +14035,29 @@ yum install -y lxc lxcfs lxcfs-tools
 yum install -y libseccomp-devel
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250804"><a class="header" href="#20250804">20250804</a></h1>
+<h3 id="1-hanbo-with-920"><a class="header" href="#1-hanbo-with-920">1. HanBo With 920</a></h3>
+<p>Failed with no exagear. need to rebuild for arm64 only image.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250805"><a class="header" href="#20250805">20250805</a></h1>
+<h3 id="1-rebuild-ffmpeg"><a class="header" href="#1-rebuild-ffmpeg">1. Rebuild ffmpeg</a></h3>
+<p>Change the configs:</p>
+<pre><code>git clone https://github.com/remote-android/platform_manifests.git -b redroid-13.0.0_r24 \
+--depth=1
+cd ./platform_manifests
+git reset –-hard 0d3bac810208842e080440f53e8b96e03a13a3ee
+cp -r ./platform_manifests/default.xml .repo/manifests/
+
+root@i9workstation:/media/sdc/hanbo/redroid# cat .repo/manifests/default.xml | more
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;manifest&gt;
+
+  &lt;remote  name="aosp"
+           fetch="https://mirrors.bfsu.edu.cn/git/AOSP"
+           review="https://android-review.googlesource.com/" /&gt;
+  &lt;default revision="refs/tags/android-13.0.0_r24"
+           remote="aosp"
+           sync-j="4" /&gt;
+</code></pre>
 
                     </main>
 

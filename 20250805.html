@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250801 - year2025</title>
+        <title>20250805 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,37 +175,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250801"><a class="header" href="#20250801">20250801</a></h1>
-<h3 id="1-tips-for-deployment"><a class="header" href="#1-tips-for-deployment">1. Tips for deployment</a></h3>
-<pre><code>yum update -y
-yum install -y vim  tar unzip
-systemctl disable firewalld
-vim /etc/selinux/config
-...
-SELINUX=disabled
-...
-</code></pre>
-<p>Install kernel and upgrade, then:</p>
-<pre><code>yum install -y dpkg dpkg-devel openssl openssl-devel
-yum install -y ncurses ncurses-devel bison flex bc libdrm build elfutils-libelf-devel
-yum install -y git htop tmux vim net-tools numactl
-yum install -y docker make gcc kexec-tools
-yum install -y lxc lxcfs lxcfs-tools
-yum install -y libseccomp-devel
+                        <h1 id="20250805"><a class="header" href="#20250805">20250805</a></h1>
+<h3 id="1-rebuild-ffmpeg"><a class="header" href="#1-rebuild-ffmpeg">1. Rebuild ffmpeg</a></h3>
+<p>Change the configs:</p>
+<pre><code>git clone https://github.com/remote-android/platform_manifests.git -b redroid-13.0.0_r24 \
+--depth=1
+cd ./platform_manifests
+git reset –-hard 0d3bac810208842e080440f53e8b96e03a13a3ee
+cp -r ./platform_manifests/default.xml .repo/manifests/
 
+root@i9workstation:/media/sdc/hanbo/redroid# cat .repo/manifests/default.xml | more
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;manifest&gt;
+
+  &lt;remote  name="aosp"
+           fetch="https://mirrors.bfsu.edu.cn/git/AOSP"
+           review="https://android-review.googlesource.com/" /&gt;
+  &lt;default revision="refs/tags/android-13.0.0_r24"
+           remote="aosp"
+           sync-j="4" /&gt;
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250731.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250804.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250804.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -213,13 +211,10 @@ yum install -y libseccomp-devel
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250731.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250804.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250804.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
