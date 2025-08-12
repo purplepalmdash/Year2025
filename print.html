@@ -14692,6 +14692,728 @@ api.py  api_v2.py  config.py  webui.py
 (base) root@9956431bddd0:/workspace/GPT-SoVITS# python webui.py
 (base) root@9956431bddd0:/workspace/GPT-SoVITS# python api_v2.py 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250812"><a class="header" href="#20250812">20250812</a></h1>
+<h3 id="1-stein-working-tipscontinue"><a class="header" href="#1-stein-working-tipscontinue">1. stein working tips(Continue)</a></h3>
+<p>Refers to <code>https://blog.csdn.net/qq_36154886/article/details/108753513</code><br />
+Added following items in every nodes:</p>
+<pre><code># vim /etc/nova/nova.conf
+[placement]
+auth_url = http://controller:5000
+#auth_url = http://controller:35357
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = nova_pass
+os_region_name = RegionOne
+# reboot
+</code></pre>
+<p>Then re-create the instance.</p>
+<pre><code># openstack console url show hello-instance
++-------+-------------------------------------------------------------------------------------------+
+| Field | Value                                                                                     |
++-------+-------------------------------------------------------------------------------------------+
+| type  | novnc                                                                                     |
+| url   | http://controller:6080/vnc_auto.html?path=%3Ftoken%3Da1b6649f-00d5-4eef-84b2-a41ca53e974d |
++-------+-------------------------------------------------------------------------------------------+
+</code></pre>
+<p><img src="./images/2025_08_12_10_19_05_924x523.jpg" alt="./images/2025_08_12_10_19_05_924x523.jpg" /></p>
+<p>(Controller) Dashboard:</p>
+<pre><code> yum install openstack-dashboard -y
+vim /etc/openstack-dashboard/local_settings
+
+import os
+from django.utils.translation import ugettext_lazy as _
+from openstack_dashboard.settings import HORIZON_CONFIG
+DEBUG = False
+ALLOWED_HOSTS = ['*']
+LOCAL_PATH = '/tmp'
+SECRET_KEY='60eeac4448ab9733b7d8'
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+CACHES = {
+    'default': {
+         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+         'LOCATION': 'controller:11211',
+    }
+}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+OPENSTACK_HOST = "controller"
+OPENSTACK_KEYSTONE_URL = "http://%s:5000/v3" % OPENSTACK_HOST
+OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
+OPENSTACK_API_VERSIONS = {
+    "identity": 3,
+    "image": 2,
+    "volume": 3,
+}
+OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Default"
+OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
+OPENSTACK_NEUTRON_NETWORK = {
+    'enable_auto_allocated_network': False,
+    'enable_distributed_router': False,
+    'enable_fip_topology_check': False,
+    'enable_ha_router': False,
+    'enable_lb': False,
+    'enable_firewall': False,
+    'enable_vpn': False,
+    'enable_ipv6': True,
+    'enable_quotas': False,
+    'enable_rbac_policy': True,
+    'enable_router': False,
+    'default_dns_nameservers': [],
+    'supported_provider_types': ['*'],
+    'segmentation_id_range': {},
+    'extra_provider_types': {},
+    'supported_vnic_types': ['*'],
+    'physical_networks': [],
+}
+TIME_ZONE = "Asia/Shanghai"
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(levelname)s %(name)s %(message)s'
+        },
+        'operation': {
+            'format': '%(message)s'
+        },
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'operation': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'operation',
+        },
+    },
+    'loggers': {
+        'horizon': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'horizon.operation_log': {
+            'handlers': ['operation'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'openstack_dashboard': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'novaclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'cinderclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'keystoneauth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'keystoneclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'glanceclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'neutronclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'swiftclient': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'oslo_policy': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'openstack_auth': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'django.db.backends': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'requests': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'urllib3': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'chardet.charsetprober': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'iso8601': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+        'scss': {
+            'handlers': ['null'],
+            'propagate': False,
+        },
+    },
+}
+SECURITY_GROUP_RULES = {
+    'all_tcp': {
+        'name': _('All TCP'),
+        'ip_protocol': 'tcp',
+        'from_port': '1',
+        'to_port': '65535',
+    },
+    'all_udp': {
+        'name': _('All UDP'),
+        'ip_protocol': 'udp',
+        'from_port': '1',
+        'to_port': '65535',
+    },
+    'all_icmp': {
+        'name': _('All ICMP'),
+        'ip_protocol': 'icmp',
+        'from_port': '-1',
+        'to_port': '-1',
+    },
+    'ssh': {
+        'name': 'SSH',
+        'ip_protocol': 'tcp',
+        'from_port': '22',
+        'to_port': '22',
+    },
+    'smtp': {
+        'name': 'SMTP',
+        'ip_protocol': 'tcp',
+        'from_port': '25',
+        'to_port': '25',
+    },
+    'dns': {
+        'name': 'DNS',
+        'ip_protocol': 'tcp',
+        'from_port': '53',
+        'to_port': '53',
+    },
+    'http': {
+        'name': 'HTTP',
+        'ip_protocol': 'tcp',
+        'from_port': '80',
+        'to_port': '80',
+    },
+    'pop3': {
+        'name': 'POP3',
+        'ip_protocol': 'tcp',
+        'from_port': '110',
+        'to_port': '110',
+    },
+    'imap': {
+        'name': 'IMAP',
+        'ip_protocol': 'tcp',
+        'from_port': '143',
+        'to_port': '143',
+    },
+    'ldap': {
+        'name': 'LDAP',
+        'ip_protocol': 'tcp',
+        'from_port': '389',
+        'to_port': '389',
+    },
+    'https': {
+        'name': 'HTTPS',
+        'ip_protocol': 'tcp',
+        'from_port': '443',
+        'to_port': '443',
+    },
+    'smtps': {
+        'name': 'SMTPS',
+        'ip_protocol': 'tcp',
+        'from_port': '465',
+        'to_port': '465',
+    },
+    'imaps': {
+        'name': 'IMAPS',
+        'ip_protocol': 'tcp',
+        'from_port': '993',
+        'to_port': '993',
+    },
+    'pop3s': {
+        'name': 'POP3S',
+        'ip_protocol': 'tcp',
+        'from_port': '995',
+        'to_port': '995',
+    },
+    'ms_sql': {
+        'name': 'MS SQL',
+        'ip_protocol': 'tcp',
+        'from_port': '1433',
+        'to_port': '1433',
+    },
+    'mysql': {
+        'name': 'MYSQL',
+        'ip_protocol': 'tcp',
+        'from_port': '3306',
+        'to_port': '3306',
+    },
+    'rdp': {
+        'name': 'RDP',
+        'ip_protocol': 'tcp',
+        'from_port': '3389',
+        'to_port': '3389',
+    },
+}
+
+
+cd /usr/share/openstack-dashboard
+python manage.py make_web_conf --apache &gt; /etc/httpd/conf.d/openstack-dashboard.conf
+systemctl restart httpd.service
+systemctl restart memcached.service
+</code></pre>
+<p>password should be <code>admin_pass</code>:</p>
+<p><img src="./images/2025_08_12_10_35_08_469x558.jpg" alt="./images/2025_08_12_10_35_08_469x558.jpg" /></p>
+<p><img src="./images/2025_08_12_10_48_06_824x761.jpg" alt="./images/2025_08_12_10_48_06_824x761.jpg" /></p>
+<h3 id="2-zunstein"><a class="header" href="#2-zunstein">2. zun(Stein)</a></h3>
+<p>(Controller) zun:</p>
+<pre><code>CREATE DATABASE zun;
+GRANT ALL PRIVILEGES ON zun.* TO 'zun'@'localhost' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON zun.* TO 'zun'@'%' IDENTIFIED BY '123456';
+flush privileges;
+exit
+
+source admin-openrc
+openstack user create --domain default --password 123456 zun
+openstack role add --project service --user zun admin
+openstack service create --name zun --description "Container Service" container
+
+openstack endpoint create --region RegionOne container public http://controller:9517/v1
+openstack endpoint create --region RegionOne container internal http://controller:9517/v1
+openstack endpoint create --region RegionOne container admin http://controller:9517/v1
+
+groupadd --system zun
+useradd --home-dir "/var/lib/zun" --create-home --system --shell /bin/false -g zun zun
+
+groupadd --system zun
+useradd --home-dir "/var/lib/zun" --create-home --system --shell /bin/false -g zun zun
+mkdir -p /etc/zun
+chown zun:zun /etc/zun
+
+yum install -y python-pip git python-devel libffi-devel gcc openssl-devel
+
+cd /var/lib/zun
+git clone https://git.openstack.org/openstack/zun.git
+cd zun
+git checkout tags/stein-eol -b stein
+cd ..
+chown -R zun:zun zun
+
+yum install epel-release
+yum install -y python-pip
+python -m pip install --upgrade pip
+python -m pip install --upgrade pip==18.0
+pip install --ignore-installed PyYAML
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+python setup.py install
+
+su -s /bin/sh -c "oslo-config-generator --config-file etc/zun/zun-config-generator.conf" zun
+su -s /bin/sh -c "cp etc/zun/zun.conf.sample /etc/zun/zun.conf" zun
+
+su -s /bin/sh -c "cp etc/zun/api-paste.ini /etc/zun" zun
+
+vim /etc/zun/zun.conf
+[DEFAULT]
+transport_url = rabbit://openstack:openstack@controller
+
+[api]
+host_ip = 192.168.150.11
+port = 9517
+
+[database]
+connection = mysql+pymysql://zun:123456@controller/zun
+
+[keystone_auth]
+memcached_servers = controller:11211
+www_authenticate_uri = http://controller:5000
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = zun
+password = 123456
+auth_protocol = http
+auth_version = v3
+service_token_roles_required = True
+endpoint_type = internalURL
+
+[keystone_authtoken]
+memcached_servers = controller:11211
+www_authenticate_uri = http://controller:5000
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = zun
+password = 123456
+auth_protocol = http
+auth_version = v3
+service_token_roles_required = True
+endpoint_type = internalURL
+
+[oslo_concurrency]
+lock_path = /var/lib/zun/tmp
+
+[oslo_messaging_notifications]
+driver = messaging
+
+[websocket_proxy]
+wsproxy_host = 192.168.150.11
+wsproxy_port = 6784
+base_url = ws://controller:6784
+
+su -s /bin/sh -c "zun-db-manage upgrade" zun
+
+[root@controller zun]# cat /etc/systemd/system/zun-api.service
+[Unit]
+Description = OpenStack Container Service API
+
+[Service]
+ExecStart = /usr/bin/zun-api
+User = zun
+
+[Install]
+WantedBy = multi-user.target
+[root@controller zun]# cat /etc/systemd/system/zun-wsproxy.service
+[Unit]
+Description = OpenStack Container Service Websocket Proxy
+
+[Service]
+ExecStart = /usr/bin/zun-wsproxy
+User = zun
+
+[Install]
+WantedBy = multi-user.target
+
+systemctl daemon-reload
+systemctl enable zun-api  zun-wsproxy
+systemctl start zun-api  zun-wsproxy
+systemctl status zun-api  zun-wsproxy
+</code></pre>
+<p>(Controller) install etcd:</p>
+<pre><code>yum install -y etcd
+
+vim /etc/etcd/etcd.conf
+#[Member]
+ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
+ETCD_LISTEN_PEER_URLS="http://192.168.150.11:2380"
+ETCD_LISTEN_CLIENT_URLS="http://192.168.150.11:2379"
+ETCD_NAME="controller"
+#
+#[Clustering]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.150.11:2380"
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.150.11:2379"
+ETCD_INITIAL_CLUSTER="controller=http://192.168.150.11:2380"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+ETCD_INITIAL_CLUSTER_STATE="new"
+
+systemctl enable etcd
+systemctl start etcd
+systemctl status etcd
+</code></pre>
+<p>(Compute) install docker:</p>
+<pre><code>yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sed -i 's+https://download.docker.com+https://mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+yum makecache
+yum install docker-ce-20.10.24-3.el7 docker-ce-cli-20.10.24-3.el7 docker-ce-rootless-extras-20.10.24-3.el7
+yum install -y epel-release yum-utils device-mapper-persistent-data lvm2 python-pip git python-devel libffi-devel gcc openssl-devel wget vim net-tools
+systemctl enable docker
+systemctl start docker
+</code></pre>
+<p>(Controller)Create kuryr related:</p>
+<pre><code>source /root/admin-openrc
+openstack user create --domain default --password 123456 kuryr
+openstack role add --project service --user kuryr admin
+</code></pre>
+<p>(Compute) kuryr related:</p>
+<pre><code>groupadd --system kuryr
+useradd --home-dir "/var/lib/kuryr" --create-home --system --shell /bin/false -g kuryr kuryr
+mkdir -p /etc/kuryr &amp;&amp; chown kuryr:kuryr /etc/kuryr
+yum install epel-release python-pip git python-devel libffi-devel gcc openssl-devel -y
+cd /var/lib/kuryr
+git clone http://git.openstack.org/openstack/kuryr-libnetwork.git
+cd kuryr-libnetwork/
+git checkout tags/stein-eol -b stein
+cd ..
+chown -R kuryr:kuryr kuryr-libnetwork
+python -m pip install --upgrade pip==18.0
+cd kuryr-libnetwork/
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+python setup.py install
+su -s /bin/sh -c "./tools/generate_config_file_samples.sh" kuryr &amp;&amp; su -s /bin/sh -c "cp etc/kuryr.conf.sample /etc/kuryr/kuryr.conf" kuryr
+sed -i.default -e "/^#/d" -e "/^$/d" /etc/kuryr/kuryr.conf
+vim /etc/kuryr/kuryr.conf
+[DEFAULT]
+bindir = /usr/libexec/kuryr
+[binding]
+[neutron]
+www_authenticate_uri = http://controller:5000/v3
+auth_url = http://controller:5000/v3
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = kuryr
+password = 123456
+
+vim /etc/systemd/system/kuryr-libnetwork.service
+[Unit]
+Description = Kuryr-libnetwork - Docker network plugin for Neutron
+
+[Service]
+ExecStart = /usr/bin/kuryr-server --config-file /etc/kuryr/kuryr.conf
+CapabilityBoundingSet = CAP_NET_ADMIN
+
+[Install]
+WantedBy = multi-user.target
+
+systemctl enable kuryr-libnetwork --now 
+systemctl restart docker
+systemctl status docker kuryr-libnetwork
+
+ docker network create --driver kuryr --ipam-driver kuryr --subnet 10.10.0.0/16 --gateway=10.10.0.1 test_net2
+docker network ls
+vim /usr/lib/python2.7/site-packages/kuryr/lib/binding/drivers/veth.py
+            #kind=port.get(constants.VIF_TYPE_KEY),
+            kind='bridge',
+systemctl restart kuryr-libnetwork
+docker run --net test_net2 cirros ifconfig
+</code></pre>
+<p>(Compute1/2) zun-compute:</p>
+<pre><code> groupadd --system zun
+useradd --home-dir "/var/lib/zun" --create-home --system --shell /bin/false -g zun zun
+ mkdir -p /etc/zun
+chown zun:zun /etc/zun
+yum install epel-release python-pip git python-devel libffi-devel gcc openssl-devel -y
+cd /var/lib/zun
+git clone https://git.openstack.org/openstack/zun.git
+cd zun
+git checkout tags/stein-eol -b stein
+cd ..
+chown -R zun:zun zun
+cd zun
+pip install -r requirements.txt
+python setup.py install
+
+su -s /bin/sh -c "oslo-config-generator --config-file etc/zun/zun-config-generator.conf" zun
+su -s /bin/sh -c "cp etc/zun/zun.conf.sample /etc/zun/zun.conf" zun
+su -s /bin/sh -c "cp etc/zun/rootwrap.conf /etc/zun/rootwrap.conf" zun
+su -s /bin/sh -c "mkdir -p /etc/zun/rootwrap.d" zun
+su -s /bin/sh -c "cp etc/zun/rootwrap.d/* /etc/zun/rootwrap.d/" zun
+
+echo "zun ALL=(root) NOPASSWD: /usr/bin/zun-rootwrap /etc/zun/rootwrap.conf *" | sudo tee /etc/sudoers.d/zun-rootwrap
+
+
+vim /etc/zun/zun.conf
+
+[DEFAULT]
+transport_url = rabbit://openstack:openstack@controller
+state_path = /var/lib/zun
+
+debug = true
+log_file = zun.log
+log_dir = /var/log/zun
+
+[database]
+connection = mysql+pymysql://zun:123456@controller/zun
+
+[keystone_auth]
+memcached_servers = controller:11211
+www_authenticate_uri = http://controller:5000
+project_domain_name = default
+project_name = service
+user_domain_name = default
+password = 123456
+username = zun
+auth_url = http://controller:5000
+auth_type = password
+auth_version = v3
+auth_protocol = http
+service_token_roles_required = True
+endpoint_type = internalURL
+
+[keystone_authtoken]
+memcached_servers = controller:11211
+www_authenticate_uri= http://controller:5000
+project_domain_name = default
+project_name = service
+user_domain_name = default
+password = 123456
+username = zun
+auth_url = http://controller:5000
+auth_type = password
+
+[oslo_concurrency]
+lock_path = /var/lib/zun/tmp
+
+[websocket_proxy]
+base_url = ws://controller:6784/
+
+[compute]
+host_shared_with_nova = true
+
+mkdir -p /etc/systemd/system/docker.service.d
+cat /etc/systemd/system/docker.service.d/docker.conf 
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd --group zun -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store etcd://controller:2379
+
+systemctl daemon-reload
+systemctl restart docker
+
+vim /etc/kuryr/kuryr.conf
+
+[DEFAULT]
+capability_scope = global
+process_external_connectivity = False
+
+systemctl restart kuryr-libnetwork
+containerd config default &gt; /etc/containerd/config.toml
+chown zun:zun /etc/containerd/config.toml
+
+getent group zun | cut -d: -f3
+# 987
+
+vim /etc/containerd/config.toml
+[grpc]
+  ...
+  gid = 987
+
+systemctl restart containerd
+
+ cat /etc/systemd/system/zun-compute.service
+[Unit]
+Description = OpenStack Container Service Compute Agent
+
+[Service]
+ExecStart = /usr/bin/zun-compute
+User = zun
+
+[Install]
+WantedBy = multi-user.target
+
+pip install docker
+pip install pymysql
+
+systemctl enable zun-compute --now
+</code></pre>
+<p>(Controller) verify:</p>
+<pre><code> openstack appcontainer service list
+</code></pre>
+<p>(Controller) zun-ui:</p>
+<pre><code>git clone https://github.com/openstack/zun-ui
+cd zun-ui/
+git checkout tags/stein-eol -b stein
+pip install .
+cp zun_ui/enabled/* /usr/share/openstack-dashboard/openstack_dashboard/local/enabled
+python /usr/share/openstack-dashboard/manage.py collectstatic
+python /usr/share/openstack-dashboard/manage.py compress
+systemctl restart httpd.service memcached.service
+</code></pre>
+<p>Create inner network:</p>
+<pre><code>  openstack router create Ext-Router
+  openstack network create --internal --provider-network-type vxlan int-net
+  openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+  openstack router add subnet Ext-Router int-net-sub
+openstack router set Ext-Router --external-gateway  provider
+</code></pre>
+<p>Create container via ui:</p>
+<p><img src="./images/2025_08_12_17_03_48_1207x502.jpg" alt="./images/2025_08_12_17_03_48_1207x502.jpg" /></p>
+<p>Specify the int-net:</p>
+<p><img src="./images/2025_08_12_17_04_21_948x503.jpg" alt="./images/2025_08_12_17_04_21_948x503.jpg" /></p>
+<p>Creating status:</p>
+<p><img src="./images/2025_08_12_17_04_38_1015x283.jpg" alt="./images/2025_08_12_17_04_38_1015x283.jpg" /></p>
+<p>Running Status:</p>
+<p><img src="./images/2025_08_12_17_05_22_1032x329.jpg" alt="./images/2025_08_12_17_05_22_1032x329.jpg" /></p>
+<p>(Controller), view result:</p>
+<pre><code>[root@controller ~]# openstack appcontainer list
++--------------------------------------+------+---------------+---------+------------+--------------+-------+
+| uuid                                 | name | image         | status  | task_state | addresses    | ports |
++--------------------------------------+------+---------------+---------+------------+--------------+-------+
+| 7617b8d7-6846-41d0-be8a-8ca3a0b9867a | test | cirros:latest | Running | None       | 177.77.77.96 | []    |
++--------------------------------------+------+---------------+---------+------------+--------------+-------+
+</code></pre>
+<p>Examine the running instance on compute node:</p>
+<pre><code>[root@compute2 ~]# docker ps
+CONTAINER ID   IMAGE           COMMAND        CREATED              STATUS              PORTS     NAMES
+0cde592eff6d   cirros:latest   "sleep 3600"   About a minute ago   Up About a minute             zun-7617b8d7-6846-41d0-be8a-8ca3a0b9867a
+[root@compute2 ~]# docker exec -it 0cde592eff6d sh
+/ # ip a
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+8: eth0@if9: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1450 qdisc noqueue qlen 1000
+    link/ether fa:16:3e:5d:d9:17 brd ff:ff:ff:ff:ff:ff
+    inet 177.77.77.96/24 brd 177.77.77.255 scope global eth0
+       valid_lft forever preferred_lft forever
+</code></pre>
+<p>TODO: ext network:</p>
+<p><img src="./images/2025_08_12_17_10_55_996x265.jpg" alt="./images/2025_08_12_17_10_55_996x265.jpg" /></p>
+<pre><code>[root@controller ~]# openstack appcontainer list
++--------------------------------------+------+---------------+---------+--------------------+-----------------+-------+
+| uuid                                 | name | image         | status  | task_state         | addresses       | ports |
++--------------------------------------+------+---------------+---------+--------------------+-----------------+-------+
+| d0f549dc-411f-4240-bd6e-abfc9240f765 | qq   | cirros:latest | Created | container_starting | 192.168.150.111 | []    |
++--------------------------------------+------+---------------+---------+--------------------+-----------------+-------+
+</code></pre>
+<p>Failed ping(compute1, which docker instance located):</p>
+<p><img src="./images/2025_08_12_17_11_28_939x652.jpg" alt="./images/2025_08_12_17_11_28_939x652.jpg" /></p>
+<p><img src="./images/2025_08_12_17_14_13_790x649.jpg" alt="./images/2025_08_12_17_14_13_790x649.jpg" /></p>
+<p>vnc to compute1 node, show the ip configuration:</p>
+<p><img src="./images/2025_08_12_17_15_21_987x590.jpg" alt="./images/2025_08_12_17_15_21_987x590.jpg" /></p>
+<p><code>192.168.150.111</code> added, then eth0 lost the connection.</p>
+<p>Remove the items from db:</p>
+<pre><code>mysql -uroot -p
+MariaDB [(none)]&gt; show databases;
+MariaDB [(none)]&gt; use zun
+MariaDB [zun]&gt; select * from container;
+MariaDB [zun]&gt; delete from container where id=21
+
+</code></pre>
+<p>(Compute1/2)Trouble shooting:</p>
+<pre><code>systemctl restart zun-compute
+</code></pre>
+<p>Ext-network issue, modprobe veth won't solve the problem.</p>
 
                     </main>
 
