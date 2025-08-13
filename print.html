@@ -15414,6 +15414,65 @@ MariaDB [zun]&gt; delete from container where id=21
 <pre><code>systemctl restart zun-compute
 </code></pre>
 <p>Ext-network issue, modprobe veth won't solve the problem.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250813"><a class="header" href="#20250813">20250813</a></h1>
+<h3 id="1-gpt-sovits-working-tips"><a class="header" href="#1-gpt-sovits-working-tips">1. GPT-SoVITS working tips</a></h3>
+<p>Speech Slicing:</p>
+<p><img src="./images/2025_08_13_15_13_31_478x129.jpg" alt="./images/2025_08_13_15_13_31_478x129.jpg" /></p>
+<p><code>output/slicer_opt</code> foler content:</p>
+<p><img src="./images/2025_08_13_15_14_35_685x453.jpg" alt="./images/2025_08_13_15_14_35_685x453.jpg" /></p>
+<pre><code>sudo apt install sox
+$ for file in *.wav; do echo "$file: $(soxi -D "$file") seconds"; done
+ddd.wav_0000011520_0000168640.wav: 4.910000 seconds
+ddd.wav_0000168640_0000290560.wav: 3.810000 seconds
+ddd.wav_0000292160_0000429760.wav: 4.300000 seconds
+ddd.wav_0000429760_0000530560.wav: 3.150000 seconds
+ddd.wav_0000541760_0000683840.wav: 4.440000 seconds
+ddd.wav_0000683840_0000821120.wav: 4.290000 seconds
+...
+</code></pre>
+<p>Click <code>Open Speech Recognition</code>,</p>
+<p><img src="./images/2025_08_13_15_18_34_1019x248.jpg" alt="./images/2025_08_13_15_18_34_1019x248.jpg" /></p>
+<p>Click <code>Open Audio Labeling WebUI</code>, fix some words. Port is 9871:</p>
+<p><img src="./images/2025_08_13_15_20_55_775x216.jpg" alt="./images/2025_08_13_15_20_55_775x216.jpg" /></p>
+<p>After fix, <code>Close Audio Labeling WebUI</code>.</p>
+<p>Fine-Tuned Model Information:</p>
+<p><img src="./images/2025_08_13_15_28_43_1316x215.jpg" alt="./images/2025_08_13_15_28_43_1316x215.jpg" /></p>
+<p><img src="./images/2025_08_13_15_29_05_834x251.jpg" alt="./images/2025_08_13_15_29_05_834x251.jpg" /></p>
+<p>Status:</p>
+<p><img src="./images/2025_08_13_15_29_21_722x140.jpg" alt="./images/2025_08_13_15_29_21_722x140.jpg" /></p>
+<p>Finish:</p>
+<p><img src="./images/2025_08_13_15_30_04_629x131.jpg" alt="./images/2025_08_13_15_30_04_629x131.jpg" /></p>
+<p>Click <code>1B-Fine-Tuning</code>:</p>
+<p><img src="./images/2025_08_13_15_30_30_664x315.jpg" alt="./images/2025_08_13_15_30_30_664x315.jpg" /></p>
+<p>Click <code>Open SoVITS Traning</code>:</p>
+<p><img src="./images/2025_08_13_15_31_08_762x341.jpg" alt="./images/2025_08_13_15_31_08_762x341.jpg" /></p>
+<p><img src="./images/2025_08_13_15_31_18_453x142.jpg" alt="./images/2025_08_13_15_31_18_453x142.jpg" /></p>
+<p><img src="./images/2025_08_13_15_32_39_503x116.jpg" alt="./images/2025_08_13_15_32_39_503x116.jpg" /></p>
+<p>Result:</p>
+<pre><code>dash@ai:~/Code/GPT-SoVITS$ ls SoVITS_weights_v2ProPlus/ddd* -l -h
+-rw-r--r-- 1 root root 165M  8月 13 15:31 SoVITS_weights_v2ProPlus/ddd_e4_s20.pth
+-rw-r--r-- 1 root root 165M  8月 13 15:32 SoVITS_weights_v2ProPlus/ddd_e8_s40.pth
+</code></pre>
+<p><code>Open GPT Traning</code>:</p>
+<p><img src="./images/2025_08_13_15_33_51_1015x202.jpg" alt="./images/2025_08_13_15_33_51_1015x202.jpg" /></p>
+<p>Result:</p>
+<pre><code>dash@ai:~/Code/GPT-SoVITS$ ls GPT_weights_v2ProPlus/ddd-e* -l -h
+-rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e10.ckpt
+-rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e15.ckpt
+-rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e5.ckpt
+</code></pre>
+<h3 id="2-extract-wav"><a class="header" href="#2-extract-wav">2. extract wav</a></h3>
+<p>55:51-&gt;58:20,<br />
+Extrace via:</p>
+<pre><code>ffmpeg -i kink.mp4 -vn -acodec pcm_s16le -ar 44100 -ac 2 -ss 00:55:51 -to 00:58:20 xxxa.wav
+</code></pre>
+<p>concat wav files:</p>
+<pre><code>ffmpeg -f concat -i list.txt -c copy output3.wav
+$  cat ~/list.txt                
+file 'output1.wav'
+file 'output2.wav'
+
+</code></pre>
 
                     </main>
 
