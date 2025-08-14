@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250813 - year2025</title>
+        <title>20250814 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,77 +175,62 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250813"><a class="header" href="#20250813">20250813</a></h1>
-<h3 id="1-gpt-sovits-working-tips"><a class="header" href="#1-gpt-sovits-working-tips">1. GPT-SoVITS working tips</a></h3>
-<p>Speech Slicing:</p>
-<p><img src="./images/2025_08_13_15_13_31_478x129.jpg" alt="./images/2025_08_13_15_13_31_478x129.jpg" /></p>
-<p><code>output/slicer_opt</code> foler content:</p>
-<p><img src="./images/2025_08_13_15_14_35_685x453.jpg" alt="./images/2025_08_13_15_14_35_685x453.jpg" /></p>
-<pre><code>sudo apt install sox
-$ for file in *.wav; do echo "$file: $(soxi -D "$file") seconds"; done
-ddd.wav_0000011520_0000168640.wav: 4.910000 seconds
-ddd.wav_0000168640_0000290560.wav: 3.810000 seconds
-ddd.wav_0000292160_0000429760.wav: 4.300000 seconds
-ddd.wav_0000429760_0000530560.wav: 3.150000 seconds
-ddd.wav_0000541760_0000683840.wav: 4.440000 seconds
-ddd.wav_0000683840_0000821120.wav: 4.290000 seconds
+                        <h1 id="20250814"><a class="header" href="#20250814">20250814</a></h1>
+<h3 id="1-vxlan-under-bridge"><a class="header" href="#1-vxlan-under-bridge">1. vxlan under bridge</a></h3>
+<p>(Compute)Add sysctl confs:</p>
+<pre><code>vim /etc/sysctl.conf
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.default.rp_filter=0
+sysctl -p
+
+vim /etc/neutron/neutron.conf
+[DEFAULT]
+...
+core_plugin = ml2
+service_plugins = router
+allow_overlapping_ips = True
+
+vim /etc/neutron/pluings/ml2/linuxbridge_agent.ini
+...
+[vxlan]
+local_ip = 192.168.150.12
+enable_vxlan = true
+l2_population = True
+
+[agent]
+tunnel_types = vxlan
+prevent_arp_spoofing = True
 ...
 </code></pre>
-<p>Click <code>Open Speech Recognition</code>,</p>
-<p><img src="./images/2025_08_13_15_18_34_1019x248.jpg" alt="./images/2025_08_13_15_18_34_1019x248.jpg" /></p>
-<p>Click <code>Open Audio Labeling WebUI</code>, fix some words. Port is 9871:</p>
-<p><img src="./images/2025_08_13_15_20_55_775x216.jpg" alt="./images/2025_08_13_15_20_55_775x216.jpg" /></p>
-<p>After fix, <code>Close Audio Labeling WebUI</code>.</p>
-<p>Fine-Tuned Model Information:</p>
-<p><img src="./images/2025_08_13_15_28_43_1316x215.jpg" alt="./images/2025_08_13_15_28_43_1316x215.jpg" /></p>
-<p><img src="./images/2025_08_13_15_29_05_834x251.jpg" alt="./images/2025_08_13_15_29_05_834x251.jpg" /></p>
-<p>Status:</p>
-<p><img src="./images/2025_08_13_15_29_21_722x140.jpg" alt="./images/2025_08_13_15_29_21_722x140.jpg" /></p>
-<p>Finish:</p>
-<p><img src="./images/2025_08_13_15_30_04_629x131.jpg" alt="./images/2025_08_13_15_30_04_629x131.jpg" /></p>
-<p>Click <code>1B-Fine-Tuning</code>:</p>
-<p><img src="./images/2025_08_13_15_30_30_664x315.jpg" alt="./images/2025_08_13_15_30_30_664x315.jpg" /></p>
-<p>Click <code>Open SoVITS Traning</code>:</p>
-<p><img src="./images/2025_08_13_15_31_08_762x341.jpg" alt="./images/2025_08_13_15_31_08_762x341.jpg" /></p>
-<p><img src="./images/2025_08_13_15_31_18_453x142.jpg" alt="./images/2025_08_13_15_31_18_453x142.jpg" /></p>
-<p><img src="./images/2025_08_13_15_32_39_503x116.jpg" alt="./images/2025_08_13_15_32_39_503x116.jpg" /></p>
-<p>Result:</p>
-<pre><code>dash@ai:~/Code/GPT-SoVITS$ ls SoVITS_weights_v2ProPlus/ddd* -l -h
--rw-r--r-- 1 root root 165M  8月 13 15:31 SoVITS_weights_v2ProPlus/ddd_e4_s20.pth
--rw-r--r-- 1 root root 165M  8月 13 15:32 SoVITS_weights_v2ProPlus/ddd_e8_s40.pth
+<p>(Controller) enable l3 agent:</p>
+<pre><code>vim /etc/neutron/l3_agent.ini
+[DEFAULT]
+interface_driver = linuxbridge
+external_network_bridge =
+verbose = True
+
+systemctl enable neutron-l3-agent.service --now
 </code></pre>
-<p><code>Open GPT Traning</code>:</p>
-<p><img src="./images/2025_08_13_15_33_51_1015x202.jpg" alt="./images/2025_08_13_15_33_51_1015x202.jpg" /></p>
-<p>Result:</p>
-<pre><code>dash@ai:~/Code/GPT-SoVITS$ ls GPT_weights_v2ProPlus/ddd-e* -l -h
--rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e10.ckpt
--rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e15.ckpt
--rw-r--r-- 1 root root 149M  8月 13 15:33 GPT_weights_v2ProPlus/ddd-e5.ckpt
-</code></pre>
-<h3 id="2-extract-wav"><a class="header" href="#2-extract-wav">2. extract wav</a></h3>
-<p>55:51-&gt;58:20,<br />
-Extrace via:</p>
-<pre><code>ffmpeg -i kink.mp4 -vn -acodec pcm_s16le -ar 44100 -ac 2 -ss 00:55:51 -to 00:58:20 xxxa.wav
-</code></pre>
-<p>concat wav files:</p>
-<pre><code>ffmpeg -f concat -i list.txt -c copy output3.wav
-$  cat ~/list.txt                
-file 'output1.wav'
-file 'output2.wav'
+<p>(All nodes) add oslo messaging related:</p>
+<pre><code># vim /etc/neutron/neutron.conf
+[oslo_messaging_rabbit]
+rabbit_host = controller
+rabbit_userid = openstack
+rabbit_password = openstack
 
 </code></pre>
+<p>Then reboot.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250812.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250813.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250814.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -253,13 +238,10 @@ file 'output2.wav'
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250812.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250813.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250814.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
