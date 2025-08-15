@@ -15520,6 +15520,35 @@ rabbit_password = openstack
 
 </code></pre>
 <p>Then reboot.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250815"><a class="header" href="#20250815">20250815</a></h1>
+<h3 id="fxxos-binderashmem-issue"><a class="header" href="#fxxos-binderashmem-issue">FXXOS binder/ashmem issue</a></h3>
+<p>Install packages:</p>
+<pre><code>yum update
+yum install -y kernel-devel kernel-headers dkms unzip make vim docker
+systemctl enable docker --now
+</code></pre>
+<p>Kernel module compilation:</p>
+<pre><code>tar xzvf fxxosredroid.tar.gz
+cd fxxosredroid/ashmem
+./INSTALL.sh
+cd -
+cd fxxosredroid/binder
+./INSTALL.sh
+</code></pre>
+<p>Add module configuration</p>
+<pre><code># vim /etc/modprobe.d/anbox.conf
+options binder_linux devices=binder,hwbinder,vndbinder
+# dracut -f --kver  `uname -r`
+# reboot
+</code></pre>
+<p>Verify:</p>
+<pre><code>[root@verify ~]# ls /dev/*binder*
+/dev/anbox-binder    /dev/anbox-vndbinder  /dev/hwbinder
+/dev/anbox-hwbinder  /dev/binder           /dev/vndbinder
+[root@verify ~]# ls /dev/ashmem 
+/dev/ashmem
+</code></pre>
+<p>virgl won't acts OK.</p>
 
                     </main>
 
