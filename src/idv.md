@@ -1,52 +1,8 @@
-# 20250819
-### 1. a6000 passthrough(continue)
-Disable os probe in grub:      
+# nvidia IDV安装/调整指南
+### 1. 视频说明
 
-```
-# vim /etc/default/grub
-GRUB_DISABLE_OS_PROBER=true
-# update-grub2 && reboot
-```
+`rescuezilla_write_image-2025-08-19_17.28.06.mp4`关键时间点标注： 
 
-![./images/2025_08_19_08_14_25_563x156.jpg](./images/2025_08_19_08_14_25_563x156.jpg)
-
-Solved via:     
-
-```
-cd /boot/grub
-rm grubenv
-grub-editenv grubenv create
-grub-editenv grubenv set default=0
-grub-editenv grubenv list
-update-grub
-```
-Extrace the vbios and edit it with okteta, also the same as before.      
-
-![./images/2025_08_19_09_09_30_682x528.jpg](./images/2025_08_19_09_09_30_682x528.jpg)
-
-Change win10 images to ubuntu2004/uefi image, the same result.   
-
-### 2. rtxa600 passthrough(ubuntu2404)
-Not needed, for we have to adjust so much on ubuntu2404.    
-
-### 3. z790 issue
-z790 issue, close `Above 4GB MMIO BIOS assignment`:    
-
-![./images/2025_08_19_17_51_56_930x517.jpg](./images/2025_08_19_17_51_56_930x517.jpg)
-
-Close `Above 4G Decoding` and `Re-Size BAR Support`:     
-
-![./images/2025_08_19_17_53_09_1133x483.jpg](./images/2025_08_19_17_53_09_1133x483.jpg)
-
-Detailed changes:     
-
-![./images/2025_08_19_17_53_25_808x177.jpg](./images/2025_08_19_17_53_25_808x177.jpg)
-
-![./images/2025_08_19_17_53_35_617x221.jpg](./images/2025_08_19_17_53_35_617x221.jpg)
-
-Then z790 will passthrough RTX A6000
-
-### 4. video explanation
 00:00           使用写入的U盘启动机器,进入rescuezilla的启动过程。    
 01:04            启动到rescuezilla图形界面下，此时插入另一块含有还原镜像文件的移动硬盘（或优盘）     
 01:18 ~ 02:04   插入前后的移动硬盘情况。      
@@ -66,19 +22,20 @@ Then z790 will passthrough RTX A6000
 16:59           虚机内查看显卡信息      
 17:22->最后     展示IDV的关机/重启等操作。      
 
-操作步骤：
+### 2. 操作步骤
+
 1. 下载iso文件(`rescuezilla-2.6.1-64bit.oracular.iso`)及镜像文件(`nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar.xz`)    
 2. Linux下使用dd命令，或者windows下使用rufus软件(`https://rufus.ie/zh/`)将`rescuezilla-2.6.1-64bit.oracular.iso`写入到usb优盘（优盘需至少2G大小).    
 
 ```
 sudo dd if=./rescuezilla-2.6.1-64bit.oracular.iso of=/dev/你的优盘设备名 bs=1M && sudo sync
-```    
+```
 3. 将`nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar.xz`文件解压到某移动硬盘的目录下，注意解压前进行md5校验(md5值为`e1f978279381be9ffc5d2687e3783fc9`)     
 4. 按`rescuezilla_write_image-2025-08-19_17.28.06.mp4`视频, 使用优盘启动物理机器并执行rescuezilla镜像还原.     
 5. 还原成功后，拔掉U盘和移动硬盘，进入系统，按视频调整虚拟化配置并启动IDV虚机。镜像中已包含一个win10虚机。     
 
+### 3. 操作说明
 
-操作说明：    
 1. 镜像已在映泰z790+(RTX3050/RTX6000/RTXA6000）下验证，镜像已在同方工作站(Z690+RTX4070-12G)下验证。   
 3050:       `nvidiaidv_3050-2025-08-19_14.54.23.mp4`
 RTX6000:    `nvidiaidv_6000-2025-08-19_16.23.23.mp4`
@@ -100,3 +57,4 @@ z790 下为支持RTXA6000, 需关闭 `Above 4GB MMIO BIOS assignment`:
 ![./images/2025_08_19_17_53_25_808x177.jpg](./images/2025_08_19_17_53_25_808x177.jpg)
 
 ![./images/2025_08_19_17_53_35_617x221.jpg](./images/2025_08_19_17_53_35_617x221.jpg)
+
