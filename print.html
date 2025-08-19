@@ -15661,6 +15661,36 @@ INSTANCE="nvidia_win10"
 <h3 id="4-bios-for-silver"><a class="header" href="#4-bios-for-silver">4. bios for silver</a></h3>
 <p><img src="./images/2025_08_18_17_40_59_994x515.jpg" alt="./images/2025_08_18_17_40_59_994x515.jpg" /></p>
 <p>A6000 maybe need passthrough vbt files.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250819"><a class="header" href="#20250819">20250819</a></h1>
+<h3 id="1-a6000-passthroughcontinue"><a class="header" href="#1-a6000-passthroughcontinue">1. a6000 passthrough(continue)</a></h3>
+<p>Disable os probe in grub:</p>
+<pre><code># vim /etc/default/grub
+GRUB_DISABLE_OS_PROBER=true
+# update-grub2 &amp;&amp; reboot
+</code></pre>
+<p><img src="./images/2025_08_19_08_14_25_563x156.jpg" alt="./images/2025_08_19_08_14_25_563x156.jpg" /></p>
+<p>Solved via:</p>
+<pre><code>cd /boot/grub
+rm grubenv
+grub-editenv grubenv create
+grub-editenv grubenv set default=0
+grub-editenv grubenv list
+update-grub
+</code></pre>
+<p>Extrace the vbios and edit it with okteta, also the same as before.</p>
+<p><img src="./images/2025_08_19_09_09_30_682x528.jpg" alt="./images/2025_08_19_09_09_30_682x528.jpg" /></p>
+<p>Change win10 images to ubuntu2004/uefi image, the same result.</p>
+<h3 id="2-rtxa600-passthroughubuntu2404"><a class="header" href="#2-rtxa600-passthroughubuntu2404">2. rtxa600 passthrough(ubuntu2404)</a></h3>
+<p>Not needed, for we have to adjust so much on ubuntu2404.</p>
+<h3 id="3-z790-issue"><a class="header" href="#3-z790-issue">3. z790 issue</a></h3>
+<p>z790 issue, close <code>Above 4GB MMIO BIOS assignment</code>:</p>
+<p><img src="./images/2025_08_19_17_51_56_930x517.jpg" alt="./images/2025_08_19_17_51_56_930x517.jpg" /></p>
+<p>Close <code>Above 4G Decoding</code> and <code>Re-Size BAR Support</code>:</p>
+<p><img src="./images/2025_08_19_17_53_09_1133x483.jpg" alt="./images/2025_08_19_17_53_09_1133x483.jpg" /></p>
+<p>Detailed changes:</p>
+<p><img src="./images/2025_08_19_17_53_25_808x177.jpg" alt="./images/2025_08_19_17_53_25_808x177.jpg" /></p>
+<p><img src="./images/2025_08_19_17_53_35_617x221.jpg" alt="./images/2025_08_19_17_53_35_617x221.jpg" /></p>
+<p>Then z790 will passthrough RTX A6000</p>
 
                     </main>
 
