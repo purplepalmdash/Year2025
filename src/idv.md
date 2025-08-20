@@ -30,19 +30,44 @@
 ```
 sudo dd if=./rescuezilla-2.6.1-64bit.oracular.iso of=/dev/你的优盘设备名 bs=1M && sudo sync
 ```
-3. 将`nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar.xz`文件解压到某移动硬盘的目录下，注意解压前进行md5校验(md5值为`e1f978279381be9ffc5d2687e3783fc9`)     
-4. 按`rescuezilla_write_image-2025-08-19_17.28.06.mp4`视频, 使用优盘启动物理机器并执行rescuezilla镜像还原.     
+3. 将`nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar.xz`文件解压到某移动硬盘的目录下，注意解压前进行md5校验(md5值为`e1f978279381be9ffc5d2687e3783fc9`), 移动硬盘上需至少有25G剩余空间。     
+
+解压步骤:    
+
+```
+unxz nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar.xz
+tar xvf nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla.tar
+```
+解压完毕后的目录结构：     
+
+![./images/2025_08_20_09_20_45_676x414.jpg](./images/2025_08_20_09_20_45_676x414.jpg)
+将`nvidia_idv_noi915_2025-08-18-0849-img-rescuezilla`整体拷贝到移动硬盘下的某目录，视频中拷贝到的目录是移动硬盘根目录下的`idv`目录。    
+
+4. 按`rescuezilla_write_image-2025-08-19_17.28.06.mp4`视频, 使用优盘启动物理机器并执行rescuezilla镜像还原.还原时注意选择上面放置的镜像目录。     
 5. 还原成功后，拔掉U盘和移动硬盘，进入系统，按视频调整虚拟化配置并启动IDV虚机。镜像中已包含一个win10虚机。     
 
 ### 3. 操作说明
 
-1. 镜像已在映泰z790+(RTX3050/RTX6000/RTXA6000）下验证，镜像已在同方工作站(Z690+RTX4070-12G)下验证。   
+1. 镜像已在映泰z790主板+(RTX3050/RTX6000/RTXA6000）下验证，镜像已在同方工作站(W680主板+RTX4070-12G)下验证。   
 3050:       `nvidiaidv_3050-2025-08-19_14.54.23.mp4`
 RTX6000:    `nvidiaidv_6000-2025-08-19_16.23.23.mp4`
 RTXA6000:   `nvidiaidv_a6000_gen12z790-2025-08-19_17.04.39.mp4`
 同方+4070:       `rescuezilla_write_image-2025-08-19_17.28.06.mp4`    
 
-2. BIOS中需开启iommu功能，vt-d功能，并关闭以下选项
+2. BIOS中需开启iommu功能，vt-d功能(W680主板为例):    
+
+![./images/2025_08_20_08_45_18_926x424.jpg](./images/2025_08_20_08_45_18_926x424.jpg)
+
+`CPU Configuration下`， 开启`Intel (VMX) Virtualization`和`VT-d`:    
+
+![./images/2025_08_20_08_43_06_924x314.jpg](./images/2025_08_20_08_43_06_924x314.jpg)
+
+关闭CSM功能, :     
+
+![./images/2025_08_20_08_45_01_931x196.jpg](./images/2025_08_20_08_45_01_931x196.jpg)
+
+
+(！！！注意！！！)以下仅为支持RTXA6000透传使用才需要配置，一般情况下，可以不用配置以下选项！！！    
 
 z790 下为支持RTXA6000, 需关闭 `Above 4GB MMIO BIOS assignment`:    
 
