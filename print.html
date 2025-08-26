@@ -15881,13 +15881,137 @@ comment OpenCSD
   129 BuildRequires: libtraceevent-devel 
 
 su root
-yum-builddp kernel.spec
+yum-builddep kernel.spec
 
 After building
 yum install ./kernel-5.10.0-278.0.0.181.ctl3.aarch64.rpm
 grubby --set-default /boot/vmlinuz-5.10.0-278.0.0.181.ctl3.aarch64
 
 reboot
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250826"><a class="header" href="#20250826">20250826</a></h1>
+<h3 id="1-euler-kernel-build"><a class="header" href="#1-euler-kernel-build">1. euler kernel build</a></h3>
+<p>Issue:</p>
+<pre><code>*** ERROR - ABI BREAKAGE WAS DETECTED ***
+</code></pre>
+<p>Solved via</p>
+<pre><code>vim SPECS/kernel.spec
+%define with_kabichk 0
+%else
+%define with_kabichk 0
+%endif
+</code></pre>
+<p>Kernel source file:</p>
+<pre><code>su - mock
+rpm -ivh kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm
+</code></pre>
+<h3 id="2-winapp"><a class="header" href="#2-winapp">2. winapp</a></h3>
+<p><img src="./images/2025_08_26_16_50_50_463x283.jpg" alt="./images/2025_08_26_16_50_50_463x283.jpg" /></p>
+<p>fixed ip address:</p>
+<pre><code>root@test-P860:/var/lib/libvirt/images# virsh dumpxml RDPWindows| grep mac
+    &lt;type arch='x86_64' machine='pc-q35-8.2'&gt;hvm&lt;/type&gt;
+      &lt;mac address='52:54:00:0e:95:70'/&gt;
+root@test-P860:/var/lib/libvirt/images# virsh net-edit "default"
+
+&lt;dhcp&gt;
+  &lt;range start="192.168.122.2" end="192.168.122.254"/&gt;
+  &lt;host mac="df:87:4c:75:e5:fb" name="RDPWindows" ip="192.168.122.2"/&gt;
+
+Network default XML configuration edited.
+
+root@test-P860:/var/lib/libvirt/images# virsh net-destroy "default"
+Network default destroyed
+
+root@test-P860:/var/lib/libvirt/images# virsh net-start "default"
+Network default started
+
+root@test-P860:/var/lib/libvirt/images# virsh start RDPWindows
+Domain 'RDPWindows' started
+
+</code></pre>
+<h3 id="3-kernel-build-in-euler"><a class="header" href="#3-kernel-build-in-euler">3. kernel build in euler</a></h3>
+<p>issue:</p>
+<pre><code>	asciidoc is needed by kernel-5.10.0-136.12.0.86.aarch64
+	audit-libs-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	binutils-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	bison is needed by kernel-5.10.0-136.12.0.86.aarch64
+	clang &gt;= 10.0.0 is needed by kernel-5.10.0-136.12.0.86.aarch64
+	dwarves is needed by kernel-5.10.0-136.12.0.86.aarch64
+	elfutils-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	elfutils-libelf-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	flex is needed by kernel-5.10.0-136.12.0.86.aarch64
+	gcc &gt;= 3.4.2 is needed by kernel-5.10.0-136.12.0.86.aarch64
+	gettext is needed by kernel-5.10.0-136.12.0.86.aarch64
+	glibc-static is needed by kernel-5.10.0-136.12.0.86.aarch64
+	gtk2-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	hmaccalc is needed by kernel-5.10.0-136.12.0.86.aarch64
+	hostname is needed by kernel-5.10.0-136.12.0.86.aarch64
+	java-1.8.0-openjdk is needed by kernel-5.10.0-136.12.0.86.aarch64
+	java-1.8.0-openjdk-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	java-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	libbabeltrace-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	libcap-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	libcap-ng-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	libunwind-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	libzstd-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	llvm is needed by kernel-5.10.0-136.12.0.86.aarch64
+	m4 is needed by kernel-5.10.0-136.12.0.86.aarch64
+	module-init-tools is needed by kernel-5.10.0-136.12.0.86.aarch64
+	ncurses-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	net-tools is needed by kernel-5.10.0-136.12.0.86.aarch64
+	newt-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	numactl-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	openssl is needed by kernel-5.10.0-136.12.0.86.aarch64
+	openssl-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	pciutils-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	perl is needed by kernel-5.10.0-136.12.0.86.aarch64
+	perl(Carp) is needed by kernel-5.10.0-136.12.0.86.aarch64
+	perl(ExtUtils::Embed) is needed by kernel-5.10.0-136.12.0.86.aarch64
+	perl-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	perl-generators is needed by kernel-5.10.0-136.12.0.86.aarch64
+	python3-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	python3-docutils is needed by kernel-5.10.0-136.12.0.86.aarch64
+	rsync is needed by kernel-5.10.0-136.12.0.86.aarch64
+	xmlto is needed by kernel-5.10.0-136.12.0.86.aarch64
+	xz-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+	zlib-devel is needed by kernel-5.10.0-136.12.0.86.aarch64
+
+steps
+
+    1   sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#http://mirrors.ustc.edu.cn/openeuler/#g'          -i.bak          /etc/yum.repos.d/openEuler.repo
+    2  yum makecache
+    3  useradd -m mock
+    4  cd /home/mock/
+    5  ls
+    6  cd rpmbuild/
+    7  ls
+    8  cd SPECS/
+    9  ls
+   10  yum-builddp kernel.spec
+   11  yum install yum-utils
+   12  yum search yum-builddp
+   13  yum install yum-utils
+   14  yum install make
+   15  yum install yum-utils
+   16  yum search yum-utils
+   17  ls
+   18  grep -E '^(Requires|BuildRequires):'  kernel.spec
+   19  grep -E '^(Requires|BuildRequires):'  kernel.spec| awk '{print $2}' | sort -u &gt; dependencies.txt
+   20  cat dependencies.txt 
+   21  dnf builddep kernel.spec 
+   22  rpmbuild -ba kernel.spec 
+   23  yum install rpmbuild
+   24  yum install rpm-builder
+   25  yum search rpm
+   26  yum install rpm-build
+   27  rpmbuild -ba kernel.spec 
+   28  su - mock
+   29  yum install sudo
+   30  sudo -i su
+   31  yum install util-linux
+   32  su - mock
+   33  ls
+
 </code></pre>
 
                     </main>
