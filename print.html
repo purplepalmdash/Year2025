@@ -16253,6 +16253,27 @@ Memory Mark:                       1633
 --------------------------------------------------------------------------------
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250901"><a class="header" href="#20250901">20250901</a></h1>
+<h3 id="1-hanbo-gpu-working-tips"><a class="header" href="#1-hanbo-gpu-working-tips">1. HanBo GPU Working Tips</a></h3>
+<p>environment:</p>
+<pre><code>test@d30002004:~$ uname -a
+Linux d30002004 5.4.0-216-generic #236-Ubuntu SMP Fri Apr 11 19:55:34 UTC 2025 aarch64 aarch64 aarch64 GNU/Linux
+test@d30002004:~$ cat /etc/issue
+Ubuntu 20.04.5 LTS \n \l
+</code></pre>
+<p>Install hwe kernel:</p>
+<pre><code> sudo apt install linux-generic-hwe-20.04
+test@d30002004:~$ sudo apt install build-essential docker.io adb net-tools dkms
+
+
+apt install -y build-essential git net-tools dkms make debhelper devscripts build-essential flex bison mawk libncurses-dev flex bison
+apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison liblz4-tool
+
+</code></pre>
+<p>After building:</p>
+<pre><code>sudo apt install ./linux-headers-5.15.98-victory_5.15.98-victory-1_arm64.deb ./linux-image-5.15.98-victory_5.15.98-victory-1_arm64.deb
+sudo reboot
+</code></pre>
 
                     </main>
 
