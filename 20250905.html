@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250904 - year2025</title>
+        <title>20250905 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,93 +175,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250904"><a class="header" href="#20250904">20250904</a></h1>
-<h3 id="1-winserver-2022"><a class="header" href="#1-winserver-2022">1. winserver 2022</a></h3>
-<p>Choose <code>Windows Server 2022 Standard Evalution(Desktop Ex..)</code>:</p>
-<p><img src="./images/2025_09_04_09_02_26_635x473.jpg" alt="./images/2025_09_04_09_02_26_635x473.jpg" /></p>
-<p>Added vfs to vm:</p>
-<p><img src="./images/2025_09_04_09_53_46_541x495.jpg" alt="./images/2025_09_04_09_53_46_541x495.jpg" /></p>
-<p>no device driver for vgpu:</p>
-<p><img src="./images/2025_09_04_09_55_14_708x503.jpg" alt="./images/2025_09_04_09_55_14_708x503.jpg" /></p>
-<p><img src="./images/2025_09_04_10_27_26_628x207.jpg" alt="./images/2025_09_04_10_27_26_628x207.jpg" /></p>
-<p><img src="./images/2025_09_04_10_27_08_932x675.jpg" alt="./images/2025_09_04_10_27_08_932x675.jpg" /></p>
-<p><img src="./images/2025_09_04_10_28_56_702x645.jpg" alt="./images/2025_09_04_10_28_56_702x645.jpg" /></p>
-<p>Open remote desktop:</p>
-<p><img src="./images/2025_09_04_10_29_49_511x437.jpg" alt="./images/2025_09_04_10_29_49_511x437.jpg" /></p>
-<p>Using tigervnc server for setting windows vnc server.</p>
-<p><img src="./images/2025_09_04_11_48_00_1171x671.jpg" alt="./images/2025_09_04_11_48_00_1171x671.jpg" /></p>
-<h3 id="2-perf-related"><a class="header" href="#2-perf-related">2. perf related</a></h3>
-<p>glmark2:</p>
-<p><img src="./images/2025_09_04_15_18_05_685x507.jpg" alt="./images/2025_09_04_15_18_05_685x507.jpg" /></p>
-<p><img src="./images/2025_09_04_15_21_07_1001x591.jpg" alt="./images/2025_09_04_15_21_07_1001x591.jpg" /></p>
-<p><img src="./images/2025_09_04_15_29_03_425x401.jpg" alt="./images/2025_09_04_15_29_03_425x401.jpg" /></p>
-<p><img src="./images/2025_09_04_15_33_47_453x396.jpg" alt="./images/2025_09_04_15_33_47_453x396.jpg" /></p>
-<p>Upgrade to newest kernel:</p>
-<p><img src="./images/2025_09_04_16_07_34_849x386.jpg" alt="./images/2025_09_04_16_07_34_849x386.jpg" /></p>
-<pre><code>sudo add-apt-repository ppa:cappelikan/ppa
-apt update -y
-apt install -y mainline
-</code></pre>
-<p><img src="./images/2025_09_04_16_10_12_890x514.jpg" alt="./images/2025_09_04_16_10_12_890x514.jpg" /></p>
-<h3 id="3-build-kernel2504"><a class="header" href="#3-build-kernel2504">3. build kernel(25.04)</a></h3>
-<p>In docker:</p>
-<pre><code>apt update
-apt install -y vim
- apt install -y flex bison libssl-dev libelf-dev bc gcc automake autoconf libtool make rsync \
-            patch wget dpkg-dev libdw-dev git debhelper kmod python-is-python3 gawk libncurses-dev lsb-release zstd
-cd /mnt/linux-6.16.4
-git config --global --add safe.directory /mnt/linux-6.16.4
-git init
-git add .
-git -c user.name="Your Name" -c user.email="your_email@example.com" commit -m "init commit"
-
-
-cd /mnt/official
-apt download linux-modules-6.14.0-24-generic
-ar x linux-modules-6.14.0-24-generic_6.14.0-24_amd64.deb
-tar -xvf data.tar.xz
-cat ./boot/config-6.14.0-24-generic
-
-cd /mnt/linux-6.16.4/
-cp /mnt/official/boot/config-* .config
-make menuconfig
-## make changes to binder related
-
-sed -i 's/^CONFIG_SYSTEM_TRUSTED_KEYS="debian\/canonical-certs.pem"/CONFIG_SYSTEM_TRUSTED_KEYS=""/' .config
-sed -i 's/^CONFIG_SYSTEM_REVOCATION_KEYS="debian\/canonical-revoked-certs.pem"/CONFIG_SYSTEM_REVOCATION_KEYS=""/' .config
-time make deb-pkg -j$(nproc)
-</code></pre>
-<p>Comparison of different configs generated deb:</p>
-<pre><code>First time
--rw-r--r-- 1 root root 9.0M Sep  4 22:16 linux-headers-6.16.4-g5c503d1d0d25-dirty_6.16.4-g5c503d1d0d25-3_amd64.deb
--rw-r--r-- 1 root root  15M Sep  4 22:16 linux-image-6.16.4-g5c503d1d0d25-dirty_6.16.4-g5c503d1d0d25-3_amd64.deb
--rw-r--r-- 1 root root 1.5M Sep  4 22:16 linux-libc-dev_6.16.4-g5c503d1d0d25-3_amd64.deb
-
-Second time(with official ubuntu config)
-
-  LD [M]  net/qrtr/qrtr-smd.ko
-  LD [M]  net/qrtr/qrtr-tun.ko
-  LD [M]  net/qrtr/qrtr-mhi.ko
-  LD [M]  virt/lib/irqbypass.ko
-make[3]: *** [debian/rules:80: build-arch] Error 2
-dpkg-buildpackage: error: make -f debian/rules binary subprocess returned exit status 2
-make[2]: *** [scripts/Makefile.package:126: deb-pkg] Error 2
-make[1]: *** [/mnt/linux-6.16.4/Makefile:1635: deb-pkg] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-</code></pre>
+                        <h1 id="20250905"><a class="header" href="#20250905">20250905</a></h1>
+<h3 id="1-kernel-6164-verification"><a class="header" href="#1-kernel-6164-verification">1. kernel 6.16.4 verification</a></h3>
+<p>sr-iov enabled, xorg failed.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250903.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250904.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250905.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -269,13 +194,10 @@ make: *** [Makefile:248: __sub-make] Error 2
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250903.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250904.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250905.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
