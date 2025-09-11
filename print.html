@@ -16483,6 +16483,68 @@ apt-get -y &amp;&amp; apt upgrade -y
 <p><img src="./images/2025_09_10_17_01_12_1141x639.jpg" alt="./images/2025_09_10_17_01_12_1141x639.jpg" /></p>
 <p><img src="./images/2025_09_10_17_02_38_519x408.jpg" alt="./images/2025_09_10_17_02_38_519x408.jpg" /></p>
 <p><img src="./images/2025_09_10_17_02_51_525x419.jpg" alt="./images/2025_09_10_17_02_51_525x419.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250911"><a class="header" href="#20250911">20250911</a></h1>
+<h3 id="1-win7-on-gen10"><a class="header" href="#1-win7-on-gen10">1. win7 on gen10</a></h3>
+<p>Verification step:</p>
+<pre><code>Install ubuntu 18.04
+verify win10 vm
+use the same configuration for installation of win7
+
+</code></pre>
+<h3 id="2-gen-10-i9-win7raw"><a class="header" href="#2-gen-10-i9-win7raw">2. gen 10 i9 win7(raw)</a></h3>
+<p>Use a rx550 gpu, for installation:</p>
+<p><img src="./images/2025_09_11_10_18_14_512x516.jpg" alt="./images/2025_09_11_10_18_14_512x516.jpg" /></p>
+<p>Close secure boot:</p>
+<p><img src="./images/2025_09_11_10_23_02_1149x488.jpg" alt="./images/2025_09_11_10_23_02_1149x488.jpg" /></p>
+<p>Get the bios mode:</p>
+<p><img src="./images/2025_09_11_10_31_48_1263x659.jpg" alt="./images/2025_09_11_10_31_48_1263x659.jpg" /></p>
+<p>enable csm:</p>
+<pre><code>BIOS版本M31K开头的激活代码 AmiSetupWriter.efi 0x802 0x1 （CSM改为允许）
+
+如果M31K开头的BIOS，独显为RTX 16系列和20系列输入以下三条命令
+AmiSetupWriter.efi 0x808 0x0 
+AmiSetupWriter.efi 0x80b 0x2
+AmiSetupWriter.efi 0x80c 0x2
+</code></pre>
+<p><img src="./images/2025_09_11_10_52_32_1443x702.jpg" alt="./images/2025_09_11_10_52_32_1443x702.jpg" /></p>
+<p>Create bios functionality disk:</p>
+<p><img src="./images/2025_09_11_10_52_56_1437x655.jpg" alt="./images/2025_09_11_10_52_56_1437x655.jpg" /></p>
+<p>Boot to uefi mode:<br />
+<img src="./images/2025_09_11_10_54_59_802x173.jpg" alt="./images/2025_09_11_10_54_59_802x173.jpg" /></p>
+<p>CSM enable:</p>
+<p><img src="./images/2025_09_11_10_55_37_962x155.jpg" alt="./images/2025_09_11_10_55_37_962x155.jpg" /></p>
+<p>Graphical related:</p>
+<p><img src="./images/2025_09_11_10_56_31_1006x548.jpg" alt="./images/2025_09_11_10_56_31_1006x548.jpg" /></p>
+<p>Ventoy for installing win7, could not start Ventoy.</p>
+<h3 id="3-h3c-idvverification"><a class="header" href="#3-h3c-idvverification">3. h3c idv(verification)</a></h3>
+<p>legacy items. black screen, but could be accessed via todesk.</p>
+<p><img src="./images/2025_09_11_15_02_04_1010x794.jpg" alt="./images/2025_09_11_15_02_04_1010x794.jpg" /></p>
+<p><img src="./images/2025_09_11_15_18_40_1044x759.jpg" alt="./images/2025_09_11_15_18_40_1044x759.jpg" /></p>
+<h3 id="4-hardware-installation"><a class="header" href="#4-hardware-installation">4. hardware installation</a></h3>
+<p>USB disk for installation :</p>
+<p><img src="./images/2025_09_11_16_29_38_1006x442.jpg" alt="./images/2025_09_11_16_29_38_1006x442.jpg" /></p>
+<p><img src="./images/2025_09_11_16_37_08_827x505.jpg" alt="./images/2025_09_11_16_37_08_827x505.jpg" /></p>
+<p><img src="./images/2025_09_11_16_38_06_833x323.jpg" alt="./images/2025_09_11_16_38_06_833x323.jpg" /></p>
+<p>选择重装系统:</p>
+<p><img src="./images/2025_09_11_16_38_51_606x434.jpg" alt="./images/2025_09_11_16_38_51_606x434.jpg" /></p>
+<p><img src="./images/2025_09_11_16_40_41_655x444.jpg" alt="./images/2025_09_11_16_40_41_655x444.jpg" /></p>
+<p><img src="./images/2025_09_11_16_41_03_566x336.jpg" alt="./images/2025_09_11_16_41_03_566x336.jpg" /></p>
+<p><img src="./images/2025_09_11_16_41_28_628x439.jpg" alt="./images/2025_09_11_16_41_28_628x439.jpg" /></p>
+<p>进度:</p>
+<p><img src="./images/2025_09_11_16_41_51_774x537.jpg" alt="./images/2025_09_11_16_41_51_774x537.jpg" /></p>
+<p>导入驱动:</p>
+<p><img src="./images/2025_09_11_16_44_58_562x435.jpg" alt="./images/2025_09_11_16_44_58_562x435.jpg" /></p>
+<p>重启后：</p>
+<p><img src="./images/2025_09_11_16_46_11_818x527.jpg" alt="./images/2025_09_11_16_46_11_818x527.jpg" /></p>
+<p><img src="./images/2025_09_11_16_48_48_861x631.jpg" alt="./images/2025_09_11_16_48_48_861x631.jpg" /></p>
+<p><img src="./images/2025_09_11_17_10_09_644x533.jpg" alt="./images/2025_09_11_17_10_09_644x533.jpg" /></p>
+<p>Not OK with 21.20.16.5164:</p>
+<p><img src="./images/2025_09_11_17_16_10_555x533.jpg" alt="./images/2025_09_11_17_16_10_555x533.jpg" /></p>
+<h3 id="5-8100-verification"><a class="header" href="#5-8100-verification">5. 8100 verification</a></h3>
+<p>Use the same iso for installation.</p>
+<p><img src="./images/2025_09_11_17_36_19_1242x675.jpg" alt="./images/2025_09_11_17_36_19_1242x675.jpg" /></p>
+<p>See this uhd630 could be activated or not?</p>
+<p><img src="./images/2025_09_11_17_42_54_1039x592.jpg" alt="./images/2025_09_11_17_42_54_1039x592.jpg" /></p>
 
                     </main>
 
