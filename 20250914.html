@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250915 - year2025</title>
+        <title>20250914 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,185 +175,23 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250915"><a class="header" href="#20250915">20250915</a></h1>
-<h3 id="1-10400-verification"><a class="header" href="#1-10400-verification">1. 10400 verification</a></h3>
-<p>Windows 7: black screen.</p>
-<p>Install <code>idv 1.0.14</code>(10th version, deployed in rz):</p>
-<pre><code># uname -r
-5.10.90-c1dc2c9a39ac
+                        <h1 id="20250914"><a class="header" href="#20250914">20250914</a></h1>
+<h3 id="1-curl-with-proxy"><a class="header" href="#1-curl-with-proxy">1. curl with proxy</a></h3>
+<p>Step:</p>
+<pre><code>curl --socks5-hostname  192.168.1.213:14389 https://kernel.ubuntu.com/mainline/v6.6.60/amd64/linux-modules-6.6.60-060660-generic_6.6.60-060660.202411082058_amd64.deb --output a.deb
 </code></pre>
-<p>Import qcow2, first use qxl/spice for verification, then shutdown, add igpu/usb device:</p>
-<p><img src="./images/2025_09_15_08_56_57_587x461.jpg" alt="./images/2025_09_15_08_56_57_587x461.jpg" /></p>
-<p>Edit the vm:</p>
-<pre><code># virsh edit win10
-OVMF_CODE.fd-&gt;OVMF.fd
-Add -set parameter
-</code></pre>
-<p><img src="./images/2025_09_15_09_01_50_1540x862.jpg" alt="./images/2025_09_15_09_01_50_1540x862.jpg" /></p>
-<h3 id="2-i7-10700-verification"><a class="header" href="#2-i7-10700-verification">2. i7-10700 verification</a></h3>
-<p>Hardware info:</p>
-<pre><code>root@idv-C5520V:~# lscpu | grep Model
-Model:               165
-Model name:          Intel(R) Core(TM) i7-10700 CPU @ 2.90GHz
-root@idv-C5520V:~# uname -r
-5.10.90-c1dc2c9a39ac
-
-</code></pre>
-<p>Import system:</p>
-<p><img src="./images/2025_09_15_09_09_03_577x453.jpg" alt="./images/2025_09_15_09_09_03_577x453.jpg" /></p>
-<p><img src="./images/2025_09_15_09_09_29_647x489.jpg" alt="./images/2025_09_15_09_09_29_647x489.jpg" /></p>
-<p>The effect are as listed as the i5-10400.</p>
-<h3 id="3-i5-10400tc-9073"><a class="header" href="#3-i5-10400tc-9073">3. i5-10400(tc-9073)</a></h3>
-<p>Hardware info:</p>
-<pre><code>root@idv-TC-9073:/var/lib/libvirt/images# lscpu | grep 'Model'
-Model:               165
-Model name:          Intel(R) Core(TM) i5-10400 CPU @ 2.90GHz
-root@idv-TC-9073:/var/lib/libvirt/images# uname -r
-5.10.90-c1dc2c9a39ac
-</code></pre>
-<p>test vm:</p>
-<p><img src="./images/2025_09_15_09_25_45_567x408.jpg" alt="./images/2025_09_15_09_25_45_567x408.jpg" /></p>
-<p>when start, the machine will remain black,</p>
-<p>dmesg output:</p>
-<pre><code>[   60.862887] vfio-pci 0000:00:02.0: vgaarb: changed VGA decodes: olddecodes=io+mem,decodes=io+mem:owns=io+mem
-[   60.884228] virbr0: port 2(vnet0) entered blocking state
-[   60.884231] virbr0: port 2(vnet0) entered disabled state
-[   60.884275] device vnet0 entered promiscuous mode
-[   60.884402] virbr0: port 2(vnet0) entered blocking state
-[   60.884404] virbr0: port 2(vnet0) entered listening state
-[   60.933346] cgroup: cgroup: disabling cgroup2 socket matching due to net_prio or net_cls activation
-[   62.048369] 8086:9bc8 set_gmbus_and_flr devfn=0x10 offset=0xc5100
-[   62.048378] 8086:9bc8 set_gmbus_and_flr gmbus(0xc5100)=0x0 before wa
-[   62.048404] 8086:9bc8 set_gmbus_and_flr gmbus=0x1 after wa before flr
-[   62.156355] vfio-pci 0000:00:02.0: vfio_ecap_init: hiding ecap 0x1b@0x100
-[   62.157317] vfio-pci 0000:00:02.0: Invalid PCI ROM header signature: expecting 0xaa55, got 0x0000
-[   62.157324] vfio-pci 0000:00:02.0: Invalid PCI ROM header signature: expecting 0xaa55, got 0x0000
-[   62.157330] vfio-pci 0000:00:02.0: Invalid PCI ROM header signature: expecting 0xaa55, got 0x0000
-[   62.233223] 8086:9bc8 set_gmbus_and_flr devfn=0x10 offset=0xc5100
-[   62.233231] 8086:9bc8 set_gmbus_and_flr gmbus(0xc5100)=0x0 before wa
-[   62.233257] 8086:9bc8 set_gmbus_and_flr gmbus=0x1 after wa before flr
-[   62.904335] virbr0: port 2(vnet0) entered learning state
-[   64.920324] virbr0: port 2(vnet0) entered forwarding state
-[   64.920336] virbr0: topology change detected, propagating
-</code></pre>
-<p>Effect:</p>
-<p><code>i7verificationidv_510kernelofficial-2025-09-15_09.59.05.mp4</code></p>
-<h3 id="4-kernel-66-on-ubuntu1804"><a class="header" href="#4-kernel-66-on-ubuntu1804">4. kernel 6.6 on ubuntu1804</a></h3>
-<p>hw/os info:</p>
-<pre><code>root@test-Standard-PC-Q35-ICH9-2009:~# uname -r
-6.1.30-victory
-root@test-Standard-PC-Q35-ICH9-2009:~# gcc --version
-gcc (Ubuntu 11.4.0-2ubuntu1~18.04) 11.4.0
-Copyright (C) 2021 Free Software Foundation, Inc.
-</code></pre>
-<p>Steps:</p>
-<pre><code>mkdir Code
-cd Code
-wget https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz
-tar -xzf zstd-1.5.6.tar.gz
-cd zstd-1.5.6
-make
-sudo make install
-cd ..
-wget https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v6.x/linux-6.6.106.tar.xz
-tar xJvf linux-6.6.106.tar.xz 
-cd linux-6.6.106/
-cp /boot/config-6.1.30-victory .config
-scripts/config --disable SYSTEM_TRUSTED_KEYS
-scripts/config --disable SYSTEM_REVOCATION_KEYS
-vim .config
-make menuconfig
- mkdir build
-mv .config build/
-make menuconfig O=./build
-#make LOCALVERSION="-new66" -j `jproc` O=./build
-ls
-ls build/
-ls -l -h -a build/
-time make LOCALVERSION="-new66" -j `jproc` O=./build
-echo ""| make ARCH=x86_64 olddefconfig O=./build
-make ARCH=x86_64 mrproper
-time make LOCALVERSION="-new66" -j `jproc` O=./build
-cat /proc/cpuinfo
-echo ""| make ARCH=x86_64 olddefconfig O=./build
-free -g
-make LOCALVERSION="-newnew" -j `nproc` O=./build
-df -h
-make LOCALVERSION="-newnew" -j `nproc` O=./build V=1
-</code></pre>
-<p>Change to tsinghua git:</p>
-<pre><code>time make LOCALVERSION="-th66" -j `nproc` O=./build deb-pkg
-</code></pre>
-<h3 id="5-kernel-verification"><a class="header" href="#5-kernel-verification">5. kernel verification</a></h3>
-<p>Kernel verification:</p>
-<div class="table-wrapper"><table><thead><tr><th>Kernel Version</th><th>Qemu Version</th><th>Result</th></tr></thead><tbody>
-<tr><td>5.10.90</td><td>4.2.0</td><td>Succeed</td></tr>
-<tr><td>6.1.109-paragon</td><td>4.2.0</td><td>Succeed</td></tr>
-</tbody></table>
-</div>
-<h3 id="6-libvirt-based"><a class="header" href="#6-libvirt-based">6. libvirt based</a></h3>
-<p>Create vm:</p>
-<p><img src="./images/2025_09_15_15_26_42_447x340.jpg" alt="./images/2025_09_15_15_26_42_447x340.jpg" /></p>
-<p><img src="./images/2025_09_15_15_27_16_351x207.jpg" alt="./images/2025_09_15_15_27_16_351x207.jpg" /></p>
-<p>specify qcow2:</p>
-<p><img src="./images/2025_09_15_15_27_43_353x217.jpg" alt="./images/2025_09_15_15_27_43_353x217.jpg" /></p>
-<p>specify name:</p>
-<p><img src="./images/2025_09_15_15_28_24_344x294.jpg" alt="./images/2025_09_15_15_28_24_344x294.jpg" /></p>
-<p>Hypervisor details:</p>
-<p><img src="./images/2025_09_15_15_28_49_419x149.jpg" alt="./images/2025_09_15_15_28_49_419x149.jpg" /></p>
-<p>rtl8139:</p>
-<p><img src="./images/2025_09_15_15_29_34_452x236.jpg" alt="./images/2025_09_15_15_29_34_452x236.jpg" /></p>
-<p>add another iso:</p>
-<p><img src="./images/2025_09_15_15_30_32_516x251.jpg" alt="./images/2025_09_15_15_30_32_516x251.jpg" /></p>
-<p>Remove <code>Display Spice</code> and <code>QXL</code>:</p>
-<p><img src="./images/2025_09_15_15_31_31_526x325.jpg" alt="./images/2025_09_15_15_31_31_526x325.jpg" /></p>
-<p>4Core 2 threads:</p>
-<p><img src="./images/2025_09_15_15_32_49_443x317.jpg" alt="./images/2025_09_15_15_32_49_443x317.jpg" /></p>
-<p>Add igpu/usb host:</p>
-<p><img src="./images/2025_09_15_15_34_28_450x318.jpg" alt="./images/2025_09_15_15_34_28_450x318.jpg" /></p>
-<pre><code># virsh edit win720250915
-&lt;domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'&gt;
-
-...
-
-  &lt;cpu mode='host-passthrough' check='none'&gt;
-    &lt;topology sockets='1' cores='4' threads='2'/&gt;
-  &lt;/cpu&gt;
-
-...
-
-    &lt;hostdev mode='subsystem' type='pci' managed='yes'&gt;
-      &lt;driver name='vfio'/&gt;
-      &lt;source&gt;
-        &lt;address domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
-      &lt;/source&gt;
-      &lt;alias name='hostdev0'/&gt;
-      &lt;rom bar='on' file='/usr/share/OVMF/igpu.rom'/&gt;
-      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
-    &lt;/hostdev&gt;
-...
-
-  &lt;qemu:commandline&gt;
-    &lt;qemu:arg value='-set'/&gt;
-    &lt;qemu:arg value='device.hostdev0.x-igd-gms=2'/&gt;
-    &lt;qemu:arg value='-set'/&gt;
-    &lt;qemu:arg value='device.hostdev0.x-igd-opregion=on'/&gt;
-    &lt;qemu:arg value='-set'/&gt;
-    &lt;qemu:arg value='device.hostdev0.multifunction=on'/&gt;
-  &lt;/qemu:commandline&gt;
-&lt;/domain&gt;
-
-</code></pre>
-<p><img src="./images/2025_09_15_15_51_04_908x515.jpg" alt="./images/2025_09_15_15_51_04_908x515.jpg" /></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250914.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250912.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20250915.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -361,10 +199,13 @@ make LOCALVERSION="-newnew" -j `nproc` O=./build V=1
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250914.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250912.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20250915.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
