@@ -16897,6 +16897,69 @@ i3 10100和i3 10105安装win7采用集显需要搭配400系列主板，500系列
 <p>Then sound will be ok under idv.</p>
 <h3 id="2-kvm-internal-error"><a class="header" href="#2-kvm-internal-error">2. kvm internal error</a></h3>
 <p>Cannot re-produce.</p>
+<h3 id="3-claude-routergemini"><a class="header" href="#3-claude-routergemini">3. claude router+gemini</a></h3>
+<p>Steps:</p>
+<pre><code>curl -fsSL https://deb.nodesource.com/setup_lts.x| sudo bash -
+sudo apt install -y nodejs
+node --version
+v22.19.0
+sudo npm install -g @anthropic-ai/claude-code
+ claude --version
+1.0.117 (Claude Code)
+sudo npm install -g @musistudio/claude-code-router
+ ccr -v
+claude-code-router version: 1.0.49
+
+</code></pre>
+<p>Test api key:</p>
+<pre><code>curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent" \
+  -H "x-goog-api-key: &lt;YOUR_GEMINI_API_KEY&gt;" \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Explain how AI works in a few words"
+          }
+        ]
+      }
+    ]
+  }'
+</code></pre>
+<p>Write the config.json :</p>
+<pre><code> cat ~/.claude-code-router/config.json 
+{
+    "APIKEY": "",
+    "LOG": true,
+    "API_TIMEOUT_MS": 600000,
+    "NON_INTERACTIVE_MODE": false,
+    "Providers": [
+      {
+        "name": "gemini",
+        "api_base_url": "https://generativelanguage.googleapis.com/v1beta/models/",
+        "api_key": "AI..........................",
+        "models": [
+          "gemini-2.5-pro"
+        ] ,      "transformer": {
+            "use": ["gemini"]
+          }  
+      }
+    ],
+    "Router": {
+      "default": "gemini,gemini-2.5-pro",
+      "background": "gemini,gemini-2.5-pro",
+      "think": "gemini,gemini-2.5-pro",
+      "longContext": "gemini,gemini-2.5-pro",
+      "longContextThreshold": 60000,
+      "webSearch": "gemini,gemini-2.5-pro"
+    },
+
+  }
+$ ccr start
+$ ccr code
+</code></pre>
 
                     </main>
 
