@@ -16886,6 +16886,17 @@ i3 10100和i3 10105安装win7采用集显需要搭配400系列主板，500系列
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250917"><a class="header" href="#20250917">20250917</a></h1>
 <h3 id="1-webmin"><a class="header" href="#1-webmin">1. webmin</a></h3>
 <p>ignored.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250918"><a class="header" href="#20250918">20250918</a></h1>
+<h3 id="1-win7-sound-testing"><a class="header" href="#1-win7-sound-testing">1. win7 sound testing</a></h3>
+<p>Add following:</p>
+<pre><code>  &lt;qemu:commandline&gt;
++    &lt;qemu:env name='QEMU_AUDIO_DRV' value='pa'/&gt;
++    &lt;qemu:env name='QEMU_PA_SERVER' value='/run/user/1000/pulse/native'/&gt;
+  &lt;/qemu:commandline&gt;
+</code></pre>
+<p>Then sound will be ok under idv.</p>
+<h3 id="2-kvm-internal-error"><a class="header" href="#2-kvm-internal-error">2. kvm internal error</a></h3>
+<p>Cannot re-produce.</p>
 
                     </main>
 

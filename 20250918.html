@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250917 - year2025</title>
+        <title>20250918 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,21 +175,26 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250917"><a class="header" href="#20250917">20250917</a></h1>
-<h3 id="1-webmin"><a class="header" href="#1-webmin">1. webmin</a></h3>
-<p>ignored.</p>
+                        <h1 id="20250918"><a class="header" href="#20250918">20250918</a></h1>
+<h3 id="1-win7-sound-testing"><a class="header" href="#1-win7-sound-testing">1. win7 sound testing</a></h3>
+<p>Add following:</p>
+<pre><code>  &lt;qemu:commandline&gt;
++    &lt;qemu:env name='QEMU_AUDIO_DRV' value='pa'/&gt;
++    &lt;qemu:env name='QEMU_PA_SERVER' value='/run/user/1000/pulse/native'/&gt;
+  &lt;/qemu:commandline&gt;
+</code></pre>
+<p>Then sound will be ok under idv.</p>
+<h3 id="2-kvm-internal-error"><a class="header" href="#2-kvm-internal-error">2. kvm internal error</a></h3>
+<p>Cannot re-produce.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250916.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250917.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20250918.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -197,13 +202,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250916.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250917.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20250918.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
