@@ -16991,6 +16991,115 @@ gemini
 <p>Via:</p>
 <pre><code>/chat save kkk
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250923"><a class="header" href="#20250923">20250923</a></h1>
+<h3 id="1-i5-10400470board-verification"><a class="header" href="#1-i5-10400470board-verification">1. i5-10400+470board verification</a></h3>
+<p><img src="./images/2025_09_23_08_52_46_995x659.jpg" alt="./images/2025_09_23_08_52_46_995x659.jpg" /></p>
+<p>hardinfo:</p>
+<pre><code># lscpu | grep -i model
+Model:               165
+Model name:          Intel(R) Core(TM) i5-10400 CPU @ 2.9
+# dmidecode | grep -i 470  -A10 -B10
+Handle 0x0002, DMI type 2, 15 bytes
+Base Board Information
+	Manufacturer: W
+	Product Name: SDNS-H470A1-D248
+	Version: 1.0
+	Serial Number:  
+	Asset Tag: Default string
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: Default string
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+
+</code></pre>
+<p>win7, blue screen.</p>
+<p><img src="./images/2025_09_23_08_58_02_638x478.jpg" alt="./images/2025_09_23_08_58_02_638x478.jpg" /></p>
+<h3 id="2-i3-10100460board-verification"><a class="header" href="#2-i3-10100460board-verification">2. i3-10100+460board verification</a></h3>
+<p>hard info:</p>
+<pre><code># dmidecode | grep "Base Board" -A20
+Base Board Information
+	Manufacturer: Y
+	Product Name: B46T1
+	Version: Default string
+	Serial Number: B46T1022308S0012
+	Asset Tag: Default string
+	Features:
+		Board is a hosting board
+		Board is replaceable
+	Location In Chassis: Default string
+	Chassis Handle: 0x0003
+	Type: Motherboard
+	Contained Object Handles: 0
+# lscpu | grep -i model
+Model:               165
+Model name:          Intel(R) Core(TM) i3-10100 CPU @ 3.60GHz
+</code></pre>
+<p>vm info:</p>
+<p><img src="./images/2025_09_23_08_47_49_640x496.jpg" alt="./images/2025_09_23_08_47_49_640x496.jpg" /></p>
+<p>gpu and cpu info:</p>
+<p><img src="./images/2025_09_23_08_48_21_646x537.jpg" alt="./images/2025_09_23_08_48_21_646x537.jpg" /></p>
+<h3 id="3-i5-10400470board-installation"><a class="header" href="#3-i5-10400470board-installation">3. i5-10400+470board installation</a></h3>
+<p>Using sata disk for installation.</p>
+<p><img src="./images/2025_09_23_09_17_40_1690x655.jpg" alt="./images/2025_09_23_09_17_40_1690x655.jpg" /></p>
+<p>qxl:</p>
+<p><img src="./images/2025_09_23_10_05_50_829x601.jpg" alt="./images/2025_09_23_10_05_50_829x601.jpg" /></p>
+<h3 id="4-i5-10400470board-verify"><a class="header" href="#4-i5-10400470board-verify">4. i5-10400+470board verify</a></h3>
+<p>qxl workable xml for vfio-gpu:</p>
+<p><img src="./images/2025_09_23_10_26_36_1154x607.jpg" alt="./images/2025_09_23_10_26_36_1154x607.jpg" /></p>
+<h3 id="5-extrace-rom"><a class="header" href="#5-extrace-rom">5. extrace rom</a></h3>
+<p><img src="./images/2025_09_23_11_30_20_557x381.jpg" alt="./images/2025_09_23_11_30_20_557x381.jpg" /></p>
+<p><img src="./images/2025_09_23_11_30_39_520x401.jpg" alt="./images/2025_09_23_11_30_39_520x401.jpg" /></p>
+<p><img src="./images/2025_09_23_11_33_31_341x405.jpg" alt="./images/2025_09_23_11_33_31_341x405.jpg" /></p>
+<p>press 2, s:</p>
+<p><img src="./images/2025_09_23_11_34_06_376x340.jpg" alt="./images/2025_09_23_11_34_06_376x340.jpg" /></p>
+<p><img src="./images/2025_09_23_11_39_50_432x100.jpg" alt="./images/2025_09_23_11_39_50_432x100.jpg" /></p>
+<h3 id="6-win7-verification"><a class="header" href="#6-win7-verification">6. win7 verification</a></h3>
+<h4 id="61-legacy-rom"><a class="header" href="#61-legacy-rom">6.1 legacy rom</a></h4>
+<p>csm configuration, rom为legacy:</p>
+<p><img src="./images/2025_09_23_15_33_20_962x500.jpg" alt="./images/2025_09_23_15_33_20_962x500.jpg" /></p>
+<p>install win7 in host(Xiaobing):</p>
+<p><img src="./images/2025_09_23_15_35_28_392x446.jpg" alt="./images/2025_09_23_15_35_28_392x446.jpg" /></p>
+<p>Partition:</p>
+<p><img src="./images/2025_09_23_15_36_23_730x527.jpg" alt="./images/2025_09_23_15_36_23_730x527.jpg" /></p>
+<p>restore system:</p>
+<p><img src="./images/2025_09_23_15_37_06_804x554.jpg" alt="./images/2025_09_23_15_37_06_804x554.jpg" /></p>
+<p>Install driver:</p>
+<p><img src="./images/2025_09_23_15_43_20_905x571.jpg" alt="./images/2025_09_23_15_43_20_905x571.jpg" /></p>
+<p>Activate:</p>
+<p><img src="./images/2025_09_23_15_45_38_1349x846.jpg" alt="./images/2025_09_23_15_45_38_1349x846.jpg" /></p>
+<p>After reboot:</p>
+<p><img src="./images/2025_09_23_15_47_06_922x662.jpg" alt="./images/2025_09_23_15_47_06_922x662.jpg" /></p>
+<p><img src="./images/2025_09_23_15_49_30_1023x536.jpg" alt="./images/2025_09_23_15_49_30_1023x536.jpg" /></p>
+<h4 id="62-uefi-rom"><a class="header" href="#62-uefi-rom">6.2 uefi rom</a></h4>
+<p>如果打开csm, 而后rom选择为uefi呢？</p>
+<p>蓝屏.</p>
+<h4 id="63-close-csm"><a class="header" href="#63-close-csm">6.3 close csm</a></h4>
+<p>如果关闭csm, 则安装会失败。</p>
+<h3 id="7-ubuntu-installation"><a class="header" href="#7-ubuntu-installation">7. ubuntu installation</a></h3>
+<p>csm(Boot option filter: "legacy only"), ubuntu22.04 installed but cannot startup.<br />
+csm(Boot option filter: "uefi/legacy"), ubuntu18.04 installed,can startup.</p>
+<h4 id="71-videolegacy"><a class="header" href="#71-videolegacy">7.1 video(legacy)</a></h4>
+<p>启动虚机时无GOP.</p>
+<h4 id="72-videouefi"><a class="header" href="#72-videouefi">7.2 video(uefi)</a></h4>
+<p>启动虚机时有GOP.</p>
+<p>系统信息：</p>
+<p><img src="./images/2025_09_23_16_25_08_656x484.jpg" alt="./images/2025_09_23_16_25_08_656x484.jpg" /></p>
+<p>安装信息:</p>
+<p><img src="./images/2025_09_23_16_25_58_1165x625.jpg" alt="./images/2025_09_23_16_25_58_1165x625.jpg" /></p>
+<p>安装到即将进入系统时(安装第二步)，切换为video（legacy).</p>
+<p>但是切换为video(legacy)后，无法显示画面。</p>
+<h3 id="73-videolegacyguest-bios"><a class="header" href="#73-videolegacyguest-bios">7.3 video(legacy)/guest bios</a></h3>
+<p>也是解决uefi卡log, 也是适配新机器。<br />
+没有用, 一样存在问题,guest bios。</p>
+<h3 id="8-proxmox-verification"><a class="header" href="#8-proxmox-verification">8. proxmox verification</a></h3>
+<p>Refers:</p>
+<pre><code>6-10代：如果你的机器可以bios开csm并把核显设置为Legacy模式。那你就虚拟机seabios+i440fx或者q35直接用就是，都不需要加载什么rom，即使要加载也是从机器里面提取的而已（具体请参考网上一大堆成功案例。也不需要我这里提供的什么6-14-qemu10.rom这货）。
+</code></pre>
+<p>Extract the rom:</p>
+<p><img src="./images/2025_09_23_17_35_55_1106x454.jpg" alt="./images/2025_09_23_17_35_55_1106x454.jpg" /></p>
 
                     </main>
 
