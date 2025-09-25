@@ -1,0 +1,483 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20250924 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20250924"><a class="header" href="#20250924">20250924</a></h1>
+<h3 id="1-win7-verificationh470"><a class="header" href="#1-win7-verificationh470">1. win7 verification(h470)</a></h3>
+<p><code>匹配旧机器</code>， 卡在"安装程序正在更新注册表配置"页面， 再度重启后，无限重启，无法进入系统。</p>
+<p><img src="./images/2025_09_24_10_20_41_974x630.jpg" alt="./images/2025_09_24_10_20_41_974x630.jpg" /></p>
+<p><code>匹配新机器</code>， 安装完毕后，蓝屏：</p>
+<p>0000003B</p>
+<h3 id="2-win7-蓝屏镜像再应用"><a class="header" href="#2-win7-蓝屏镜像再应用">2. win7 蓝屏镜像再应用</a></h3>
+<p>思路：去掉里面的Intel核显驱动。自行安装驱动。</p>
+<h4 id="21-蓝屏镜像bios化"><a class="header" href="#21-蓝屏镜像bios化">2.1 蓝屏镜像bios化</a></h4>
+<p><img src="./images/2025_09_24_10_42_16_700x505.jpg" alt="./images/2025_09_24_10_42_16_700x505.jpg" />
+卡在:</p>
+<p><img src="./images/2025_09_24_10_42_40_680x377.jpg" alt="./images/2025_09_24_10_42_40_680x377.jpg" /></p>
+<h4 id="22-蓝屏镜像uefi化"><a class="header" href="#22-蓝屏镜像uefi化">2.2 蓝屏镜像uefi化</a></h4>
+<p>无法启动，报蓝屏（因硬件发生改变）</p>
+<h3 id="3-win7安装uefibios"><a class="header" href="#3-win7安装uefibios">3. win7安装(uefi/bios)</a></h3>
+<h4 id="31-bios"><a class="header" href="#31-bios">3.1 bios</a></h4>
+<p>分区：</p>
+<p><img src="./images/2025_09_24_10_49_17_856x660.jpg" alt="./images/2025_09_24_10_49_17_856x660.jpg" /></p>
+<p>不需要选uefi相关:</p>
+<p><img src="./images/2025_09_24_10_50_02_799x563.jpg" alt="./images/2025_09_24_10_50_02_799x563.jpg" /></p>
+<h4 id="32-uefi"><a class="header" href="#32-uefi">3.2 uefi</a></h4>
+<p>第一步: 1Core的配置，可以安装成功。qxl+vnc.此时打开双网卡，打开rdesktop, 备份相关配置</p>
+<pre><code>root@idv-TC-9073:~/workspace# virsh dumpxml win7_test_uefi&gt;vnc_win7_test_uefi.xml
+</code></pre>
+<p>第二步：改一个透传的配置出来，此时因为显卡驱动没有安装，应该可以在显示器上看到画面（分辨率不正常)</p>
+<p><img src="./images/2025_09_24_11_35_11_714x623.jpg" alt="./images/2025_09_24_11_35_11_714x623.jpg" /></p>
+<p>备份。</p>
+<pre><code># cp win7_test_uefi.qcow2 win7_test_uefi.qcow2.beforeuhd630
+</code></pre>
+<p>方法1：  安装自己下载的驱动:</p>
+<p><img src="./images/2025_09_24_11_41_43_636x643.jpg" alt="./images/2025_09_24_11_41_43_636x643.jpg" /></p>
+<p><img src="./images/2025_09_24_11_42_00_823x464.jpg" alt="./images/2025_09_24_11_42_00_823x464.jpg" /></p>
+<p><img src="./images/2025_09_24_11_43_49_589x477.jpg" alt="./images/2025_09_24_11_43_49_589x477.jpg" />
+自己安装的驱动进入到蓝屏状态：</p>
+<p><img src="./images/2025_09_24_11_50_09_799x580.jpg" alt="./images/2025_09_24_11_50_09_799x580.jpg" /></p>
+<p>恢复状态：</p>
+<pre><code>virsh destroy win7_test_uefi
+cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2
+virsh start win7_test_uefi
+</code></pre>
+<p>方法2：  驱动总裁自己安装uhd630驱动</p>
+<p>方法2.1 安装最新的26.20.18.8061</p>
+<p><img src="./images/2025_09_24_11_49_22_912x477.jpg" alt="./images/2025_09_24_11_49_22_912x477.jpg" /></p>
+<p>安装完毕后的设备管理器:</p>
+<p><img src="./images/2025_09_24_11_52_27_669x536.jpg" alt="./images/2025_09_24_11_52_27_669x536.jpg" /></p>
+<p>驱动版本：</p>
+<p><img src="./images/2025_09_24_11_52_43_391x422.jpg" alt="./images/2025_09_24_11_52_43_391x422.jpg" /></p>
+<p>按提示重启,蓝屏：</p>
+<p><img src="./images/2025_09_24_11_52_56_644x313.jpg" alt="./images/2025_09_24_11_52_56_644x313.jpg" /></p>
+<p>恢复状态:</p>
+<pre><code>virsh destroy win7_test_uefi &amp;&amp; cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2 &amp;&amp; virsh start win7_test_uefi
+</code></pre>
+<p>方法2.2 安装稳定的26.20.18.8012</p>
+<p><img src="./images/2025_09_24_11_56_18_885x415.jpg" alt="./images/2025_09_24_11_56_18_885x415.jpg" /></p>
+<p><img src="./images/2025_09_24_11_58_38_417x383.jpg" alt="./images/2025_09_24_11_58_38_417x383.jpg" /></p>
+<p>重启后蓝屏:</p>
+<p><img src="./images/2025_09_24_11_59_51_815x607.jpg" alt="./images/2025_09_24_11_59_51_815x607.jpg" /></p>
+<p>恢复状态:</p>
+<pre><code>virsh destroy win7_test_uefi &amp;&amp; cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2 &amp;&amp; virsh start win7_test_uefi
+</code></pre>
+<h4 id="33-legacy-bios"><a class="header" href="#33-legacy-bios">3.3 legacy bios</a></h4>
+<p>备份配置文件：</p>
+<pre><code>virsh dumpxml win7test&gt;vnc_win7test.xml
+</code></pre>
+<p>remove vnc/qxl, then add igpu/mouse/keyboard, add vnc/qxl.</p>
+<p>Add qemu args.</p>
+<p>Start machine.</p>
+<p><img src="./images/2025_09_24_12_13_10_1594x1187.jpg" alt="./images/2025_09_24_12_13_10_1594x1187.jpg" /></p>
+<p><img src="./images/2025_09_24_12_10_40_790x716.jpg" alt="./images/2025_09_24_12_10_40_790x716.jpg" /></p>
+<p>安装驱动:</p>
+<p><img src="./images/2025_09_24_12_11_14_903x308.jpg" alt="./images/2025_09_24_12_11_14_903x308.jpg" /></p>
+<p><img src="./images/2025_09_24_12_13_42_679x383.jpg" alt="./images/2025_09_24_12_13_42_679x383.jpg" /></p>
+<p>Kernel output issue:</p>
+<p><img src="./images/2025_09_24_12_14_40_1200x634.jpg" alt="./images/2025_09_24_12_14_40_1200x634.jpg" /></p>
+<p>屏幕保持黑</p>
+<p><img src="./images/2025_09_24_12_17_37_919x350.jpg" alt="./images/2025_09_24_12_17_37_919x350.jpg" /></p>
+<p><img src="./images/2025_09_24_12_19_46_944x427.jpg" alt="./images/2025_09_24_12_19_46_944x427.jpg" /></p>
+<h3 id="4-pvelegacy-bios"><a class="header" href="#4-pvelegacy-bios">4. pve(legacy bios)</a></h3>
+<p>i3-8100 with csm(legacy):</p>
+<pre><code># bootctl status
+systemd-boot not installed in ESP.
+System:
+Not booted with EFI
+
+Available Boot Loaders on ESP:
+          ESP: /boot/efi (/dev/disk/by-partuuid/bbc0768a-9407-42e7-814f-4e7c14059d1f)
+         File: └─/EFI/BOOT/BOOTx64.efi
+
+Boot Loader Entries:
+        $BOOT: /boot/efi (/dev/disk/by-partuuid/bbc0768a-9407-42e7-814f-4e7c14059d1f)
+
+0 entries, no entry could be determined as default.
+# ls /sys/firmware/
+acpi/   dmi/    memmap/ 
+</code></pre>
+<p>Steps:</p>
+<pre><code> cat /etc/default/grub | grep LINUX_DEFAULT
+GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on iommu=pt pcie_acs_override=downstream,multifunction initcall_blacklist=sysfb_init  video=efifb:off,vesafb:off video=simplefb:off vfio-pci.ids=8086:3e91"
+root@kucf:~# cat /etc/modprobe.d/blacklist.conf
+# block AMD driver
+blacklist radeon
+blacklist amdgpu
+
+# block NVIDIA driver
+blacklist nouveau
+blacklist nvidia
+blacklist nvidiafb
+
+# block INTEL driver
+blacklist snd_hda_intel
+blacklist snd_hda_codec_hdmi
+blacklist i915
+
+options vfio_iommu_type1 allow_unsafe_interrupts=1
+root@kucf:~# cat /etc/modules
+# /etc/modules: kernel modules to load at boot time.
+#
+# This file contains the names of kernel modules that should be loaded
+# at boot time, one per line. Lines beginning with "#" are ignored.
+# Parameters can be specified after the module name.
+vfio
+vfio_iommu_type1
+vfio_pci
+vfio_virqfd
+root@kucf:~# cat /etc/modprobe.d/vfio.conf
+options vfio-pci ids=8086:3e91
+root@kucf:~# cat /etc/modprobe.d/kvm.conf
+options kvm ignore_msrs=1
+root@kucf:~# echo "options vfio_iommu_type1 allow_unsafe_interrupts=1" &gt; /etc/modprobe.d/iommu_unsafe_interrupts.conf
+root@kucf:~# update-initramfs -u -k all &amp;&amp; update-grub2 
+</code></pre>
+<p>步骤稍后加</p>
+<pre><code>cp /etc/pve/qemu-server/100.conf /root/
+Edit 100.conf for removing our previous host-pci passthrough items and parameters.    
+</code></pre>
+<p>必须使用default的显卡来进行xiaobing.iso+恢复镜像的第一步安装, 这是因为默认的xiaobing.iso启动会启动本机的操作系统，而此时本机硬盘上为空。。</p>
+<p><img src="./images/2025_09_24_16_00_09_1102x667.jpg" alt="./images/2025_09_24_16_00_09_1102x667.jpg" /></p>
+<p>分区为MBR：</p>
+<p><img src="./images/2025_09_24_16_01_53_830x622.jpg" alt="./images/2025_09_24_16_01_53_830x622.jpg" /></p>
+<p>直接安装:</p>
+<p><img src="./images/2025_09_24_16_02_40_712x544.jpg" alt="./images/2025_09_24_16_02_40_712x544.jpg" /></p>
+<p>第一步完成以后，直接关机。</p>
+<p><img src="./images/2025_09_24_16_05_59_941x689.jpg" alt="./images/2025_09_24_16_05_59_941x689.jpg" /></p>
+<h3 id="5-pvelegacy-verification"><a class="header" href="#5-pvelegacy-verification">5. pve(legacy verification)</a></h3>
+<h4 id="51-csmuefii440fxpc"><a class="header" href="#51-csmuefii440fxpc">5.1 csm(uefi)+i440fx+pc</a></h4>
+<p>csm(display: uefi), choose uefi:<br />
+<img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg" /></p>
+<p>hardware configuration:</p>
+<p><img src="./images/2025_09_24_19_14_10_797x429.jpg" alt="./images/2025_09_24_19_14_10_797x429.jpg" /></p>
+<p>guest infos:</p>
+<p><img src="./images/2025_09_24_19_14_36_764x1069.jpg" alt="./images/2025_09_24_19_14_36_764x1069.jpg" /></p>
+<p>no signal on screen.</p>
+<p><img src="./images/2025_09_24_19_16_26_866x646.jpg" alt="./images/2025_09_24_19_16_26_866x646.jpg" /></p>
+<h4 id="52-csmuefiq35pc"><a class="header" href="#52-csmuefiq35pc">5.2 csm(uefi)+q35+pc</a></h4>
+<p>hardware configuration:</p>
+<p><img src="./images/2025_09_24_19_18_17_797x460.jpg" alt="./images/2025_09_24_19_18_17_797x460.jpg" /></p>
+<p>guest infos:</p>
+<p><img src="./images/2025_09_24_19_22_38_1313x712.jpg" alt="./images/2025_09_24_19_22_38_1313x712.jpg" /></p>
+<h4 id="53-csmlegacyi440fxpc"><a class="header" href="#53-csmlegacyi440fxpc">5.3 csm(legacy)+i440fx+pc</a></h4>
+<p>Choose legacy:</p>
+<p><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg" /></p>
+<p>cpu keep 100%</p>
+<p><img src="./images/2025_09_24_19_30_59_929x362.jpg" alt="./images/2025_09_24_19_30_59_929x362.jpg" /></p>
+<h4 id="54-csmlegacyq35pc"><a class="header" href="#54-csmlegacyq35pc">5.4 csm(legacy)+q35+pc</a></h4>
+<p>console output(stuck at last):</p>
+<p><img src="./images/2025_09_24_19_32_23_1136x691.jpg" alt="./images/2025_09_24_19_32_23_1136x691.jpg" /></p>
+<p>screen output:</p>
+<p><img src="./images/2025_09_24_19_33_51_1197x710.jpg" alt="./images/2025_09_24_19_33_51_1197x710.jpg" /></p>
+<p>guest info:</p>
+<p><img src="./images/2025_09_24_19_35_04_810x810.jpg" alt="./images/2025_09_24_19_35_04_810x810.jpg" /></p>
+<h4 id="55-csmclosed"><a class="header" href="#55-csmclosed">5.5 csm(closed)</a></h4>
+<p>Close method</p>
+<p>Change all of the items to UEFI:</p>
+<p><img src="./images/2025_09_24_19_56_58_1007x566.jpg" alt="./images/2025_09_24_19_56_58_1007x566.jpg" /></p>
+<p>Change Boot option filter:</p>
+<p><img src="./images/2025_09_24_19_57_23_1147x579.jpg" alt="./images/2025_09_24_19_57_23_1147x579.jpg" /></p>
+<p>Reboot and re-enter bios:</p>
+<p><img src="./images/2025_09_24_19_57_43_1112x299.jpg" alt="./images/2025_09_24_19_57_43_1112x299.jpg" /></p>
+<p>Boot page:</p>
+<p><img src="./images/2025_09_24_19_58_04_1165x590.jpg" alt="./images/2025_09_24_19_58_04_1165x590.jpg" /></p>
+<p>Before vm start:</p>
+<p><img src="./images/2025_09_24_19_58_25_1098x626.jpg" alt="./images/2025_09_24_19_58_25_1098x626.jpg" /></p>
+<h4 id="56-csmclosedq35pc"><a class="header" href="#56-csmclosedq35pc">5.6 csm(closed)+q35+pc</a></h4>
+<p><img src="./images/2025_09_24_19_59_10_932x663.jpg" alt="./images/2025_09_24_19_59_10_932x663.jpg" /></p>
+<h4 id="57-csmclosedi440pc"><a class="header" href="#57-csmclosedi440pc">5.7 csm(closed)+i440+pc</a></h4>
+<p>no signal on screen. but rdesktop OK, uhd works with no output.</p>
+<p><img src="./images/2025_09_24_20_01_49_710x602.jpg" alt="./images/2025_09_24_20_01_49_710x602.jpg" /></p>
+<h4 id="58-try"><a class="header" href="#58-try">5.8. try</a></h4>
+<p><img src="./images/2025_09_24_20_18_08_754x419.jpg" alt="./images/2025_09_24_20_18_08_754x419.jpg" /></p>
+<pre><code>args: -set device.hostpci0.addr=02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on
+boot: order=scsi0;sata0;sata1;sata2;net0
+cores: 8
+cpu: host
+hostpci0: 0000:00:02.0,legacy-igd=1,romfile=igd.rom
+machine: pc-q35-9.2+pve1
+memory: 8192
+meta: creation-qemu=9.2.0,ctime=1758706055
+name: q35win7
+net0: e1000=BC:24:11:BE:3A:BA,bridge=vmbr0,firewall=1
+numa: 0
+ostype: win10
+sata0: local:iso/windows7x64_ultimate_2025.iso,media=cdrom,size=5409024K
+sata1: local:iso/virtio-win-0.1.248.iso,media=cdrom,size=715188K
+sata2: local:iso/XiaoBing.iso,media=cdrom,size=1568244K
+scsi0: local-lvm:vm-101-disk-0,iothread=1,size=60G
+scsihw: virtio-scsi-single
+smbios1: uuid=e4b7bb21-da98-4d19-89d5-998cfc4f6638
+sockets: 1
+usb0: host=1-3.2
+usb1: host=1-10
+usb2: host=1-9
+vga: none
+vmgenid: bc7e7233-7113-4e4d-802c-9f9ef98affc0
+</code></pre>
+<p>So: uefi+i440+legacy-igd=1 try?</p>
+<h3 id="6-pveovmfi440legacy-igd1"><a class="header" href="#6-pveovmfi440legacy-igd1">6. pve(ovmf+i440+legacy-igd=1)</a></h3>
+<p>Result:</p>
+<p><img src="./images/2025_09_24_22_36_10_1428x866.jpg" alt="./images/2025_09_24_22_36_10_1428x866.jpg" /></p>
+<p>hardware:</p>
+<p><img src="./images/2025_09_24_22_36_35_809x531.jpg" alt="./images/2025_09_24_22_36_35_809x531.jpg" /></p>
+<pre><code>args: -set device.hostpci0.addr=02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on
+bios: ovmf
+boot: order=sata0;sata1
+cores: 8
+cpu: host
+efidisk0: local-lvm:vm-102-disk-0,efitype=4m,pre-enrolled-keys=1,size=4M
+hostpci0: 0000:00:02.0,romfile=igpu.rom,legacy-igd=1
+machine: pc-i440fx-9.2+pve1
+memory: 8192
+meta: creation-qemu=9.2.0,ctime=1758719620
+name: ovmflegacy
+net0: e1000=BC:24:11:F3:5D:72,bridge=vmbr0,firewall=1
+numa: 0
+ostype: linux
+sata0: local-lvm:vm-102-disk-1,size=32G
+sata1: local:iso/XiaoBing.iso,media=cdrom,size=1568244K
+sata2: local:iso/windows7x64_ultimate_2025.iso,media=cdrom,size=5409024K
+sata3: local:iso/virtio-win-0.1.248.iso,media=cdrom,size=715188K
+scsihw: virtio-scsi-single
+smbios1: uuid=80041986-2a08-48c2-a21d-29d2b0781867
+sockets: 1
+usb0: host=03f0:0024,usb3=1
+usb1: host=413c:301a,usb3=1
+vga: none
+vmgenid: 8322e4cf-e000-47af-9694-c6e1afbc5984
+</code></pre>
+<p>Replace the deb packages then you could see gop output:</p>
+<pre><code> dpkg -i pve-qemu-kvm_9.2.0-7_amd64.deb 
+ dpkg -i pve-edk2-firmware-ovmf_4.2025.02-4.bpo12.1_all.deb
+</code></pre>
+<p>Issue:</p>
+<pre><code>windows7在uhd630下启动时报错： igdkmd64.sys -Address FFFFF880072B7C28 has at FFFFF8800707B000, DateStamp 5e279154
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20250923.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="20250925.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20250923.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="20250925.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
