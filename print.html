@@ -17431,6 +17431,59 @@ apt install -y ninja-build pkg-config libgbm1 libglib2.0-dev bridge-utils libfdt
 slirp should be use an old version.    
 libslirp-v4.2.0.tar.gz
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20250926"><a class="header" href="#20250926">20250926</a></h1>
+<h3 id="1-libvirtlegacy-seabios"><a class="header" href="#1-libvirtlegacy-seabios">1. libvirt(legacy seabios)</a></h3>
+<p>Use ide for startup:</p>
+<pre><code>root@idv-TC-9073:/var/lib/libvirt/images# cp win7_test.qcow2 ide_win7_test.qcow2
+</code></pre>
+<p>sound:</p>
+<p><img src="./images/2025_09_26_08_31_25_488x378.jpg" alt="./images/2025_09_26_08_31_25_488x378.jpg" /></p>
+<h3 id="2-sata-verification"><a class="header" href="#2-sata-verification">2. sata verification</a></h3>
+<p>Change to sata:</p>
+<p><img src="./images/2025_09_26_08_53_56_705x558.jpg" alt="./images/2025_09_26_08_53_56_705x558.jpg" /></p>
+<p>OK:</p>
+<p><img src="./images/2025_09_26_08_56_17_1092x682.jpg" alt="./images/2025_09_26_08_56_17_1092x682.jpg" /></p>
+<h3 id="3-virtio-verification"><a class="header" href="#3-virtio-verification">3. virtio verification</a></h3>
+<p>Also OK.</p>
+<p><img src="./images/2025_09_26_09_00_49_1013x711.jpg" alt="./images/2025_09_26_09_00_49_1013x711.jpg" /></p>
+<p>Add configuration:</p>
+<pre><code>  &lt;features&gt;
+    &lt;acpi/&gt;
+    &lt;apic/&gt;
++    &lt;hyperv&gt;
++      &lt;relaxed state='on'/&gt;
++      &lt;vapic state='on'/&gt;
++      &lt;spinlocks state='on' retries='8191'/&gt;
++    &lt;/hyperv&gt;
+    &lt;vmport state='off'/&gt;
+  &lt;/features&gt;
+  &lt;clock offset='localtime'&gt;
+    &lt;timer name='rtc' tickpolicy='catchup'/&gt;
+    &lt;timer name='pit' tickpolicy='delay'/&gt;
+    &lt;timer name='hpet' present='no'/&gt;
++    &lt;timer name='hypervclock' present='yes'/&gt;
+  &lt;/clock
+</code></pre>
+<p>Also OK.</p>
+<h3 id="4-add-seabios-pic"><a class="header" href="#4-add-seabios-pic">4. Add seabios pic</a></h3>
+<p>Add items:</p>
+<pre><code>  &lt;qemu:commandline&gt;
+    &lt;qemu:arg value='-set'/&gt;
+    &lt;qemu:arg value='device.hostdev0.x-igd-gms=1'/&gt;
+    &lt;qemu:arg value='-set'/&gt;
+    &lt;qemu:arg value='device.hostdev0.x-igd-opregion=on'/&gt;
+    &lt;qemu:arg value='-set'/&gt;
+    &lt;qemu:arg value='device.hostdev0.x-vga=on'/&gt;
+    &lt;qemu:arg value='-boot'/&gt;
+    &lt;qemu:arg value='menu=on,strict=on,splash=/usr/share/seabios/tyyidv.jpg'/&gt;
+    &lt;qemu:arg value='-bios'/&gt;
+    &lt;qemu:arg value='/usr/share/seabios/bios_1.16.bin'/&gt;
+  &lt;/qemu:commandline&gt;
+</code></pre>
+<p>Generated jpg:</p>
+<pre><code> convert tianyiidv.jpg -resize 640x480! tyidv.jpg
+ convert tyidv.jpg -channel-fx 'red&lt;=&gt;blue' tyyidv.jpg
+</code></pre>
 
                     </main>
 
