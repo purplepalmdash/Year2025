@@ -228,6 +228,60 @@
 <pre><code> convert tianyiidv.jpg -resize 640x480! tyidv.jpg
  convert tyidv.jpg -channel-fx 'red&lt;=&gt;blue' tyyidv.jpg
 </code></pre>
+<h3 id="6-one-kvm"><a class="header" href="#6-one-kvm">6. one-kvm</a></h3>
+<p><code>https://github.com/mofeng-git/One-KVM</code>
+start via:</p>
+<pre><code>sudo docker run --name kvmd -itd --restart=always \
+    --device /dev/video0:/dev/video0 \
+    --device /dev/ttyUSB0:/dev/ttyUSB0 \
+    -p 8080:8080 -p 4430:4430 -p 5950:5900 -p 623:623 \
+    silentwind0/kvmd
+</code></pre>
+<p>Then visit <code>http://192.168.1.209:8080</code> you could get the one-kvm desktop.</p>
+<p>If on ubuntu, you have to remove brltty, or you won't see the ttyUSB0:</p>
+<pre><code>$ sudo apt remove brltty
+</code></pre>
+<h3 id="7-启动速度对比"><a class="header" href="#7-启动速度对比">7. 启动速度对比</a></h3>
+<p>业界最强的pve启动速度 vs ubuntu启动速度</p>
+<pre><code>ubuntu:    
+00:02       启动
+00:23       seabios logo
+00:30       windows启动画面
+00:40       windows进入系统
+</code></pre>
+<p>pve:</p>
+<pre><code>00:08       点击按钮启动
+00:18       seabios logo
+00:25       windows启动画面
+00:36       windows进入登陆界面
+</code></pre>
+<p>4G memory startup time:</p>
+<pre><code>ubuntu: 
+00:16   virsh start
+00:31   seabios logo
+00:38   windows启动画面
+00:48   windows进入系统
+</code></pre>
+<p>4G memory startup time(sleep 1 in vfio-startup.sh):</p>
+<pre><code>ubuntu: 
+00:05   virsh start
+00:19   seabios logo
+00:26   windows启动画面
+00:37   windows进入系统
+</code></pre>
+<p>考虑到pve是直接将显卡置为vfio就绪状态，因而这个结论是合理的。</p>
+<h3 id="8-i3-8100速度对比"><a class="header" href="#8-i3-8100速度对比">8. i3-8100速度对比</a></h3>
+<p>uefi下win7启动:</p>
+<pre><code>00:10   tiano core画面出现
+00:13   windows启动画面
+00:24   windows桌面可用
+</code></pre>
+<p>seabios win7启动:</p>
+<pre><code>00:17   seabios画面
+00:25   windows启动画面
+00:35   直接进入windows桌面
+
+</code></pre>
 
                     </main>
 
