@@ -17608,6 +17608,109 @@ root@idv-TC-9073:~# history| grep pci_device
 <p>nothing happend.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20250930"><a class="header" href="#20250930">20250930</a></h1>
 <h3 id="1-gemini-1"><a class="header" href="#1-gemini-1">1. gemini</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251001"><a class="header" href="#20251001">20251001</a></h1>
+<h3 id="1-ai-coding"><a class="header" href="#1-ai-coding">1. ai coding</a></h3>
+<p>我有一个qemu虚机的libvirt xml编排列举如下：</p>
+<pre><code>    &lt;graphics type='spice' port='7000' autoport='yes' listen='0.0.0.0'&gt;
+      &lt;listen type='address' address='0.0.0.0'/&gt;
+      &lt;gl enable='no' rendernode='/dev/dri/by-path/pci-0000:00:02.0-render'/&gt;
+    &lt;/graphics&gt;
+    &lt;video&gt;
+      &lt;model type='none'/&gt;
+      &lt;alias name='video0'/&gt;
+    &lt;/video&gt;
+    &lt;hostdev mode='subsystem' type='pci' managed='yes'&gt;
+      &lt;driver name='vfio'/&gt;
+      &lt;source&gt;
+        &lt;address domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
+      &lt;/source&gt;
+      &lt;alias name='hostdev0'/&gt;
+      &lt;rom bar='on' file='/usr/share/OVMF/igpu.rom'/&gt;
+      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
+    &lt;/hostdev&gt;
+</code></pre>
+<p>该虚机运行windows10 x64版，将Uhd630显卡vfio直通给虚机，显卡连接的物理显示器上输出图像。我现在想在windows虚机内通过某种方法，将物理显示器上的输出"喂"给spice端口(7000), 使得用户可以在外部的机器上通过remote-viewer或其他spice客户端工具看到物理显示器上的内容，类似于parsec或teamviewer的效果。请问我如何做？在host层面和虚机里都要有哪些工作？</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251002"><a class="header" href="#20251002">20251002</a></h1>
+<h3 id="1-ubuntu1804-build-libvirt"><a class="header" href="#1-ubuntu1804-build-libvirt">1. ubuntu1804 build libvirt</a></h3>
+<pre><code>apt install -y xsltproc python3-docutils libtirpc-dev libgnutls28-dev libxml2-dev libpciaccess-dev libyajl-dev python3-pip
+cd libvirt-8.0.0
+sudo python3 -m pip install meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+/usr/local/bin/meson build -Dsystem=true -Ddriver_qemu=enabled -Ddriver_interface=enabled -Ddriver_libvirtd=enabled -Ddriver_remote=enabled -Ddriver_network=enabled --prefix=/usr
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251005"><a class="header" href="#20251005">20251005</a></h1>
+<h3 id="1-ubuntu180406-kernel-build"><a class="header" href="#1-ubuntu180406-kernel-build">1. ubuntu180406 kernel build</a></h3>
+<p>Create image and download iso:</p>
+<pre><code>qemu-img create -f qcow2 ubuntu180406.qcow2 50G
+Formatting 'ubuntu180406.qcow2', fmt=qcow2 cluster_size=65536 extended_l2=off compression_type=zlib size=53687091200 lazy_refcounts=off refcount_bits=16
+axel https://mirrors.ustc.edu.cn/ubuntu-cdimage/releases/18.04.6/release/ubuntu-18.04.6-server-arm64.iso
+</code></pre>
+<p>Install with serial port, no vnc/spice or qxl/virtiogpu</p>
+<p>Steps:</p>
+<pre><code>apt update -y
+apt upgrade -y
+reboot
+</code></pre>
+<p>Refers to <code>https://developer.huawei.com/home/forum/kunpeng/thread-0291139148471073001-1-1.html</code></p>
+<pre><code>sudo apt install -y build-essential dpkg dpkg-dev libncurses5-dev openssl libssl-dev libpciaccess0 pkg-config bison flex libelf-dev libdrm-amdgpu1 xserver-xorg-video-amdgpu
+axel https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v5.x/linux-5.15.98.tar.xz
+tar xJvf linux-5.15.98.tar.xz 
+vim enable_AMD6800_6600_5.15.98.patch
+</code></pre>
+<p>Get the 5.15 config file from(ubuntu22.04):</p>
+<pre><code>sudo docker run -it -v /home/test/Code/config:/config ubuntu:22.04 /bin/bash
+in docker: 
+apt update -y
+apt install -y vim
+cd /config
+ apt-get install --download-only linux-image-generic-5.15
+ cp /var/cache/apt/archives/linux-image-5.15.0-157-generic_5.15.0-157.167_arm64.deb .
+
+Cannot get the config from the deb extraction.   
+</code></pre>
+<p>directly install and get the config from docker:</p>
+<pre><code>root@ba6e07c10b79:/config# cp /boot/config-5.15.0-157-generic .
+
+</code></pre>
+<p>Build:</p>
+<pre><code>mkdir build
+mv .config build/.config
+make mrproper
+time make LOCALVERSION="jyz" -j10 O=./build bindeb-pkg
+dpkg-buildpackage: info: binary-only upload (no source included)
+make[1]: Leaving directory '/home/test/Code/linux-5.15.98/build'
+                                                                                                                         
+real    12m51.518s                            
+user    105m39.793s                   
+sys     11m47.658s  
+
+sudo apt install ./linux-image-5.15.98jyz_5.15.98jyz-1_arm64.deb
+sudo reboot
+
+After reboot
+
+</code></pre>
+<p>Run testing for redroid:</p>
+<pre><code>test@ubuntu:~$ uname -r
+5.15.98lm
+test@ubuntu:~$  sudo docker run -itd --rm --privileged -p 5555:5555     redroid/redroid:12.0.0_64only-latest
+Unable to find image 'redroid/redroid:12.0.0_64only-latest' locally
+12.0.0_64only-latest: Pulling from redroid/redroid
+d84d394d90eb: Pull complete 
+Digest: sha256:a6c464bbedcf1dcb67dbf91f329fbb19bee5b50631f0ca6bda6ed7c41b0e64e2
+Status: Downloaded newer image for redroid/redroid:12.0.0_64only-latest
+7e370f79e8f3147efcb69f9e99ab9be5b85af747684890c863e198b8d8c0da14
+test@ubuntu:~$ sudo docker ps
+CONTAINER ID   IMAGE                                  COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+7e370f79e8f3   redroid/redroid:12.0.0_64only-latest   "/init qemu=1 androi…"   50 seconds ago   Up 48 seconds   0.0.0.0:5555-&gt;5555/tcp, :::5555-&gt;5555/tcp   nifty_kalam
+test@ubuntu:~$ sudo docker exec -it 7e370f sh
+7e370f79e8f3:/ # getprop  | grep boot | grep com                                                                                                                                            
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [295427933557]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+
+</code></pre>
 
                     </main>
 

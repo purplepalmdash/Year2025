@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250930 - year2025</title>
+        <title>20251001 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,18 +175,38 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250930"><a class="header" href="#20250930">20250930</a></h1>
-<h3 id="1-gemini"><a class="header" href="#1-gemini">1. gemini</a></h3>
+                        <h1 id="20251001"><a class="header" href="#20251001">20251001</a></h1>
+<h3 id="1-ai-coding"><a class="header" href="#1-ai-coding">1. ai coding</a></h3>
+<p>我有一个qemu虚机的libvirt xml编排列举如下：</p>
+<pre><code>    &lt;graphics type='spice' port='7000' autoport='yes' listen='0.0.0.0'&gt;
+      &lt;listen type='address' address='0.0.0.0'/&gt;
+      &lt;gl enable='no' rendernode='/dev/dri/by-path/pci-0000:00:02.0-render'/&gt;
+    &lt;/graphics&gt;
+    &lt;video&gt;
+      &lt;model type='none'/&gt;
+      &lt;alias name='video0'/&gt;
+    &lt;/video&gt;
+    &lt;hostdev mode='subsystem' type='pci' managed='yes'&gt;
+      &lt;driver name='vfio'/&gt;
+      &lt;source&gt;
+        &lt;address domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
+      &lt;/source&gt;
+      &lt;alias name='hostdev0'/&gt;
+      &lt;rom bar='on' file='/usr/share/OVMF/igpu.rom'/&gt;
+      &lt;address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/&gt;
+    &lt;/hostdev&gt;
+</code></pre>
+<p>该虚机运行windows10 x64版，将Uhd630显卡vfio直通给虚机，显卡连接的物理显示器上输出图像。我现在想在windows虚机内通过某种方法，将物理显示器上的输出"喂"给spice端口(7000), 使得用户可以在外部的机器上通过remote-viewer或其他spice客户端工具看到物理显示器上的内容，类似于parsec或teamviewer的效果。请问我如何做？在host层面和虚机里都要有哪些工作？</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250929.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20250930.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251001.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20251002.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +216,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250929.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20250930.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251001.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20251002.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

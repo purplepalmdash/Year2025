@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20250930 - year2025</title>
+        <title>20251002 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,18 +175,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20250930"><a class="header" href="#20250930">20250930</a></h1>
-<h3 id="1-gemini"><a class="header" href="#1-gemini">1. gemini</a></h3>
+                        <h1 id="20251002"><a class="header" href="#20251002">20251002</a></h1>
+<h3 id="1-ubuntu1804-build-libvirt"><a class="header" href="#1-ubuntu1804-build-libvirt">1. ubuntu1804 build libvirt</a></h3>
+<pre><code>apt install -y xsltproc python3-docutils libtirpc-dev libgnutls28-dev libxml2-dev libpciaccess-dev libyajl-dev python3-pip
+cd libvirt-8.0.0
+sudo python3 -m pip install meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+/usr/local/bin/meson build -Dsystem=true -Ddriver_qemu=enabled -Ddriver_interface=enabled -Ddriver_libvirtd=enabled -Ddriver_remote=enabled -Ddriver_network=enabled --prefix=/usr
+
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20250929.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251001.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251001.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20251005.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -196,11 +202,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20250929.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251001.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251001.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20251005.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
