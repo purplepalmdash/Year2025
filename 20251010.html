@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20251010 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20251010"><a class="header" href="#20251010">20251010</a></h1>
+<h3 id="1-qemu-audio-on-ubuntu2404"><a class="header" href="#1-qemu-audio-on-ubuntu2404">1. qemu audio on ubuntu2404</a></h3>
+<p>Get the username for running kvm:</p>
+<pre><code>$ ps -eo pid,user:20,cmd -w | grep kvm
+ 3060 libvirt-qemu         /usr/bin/kvm -name guest=win720250915,d
+</code></pre>
+<h3 id="2-linux-printer"><a class="header" href="#2-linux-printer">2. Linux printer</a></h3>
+<p>dmesg output:</p>
+<pre><code>[  195.482829] usb 1-4: new high-speed USB device number 4 using xhci_hcd
+[  195.631639] usb 1-4: New USB device found, idVendor=03f0, idProduct=7312, bcdDevice= 1.00
+[  195.631644] usb 1-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  195.631647] usb 1-4: Product: Officejet Pro 6230
+[  195.631649] usb 1-4: Manufacturer: HP
+[  195.631652] usb 1-4: SerialNumber: TH95K7N167
+[  195.762329] usblp 1-4:1.0: usblp0: USB Bidirectional printer dev 4 if 0 alt 0 proto 2 vid 0x03F0 pid 0x7312
+[  195.762354] usbcore: registered new interface driver usblp
+</code></pre>
+<p>ubuntu desktop output:</p>
+<p><img src="./images/2025_10_10_10_21_40_931x125.jpg" alt="./images/2025_10_10_10_21_40_931x125.jpg" /></p>
+<p><img src="./images/2025_10_10_10_22_23_931x558.jpg" alt="./images/2025_10_10_10_22_23_931x558.jpg" /></p>
+<h3 id="3-pantum-ltd-m6200nw-series"><a class="header" href="#3-pantum-ltd-m6200nw-series">3. Pantum Ltd. M6200NW series</a></h3>
+<p>Ubuntu24.04.2:</p>
+<pre><code>$ lsusb | grep 6200
+Bus 005 Device 002: ID 232b:8e10 Pantum Ltd. M6200NW series
+$ sudo lpinfo -v
+network socket
+network beh
+network lpd
+serial serial:/dev/ttyS0?baud=115200
+direct hp
+network https
+network ipp
+network ipps
+network http
+direct hpfax
+network ipp://Pantum%20M6200NW%20series%5B18523C%5D%20(USB)._ipp._tcp.local/
+$ sudo lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB 目前空闲。从 2025年10月11日 星期六 00时14分34秒 开始启用
+无系统默认目标
+$ sudo lpstat -t
+调度器正在运行
+无系统默认目标
+用于 Pantum_M6200NW_series_18523C_USB 的设备：implicitclass://Pantum_M6200NW_series_18523C_USB/
+Pantum_M6200NW_series_18523C_USB 自从 2025年10月11日 星期六 00时14分34秒 开始接受请求
+打印机 Pantum_M6200NW_series_18523C_USB 目前空闲。从 2025年10月11日 星期六 00时14分34秒 开始启用
+</code></pre>
+<p>ubuntu20.04.6:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -t
+调度器正在运行
+无系统默认目标
+lpstat: 未添加目标。
+lpstat: 未添加目标。
+lpstat: 未添加目标。
+lpstat: 未添加目标。
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpinfo -v
+network ipps
+file cups-brf:/
+network beh
+direct hp
+network socket
+serial serial:/dev/ttyS0?baud=115200
+network ipp
+network http
+network lpd
+network https
+direct hpfax
+network ipp://M6200NW%20series._ipp._tcp.local/
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lsusb | grep 6200
+Bus 005 Device 002: ID 232b:8e10 Pantum M6200NW series
+test@test-Standard-PC-i440FX-PIIX-1996:~$ uname -r
+5.15.0-139-generic
+test@test-Standard-PC-i440FX-PIIX-1996:~$ cat /etc/issue
+Ubuntu 20.04.6 LTS \n \l
+</code></pre>
+<p>Install:</p>
+<p><img src="./images/2025_10_10_16_33_22_468x454.jpg" alt="./images/2025_10_10_16_33_22_468x454.jpg" /></p>
+<p>Need manually add:</p>
+<p><img src="./images/2025_10_10_16_39_45_794x489.jpg" alt="./images/2025_10_10_16_39_45_794x489.jpg" /></p>
+<p>After install:</p>
+<pre><code># dpkg -l | grep -i pantum
+ii  pantum                                     1.1.167-1                            amd64        CUPS and SANE drivers for Pantum series printer and scanner
+test@test-Standard-PC-i440FX-PIIX-1996:~/Pantum Linux Driver V1.1.167$ sudo lpstat -p -d
+打印机 M6200NW 目前空闲。从 2025年10月10日 星期五 16时38分47秒 开始启用
+无系统默认目标
+test@test-Standard-PC-i440FX-PIIX-1996:~/Pantum Linux Driver V1.1.167$ sudo lpstat -t
+调度器正在运行
+无系统默认目标
+用于 M6200NW 的设备：usb://Pantum/M6200NW%20series?serial=CG9A090672
+M6200NW 自从 2025年10月10日 星期五 16时38分47秒 开始接受请求
+打印机 M6200NW 目前空闲。从 2025年10月10日 星期五 16时38分47秒 开始启用
+</code></pre>
+<h3 id="5-ubuntu2004-info"><a class="header" href="#5-ubuntu2004-info">5. ubuntu2004 info</a></h3>
+<p><code>driverless:ipp://M6200NW%20series._ipp._tcp.local</code></p>
+<p><img src="./images/2025_10_10_16_44_27_783x575.jpg" alt="./images/2025_10_10_16_44_27_783x575.jpg" /></p>
+<p><img src="./images/2025_10_10_16_45_16_399x339.jpg" alt="./images/2025_10_10_16_45_16_399x339.jpg" /></p>
+<h3 id="6-ubuntu2204-info"><a class="header" href="#6-ubuntu2204-info">6. ubuntu22.04 info</a></h3>
+<p>Auto detect.</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ uname -a
+Linux test-Standard-PC-i440FX-PIIX-1996 6.8.0-85-generic #85~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Sep 19 16:18:59 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+test@test-Standard-PC-i440FX-PIIX-1996:~$ uname -r
+6.8.0-85-generic
+test@test-Standard-PC-i440FX-PIIX-1996:~$ cat /etc/issue
+Ubuntu 22.04.5 LTS \n \l
+
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpinfo -v
+serial serial:/dev/ttyS0?baud=115200
+network lpd
+direct hp
+network socket
+network ipp
+network beh
+file cups-brf:/
+network https
+network ipps
+network http
+direct hpfax
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB 目前空闲。从 2025年10月10日 星期五 17时16分06秒 开始启用
+无系统默认目标
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -t
+调度器正在运行
+无系统默认目标
+用于 Pantum_M6200NW_series_18523C_USB 的设备：implicitclass://Pantum_M6200NW_series_18523C_USB/
+Pantum_M6200NW_series_18523C_USB 自从 2025年10月10日 星期五 17时16分06秒 开始接受请求
+打印机 Pantum_M6200NW_series_18523C_USB 目前空闲。从 2025年10月10日 星期五 17时16分06秒 开始启用
+</code></pre>
+<h3 id="7-huaiyi"><a class="header" href="#7-huaiyi">7. huaiyi</a></h3>
+<p>ubuntu22.04:</p>
+<pre><code>root@test-Standard-PC-i440FX-PIIX-1996:/home/test# dpkg -l | grep ipp
+ii  apt-config-icons                           0.15.2-2                                          all          APT configuration snippet to enable icon downloads
+ii  apt-config-icons-hidpi                     0.15.2-2                                          all          APT configuration snippet to enable HiDPI icon downloads
+ii  cups-ipp-utils                             2.4.1op1-1ubuntu4.12                              amd64        Common UNIX Printing System(tm) - IPP developer/admin utilities
+ii  ipp-usb                                    0.9.20-1ubuntu0.22.04.1                           amd64        Daemon for IPP over USB printer support
+ii  python3-zipp                               1.0.0-3ubuntu0.1                                  all          pathlib-compatible Zipfile object wrapper - Python 3.x
+
+</code></pre>
+<p>While in 20.04:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ apt-cache search ipp | grep usb
+ippusbxd - Daemon for IPP USB printer support
+test@test-Standard-PC-i440FX-PIIX-1996:~$ apt-cache policy ippusbxd
+ippusbxd:
+  已安装：(无)
+  候选： 1.34-2ubuntu1
+  版本列表：
+     1.34-2ubuntu1 500
+        500 http://mirrors.ustc.edu.cn/ubuntu focal/main amd64 Packages
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20251009.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20251009.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
