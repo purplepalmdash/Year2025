@@ -1,0 +1,682 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20251014 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20251014"><a class="header" href="#20251014">20251014</a></h1>
+<h3 id="1-ipp-scan"><a class="header" href="#1-ipp-scan">1. ipp scan</a></h3>
+<p>ubuntu24.04 for sanning:</p>
+<pre><code>$ scanimage -L
+device `escl:http://localhost:60000' is a ESCL Pantum M6200NW series[18523C] (USB) platen scanner
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+$ sudo apt  install -y simple-scan
+</code></pre>
+<p><img src="./images/2025_10_14_08_35_02_588x494.jpg" alt="./images/2025_10_14_08_35_02_588x494.jpg" /></p>
+<p><img src="./images/2025_10_14_08_35_16_495x381.jpg" alt="./images/2025_10_14_08_35_16_495x381.jpg" /></p>
+<p>Result:</p>
+<p><img src="./images/2025_10_14_08_35_50_349x91.jpg" alt="./images/2025_10_14_08_35_50_349x91.jpg" /></p>
+<h3 id="2-nfs-boot-recovery"><a class="header" href="#2-nfs-boot-recovery">2. nfs boot recovery</a></h3>
+<p>Steps:</p>
+<pre><code>从Shell手动引导进入Linux系统
+这是最关键的一步，我们将利用Shell手动找到并执行Linux的引导文件，从而先进入系统。
+    切换到EFI分区：
+    您的截图显示EFI分区是 FS0:。在 Shell&gt; 提示符后输入：
+    Shell&gt; FS0:
+    然后按回车。提示符会变成 FS0:\&gt;。
+    浏览文件：
+    输入 ls (或者 dir) 命令查看当前目录下的文件和文件夹：
+    FS0:\&gt; ls
+    您应该能看到一个名为 EFI 的文件夹。
+    进入EFI目录：
+    FS0:\&gt; cd EFI
+    再次浏览文件：
+    FS0:\EFI\&gt; ls
+    现在，您应该能看到一个以您的Linux发行版命名的文件夹，比如 ubuntu、debian、centos 等，或者是一个通用的 BOOT 文件夹。
+    进入发行版目录：
+    假设您的发行版是Ubuntu，就进入 ubuntu 目录：
+    FS0:\EFI\&gt; cd ubuntu
+    （如果不是ubuntu，请替换成您看到的对应目录名）
+    查找并执行引导文件：
+    再次用 ls 查看目录内容。您会看到一些 .efi 后缀的文件。最重要的两个可能是：
+        grubx64.efi (GRUB引导程序)
+        shimx64.efi (如果启用了Secure Boot，通常从这个启动)
+    优先尝试执行 shimx64.efi，如果不行再尝试 grubx64.efi。输入文件名即可执行：
+    FS0:\EFI\ubuntu&gt; shimx64.efi
+    或者
+    FS0:\EFI\ubuntu&gt; grubx64.efi
+如果一切顺利，执行这个命令后，您应该能看到熟悉的GRUB引导菜单，然后就可以选择并进入您的Linux系统了。
+</code></pre>
+<p>Steps:</p>
+<pre><code>root@test-PC:/home/test# efibootmgr -v
+BootCurrent: 000B
+Timeout: 0 seconds
+BootOrder: 0008,0000,000B
+Boot0000* UiApp	FvVol(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFile(462caa21-7614-4503-836e-8ab6f4662331)
+Boot0008* UEFI Misc Device	PciRoot(0x0)/Pci(0x9,0x0)N.....YM....R,Y.
+Boot000B* EFI Internal Shell	FvVol(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFile(7c04a583-9e3e-4f1c-ad65-e05268d0b4d1)
+root@test-PC:/home/test# efibootmgr --create --disk /dev/vda --part 1 --label "nfs" --loader "\EFI\NFS\grubx64.efi"
+BootCurrent: 000B
+Timeout: 0 seconds
+BootOrder: 0001,0008,0000,000B
+Boot0000* UiApp
+Boot0008* UEFI Misc Device
+Boot000B* EFI Internal Shell
+Boot0001* nfs
+root@test-PC:/home/test# reboot
+</code></pre>
+<p>then everything will be OK.</p>
+<h3 id="3-nfs-scan"><a class="header" href="#3-nfs-scan">3. nfs scan</a></h3>
+<p>Install sane-airscan for scanning :</p>
+<pre><code>apt install sane-airscan
+$ scanimage -L
+device `escl:http://127.0.0.1:60000' is a ESCL Pantum M6200NW series[18523C] (USB) flatbed scanner
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1
+$ scanimage --device-name "airscan:e0:Pantum M6200NW series[18523C] (USB)" --format=png &gt; test_scan.png
+$ ls -l -h test_scan.png 
+-rw-r--r-- 1 test test 6.0M 10月 14 09:22 test_scan.png
+</code></pre>
+<p>Select the second one in graphical window:</p>
+<p><img src="./images/2025_10_14_09_27_41_460x330.jpg" alt="./images/2025_10_14_09_27_41_460x330.jpg" /></p>
+<p>scanning:</p>
+<p><img src="./images/2025_10_14_09_26_50_482x358.jpg" alt="./images/2025_10_14_09_26_50_482x358.jpg" /></p>
+<p>result:</p>
+<p><img src="./images/2025_10_14_09_27_17_477x357.jpg" alt="./images/2025_10_14_09_27_17_477x357.jpg" /></p>
+<h3 id="4-hp-officejet-pro-6230"><a class="header" href="#4-hp-officejet-pro-6230">4. HP OfficeJet Pro 6230</a></h3>
+<p>Function:</p>
+<pre><code>    标配端口:
+        1个 高速 USB 2.0 端口
+        1个 以太网 (10/100 Base-TX) 端口
+        1个 Wi-Fi 802.11b/g/n 无线网络端口
+    移动打印能力:
+        HP ePrint 云打印
+        Apple AirPrint™
+        Mopria™ 认证
+        无线直连打印 (Wi-Fi Direct)
+</code></pre>
+<p>Get the detailed info:</p>
+<pre><code>root@idv-TC-9073:~# lsusb | grep Hewlett
+Bus 001 Device 005: ID 03f0:7312 Hewlett-Packard 
+root@idv-TC-9073:~# lsusb -v -s 001:005
+</code></pre>
+<p>ipp-usb support:</p>
+<pre><code>从文件中可以看到两个支持此协议的接口描述：
+
+    第一个证据：在接口 0 的备用设置 1 (AlternateSetting 1) 中，明确列出了：
+        bInterfaceClass 7 Printer 
+bInterfaceSubClass 1 Printer 
+bInterfaceProtocol 4 
+
+第二个证据：在接口 1 的备用设置 1 (AlternateSetting 1) 中，同样也列出了：
+    bInterfaceClass 7 Printer 
+bInterfaceSubClass 1 Printer 
+bInterfaceProtocol 4 
+
+这两个接口配置都清楚地表明该设备遵循 IPP-over-USB 协议标准，因此支持通过 USB 进行基于 IPP 的现代无驱动打印。
+</code></pre>
+<h3 id="5-zkfd-erification"><a class="header" href="#5-zkfd-erification">5. zkfd erification</a></h3>
+<p>Steps:</p>
+<pre><code>test@test-PC:~$ sudo lpinfo -v
+network https
+file cups-brf:/
+network ipp
+network beh
+direct hp:/usb/Officejet_Pro_6230?serial=TH95K7N167
+network lpd
+network ipps
+serial serial:/dev/ttyS0?baud=115200
+network http
+network socket
+network smb
+direct hpfax
+test@test-PC:~$ sudo lpstat -p -d
+打印机 HP_Officejet_Pro_6230_606FF3_USB_ 目前空闲。从 2025年10月14日 星期二 10时03分14秒 开始启用
+无系统默认目标
+test@test-PC:~$ sudo lpstat -t
+调度器正在运行
+无系统默认目标
+用于 HP_Officejet_Pro_6230_606FF3_USB_ 的设备：implicitclass://HP_Officejet_Pro_6230_606FF3_USB_/
+HP_Officejet_Pro_6230_606FF3_USB_ 自从 2025年10月14日 星期二 10时03分14秒 开始接受请求
+打印机 HP_Officejet_Pro_6230_606FF3_USB_ 目前空闲。从 2025年10月14日 星期二 10时03分14秒 开始启用
+test@test-PC:~$ ps -ef | grep ipp
+root         974       1  0 10:02 ?        00:00:00 /sbin/ipp-usb udev
+test        2387    2231  0 10:03 pts/0    00:00:00 grep ipp
+</code></pre>
+<h3 id="6-kylin-verification"><a class="header" href="#6-kylin-verification">6. kylin verification</a></h3>
+<p>Find the right driver for printer:</p>
+<p><img src="./images/2025_10_14_10_13_55_689x496.jpg" alt="./images/2025_10_14_10_13_55_689x496.jpg" /></p>
+<p><img src="./images/2025_10_14_10_39_44_1098x516.jpg" alt="./images/2025_10_14_10_39_44_1098x516.jpg" /></p>
+<p>using <code>lpinfo -m</code> for getting all of the printer drivers.</p>
+<p>Get the device driver for printer.</p>
+<pre><code>$ LANG=C sudo lpstat -l -p HP-Officejet-Pro-6230
+printer HP-Officejet-Pro-6230 is idle.  enabled since Tue Oct 14 10:14:07 2025
+	Form mounted:
+	Content types: any
+	Printer types: unknown
+	Description: HP-Officejet-Pro-6230
+	Alerts: none
+	Location: 
+	Connection: direct
+	Interface: /etc/cups/ppd/HP-Officejet-Pro-6230.ppd
+	On fault: no alert
+	After fault: continue
+	Users allowed:
+		(all)
+	Forms allowed:
+		(none)
+	Banner required
+	Charset sets:
+		(none)
+	Default pitch:
+	Default page size:
+	Default port settings:
+</code></pre>
+<h3 id="7-uos-verification"><a class="header" href="#7-uos-verification">7. uos verification</a></h3>
+<p>device driver for printer:</p>
+<pre><code>root@printer:~# lpstat -l -p Officejet-Pro-6230
+打印机 Officejet-Pro-6230 目前空闲。从 2025年10月14日 星期二 19时01分45秒 开始启用
+	已挂载表单：
+	内容类型：任意
+	打印机类型：未知
+	描述：HP Officejet Pro 6230
+	警告：none
+	位置：printer
+	连接：直接
+	界面：/etc/cups/ppd/Officejet-Pro-6230.ppd
+	发生错误时：无警告
+	发生错误时：继续
+	允许的用户：
+		（全部）
+	已允许表单：
+		（无）
+	需要横幅
+	字符集：
+		（无）
+	默认字间距：
+	默认页面尺寸：
+	默认端口设置：
+</code></pre>
+<h3 id="8-ubuntu-verification"><a class="header" href="#8-ubuntu-verification">8. ubuntu verification</a></h3>
+<p>device driver info:</p>
+<pre><code>$ sudo lpstat -l -p Officejet-Pro-6230
+printer Officejet-Pro-6230 is idle.  enabled since 2025年10月14日 星期二 10时09分55秒
+	Form mounted:
+	Content types: any
+	Printer types: unknown
+	Description: HP Officejet Pro 6230
+	Alerts: none
+	Location: 180406
+	Connection: direct
+	Interface: /etc/cups/ppd/Officejet-Pro-6230.ppd
+	On fault: no alert
+	After fault: continue
+	Users allowed:
+		(all)
+	Forms allowed:
+		(none)
+	Banner required
+	Charset sets:
+		(none)
+	Default pitch:
+	Default page size:
+	Default port settings:
+</code></pre>
+<p>pkg info:</p>
+<pre><code>test@180406:~$ sudo dpkg -l | grep hplip
+ii  hplip                                      3.17.10+repack0-5                               amd64        HP Linux Printing and Imaging System (HPLIP)
+ii  hplip-data                                 3.17.10+repack0-5                               all          HP Linux Printing and Imaging - data files
+</code></pre>
+<h3 id="9-network-printercanon"><a class="header" href="#9-network-printercanon">9. network printer(canon)</a></h3>
+<p>uos add:</p>
+<p><img src="./images/2025_10_14_11_17_51_652x481.jpg" alt="./images/2025_10_14_11_17_51_652x481.jpg" /></p>
+<p>no driver for c3826:</p>
+<p><img src="./images/2025_10_14_11_19_54_838x579.jpg" alt="./images/2025_10_14_11_19_54_838x579.jpg" /></p>
+<p>uos, disable security center:</p>
+<p><img src="./images/2025_10_14_11_22_28_856x422.jpg" alt="./images/2025_10_14_11_22_28_856x422.jpg" /></p>
+<pre><code>cd linux-UFRII-drv-v620-m17n/
+./install.sh
+</code></pre>
+<p><img src="./images/2025_10_14_11_40_37_653x482.jpg" alt="./images/2025_10_14_11_40_37_653x482.jpg" /></p>
+<p><img src="./images/2025_10_14_11_40_51_699x502.jpg" alt="./images/2025_10_14_11_40_51_699x502.jpg" /></p>
+<p><img src="./images/2025_10_14_11_41_06_733x522.jpg" alt="./images/2025_10_14_11_41_06_733x522.jpg" /></p>
+<p><img src="./images/2025_10_14_11_41_19_739x504.jpg" alt="./images/2025_10_14_11_41_19_739x504.jpg" /></p>
+<h3 id="10-network-printerzkfd"><a class="header" href="#10-network-printerzkfd">10. network printer(zkfd)</a></h3>
+<p>Add new printer:</p>
+<p><img src="./images/2025_10_14_11_46_28_534x490.jpg" alt="./images/2025_10_14_11_46_28_534x490.jpg" /></p>
+<p>Still with no driver, should install UFRII driver:</p>
+<pre><code> tar xzvf linux-UFRII-drv-v620-m17n-20.tar.gz 
+ cd linux-UFRII-drv-v620-m17n/
+ sudo ./install.sh 
+ sudo systemctl restart cups
+</code></pre>
+<p><img src="./images/2025_10_14_11_50_20_561x520.jpg" alt="./images/2025_10_14_11_50_20_561x520.jpg" /></p>
+<p><img src="./images/2025_10_14_11_51_16_544x494.jpg" alt="./images/2025_10_14_11_51_16_544x494.jpg" /></p>
+<p>Result:</p>
+<p><img src="./images/2025_10_14_11_52_07_772x382.jpg" alt="./images/2025_10_14_11_52_07_772x382.jpg" /></p>
+<pre><code># lpstat -l -p Canon-iR-ADV-C3826
+打印机 Canon-iR-ADV-C3826 目前空闲。从 2025年10月14日 星期二 11时51分24秒 开始启用
+	已挂载表单：
+	内容类型：任意
+	打印机类型：未知
+	描述：Canon iR-ADV C3826
+	警告：none
+	位置：
+	连接：直接
+	界面：/etc/cups/ppd/Canon-iR-ADV-C3826.ppd
+	发生错误时：无警告
+	发生错误时：继续
+	允许的用户：
+		（全部）
+	已允许表单：
+		（无）
+	需要横幅
+	字符集：
+		（无）
+	默认字间距：
+	默认页面尺寸：
+	默认端口设置：
+</code></pre>
+<h3 id="11-hp-officejet-pro6230win10ubuntu2404"><a class="header" href="#11-hp-officejet-pro6230win10ubuntu2404">11. hp officejet pro6230(win10/ubuntu2404)</a></h3>
+<p>Get the ip addr: 192.168.1.68.</p>
+<p><img src="./images/2025_10_14_14_25_30_416x338.jpg" alt="./images/2025_10_14_14_25_30_416x338.jpg" /></p>
+<p><img src="./images/2025_10_14_14_39_58_1215x613.jpg" alt="./images/2025_10_14_14_39_58_1215x613.jpg" /></p>
+<p>under ubuntu2404:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ nmap -p 631 192.168.1.68
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-10-14 14:42 CST
+Nmap scan report for 192.168.1.68
+Host is up (0.0017s latency).
+
+PORT    STATE SERVICE
+631/tcp open  ipp
+
+Nmap done: 1 IP address (1 host up) scanned in 0.03 seconds
+test@test-Standard-PC-i440FX-PIIX-1996:~$ driverless list "ipp://192.168.1.68"
+DEBUG: Started ippfind (PID 3015)
+DEBUG: ippfind (PID 3015) exited with no errors.
+</code></pre>
+<p>Ip addr not in the same cidr.</p>
+<pre><code>2: ens3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:e6:d8:57 brd ff:ff:ff:ff:ff:ff
+    altname enp0s3
+    inet 192.168.123.2/24 brd 192.168.123.255 scope global dynamic noprefixroute ens3
+       valid_lft 3379sec preferred_lft 3379sec
+    inet6 fe80::5054:ff:fee6:d857/64 scope link 
+       valid_lft forever preferred_lft forever
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+</code></pre>
+<p>the script for adding the ipp-everywhere printer in different cidr:</p>
+<pre><code>#!/bin/bash
+
+# ==============================================================================
+# 脚本名称: setup_remote_ipp_printer.sh
+# 脚本功能: 直接添加一台位于不同网段、已知IP地址且支持IPP的网络打印机。
+# ==============================================================================
+
+# --- 请在此处配置您的打印机IP地址 ---
+PRINTER_IP="192.168.1.68"
+# ------------------------------------
+
+# 设置颜色变量用于输出
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+# 检查是否以root权限运行
+if [ "$EUID" -ne 0 ]; then
+  echo -e "${RED}*** 错误: 此脚本需要管理员权限。请使用 'sudo' 来运行。${NC}"
+  exit 1
+fi
+
+echo -e "${YELLOW}&gt;&gt;&gt; 目标打印机IP地址:${NC} ${PRINTER_IP}"
+
+# --- 步骤 1: 检查网络连通性 ---
+echo -e "${YELLOW}&gt;&gt;&gt; 正在检查与打印机的网络连通性 (ping)...${NC}"
+# -c 3: 发送3个包, -W 2: 等待2秒超时
+ping -c 3 -W 2 "${PRINTER_IP}" &gt; /dev/null 2&gt;&amp;1
+
+if [ $? -ne 0 ]; then
+    echo -e "${RED}*** 错误: 无法 ping 通打印机 ${PRINTER_IP}。${NC}"
+    echo -e "${RED}*** 请检查IP地址是否正确，以及网络路由/防火墙是否允许ICMP协议。${NC}"
+    exit 1
+fi
+echo -e "${GREEN}&gt;&gt;&gt; Ping 测试成功!${NC}"
+
+# --- 步骤 2: 检查IPP端口(631)是否可访问 ---
+echo -e "${YELLOW}&gt;&gt;&gt; 正在检查打印机IPP端口(631)是否开放...${NC}"
+# 使用 nc (netcat) 工具探测端口，设置5秒超时
+nc -z -w 5 "${PRINTER_IP}" 631
+
+if [ $? -ne 0 ]; then
+    echo -e "${RED}*** 错误: 无法连接到打印机 ${PRINTER_IP} 的 631 端口。${NC}"
+    echo -e "${RED}*** 请检查您和打印机之间的路由器或防火墙是否阻止了 TCP 631 端口的通信。${NC}"
+    exit 1
+fi
+echo -e "${GREEN}&gt;&gt;&gt; 端口 631 可访问!${NC}"
+
+
+# --- 步骤 3: 添加打印机 ---
+# 根据IP地址生成一个友好的打印机名称
+PRINTER_NAME="IPP_Printer_$(echo "${PRINTER_IP}" | tr '.' '_')"
+# 构建打印机的设备URI
+PRINTER_URI="ipp://${PRINTER_IP}/ipp/print"
+
+echo -e "${YELLOW}&gt;&gt;&gt; 准备添加打印机，名称为:${NC} ${PRINTER_NAME}"
+echo -e "    ${YELLOW}设备地址 (URI):${NC} ${PRINTER_URI}"
+
+# 使用 lpadmin 命令添加打印机
+# -p: 指定打印机名称
+# -E: 启用打印机并接受任务
+# -v: 指定设备URI
+# -m everywhere: 告诉CUPS使用IPP Everywhere协议自动配置，无需驱动
+echo -e "${YELLOW}&gt;&gt;&gt; 正在执行添加命令...${NC}"
+lpadmin -p "${PRINTER_NAME}" -v "${PRINTER_URI}" -m everywhere -E
+
+# 检查 lpadmin 命令是否成功执行
+if [ $? -eq 0 ]; then
+    echo -e "\n${GREEN}=====================================================${NC}"
+    echo -e "${GREEN}✓ 打印机 '${PRINTER_NAME}' 已成功配置并启用!${NC}"
+    echo -e "${GREEN}✓ 您现在可以从打印对话框中选择它进行打印。${NC}"
+    echo -e "${GREEN}=====================================================${NC}"
+else
+    echo -e "\n${RED}*** 错误: 添加打印机失败。${NC}"
+    echo -e "${RED}*** 请检查CUPS服务是否正常 (systemctl status cups) 或查看系统日志。${NC}"
+fi
+
+exit 0
+</code></pre>
+<p>Script execution log:</p>
+<pre><code>$ sudo ./setupprinter.sh 
+&gt;&gt;&gt; 目标打印机IP地址: 192.168.1.68
+&gt;&gt;&gt; 正在检查与打印机的网络连通性 (ping)...
+&gt;&gt;&gt; Ping 测试成功!
+&gt;&gt;&gt; 正在检查打印机IPP端口(631)是否开放...
+Connection to 192.168.1.68 631 port [tcp/ipp] succeeded!
+&gt;&gt;&gt; 端口 631 可访问!
+&gt;&gt;&gt; 准备添加打印机，名称为: IPP_Printer_192_168_1_68
+    设备地址 (URI): ipp://192.168.1.68/ipp/print
+&gt;&gt;&gt; 正在执行添加命令...
+
+=====================================================
+✓ 打印机 'IPP_Printer_192_168_1_68' 已成功配置并启用!
+✓ 您现在可以从打印对话框中选择它进行打印。
+=====================================================
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+打印机 IPP_Printer_192_168_1_68 目前空闲。从 2025年10月14日 星期二 15时12分25秒 开始启用
+无系统默认目标
+</code></pre>
+<p>Remove/reboot/verification:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+打印机 IPP_Printer_192_168_1_68 目前空闲。从 2025年10月14日 星期二 15时12分25秒 开始启用
+无系统默认目标
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpadmin -x IPP_Printer_192_168_1_68
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo reboot
+After reboot
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+</code></pre>
+<p><code>Pantum_M6200NW</code> is also ok for ethernet discovery</p>
+<h3 id="10-avahi-daemon"><a class="header" href="#10-avahi-daemon">10. avahi-daemon</a></h3>
+<p>Host side:</p>
+<pre><code># vim /etc/avahi/avahi-daemon.conf
+[server]
+allow-interfaces=eno1,vnet0,virbr0
+...
+[reflector]
+enable-reflector=yes
+# systemctl restart avahi-daemon
+</code></pre>
+<p>In guest:</p>
+<pre><code>$ sudo apt install -y avahi-utils
+$ sudo avahi-browse -a
++   ens3 IPv6 Pantum M6200NW series[18523C]                 Secure Internet Printer local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 Secure Internet Printer local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 Internet Printer     local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 Internet Printer     local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 PDL Printer          local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 _uscans._tcp         local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 _uscan._tcp          local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 _privet._tcp         local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 _scanner._tcp        local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 UNIX Printer         local
++   ens3 IPv4 Pantum M6200NW series[18523C]                 Web Site             local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 PDL Printer          local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 _uscans._tcp         local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 _uscan._tcp          local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 _privet._tcp         local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 _scanner._tcp        local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 UNIX Printer         local
++   ens3 IPv6 Pantum M6200NW series[18523C]                 Web Site             local
+$ sudo lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C 目前空闲。从 2025年10月14日 星期二 17时25分46秒 开始启用
+无系统默认目标
+
+</code></pre>
+<p>The scanner:</p>
+<p><img src="./images/2025_10_14_17_34_23_695x384.jpg" alt="./images/2025_10_14_17_34_23_695x384.jpg" /></p>
+<p>output:</p>
+<p><img src="./images/2025_10_14_17_35_08_550x366.jpg" alt="./images/2025_10_14_17_35_08_550x366.jpg" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20251013.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20251013.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
