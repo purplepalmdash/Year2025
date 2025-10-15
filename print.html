@@ -18880,6 +18880,64 @@ $ sudo lpstat -p -d
 <p><img src="./images/2025_10_14_17_34_23_695x384.jpg" alt="./images/2025_10_14_17_34_23_695x384.jpg" /></p>
 <p>output:</p>
 <p><img src="./images/2025_10_14_17_35_08_550x366.jpg" alt="./images/2025_10_14_17_35_08_550x366.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251015"><a class="header" href="#20251015">20251015</a></h1>
+<h3 id="1-lpp-ethernet-based"><a class="header" href="#1-lpp-ethernet-based">1. lpp ethernet based</a></h3>
+<p>ipp everywhere configured</p>
+<pre><code>~$ sudo lpstat -l -p Pantum_M6200NW_series_18523C
+打印机 Pantum_M6200NW_series_18523C 目前空闲。从 2025年10月15日 星期三 08时51分41秒 开始启用
+	已挂载表单：
+	内容类型：任意
+	打印机类型：未知
+	描述：Pantum_M6200NW_series_18523C
+	警告：none
+	位置：
+	连接：直接
+	界面：/etc/cups/ppd/Pantum_M6200NW_series_18523C.ppd
+	发生错误时：无警告
+	发生错误时：继续
+	允许的用户：
+		 (全部)
+	已允许表单：
+		 (无)
+	需要横幅
+	字符集：
+		 (无)
+	默认字间距：
+	默认页面尺寸：
+	默认端口设置：
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo dpkg -l | grep -i pantum
+$ sudo ls -l -h /etc/cups/ppd/
+总计 12K
+-rw-r----- 1 root lp 8.4K 10月 15 08:51 Pantum_M6200NW_series_18523C.ppd
+</code></pre>
+<h3 id="2-raw-printer-config"><a class="header" href="#2-raw-printer-config">2. raw printer config</a></h3>
+<p>Difference between raw/lpd:</p>
+<pre><code>协议	端口	连接地址/URI 格式	优点
+RAW	9100	socket://&lt;IP地址&gt;:9100	非常简单，通用，高效，是目前的主流选择。
+LPD	515	lpd://&lt;IP地址&gt;/&lt;队列名&gt;	兼容性好，尤其是在一些旧设备或混合环境中。
+</code></pre>
+<p>Kylin v10:</p>
+<p><img src="./images/2025_10_15_09_29_43_743x485.jpg" alt="./images/2025_10_15_09_29_43_743x485.jpg" /></p>
+<p>Select the driver:</p>
+<p><img src="./images/2025_10_15_09_31_13_601x498.jpg" alt="./images/2025_10_15_09_31_13_601x498.jpg" /></p>
+<p><img src="./images/2025_10_15_09_31_26_455x482.jpg" alt="./images/2025_10_15_09_31_26_455x482.jpg" /></p>
+<p><img src="./images/2025_10_15_09_32_14_604x427.jpg" alt="./images/2025_10_15_09_32_14_604x427.jpg" /></p>
+<p>Scanning via raw:</p>
+<p><img src="./images/2025_10_15_09_34_30_992x526.jpg" alt="./images/2025_10_15_09_34_30_992x526.jpg" /></p>
+<h3 id="3-lpd-printer-config"><a class="header" href="#3-lpd-printer-config">3. lpd printer config</a></h3>
+<p>Kylin v10:</p>
+<pre><code>通常 LPD 还需要一个“队列 (Queue)”名称。对于大多数打印机，队列名可以是 raw、lp、print 或者留空。您可以先尝试 raw。
+最终生成的设备 URI 应该是类似这样的格式: lpd://192.168.1.100/raw
+</code></pre>
+<p><img src="./images/2025_10_15_09_40_46_667x471.jpg" alt="./images/2025_10_15_09_40_46_667x471.jpg" /></p>
+<p>Detect printer:</p>
+<p><img src="./images/2025_10_15_09_41_22_554x437.jpg" alt="./images/2025_10_15_09_41_22_554x437.jpg" /></p>
+<p>Scanner config, seems the same as the raw config:</p>
+<p><img src="./images/2025_10_15_09_44_07_999x520.jpg" alt="./images/2025_10_15_09_44_07_999x520.jpg" /></p>
+<h3 id="4-different-kinds-of-printer"><a class="header" href="#4-different-kinds-of-printer">4. different kinds of printer</a></h3>
+<p><img src="./images/2025_10_15_09_47_11_440x484.jpg" alt="./images/2025_10_15_09_47_11_440x484.jpg" /></p>
+<p><img src="./images/2025_10_15_09_58_43_705x451.jpg" alt="./images/2025_10_15_09_58_43_705x451.jpg" /></p>
+<h3 id="5-arm64-based-printer-verification"><a class="header" href="#5-arm64-based-printer-verification">5. arm64 based printer verification</a></h3>
 
                     </main>
 
