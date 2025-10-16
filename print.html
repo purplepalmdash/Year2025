@@ -18938,6 +18938,38 @@ LPD	515	lpd://&lt;IP地址&gt;/&lt;队列名&gt;	兼容性好，尤其是在一�
 <p><img src="./images/2025_10_15_09_47_11_440x484.jpg" alt="./images/2025_10_15_09_47_11_440x484.jpg" /></p>
 <p><img src="./images/2025_10_15_09_58_43_705x451.jpg" alt="./images/2025_10_15_09_58_43_705x451.jpg" /></p>
 <h3 id="5-arm64-based-printer-verification"><a class="header" href="#5-arm64-based-printer-verification">5. arm64 based printer verification</a></h3>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251016"><a class="header" href="#20251016">20251016</a></h1>
+<h3 id="1-lxc-based-cups-server"><a class="header" href="#1-lxc-based-cups-server">1. lxc based cups server</a></h3>
+<h4 id="1-ubuntu180406-installed-pure"><a class="header" href="#1-ubuntu180406-installed-pure">1. ubuntu180406 installed pure</a></h4>
+<p>Ubuntu180406 pure installed, in a new ethernet network:</p>
+<p><img src="./images/2025_10_16_09_55_14_810x461.jpg" alt="./images/2025_10_16_09_55_14_810x461.jpg" /></p>
+<p>Insert usb:</p>
+<p><img src="./images/2025_10_16_09_55_51_663x307.jpg" alt="./images/2025_10_16_09_55_51_663x307.jpg" /></p>
+<p>Generic Text-Only printer:</p>
+<p><img src="./images/2025_10_16_09_56_09_500x189.jpg" alt="./images/2025_10_16_09_56_09_500x189.jpg" /></p>
+<p>Simple Scan:</p>
+<p><img src="./images/2025_10_16_09_56_40_493x368.jpg" alt="./images/2025_10_16_09_56_40_493x368.jpg" /></p>
+<h4 id="2-lxclxd-based-desktop"><a class="header" href="#2-lxclxd-based-desktop">2. lxc/lxd based desktop</a></h4>
+<p>Create br0(for bridge networking):</p>
+<pre><code> nmcli con add type bridge ifname br0
+ nmcli con modify bridge-br0 bridge.stp no
+ nmcli con modify bridge-br0 ipv4.method manual ipv4.address "10.171.172.111/24" ipv4.gateway "10.171.172.1" ipv4.dns 223.5.5.5
+ nmcli con add type bridge-slave ifname eth0 master bridge-br0
+</code></pre>
+<p>Install lxd/create instance:</p>
+<pre><code>apt install -y lxd vim
+sudo lxd init --auto
+lxc launch ubuntu:24.04 cups-container
+</code></pre>
+<p>privileges config and add usb bus to container:</p>
+<pre><code>lxc config set cups-container security.privileged true
+lxc config device add cups-container dev-bus-usb disk source=/dev/bus/usb path=/dev/bus/usb recursive=true
+</code></pre>
+<p>Re-connect eth0 to br0:</p>
+<pre><code>lxc network attach br0 cups-container eth0
+lxc restart cups-container
+
+</code></pre>
 
                     </main>
 
