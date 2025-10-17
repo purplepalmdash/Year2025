@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251016 - year2025</title>
+        <title>20251017 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,91 +175,64 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251016"><a class="header" href="#20251016">20251016</a></h1>
-<h3 id="1-lxc-based-cups-server"><a class="header" href="#1-lxc-based-cups-server">1. lxc based cups server</a></h3>
-<h4 id="1-ubuntu180406-installed-pure"><a class="header" href="#1-ubuntu180406-installed-pure">1. ubuntu180406 installed pure</a></h4>
-<p>Ubuntu180406 pure installed, in a new ethernet network:</p>
-<p><img src="./images/2025_10_16_09_55_14_810x461.jpg" alt="./images/2025_10_16_09_55_14_810x461.jpg" /></p>
-<p>Insert usb:</p>
-<p><img src="./images/2025_10_16_09_55_51_663x307.jpg" alt="./images/2025_10_16_09_55_51_663x307.jpg" /></p>
-<p>Generic Text-Only printer:</p>
-<p><img src="./images/2025_10_16_09_56_09_500x189.jpg" alt="./images/2025_10_16_09_56_09_500x189.jpg" /></p>
-<p>Simple Scan:</p>
-<p><img src="./images/2025_10_16_09_56_40_493x368.jpg" alt="./images/2025_10_16_09_56_40_493x368.jpg" /></p>
-<h4 id="2-lxclxd-based-desktop"><a class="header" href="#2-lxclxd-based-desktop">2. lxc/lxd based desktop</a></h4>
-<p>Create br0(for bridge networking):</p>
-<pre><code> nmcli con add type bridge ifname br0
- nmcli con modify bridge-br0 bridge.stp no
- nmcli con modify bridge-br0 ipv4.method manual ipv4.address "10.171.172.111/24" ipv4.gateway "10.171.172.1" ipv4.dns 223.5.5.5
- nmcli con add type bridge-slave ifname eth0 master bridge-br0
+                        <h1 id="20251017"><a class="header" href="#20251017">20251017</a></h1>
+<h3 id="1-lxc-basedsaned"><a class="header" href="#1-lxc-basedsaned">1. lxc based(saned)</a></h3>
+<h4 id="11-container-internal-forwarding"><a class="header" href="#11-container-internal-forwarding">1.1 container internal forwarding</a></h4>
+<p>configure ipp-usb:</p>
+<pre><code># vim /etc/ipp-usb/ipp-usb.conf
+[network]
+interface = loopback
+host-name = localhost,127.0.0.1
+ipv6 = disable
 </code></pre>
-<p>Install lxd/create instance:</p>
-<pre><code>apt install -y lxd vim
-sudo lxd init --auto
-lxc launch ubuntu:24.04 cups-container
+<p>In a terminal, run ipp-usb:</p>
+<pre><code># ipp-usb
 </code></pre>
-<p>privileges config and add usb bus to container:</p>
-<pre><code>lxc config set cups-container security.privileged true
-lxc config device add cups-container dev-bus-usb disk source=/dev/bus/usb path=/dev/bus/usb recursive=true
+<h4 id="12-host-configuration"><a class="header" href="#12-host-configuration">1.2 host configuration</a></h4>
+<p>Forwarding:</p>
+<pre><code>lxc config device add cups-proxy ipp-usb-proxy proxy listen=tcp:127.0.0.1:60001 connect=tcp:127.0.0.1:60001
 </code></pre>
-<p>Re-connect eth0 to br0:</p>
-<pre><code>lxc network attach br0 cups-container eth0
-lxc restart cups-container
+<p>TBD(forwarding to a range).</p>
+<p>airscan configuration:</p>
+<pre><code>#  cat /etc/sane.d/airscan.conf
+[devices]
+my_scanner = http://localhost:60001/eSCL, eSCL
+</code></pre>
+<p>since the sane is too old, re-build <code>libsane-airscan</code>:</p>
+<pre><code>apt install -y libsane-dev
+sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
+tar -xzf 0.99.29.tar.gz
+cd sane-airscan-0.99.29/
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+pip3 install --upgrade meson
+meson setup build
+ninja -C build
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+Add only one line: 
+/usr/local/lib
+sudo ldconfig
 
-</code></pre>
-<h3 id="3-workable-lxc-config"><a class="header" href="#3-workable-lxc-config">3. workable lxc config</a></h3>
-<p>workable.</p>
-<pre><code># lxc config show cups-proxy
-architecture: x86_64
-config:
-  image.architecture: amd64
-  image.description: ubuntu 24.04 LTS amd64 (release) (20251001)
-  image.label: release
-  image.os: ubuntu
-  image.release: noble
-  image.serial: "20251001"
-  image.version: "24.04"
-  security.nesting: "true"
-  security.privileged: "true"
-  volatile.base_image: 22b3bd8a5d4842f1955ffbaeb8e02900019c28758a6e7b7b27869172652202e9
-  volatile.eth0.hwaddr: 00:16:3e:d5:93:d4
-  volatile.idmap.base: "0"
-  volatile.idmap.next: '[]'
-  volatile.last_state.idmap: '[]'
-  volatile.last_state.power: RUNNING
-devices:
-  cups-tcp:
-    connect: tcp:127.0.0.1:631
-    listen: tcp:127.0.0.1:631
-    type: proxy
-  myprinter:
-    productid: 8e10
-    type: usb
-    vendorid: 232b
-  usb-bus:
-    path: /dev/bus/usb
-    recursive: "true"
-    source: /dev/bus/usb
-    type: disk
-ephemeral: false
-profiles:
-- default
-stateful: false
-description: ""
-
+# vim /etc/sane.d/dll.conf
+    # ... 文件中已有的其他驱动名 ...
+    xerox_mfp
+    airscan
+# vim /etc/sane.d/net.conf
+    localhost
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251015.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251016.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251017.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -267,13 +240,10 @@ description: ""
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251015.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251016.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251017.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

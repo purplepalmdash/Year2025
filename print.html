@@ -19011,6 +19011,55 @@ stateful: false
 description: ""
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251017"><a class="header" href="#20251017">20251017</a></h1>
+<h3 id="1-lxc-basedsaned"><a class="header" href="#1-lxc-basedsaned">1. lxc based(saned)</a></h3>
+<h4 id="11-container-internal-forwarding"><a class="header" href="#11-container-internal-forwarding">1.1 container internal forwarding</a></h4>
+<p>configure ipp-usb:</p>
+<pre><code># vim /etc/ipp-usb/ipp-usb.conf
+[network]
+interface = loopback
+host-name = localhost,127.0.0.1
+ipv6 = disable
+</code></pre>
+<p>In a terminal, run ipp-usb:</p>
+<pre><code># ipp-usb
+</code></pre>
+<h4 id="12-host-configuration"><a class="header" href="#12-host-configuration">1.2 host configuration</a></h4>
+<p>Forwarding:</p>
+<pre><code>lxc config device add cups-proxy ipp-usb-proxy proxy listen=tcp:127.0.0.1:60001 connect=tcp:127.0.0.1:60001
+</code></pre>
+<p>TBD(forwarding to a range).</p>
+<p>airscan configuration:</p>
+<pre><code>#  cat /etc/sane.d/airscan.conf
+[devices]
+my_scanner = http://localhost:60001/eSCL, eSCL
+</code></pre>
+<p>since the sane is too old, re-build <code>libsane-airscan</code>:</p>
+<pre><code>apt install -y libsane-dev
+sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
+tar -xzf 0.99.29.tar.gz
+cd sane-airscan-0.99.29/
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+pip3 install --upgrade meson
+meson setup build
+ninja -C build
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+Add only one line: 
+/usr/local/lib
+sudo ldconfig
+
+# vim /etc/sane.d/dll.conf
+    # ... 文件中已有的其他驱动名 ...
+    xerox_mfp
+    airscan
+# vim /etc/sane.d/net.conf
+    localhost
+</code></pre>
 
                     </main>
 
