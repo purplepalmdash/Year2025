@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251017 - year2025</title>
+        <title>20251018 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,65 +175,83 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251017"><a class="header" href="#20251017">20251017</a></h1>
-<h3 id="1-lxc-basedsaned"><a class="header" href="#1-lxc-basedsaned">1. lxc based(saned)</a></h3>
-<h4 id="11-container-internal-forwarding"><a class="header" href="#11-container-internal-forwarding">1.1 container internal forwarding</a></h4>
-<p>configure ipp-usb:</p>
-<pre><code># vim /etc/ipp-usb/ipp-usb.conf
-[network]
-interface = loopback
-host-name = localhost,127.0.0.1
-ipv6 = disable
+                        <h1 id="20251018"><a class="header" href="#20251018">20251018</a></h1>
+<h3 id="1-lxc-based-sanedverify"><a class="header" href="#1-lxc-based-sanedverify">1. lxc based saned(verify)</a></h3>
+<p>ubuntu24.04 host machine:</p>
+<pre><code>apt install snapd
+systemctl disable apparmor
+lxd init --auto
 </code></pre>
-<p>In a terminal, run ipp-usb:</p>
-<pre><code># ipp-usb
+<p>launch lxc instance:</p>
+<pre><code>root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc launch ubuntu:24.04 
+Launching the instance
+Instance name is: next-pheasant                    
+root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc ls
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+|     NAME      |  STATE  |         IPV4         |                     IPV6                     |   TYPE    | SNAPSHOTS |
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+| next-pheasant | RUNNING | 10.85.247.211 (eth0) | fd42:c105:7f61:d923:216:3eff:feee:9c0 (eth0) | CONTAINER | 0         |
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc exec next-pheasant bash
 </code></pre>
-<h4 id="12-host-configuration"><a class="header" href="#12-host-configuration">1.2 host configuration</a></h4>
-<p>Forwarding:</p>
-<pre><code>lxc config device add cups-proxy ipp-usb-proxy proxy listen=tcp:127.0.0.1:60001 connect=tcp:127.0.0.1:60001
+<p>host side configuration:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo vim /etc/sane.d/saned.conf 
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo sudo systemctl enable saned.socket
+Created symlink /etc/systemd/system/sockets.target.wants/saned.socket → /usr/lib/systemd/system/saned.socket.
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo sudo systemctl start saned.socket
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo ufw status
+状态：不活动
 </code></pre>
-<p>TBD(forwarding to a range).</p>
-<p>airscan configuration:</p>
-<pre><code>#  cat /etc/sane.d/airscan.conf
-[devices]
-my_scanner = http://localhost:60001/eSCL, eSCL
-</code></pre>
-<p>since the sane is too old, re-build <code>libsane-airscan</code>:</p>
-<pre><code>apt install -y libsane-dev
-sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
-mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
-wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
-tar -xzf 0.99.29.tar.gz
-cd sane-airscan-0.99.29/
-apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
-pip3 install --upgrade meson
-meson setup build
-ninja -C build
-sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
-sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
-sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
-sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
-Add only one line: 
-/usr/local/lib
-sudo ldconfig
+<p>In lxc instance:</p>
+<pre><code>apt update -y
+apt install -y sane-utils telnet
+root@next-pheasant:~# echo "10.85.247.1"&gt;&gt;/etc/sane.d/net.conf 
+root@next-pheasant:~# telnet 10.85.247.1 6566
+Trying 10.85.247.1...
+Connected to 10.85.247.1.
+Escape character is '^]'.
+^]
+telnet&gt; 
+^CConnection closed by foreign host.
+root@next-pheasant:~# scanimage -L
+Created directory: /var/lib/snmp/cert_indexes
+device `net:10.85.247.1:epsonds:libusb:005:002' is a Epson L3150 Series ESC/I-2
+root@next-pheasant:~# scanimage -d 'net:10.85.247.1:epsonds:libusb:005:002' --format=png &gt; 1.png
+libpng error: No IDATs written into file
+Aborted (core dumped)
 
-# vim /etc/sane.d/dll.conf
-    # ... 文件中已有的其他驱动名 ...
-    xerox_mfp
-    airscan
-# vim /etc/sane.d/net.conf
-    localhost
+</code></pre>
+<h3 id="2-ubuntu2204-host"><a class="header" href="#2-ubuntu2204-host">2. ubuntu22.04 host</a></h3>
+<p>Create a docker/lxc instance, the same as the above.</p>
+<p>vm based verification:</p>
+<pre><code>root@ubuntu200406server:/home/test# echo "192.168.122.1"&gt;&gt;/etc/sane.d/net.conf 
+root@ubuntu200406server:/home/test# scanimage -L
+device `net:192.168.122.1:epsonds:libusb:003:003' is a Epson L3150 Series ESC/I-2
+device `net:192.168.122.1:epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
+root@ubuntu200406server:/home/test# scanimage -d 'net:192.168.122.1:epsonds:libusb:003:003' --format=png&gt;1.png
+libpng error: No IDATs written into file
+Aborted (core dumped)
+
+</code></pre>
+<h3 id="3-different-driver"><a class="header" href="#3-different-driver">3. different driver</a></h3>
+<p>After install epsonscan2-bundle-6.7.70.0.x86_64.deb.tar.gz, we will have 2 drivers, use the right driver could use saned</p>
+<pre><code>device `epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
+
+</code></pre>
+<p>scanned via:</p>
+<pre><code>scanimage -d 'net:172.17.0.1:epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' --mode Color --format=png&gt;111.png
+
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251016.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251017.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251018.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="20251019.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -243,11 +261,11 @@ sudo ldconfig
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251016.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251017.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251018.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="20251019.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

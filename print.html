@@ -19060,6 +19060,105 @@ sudo ldconfig
 # vim /etc/sane.d/net.conf
     localhost
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251018"><a class="header" href="#20251018">20251018</a></h1>
+<h3 id="1-lxc-based-sanedverify"><a class="header" href="#1-lxc-based-sanedverify">1. lxc based saned(verify)</a></h3>
+<p>ubuntu24.04 host machine:</p>
+<pre><code>apt install snapd
+systemctl disable apparmor
+lxd init --auto
+</code></pre>
+<p>launch lxc instance:</p>
+<pre><code>root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc launch ubuntu:24.04 
+Launching the instance
+Instance name is: next-pheasant                    
+root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc ls
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+|     NAME      |  STATE  |         IPV4         |                     IPV6                     |   TYPE    | SNAPSHOTS |
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+| next-pheasant | RUNNING | 10.85.247.211 (eth0) | fd42:c105:7f61:d923:216:3eff:feee:9c0 (eth0) | CONTAINER | 0         |
++---------------+---------+----------------------+----------------------------------------------+-----------+-----------+
+root@test-Standard-PC-i440FX-PIIX-1996:/home/test# lxc exec next-pheasant bash
+</code></pre>
+<p>host side configuration:</p>
+<pre><code>test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo vim /etc/sane.d/saned.conf 
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo sudo systemctl enable saned.socket
+Created symlink /etc/systemd/system/sockets.target.wants/saned.socket → /usr/lib/systemd/system/saned.socket.
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo sudo systemctl start saned.socket
+test@test-Standard-PC-i440FX-PIIX-1996:~$ sudo ufw status
+状态：不活动
+</code></pre>
+<p>In lxc instance:</p>
+<pre><code>apt update -y
+apt install -y sane-utils telnet
+root@next-pheasant:~# echo "10.85.247.1"&gt;&gt;/etc/sane.d/net.conf 
+root@next-pheasant:~# telnet 10.85.247.1 6566
+Trying 10.85.247.1...
+Connected to 10.85.247.1.
+Escape character is '^]'.
+^]
+telnet&gt; 
+^CConnection closed by foreign host.
+root@next-pheasant:~# scanimage -L
+Created directory: /var/lib/snmp/cert_indexes
+device `net:10.85.247.1:epsonds:libusb:005:002' is a Epson L3150 Series ESC/I-2
+root@next-pheasant:~# scanimage -d 'net:10.85.247.1:epsonds:libusb:005:002' --format=png &gt; 1.png
+libpng error: No IDATs written into file
+Aborted (core dumped)
+
+</code></pre>
+<h3 id="2-ubuntu2204-host"><a class="header" href="#2-ubuntu2204-host">2. ubuntu22.04 host</a></h3>
+<p>Create a docker/lxc instance, the same as the above.</p>
+<p>vm based verification:</p>
+<pre><code>root@ubuntu200406server:/home/test# echo "192.168.122.1"&gt;&gt;/etc/sane.d/net.conf 
+root@ubuntu200406server:/home/test# scanimage -L
+device `net:192.168.122.1:epsonds:libusb:003:003' is a Epson L3150 Series ESC/I-2
+device `net:192.168.122.1:epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
+root@ubuntu200406server:/home/test# scanimage -d 'net:192.168.122.1:epsonds:libusb:003:003' --format=png&gt;1.png
+libpng error: No IDATs written into file
+Aborted (core dumped)
+
+</code></pre>
+<h3 id="3-different-driver"><a class="header" href="#3-different-driver">3. different driver</a></h3>
+<p>After install epsonscan2-bundle-6.7.70.0.x86_64.deb.tar.gz, we will have 2 drivers, use the right driver could use saned</p>
+<pre><code>device `epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
+
+</code></pre>
+<p>scanned via:</p>
+<pre><code>scanimage -d 'net:172.17.0.1:epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' --mode Color --format=png&gt;111.png
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251019"><a class="header" href="#20251019">20251019</a></h1>
+<h3 id="1-l3150home"><a class="header" href="#1-l3150home">1. L3150(home)</a></h3>
+<p>Under lxc:</p>
+<pre><code>root@cups-proxy:~# lpstat -p -d                                   
+lpstat: No destinations added.                                                              
+no system default destination 
+# scanimage -L                                                                    
+device `epsonds:libusb:005:002' is a Epson L3150 Series ESC/I-2
+root@cups-proxy:~/epson/epsonscan2-bundle-6.7.70.0.x86_64.deb# sudo ./install.sh
+# sudo apt install ./epson-inkjet-printer-escpr_1.8.6-1_amd64.deb 
+# apt install ghostscript cups-filter
+# apt install libcupsimage2
+</code></pre>
+<p>Then reboot the lxc instance.</p>
+<pre><code>root@cups-proxy:~# scanimage -L
+device `epsonds:libusb:005:003' is a Epson L3150 Series ESC/I-2
+device `epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
+</code></pre>
+<p>The printer should be added using following command:</p>
+<pre><code>lpinfo -v
+## get the name os the usb device
+lpinfo -m | grep L3150
+## get the driver
+lpadmin -p Epson-L3150-Series -E -v "usb://EPSON/L3150%20Series?serial=584141473031373851&amp;interface=1" -m "lsb/usr/epson-inkjet-printer-escpr/Epson/Epson-L3150_Series-epson-inkjet-printer-escpr.ppd.gz"
+</code></pre>
+<p>Then the printer is listed as:</p>
+<pre><code># lpstat -p -d
+printer Epson-L3150-Series is idle.  enabled since Sun Oct 19 10:02:12 2025
+no system default destination
+</code></pre>
+<h3 id="2-thinkingrunning-in-docker"><a class="header" href="#2-thinkingrunning-in-docker">2. thinking(running in docker)</a></h3>
+<p>run cups/ipp-usb/saned in docker.</p>
 
                     </main>
 

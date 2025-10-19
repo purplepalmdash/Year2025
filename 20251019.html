@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251017 - year2025</title>
+        <title>20251019 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,67 +175,47 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251017"><a class="header" href="#20251017">20251017</a></h1>
-<h3 id="1-lxc-basedsaned"><a class="header" href="#1-lxc-basedsaned">1. lxc based(saned)</a></h3>
-<h4 id="11-container-internal-forwarding"><a class="header" href="#11-container-internal-forwarding">1.1 container internal forwarding</a></h4>
-<p>configure ipp-usb:</p>
-<pre><code># vim /etc/ipp-usb/ipp-usb.conf
-[network]
-interface = loopback
-host-name = localhost,127.0.0.1
-ipv6 = disable
+                        <h1 id="20251019"><a class="header" href="#20251019">20251019</a></h1>
+<h3 id="1-l3150home"><a class="header" href="#1-l3150home">1. L3150(home)</a></h3>
+<p>Under lxc:</p>
+<pre><code>root@cups-proxy:~# lpstat -p -d                                   
+lpstat: No destinations added.                                                              
+no system default destination 
+# scanimage -L                                                                    
+device `epsonds:libusb:005:002' is a Epson L3150 Series ESC/I-2
+root@cups-proxy:~/epson/epsonscan2-bundle-6.7.70.0.x86_64.deb# sudo ./install.sh
+# sudo apt install ./epson-inkjet-printer-escpr_1.8.6-1_amd64.deb 
+# apt install ghostscript cups-filter
+# apt install libcupsimage2
 </code></pre>
-<p>In a terminal, run ipp-usb:</p>
-<pre><code># ipp-usb
+<p>Then reboot the lxc instance.</p>
+<pre><code>root@cups-proxy:~# scanimage -L
+device `epsonds:libusb:005:003' is a Epson L3150 Series ESC/I-2
+device `epsonscan2:L3150 Series:584141473031373851:esci2:usb:ES016E:4419' is a EPSON L3150 Series:584141473031373851 flatbed scanner
 </code></pre>
-<h4 id="12-host-configuration"><a class="header" href="#12-host-configuration">1.2 host configuration</a></h4>
-<p>Forwarding:</p>
-<pre><code>lxc config device add cups-proxy ipp-usb-proxy proxy listen=tcp:127.0.0.1:60001 connect=tcp:127.0.0.1:60001
+<p>The printer should be added using following command:</p>
+<pre><code>lpinfo -v
+## get the name os the usb device
+lpinfo -m | grep L3150
+## get the driver
+lpadmin -p Epson-L3150-Series -E -v "usb://EPSON/L3150%20Series?serial=584141473031373851&amp;interface=1" -m "lsb/usr/epson-inkjet-printer-escpr/Epson/Epson-L3150_Series-epson-inkjet-printer-escpr.ppd.gz"
 </code></pre>
-<p>TBD(forwarding to a range).</p>
-<p>airscan configuration:</p>
-<pre><code>#  cat /etc/sane.d/airscan.conf
-[devices]
-my_scanner = http://localhost:60001/eSCL, eSCL
+<p>Then the printer is listed as:</p>
+<pre><code># lpstat -p -d
+printer Epson-L3150-Series is idle.  enabled since Sun Oct 19 10:02:12 2025
+no system default destination
 </code></pre>
-<p>since the sane is too old, re-build <code>libsane-airscan</code>:</p>
-<pre><code>apt install -y libsane-dev
-sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
-mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
-wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
-tar -xzf 0.99.29.tar.gz
-cd sane-airscan-0.99.29/
-apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
-pip3 install --upgrade meson
-meson setup build
-ninja -C build
-sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
-sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
-sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
-sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
-Add only one line: 
-/usr/local/lib
-sudo ldconfig
-
-# vim /etc/sane.d/dll.conf
-    # ... 文件中已有的其他驱动名 ...
-    xerox_mfp
-    airscan
-# vim /etc/sane.d/net.conf
-    localhost
-</code></pre>
+<h3 id="2-thinkingrunning-in-docker"><a class="header" href="#2-thinkingrunning-in-docker">2. thinking(running in docker)</a></h3>
+<p>run cups/ipp-usb/saned in docker.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251016.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251018.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251018.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -243,13 +223,10 @@ sudo ldconfig
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251016.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251018.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251018.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
