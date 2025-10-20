@@ -1,0 +1,359 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20251020 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20251020"><a class="header" href="#20251020">20251020</a></h1>
+<h3 id="1-docker-based-cups"><a class="header" href="#1-docker-based-cups">1. docker based cups</a></h3>
+<p>Host machine is ubuntu180.04, the steps are listed as following:</p>
+<pre><code>systemctl stop apt-daily.timer;systemctl disable apt-daily.timer ; systemctl stop apt-daily-upgrade.timer ; systemctl disable apt-daily-upgrade.timer; systemctl stop apt-daily.service;  systemctl mask apt-daily.service; systemctl daemon-reload
+sudo systemctl disable apparmor
+sudo systemctl stop apparmor
+sudo reboot
+sudo apt install -y docker.io
+sudo docker run -it --name cups-server --network=host   --privileged  -v /var/run/dbus:/var/run/dbus -v /dev/bus/usb:/dev/bus/usb ubuntu:24.04 /bin/bash
+</code></pre>
+<p>Disable the host's service(cups/ipp-usb related):</p>
+<pre><code># 停止当前运行的 CUPS 服务
+sudo systemctl stop cups.service
+sudo systemctl stop cups.socket
+sudo systemctl stop cups.path
+
+# 禁用开机自启
+sudo systemctl disable cups.service
+sudo systemctl disable cups.socket
+sudo systemctl disable cups.path
+</code></pre>
+<p>In docker:</p>
+<pre><code>apt update -y
+apt install -y vim
+apt install -y cups   cups-bsd   cups-filters   foomatic-db-compressed-ppds   printer-driver-all   openprinting-ppds   hpijs-ppds   hp-ppd   hplip 
+</code></pre>
+<h3 id="2-docker-deployment"><a class="header" href="#2-docker-deployment">2. docker deployment</a></h3>
+<p>Load image/run instance:</p>
+<pre><code># sudo docker load&lt;printmaster.tar
+# sudo docker run -d --name cups-server1 --restart=always --network=host  --privileged --security-opt apparmor=unconfined  -v /var/run/dbus:/var/run/dbus  -v /dev/bus/usb:/dev/bus/usb -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro   printmaster:latest
+</code></pre>
+<p>host side:</p>
+<pre><code># apt install -y     usbutils     vim     net-tools     sudo     ipp-usb     cups     cups-filters     printer-driver-gutenprint     hplip     foomatic-db-compressed-ppds     openprinting-ppds     printer-driver-all     avahi-daemon     sane-utils     sane-airscan
+# systemctl mask cups cups.path cups.socket
+# sudo usermod -aG lpadmin test
+# reboot
+# lpstat -p -d
+# scanimage --device-name "airscan:e0:Pantum M6200NW series[18523C] (USB)" --format=png &gt; test1.png
+</code></pre>
+<h3 id="3-ubuntu2004-verification"><a class="header" href="#3-ubuntu2004-verification">3. ubuntu20.04 verification</a></h3>
+<p>Install docker/configure system:</p>
+<pre><code>sudo apt install docker.io
+sudo ufw status
+sudo systemctl disable apparmor
+test@2004:~$ ps -ef | grep cups
+root         640       1  0 01:13 ?        00:00:00 /usr/sbin/cupsd -l
+root         735       1  0 01:13 ?        00:00:00 /usr/sbin/cups-browsed
+test        5164    1714  0 01:15 pts/0    00:00:00 grep --color=auto cups
+test@2004:~$ sudo systemctl mask cups cups.path cups.socket
+Created symlink /etc/systemd/system/cups.service → /dev/null.
+Created symlink /etc/systemd/system/cups.path → /dev/null.
+Created symlink /etc/systemd/system/cups.socket → /dev/null.
+test@2004:~$ id test | grep lp
+uid=1000(test) gid=1000(test) groups=1000(test),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),120(lpadmin),133(lxd),134(sambashare)
+
+sudo reboot
+</code></pre>
+<p>Load images/run instance:</p>
+<pre><code>The same as above
+</code></pre>
+<p>Not OK.</p>
+<h3 id="4-ubuntu2204-verification"><a class="header" href="#4-ubuntu2204-verification">4. ubuntu22.04 verification</a></h3>
+<p>NOT ok. needed be verified at home.</p>
+<h3 id="5-dockerfile"><a class="header" href="#5-dockerfile">5. Dockerfile</a></h3>
+<p>content:</p>
+<pre><code># 使用官方 Ubuntu 24.04 (Noble Numbat) 作为基础镜像
+FROM ubuntu:24.04
+
+# 设置环境变量，避免交互式安装提示
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 更新为本地源以加快安装速度
+COPY ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources
+
+# 更新并安装完整的打印套件
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    usbutils \
+    vim \
+    net-tools \
+    sudo \
+    ipp-usb \
+    cups \
+    cups-filters \
+    printer-driver-gutenprint \
+    hplip \
+    foomatic-db-compressed-ppds \
+    openprinting-ppds \
+    printer-driver-all \
+    avahi-daemon \
+    sane-utils \
+    sane-airscan \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# 修复 CUPS USB 后端的执行权限
+RUN chmod 755 /usr/lib/cups/backend/usb
+
+# 配置 saned 以允许所有网络客户端的连接
+# 在容器环境中，这通常是安全的，由 Docker 的端口映射控制外部访问
+RUN echo "0.0.0.0/0" &gt;&gt; /etc/sane.d/saned.conf
+
+# 暴露 CUPS (631) 和 SANE (6566) 端口
+EXPOSE 631
+EXPOSE 6566
+
+# 复制自定义的 CUPS 配置文件
+COPY cupsd.conf /etc/cups/cupsd.conf
+
+# 启动命令：启动 ipp-usb, saned (独立守护模式), 及 CUPS (前台模式)
+CMD ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+
+</code></pre>
+<h3 id="7-ubuntu1804-items"><a class="header" href="#7-ubuntu1804-items">7. ubuntu1804 items</a></h3>
+<p>Why :</p>
+<pre><code>test@180406:~/airscan-build$ ps -ef | grep cups
+root       632     1  0 01:51 ?        00:00:00 /usr/sbin/cupsd -l
+root       711     1  0 01:51 ?        00:00:00 /usr/sbin/cups-browsed
+lp         818   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+lp         819   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+root      2159  2113  0 01:51 ?        00:00:00 /bin/sh -c ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+root      2187  2159  0 01:51 ?        00:00:00 /usr/sbin/cupsd -f
+lp        2676   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+test      4501  3753  0 01:55 pts/0    00:00:00 grep --color=auto cups
+test@180406:~/airscan-build$ sudo docker exec -it cups-server1 bash
+root@180406:/# ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 17:51 ?        00:00:00 /bin/sh -c ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+root         7     1  0 17:51 ?        00:00:00 ipp-usb
+root         9     1  0 17:51 ?        00:00:00 /usr/sbin/cupsd -f
+root        15     1  0 17:51 ?        00:00:00 saned -D -l
+root        16    15  0 17:51 ?        00:00:00 saned -D -l
+root       131     0  0 17:55 pts/0    00:00:00 bash
+root       139   131  0 17:55 pts/0    00:00:00 ps -ef
+
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20251019.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20251019.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

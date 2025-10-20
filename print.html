@@ -19159,6 +19159,141 @@ no system default destination
 </code></pre>
 <h3 id="2-thinkingrunning-in-docker"><a class="header" href="#2-thinkingrunning-in-docker">2. thinking(running in docker)</a></h3>
 <p>run cups/ipp-usb/saned in docker.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251020"><a class="header" href="#20251020">20251020</a></h1>
+<h3 id="1-docker-based-cups"><a class="header" href="#1-docker-based-cups">1. docker based cups</a></h3>
+<p>Host machine is ubuntu180.04, the steps are listed as following:</p>
+<pre><code>systemctl stop apt-daily.timer;systemctl disable apt-daily.timer ; systemctl stop apt-daily-upgrade.timer ; systemctl disable apt-daily-upgrade.timer; systemctl stop apt-daily.service;  systemctl mask apt-daily.service; systemctl daemon-reload
+sudo systemctl disable apparmor
+sudo systemctl stop apparmor
+sudo reboot
+sudo apt install -y docker.io
+sudo docker run -it --name cups-server --network=host   --privileged  -v /var/run/dbus:/var/run/dbus -v /dev/bus/usb:/dev/bus/usb ubuntu:24.04 /bin/bash
+</code></pre>
+<p>Disable the host's service(cups/ipp-usb related):</p>
+<pre><code># 停止当前运行的 CUPS 服务
+sudo systemctl stop cups.service
+sudo systemctl stop cups.socket
+sudo systemctl stop cups.path
+
+# 禁用开机自启
+sudo systemctl disable cups.service
+sudo systemctl disable cups.socket
+sudo systemctl disable cups.path
+</code></pre>
+<p>In docker:</p>
+<pre><code>apt update -y
+apt install -y vim
+apt install -y cups   cups-bsd   cups-filters   foomatic-db-compressed-ppds   printer-driver-all   openprinting-ppds   hpijs-ppds   hp-ppd   hplip 
+</code></pre>
+<h3 id="2-docker-deployment"><a class="header" href="#2-docker-deployment">2. docker deployment</a></h3>
+<p>Load image/run instance:</p>
+<pre><code># sudo docker load&lt;printmaster.tar
+# sudo docker run -d --name cups-server1 --restart=always --network=host  --privileged --security-opt apparmor=unconfined  -v /var/run/dbus:/var/run/dbus  -v /dev/bus/usb:/dev/bus/usb -v /dev/usb:/dev/usb -v /run/udev:/run/udev:ro   printmaster:latest
+</code></pre>
+<p>host side:</p>
+<pre><code># apt install -y     usbutils     vim     net-tools     sudo     ipp-usb     cups     cups-filters     printer-driver-gutenprint     hplip     foomatic-db-compressed-ppds     openprinting-ppds     printer-driver-all     avahi-daemon     sane-utils     sane-airscan
+# systemctl mask cups cups.path cups.socket
+# sudo usermod -aG lpadmin test
+# reboot
+# lpstat -p -d
+# scanimage --device-name "airscan:e0:Pantum M6200NW series[18523C] (USB)" --format=png &gt; test1.png
+</code></pre>
+<h3 id="3-ubuntu2004-verification"><a class="header" href="#3-ubuntu2004-verification">3. ubuntu20.04 verification</a></h3>
+<p>Install docker/configure system:</p>
+<pre><code>sudo apt install docker.io
+sudo ufw status
+sudo systemctl disable apparmor
+test@2004:~$ ps -ef | grep cups
+root         640       1  0 01:13 ?        00:00:00 /usr/sbin/cupsd -l
+root         735       1  0 01:13 ?        00:00:00 /usr/sbin/cups-browsed
+test        5164    1714  0 01:15 pts/0    00:00:00 grep --color=auto cups
+test@2004:~$ sudo systemctl mask cups cups.path cups.socket
+Created symlink /etc/systemd/system/cups.service → /dev/null.
+Created symlink /etc/systemd/system/cups.path → /dev/null.
+Created symlink /etc/systemd/system/cups.socket → /dev/null.
+test@2004:~$ id test | grep lp
+uid=1000(test) gid=1000(test) groups=1000(test),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),120(lpadmin),133(lxd),134(sambashare)
+
+sudo reboot
+</code></pre>
+<p>Load images/run instance:</p>
+<pre><code>The same as above
+</code></pre>
+<p>Not OK.</p>
+<h3 id="4-ubuntu2204-verification"><a class="header" href="#4-ubuntu2204-verification">4. ubuntu22.04 verification</a></h3>
+<p>NOT ok. needed be verified at home.</p>
+<h3 id="5-dockerfile"><a class="header" href="#5-dockerfile">5. Dockerfile</a></h3>
+<p>content:</p>
+<pre><code># 使用官方 Ubuntu 24.04 (Noble Numbat) 作为基础镜像
+FROM ubuntu:24.04
+
+# 设置环境变量，避免交互式安装提示
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 更新为本地源以加快安装速度
+COPY ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources
+
+# 更新并安装完整的打印套件
+RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends \
+    usbutils \
+    vim \
+    net-tools \
+    sudo \
+    ipp-usb \
+    cups \
+    cups-filters \
+    printer-driver-gutenprint \
+    hplip \
+    foomatic-db-compressed-ppds \
+    openprinting-ppds \
+    printer-driver-all \
+    avahi-daemon \
+    sane-utils \
+    sane-airscan \
+    &amp;&amp; apt-get clean \
+    &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+# 修复 CUPS USB 后端的执行权限
+RUN chmod 755 /usr/lib/cups/backend/usb
+
+# 配置 saned 以允许所有网络客户端的连接
+# 在容器环境中，这通常是安全的，由 Docker 的端口映射控制外部访问
+RUN echo "0.0.0.0/0" &gt;&gt; /etc/sane.d/saned.conf
+
+# 暴露 CUPS (631) 和 SANE (6566) 端口
+EXPOSE 631
+EXPOSE 6566
+
+# 复制自定义的 CUPS 配置文件
+COPY cupsd.conf /etc/cups/cupsd.conf
+
+# 启动命令：启动 ipp-usb, saned (独立守护模式), 及 CUPS (前台模式)
+CMD ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+
+</code></pre>
+<h3 id="7-ubuntu1804-items"><a class="header" href="#7-ubuntu1804-items">7. ubuntu1804 items</a></h3>
+<p>Why :</p>
+<pre><code>test@180406:~/airscan-build$ ps -ef | grep cups
+root       632     1  0 01:51 ?        00:00:00 /usr/sbin/cupsd -l
+root       711     1  0 01:51 ?        00:00:00 /usr/sbin/cups-browsed
+lp         818   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+lp         819   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+root      2159  2113  0 01:51 ?        00:00:00 /bin/sh -c ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+root      2187  2159  0 01:51 ?        00:00:00 /usr/sbin/cupsd -f
+lp        2676   632  0 01:51 ?        00:00:00 /usr/lib/cups/notifier/dbus dbus://
+test      4501  3753  0 01:55 pts/0    00:00:00 grep --color=auto cups
+test@180406:~/airscan-build$ sudo docker exec -it cups-server1 bash
+root@180406:/# ps -ef
+UID        PID  PPID  C STIME TTY          TIME CMD
+root         1     0  0 17:51 ?        00:00:00 /bin/sh -c ipp-usb &amp; saned -D -l &amp; /usr/sbin/cupsd -f
+root         7     1  0 17:51 ?        00:00:00 ipp-usb
+root         9     1  0 17:51 ?        00:00:00 /usr/sbin/cupsd -f
+root        15     1  0 17:51 ?        00:00:00 saned -D -l
+root        16    15  0 17:51 ?        00:00:00 saned -D -l
+root       131     0  0 17:55 pts/0    00:00:00 bash
+root       139   131  0 17:55 pts/0    00:00:00 ps -ef
+
+</code></pre>
 
                     </main>
 
