@@ -19495,6 +19495,58 @@ root@ubuntu180406desktop:~# ls -l -h 1.png
 -rw-r--r-- 1 root root 6.7M 10月 22 11:21 1.png
 </code></pre>
 <p><img src="./images/2025_10_22_11_32_04_703x546.jpg" alt="./images/2025_10_22_11_32_04_703x546.jpg" /></p>
+<h3 id="4-l3150-on-uos"><a class="header" href="#4-l3150-on-uos">4. L3150 on uos</a></h3>
+<p>In container:</p>
+<pre><code>root@uospure:/# lpinfo -v
+network ipps
+direct hp
+network lpd
+network beh
+network ipp
+network socket
+network https
+network http
+direct usb://EPSON/L3150%20Series?serial=584141473031373851&amp;interface=1
+direct hpfax
+network dnssd://EPSON%20L3150%20Series._pdl-datastream._tcp.local/
+network lpd://192.168.1.41:515/PASSTHRU
+root@uospure:/# lpstat -p -d
+lpstat: No destinations added.
+no system default destination
+root@uospure:/# scanimage -L
+device `epsonds:net:192.168.1.41' is a Epson L3150 Series ESC/I-2
+device `epsonds:libusb:001:002' is a Epson L3150 Series ESC/I-2
+device `airscan:w1:EPSON L3150 Series' is a WSD EPSON L3150 Series ip=192.168.1.41
+root@uospure:/# lpstat -p -d
+lpstat: No destinations added.
+no system default destination
+</code></pre>
+<p>Host:</p>
+<pre><code>root@uospure:~# scanimage -L
+
+No scanners were identified. If you were expecting something different,
+check that the scanner is plugged in, turned on and detected by the
+sane-find-scanner tool (if appropriate). Please read the documentation
+which came with this software (README, FAQ, manpages).
+root@uospure:~# lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+</code></pre>
+<p>Install driver in container:</p>
+<pre><code>apt install -y ./epson-inkjet-printer-escpr_1.8.6-1_amd64.deb
+lpadmin -p Epson-L3150-Series -E -v "usb://EPSON/L3150%20Series?serial=584141473031373851&amp;interface=1" -m "lsb/usr/epson-inkjet-printer-escpr/Epson/Epson-L3150_Series-epson-inkjet-printer-escpr.ppd.gz"
+</code></pre>
+<p>Then you could view printer in host:</p>
+<p><img src="./images/2025_10_22_22_12_58_1275x746.jpg" alt="./images/2025_10_22_22_12_58_1275x746.jpg" /></p>
+<p>saned:</p>
+<pre><code># vim /etc/sane.d/net.conf
+localhost
+</code></pre>
+<p>Then you could view the scanner</p>
+<p><img src="./images/2025_10_22_22_15_35_1427x417.jpg" alt="./images/2025_10_22_22_15_35_1427x417.jpg" /></p>
+<p>The first one(ESC/I-2) won't be usable.</p>
+<h3 id="5-uos-upgrade"><a class="header" href="#5-uos-upgrade">5. uos upgrade</a></h3>
+<p>Install ipp-usb package. epson scan2, then everything is ok .</p>
 
                     </main>
 
