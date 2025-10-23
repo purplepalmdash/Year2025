@@ -19547,6 +19547,186 @@ localhost
 <p>The first one(ESC/I-2) won't be usable.</p>
 <h3 id="5-uos-upgrade"><a class="header" href="#5-uos-upgrade">5. uos upgrade</a></h3>
 <p>Install ipp-usb package. epson scan2, then everything is ok .</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251023"><a class="header" href="#20251023">20251023</a></h1>
+<h3 id="1-kylin-own-printer"><a class="header" href="#1-kylin-own-printer">1. kylin own printer</a></h3>
+<p>Install ipp-usb which is fetched from zkfd, then:</p>
+<pre><code>systemctl enable ipp-usb
+sudo reboot
+
+Then:   
+root@kylin:/home/test/kkk# lpadmin -p "Pantum_M6200NW_USB" -E -v "ipp://Pantum%20M6200NW%20series%5B18523C%5D%20(USB)._ipp._tcp.local/" -m everywhere
+root@kylin:/home/test/kkk# lpstat -p -d
+打印机 Pantum_M6200NW_USB 目前空闲。从 2025年10月23日 星期四 09时28分50秒 开始启用
+无系统默认目标
+root@kylin:/home/test/kkk# lpadmin -x Pantum_M6200NW_USB
+root@kylin:/home/test/kkk# lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+
+</code></pre>
+<p>Enable cups-browsed:</p>
+<pre><code>sudo vim /etc/cups/cups-browsed.conf
+
+grep -E -v '^#|^$' /etc/cups/cups-browsed.conf
+......
+CreateIPPPrinterQueues All
+
+</code></pre>
+<p>sane-airscan support:</p>
+<pre><code>apt install -y libsane-dev
+sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
+tar -xzf 0.99.29.tar.gz
+cd sane-airscan-0.99.29/
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+pip3 install --upgrade meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+apt install -y ninja-build
+meson setup build
+ninja -C build install
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+ldconfig
+vim /etc/sane.d/dll.conf
+scanimage -L
+scanimage -d 'airscan:e0:Pantum M6200NW series[18523C] (USB)' --format=png&gt;1.png
+</code></pre>
+<h3 id="2-uos-local-printer"><a class="header" href="#2-uos-local-printer">2. uos local printer</a></h3>
+<p>Open security related:</p>
+<p><img src="./images/2025_10_23_10_36_35_724x326.jpg" alt="./images/2025_10_23_10_36_35_724x326.jpg" /></p>
+<p><img src="./images/2025_10_23_10_37_13_738x196.jpg" alt="./images/2025_10_23_10_37_13_738x196.jpg" /></p>
+<p><img src="./images/2025_10_23_10_37_25_812x278.jpg" alt="./images/2025_10_23_10_37_25_812x278.jpg" /></p>
+<p>Install ipp-usb and enable avahi-daemon:</p>
+<pre><code>apt install ./ipp-usb_0.9.17-3+b4_amd64.deb
+systemctl enable ipp-usb
+systemctl enable avahi-daemon
+apt install -y cups-browsed
+systemctl start cups-browsed
+vim /etc/ipp-usb/ipp-usb.conf
+  interface = all # all | loopback
+reboot
+</code></pre>
+<p>Enable airscan:</p>
+<pre><code>apt install -y libsane-dev build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev libgnutls28-dev libtiff-dev libxml2-dev python3-pip ninja-build
+pip3 install --upgrade meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+scp dash@192.168.1.208:~/0.99.29.tar.gz .
+ls
+tar xzvf 0.99.29.tar.gz 
+cd sane-airscan-0.99.29/
+meson setup build
+ninja -C build install
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+/usr/local/lib
+ldconfig
+vim /etc/sane.d/dll.conf 
+...
+airscan
+</code></pre>
+<h3 id="3-zkfd-local-printer"><a class="header" href="#3-zkfd-local-printer">3. zkfd local printer</a></h3>
+<p>Install ipp-usb and reboot.</p>
+<p>then <code>lpstat -p -d</code> will be OK.</p>
+<p>Install <code>sane-airscan</code>, then scan will be OK.</p>
+<pre><code>$ sudo scanimage -L
+Created directory: /var/lib/snmp/cert_indexes
+device `escl:http://127.0.0.1:60000' is a ESCL Pantum M6200NW series[18523C] (USB) flatbed scanner
+$ sudo apt install -y sane-airscan
+$ sudo scanimage -L
+device `escl:http://127.0.0.1:60000' is a ESCL Pantum M6200NW series[18523C] (USB) flatbed scanner
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1
+</code></pre>
+<p>If not install <code>sane-airscan</code>, but use the 0.99.29 sane-airscane, then the image will be:</p>
+<pre><code>test@zkfdfupan:~$ sudo scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<h3 id="4-zkfd-arm64"><a class="header" href="#4-zkfd-arm64">4. zkfd arm64</a></h3>
+<p>usb device redirection:</p>
+<p><img src="./images/2025_10_23_14_48_33_403x311.jpg" alt="./images/2025_10_23_14_48_33_403x311.jpg" />
+In buiding airscan:</p>
+<pre><code>ln -s /usr/local/lib/aarch64-linux-gnu/sane/libsane-airscan.so /usr/lib/aarch64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+ln -s /usr/local/lib/aarch64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/aarch64-linux-gnu/sane/libsane-airscan.so.1
+</code></pre>
+<p>Then:</p>
+<pre><code>test@zkfd:~$ sudo systemctl unmask avahi-daemon
+Removed /etc/systemd/system/avahi-daemon.service.
+test@zkfd:~$ sudo systemctl enable avahi-daemon --now
+test@zkfd:~$ lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB_ 目前空闲。从 2025年10月23日 星期四 14时58分08秒 开始启用
+无系统默认目标
+test@zkfd:~$ sudo scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<p>Get the ipp-usb package via:</p>
+<pre><code>sudo apt install --reinstall --download-only ipp-usb
+</code></pre>
+<h3 id="5-kylinv10-arm64"><a class="header" href="#5-kylinv10-arm64">5. kylinv10 arm64</a></h3>
+<p>Install ipp-usb</p>
+<pre><code>scp dash@192.168.1.208:~/ipp-usb_0.9.17-3+b4_arm64.deb .
+sudo apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+</code></pre>
+<p>Install cups-browsed:</p>
+<pre><code>sudo apt install cups-browsed
+sudo systemctl enable cups-browsed --now
+test@kylin:~$ sudo vim /etc/cups/cups-browsed.conf 
+CreateIPPPrinterQueues All
+test@kylin:~$ sudo systemctl restart cups-browsed
+test@kylin:~$ sudo lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB_ 目前空闲。从 2025年10月23日 星期四 15时21分18秒 开始启用
+无系统默认目标
+test@kylin:~$ sudo scanimage -d escl:http://127.0.0.1:60000 --format=png&gt;1.png
+scanimage: open of device escl:http://127.0.0.1:60000 failed: Out of memory
+</code></pre>
+<p>Should also compile airscan.</p>
+<pre><code>After compilation....
+# scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<p><img src="./images/2025_10_23_15_26_35_942x644.jpg" alt="./images/2025_10_23_15_26_35_942x644.jpg" /></p>
+<h3 id="6-uos-arm64"><a class="header" href="#6-uos-arm64">6. uos arm64</a></h3>
+<p>old style:</p>
+<pre><code>systemctl enable avahi-daemon
+apt install avahi-utils
+apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+cat /etc/ipp-usb/ipp-usb.conf
+  interface = all # all | loopback
+apt install cups-browsed
+vim /etc/cups/cups-browsed.conf
+    CreateIPPPrinterQueues All
+vim /usr/./lib/systemd/system/ipp-usb.service
+    ...
+    ExecStart=/sbin/ipp-usb
+apt install -y simple-scan
+</code></pre>
+<p>From uos pure.</p>
+<pre><code>systemctl enable avahi-daemon --now
+apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+ apt install -y avahi-utils
+ vim /etc/ipp-usb/ipp-usb.conf
+
+  interface = all # all | loopback
+
+avahi-resolve-host-name uospur.local
+apt install libnss-mdns
+vim /etc/nsswitch.conf
+... not configured
+ping -c 3 uospur.local
+vim /usr/./lib/systemd/system/ipp-usb.service
+    ...
+    ExecStart=/sbin/ipp-usb standalone
+crontab -e
+@reboot sleep 5 &amp;&amp; systemctl restart ipp-usb
+
+</code></pre>
+<p><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg" /></p>
+<p><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg" /></p>
 
                     </main>
 

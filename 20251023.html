@@ -1,0 +1,404 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20251023 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <i class="fa fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="20251023"><a class="header" href="#20251023">20251023</a></h1>
+<h3 id="1-kylin-own-printer"><a class="header" href="#1-kylin-own-printer">1. kylin own printer</a></h3>
+<p>Install ipp-usb which is fetched from zkfd, then:</p>
+<pre><code>systemctl enable ipp-usb
+sudo reboot
+
+Then:   
+root@kylin:/home/test/kkk# lpadmin -p "Pantum_M6200NW_USB" -E -v "ipp://Pantum%20M6200NW%20series%5B18523C%5D%20(USB)._ipp._tcp.local/" -m everywhere
+root@kylin:/home/test/kkk# lpstat -p -d
+打印机 Pantum_M6200NW_USB 目前空闲。从 2025年10月23日 星期四 09时28分50秒 开始启用
+无系统默认目标
+root@kylin:/home/test/kkk# lpadmin -x Pantum_M6200NW_USB
+root@kylin:/home/test/kkk# lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+
+</code></pre>
+<p>Enable cups-browsed:</p>
+<pre><code>sudo vim /etc/cups/cups-browsed.conf
+
+grep -E -v '^#|^$' /etc/cups/cups-browsed.conf
+......
+CreateIPPPrinterQueues All
+
+</code></pre>
+<p>sane-airscan support:</p>
+<pre><code>apt install -y libsane-dev
+sudo apt-get install -y build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+wget https://github.com/alexpevzner/sane-airscan/archive/refs/tags/0.99.29.tar.gz
+tar -xzf 0.99.29.tar.gz
+cd sane-airscan-0.99.29/
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+echo "nameserver 223.5.5.5"&gt;/etc/resolv.conf
+apt install libgnutls28-dev libtiff-dev libxml2-dev python3-pip
+pip3 install --upgrade meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+apt install -y ninja-build
+meson setup build
+ninja -C build install
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+ldconfig
+vim /etc/sane.d/dll.conf
+scanimage -L
+scanimage -d 'airscan:e0:Pantum M6200NW series[18523C] (USB)' --format=png&gt;1.png
+</code></pre>
+<h3 id="2-uos-local-printer"><a class="header" href="#2-uos-local-printer">2. uos local printer</a></h3>
+<p>Open security related:</p>
+<p><img src="./images/2025_10_23_10_36_35_724x326.jpg" alt="./images/2025_10_23_10_36_35_724x326.jpg" /></p>
+<p><img src="./images/2025_10_23_10_37_13_738x196.jpg" alt="./images/2025_10_23_10_37_13_738x196.jpg" /></p>
+<p><img src="./images/2025_10_23_10_37_25_812x278.jpg" alt="./images/2025_10_23_10_37_25_812x278.jpg" /></p>
+<p>Install ipp-usb and enable avahi-daemon:</p>
+<pre><code>apt install ./ipp-usb_0.9.17-3+b4_amd64.deb
+systemctl enable ipp-usb
+systemctl enable avahi-daemon
+apt install -y cups-browsed
+systemctl start cups-browsed
+vim /etc/ipp-usb/ipp-usb.conf
+  interface = all # all | loopback
+reboot
+</code></pre>
+<p>Enable airscan:</p>
+<pre><code>apt install -y libsane-dev build-essential libavahi-client-dev libjpeg-dev libpng-dev zlib1g-dev libgnutls28-dev libtiff-dev libxml2-dev python3-pip ninja-build
+pip3 install --upgrade meson -i https://pypi.tuna.tsinghua.edu.cn/simple
+mkdir ~/airscan-build &amp;&amp; cd ~/airscan-build
+scp dash@192.168.1.208:~/0.99.29.tar.gz .
+ls
+tar xzvf 0.99.29.tar.gz 
+cd sane-airscan-0.99.29/
+meson setup build
+ninja -C build install
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so /usr/lib/x86_64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+sudo ln -s /usr/local/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-airscan.so.1
+sudo vim  /etc/ld.so.conf.d/usr-local-lib.conf
+/usr/local/lib
+ldconfig
+vim /etc/sane.d/dll.conf 
+...
+airscan
+</code></pre>
+<h3 id="3-zkfd-local-printer"><a class="header" href="#3-zkfd-local-printer">3. zkfd local printer</a></h3>
+<p>Install ipp-usb and reboot.</p>
+<p>then <code>lpstat -p -d</code> will be OK.</p>
+<p>Install <code>sane-airscan</code>, then scan will be OK.</p>
+<pre><code>$ sudo scanimage -L
+Created directory: /var/lib/snmp/cert_indexes
+device `escl:http://127.0.0.1:60000' is a ESCL Pantum M6200NW series[18523C] (USB) flatbed scanner
+$ sudo apt install -y sane-airscan
+$ sudo scanimage -L
+device `escl:http://127.0.0.1:60000' is a ESCL Pantum M6200NW series[18523C] (USB) flatbed scanner
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1
+</code></pre>
+<p>If not install <code>sane-airscan</code>, but use the 0.99.29 sane-airscane, then the image will be:</p>
+<pre><code>test@zkfdfupan:~$ sudo scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<h3 id="4-zkfd-arm64"><a class="header" href="#4-zkfd-arm64">4. zkfd arm64</a></h3>
+<p>usb device redirection:</p>
+<p><img src="./images/2025_10_23_14_48_33_403x311.jpg" alt="./images/2025_10_23_14_48_33_403x311.jpg" />
+In buiding airscan:</p>
+<pre><code>ln -s /usr/local/lib/aarch64-linux-gnu/sane/libsane-airscan.so /usr/lib/aarch64-linux-gnu/sane/
+sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
+ln -s /usr/local/lib/aarch64-linux-gnu/sane/libsane-airscan.so.1 /usr/lib/aarch64-linux-gnu/sane/libsane-airscan.so.1
+</code></pre>
+<p>Then:</p>
+<pre><code>test@zkfd:~$ sudo systemctl unmask avahi-daemon
+Removed /etc/systemd/system/avahi-daemon.service.
+test@zkfd:~$ sudo systemctl enable avahi-daemon --now
+test@zkfd:~$ lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB_ 目前空闲。从 2025年10月23日 星期四 14时58分08秒 开始启用
+无系统默认目标
+test@zkfd:~$ sudo scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<p>Get the ipp-usb package via:</p>
+<pre><code>sudo apt install --reinstall --download-only ipp-usb
+</code></pre>
+<h3 id="5-kylinv10-arm64"><a class="header" href="#5-kylinv10-arm64">5. kylinv10 arm64</a></h3>
+<p>Install ipp-usb</p>
+<pre><code>scp dash@192.168.1.208:~/ipp-usb_0.9.17-3+b4_arm64.deb .
+sudo apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+</code></pre>
+<p>Install cups-browsed:</p>
+<pre><code>sudo apt install cups-browsed
+sudo systemctl enable cups-browsed --now
+test@kylin:~$ sudo vim /etc/cups/cups-browsed.conf 
+CreateIPPPrinterQueues All
+test@kylin:~$ sudo systemctl restart cups-browsed
+test@kylin:~$ sudo lpstat -p -d
+打印机 Pantum_M6200NW_series_18523C_USB_ 目前空闲。从 2025年10月23日 星期四 15时21分18秒 开始启用
+无系统默认目标
+test@kylin:~$ sudo scanimage -d escl:http://127.0.0.1:60000 --format=png&gt;1.png
+scanimage: open of device escl:http://127.0.0.1:60000 failed: Out of memory
+</code></pre>
+<p>Should also compile airscan.</p>
+<pre><code>After compilation....
+# scanimage -L
+device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
+</code></pre>
+<p><img src="./images/2025_10_23_15_26_35_942x644.jpg" alt="./images/2025_10_23_15_26_35_942x644.jpg" /></p>
+<h3 id="6-uos-arm64"><a class="header" href="#6-uos-arm64">6. uos arm64</a></h3>
+<p>old style:</p>
+<pre><code>systemctl enable avahi-daemon
+apt install avahi-utils
+apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+cat /etc/ipp-usb/ipp-usb.conf
+  interface = all # all | loopback
+apt install cups-browsed
+vim /etc/cups/cups-browsed.conf
+    CreateIPPPrinterQueues All
+vim /usr/./lib/systemd/system/ipp-usb.service
+    ...
+    ExecStart=/sbin/ipp-usb
+apt install -y simple-scan
+</code></pre>
+<p>From uos pure.</p>
+<pre><code>systemctl enable avahi-daemon --now
+apt install ./ipp-usb_0.9.17-3+b4_arm64.deb
+ apt install -y avahi-utils
+ vim /etc/ipp-usb/ipp-usb.conf
+
+  interface = all # all | loopback
+
+avahi-resolve-host-name uospur.local
+apt install libnss-mdns
+vim /etc/nsswitch.conf
+... not configured
+ping -c 3 uospur.local
+vim /usr/./lib/systemd/system/ipp-usb.service
+    ...
+    ExecStart=/sbin/ipp-usb standalone
+crontab -e
+@reboot sleep 5 &amp;&amp; systemctl restart ipp-usb
+
+</code></pre>
+<p><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg" /></p>
+<p><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg" /></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20251022.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20251022.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
