@@ -19727,6 +19727,142 @@ crontab -e
 </code></pre>
 <p><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg" /></p>
 <p><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251027"><a class="header" href="#20251027">20251027</a></h1>
+<h3 id="1-rebuilding-of-ipp-usb"><a class="header" href="#1-rebuilding-of-ipp-usb">1. rebuilding of ipp-usb</a></h3>
+<p>Create a debian11's docker for fetching src package:</p>
+<pre><code>mkdir debhelper
+apt source debhelper
+mkdir ronn
+apt source ronn
+mkdir goipp
+apt source golang-github-openprinting-goipp-dev
+mkdir ipp
+apt source ipp-usb
+</code></pre>
+<p>Tar the directory, then transfer the tar.gz to kylin.</p>
+<p>Install some packages for building:</p>
+<pre><code>sudo apt install build-essential devscripts fakeroot
+</code></pre>
+<p>Build ronn:</p>
+<pre><code>tar xzvf ronn.tar.gz
+cd ronn
+sudo apt build-dep .
+debuild -us -uc
+cd ..
+sudo  apt install ./ronn_0.9.1-2_all.deb ./ruby-ronn_0.9.1-2_all.deb
+</code></pre>
+<p>Build debhelper:</p>
+<pre><code>cd debhelper
+sudo apt build-dep .
+debuild -us -uc
+cd ..
+sudo apt install ./debhelper_13.3.4_all.deb ./libdebhelper-perl_13.3.4_all.deb
+</code></pre>
+<p>Build golang-github-openprinting-goipp-1.0.0:</p>
+<pre><code>sudo apt build-dep .
+debuild -us -uc
+cd ..
+sudo apt install ./golang-github-openprinting-goipp-dev_1.0.0-1_all.deb
+</code></pre>
+<p>Build ipp-usb:</p>
+<pre><code>sudo apt build-dep .
+debuild -us -uc
+cd ..
+sudo apt install ./ipp-usb_0.9.17-3_amd64.deb
+</code></pre>
+<p>Verification:</p>
+<pre><code>$ dpkg -l | grep ipp-usb
+ii  ipp-usb                                       0.9.17-3                                  amd64        Daemon for IPP over USB printer support
+</code></pre>
+<h3 id="2-rebuild-ipp-usb-for-uos"><a class="header" href="#2-rebuild-ipp-usb-for-uos">2. rebuild ipp-usb for uos</a></h3>
+<p>should add gen2deb, also you have to edit the building steps:</p>
+<pre><code># vim gen2deb-1.4/debian/rules
+......
+$(ruby_versions):
+ifeq (,$(filter nocheck,$(DEB_BUILD_OPTIONS)))
+	# NO_PKG_MANGLE=1 only useful on Ubuntu buildds, to disable pkgbinarymangler
+	#NO_PKG_MANGLE=1 $@ -S rake test:unit TESTOPTS=-v
+	@echo "fuckfuckfuck"
+else
+	@echo "Skipping tests for $@ as DEB_BUILD_OPTIONS contains 'nocheck'"
+endif
+</code></pre>
+<h3 id="3-verification"><a class="header" href="#3-verification">3. verification</a></h3>
+<p>kylin/uos, only install ipp-usb package, is enough for use ipp.</p>
+<h3 id="4-lenovo-old-printeruos"><a class="header" href="#4-lenovo-old-printeruos">4. lenovo old printer(uos)</a></h3>
+<p>Under UOS:</p>
+<p><img src="./images/2025_10_27_17_17_52_916x629.jpg" alt="./images/2025_10_27_17_17_52_916x629.jpg" /></p>
+<p><img src="./images/2025_10_27_17_18_29_911x558.jpg" alt="./images/2025_10_27_17_18_29_911x558.jpg" /></p>
+<p>lpstat -p -d result:</p>
+<p><img src="./images/2025_10_27_17_18_53_719x99.jpg" alt="./images/2025_10_27_17_18_53_719x99.jpg" /></p>
+<p>scanner driver:</p>
+<pre><code>root@uospure:~/lenovo/LJ24_LJ26_M74_M76系列/扫描驱动/UOS# apt install ./signed_com.lenovo.lenovoscan3_1.2.9-4_amd64.deb 
+root@uospure:~/lenovo/LJ24_LJ26_M74_M76系列/扫描驱动/UOS# scanimage -L
+device `lenovo3:bus1;dev1' is a Lenovo M7675DXF USB scanner
+</code></pre>
+<p><img src="./images/2025_10_27_17_22_30_893x393.jpg" alt="./images/2025_10_27_17_22_30_893x393.jpg" /></p>
+<h3 id="5-lenovo-old-printerkylin"><a class="header" href="#5-lenovo-old-printerkylin">5. lenovo old printer(kylin)</a></h3>
+<p><img src="./images/2025_10_27_17_24_32_443x304.jpg" alt="./images/2025_10_27_17_24_32_443x304.jpg" /></p>
+<p>Trying to add driver:</p>
+<p><img src="./images/2025_10_27_17_24_54_590x600.jpg" alt="./images/2025_10_27_17_24_54_590x600.jpg" /></p>
+<p>Search result:</p>
+<p><img src="./images/2025_10_27_17_25_18_537x581.jpg" alt="./images/2025_10_27_17_25_18_537x581.jpg" /></p>
+<p>After installed driver:</p>
+<p><img src="./images/2025_10_27_17_25_46_647x144.jpg" alt="./images/2025_10_27_17_25_46_647x144.jpg" /></p>
+<p>Scanner is also installed along with printer driver.</p>
+<p><img src="./images/2025_10_27_17_27_00_726x485.jpg" alt="./images/2025_10_27_17_27_00_726x485.jpg" /></p>
+<p>but with no scanner:</p>
+<p><img src="./images/2025_10_27_17_27_15_291x230.jpg" alt="./images/2025_10_27_17_27_15_291x230.jpg" /></p>
+<p>using scanimage under command line:</p>
+<pre><code># scanimage -d 'lenovo3:bus1;dev1' --format=png&gt;111.png
+scanimage: rounded value of br-x from 215.9 to 215.88
+scanimage: rounded value of br-y from 355.6 to 355.567
+</code></pre>
+<p>Which under the scence:</p>
+<pre><code>root@kylin:/home/test# dpkg -l | grep -i lenovo
+ii  com.lenovo.lenovoprints                       5.0.1-2                                   amd64        printer driver (lpd/cups)
+ii  com.lenovo.lenovoscan3                        1.2.6-0                                   amd64        scanner driver
+</code></pre>
+<h3 id="6-lenovo-old-printerzkfd"><a class="header" href="#6-lenovo-old-printerzkfd">6. lenovo old printer(zkfd)</a></h3>
+<p>Automatically ask for installing driver:</p>
+<p><img src="./images/2025_10_27_17_30_38_544x277.jpg" alt="./images/2025_10_27_17_30_38_544x277.jpg" /></p>
+<p><img src="./images/2025_10_27_17_30_50_530x326.jpg" alt="./images/2025_10_27_17_30_50_530x326.jpg" /></p>
+<pre><code>root@zkfdfupan:/home/test# lpstat -p -d
+lpstat: 未添加目标。
+无系统默认目标
+root@zkfdfupan:/home/test# dpkg -l | grep -i lenovo
+root@zkfdfupan:/home/test# lpstat -p -d
+打印机 M7675DXF 从 2025年10月27日 星期一 17时30分58秒 开始被禁用 -
+	未知原因
+无系统默认目标
+root@zkfdfupan:/home/test# sudo dpkg -l | grep -i lenovo
+root@zkfdfupan:/home/test# sudo lpstat -p -d
+打印机 M7675DXF 目前空闲。从 2025年10月27日 星期一 17时31分42秒 开始启用
+</code></pre>
+<p>Driver:</p>
+<p><img src="./images/2025_10_27_17_39_24_589x443.jpg" alt="./images/2025_10_27_17_39_24_589x443.jpg" /></p>
+<p>Install via:</p>
+<pre><code>root@zkfdfupan:/home/test/LJ24_LJ26_M74_M76系列/打印驱动/麒麟V10# apt install ./com.lenovo.lenovoprints_5.0.3-2_amd64.deb
+</code></pre>
+<p>Delete it and add it again.</p>
+<p><img src="./images/2025_10_27_17_39_43_511x270.jpg" alt="./images/2025_10_27_17_39_43_511x270.jpg" /></p>
+<p>Add:</p>
+<p><img src="./images/2025_10_27_17_40_00_647x559.jpg" alt="./images/2025_10_27_17_40_00_647x559.jpg" /></p>
+<p><img src="./images/2025_10_27_17_40_17_661x620.jpg" alt="./images/2025_10_27_17_40_17_661x620.jpg" /></p>
+<p>Driver:</p>
+<p><img src="./images/2025_10_27_17_40_42_579x431.jpg" alt="./images/2025_10_27_17_40_42_579x431.jpg" /></p>
+<p>scanner:</p>
+<pre><code>root@zkfdfupan:/home/test/LJ24_LJ26_M74_M76系列/扫描驱动/麒麟v10 sp1# apt install ./com.lenovo.lenovoscan3_1.2.9-4_amd64.deb
+</code></pre>
+<p>examine:</p>
+<pre><code>root@zkfdfupan:~# scanimage -L
+device `lenovo3:bus2;dev1' is a Lenovo M7675DXF USB scanner
+</code></pre>
+<p>Simplescan cannot find it.</p>
+<pre><code># scanimage -d 'lenovo3:bus2;dev1' --format=png&gt;111111.png
+scanimage: rounded value of br-x from 215.9 to 215.88
+scanimage: rounded value of br-y from 355.6 to 355.567
+</code></pre>
 
                     </main>
 
