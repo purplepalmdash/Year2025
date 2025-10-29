@@ -230,6 +230,47 @@ apt install ./gem2deb_1.4_arm64.deb ./gem2deb-test-runner_1.4_arm64.deb
  cp ./gem2deb/gem2deb_1.4_arm64.deb ./gem2deb/gem2deb-test-runner_1.4_arm64.deb ./ipp/ipp-usb_0.9.17-3_arm64.deb ./debhelper/debhelper-13.3.4/dh_installdeb ./debhelper/debhelper-13.3.4/dh_builddeb ./goipp/golang-github-openprinting-goipp-dev_1.0.0-1_all.deb ~/uos_ipp_deb_arm64/
  scp -r uos_ipp_deb_arm64/ dash@192.168.1.213:~
 </code></pre>
+<h3 id="2-install-nomachine"><a class="header" href="#2-install-nomachine">2. install nomachine</a></h3>
+<p>via:</p>
+<pre><code>sudo rpm -ivh --nodigest --nofiledigest ./nomachine_9.1.24_6_aarch64.rpm
+</code></pre>
+<h3 id="3-fedora-bridge"><a class="header" href="#3-fedora-bridge">3. fedora bridge</a></h3>
+<p>Change to eth0:</p>
+<pre><code>grubby --update-kernel="/boot/vmlinuz-6.17.1-300.fc43.aarch64" --args="net.ifnames=0 biosdevname=0"
+</code></pre>
+<p>Steps:</p>
+<pre><code>nmcli con down "Wired connection 1"
+nmcli con add type bridge con-name bridge-br0 ifname br0
+nmcli con add type ethernet con-name bridge-slave-eth0 ifname eth0 master bridge-br0 slave-type bridge
+nmcli con mod bridge-br0 ipv4.method auto ipv6.method auto
+nmcli con mod bridge-br0 bridge.stp no
+nmcli con up bridge-br0
+nmcli con up bridge-slave-eth0
+nmcli device status
+</code></pre>
+<p>Be sure to disable power hibernation.</p>
+<h3 id="4-ipp-usb-buildingkylinv10arm64"><a class="header" href="#4-ipp-usb-buildingkylinv10arm64">4. ipp-usb building(kylinv10/arm64)</a></h3>
+<p>Building Steps:</p>
+<pre><code> cd debhelper/debhelper-13.3.4/
+ apt -y build-dep . &amp;&amp; debuild -us -uc
+ cd ../
+ apt install ./debhelper_13.3.4_all.deb ./libdebhelper-perl_13.3.4_all.deb 
+ cd ../ronn/ruby-ronn-0.9.1/
+ apt -y build-dep . &amp;&amp; debuild -us -uc
+ cd ../
+ apt install ./ruby-ronn_0.9.1-2_all.deb ./ronn_0.9.1-2_all.deb 
+ cd ../goipp/golang-github-openprinting-goipp-1.0.0/
+ apt -y build-dep . &amp;&amp; debuild -us -uc
+ cd ..
+ apt install ./golang-github-openprinting-goipp-dev_1.0.0-1_all.deb -y
+ cd ../ipp/ipp-usb-0.9.17/
+ apt -y build-dep . &amp;&amp; debuild -us -uc
+ cd ..
+ apt install ./ipp-usb_0.9.17-3_arm64.deb 
+ cd ..
+ mkdir ~/kylin_ipp_deb_arm64
+ cp ./ipp/ipp-usb_0.9.17-3_arm64.deb ./ronn/ronn_0.9.1-2_all.deb ./ronn/ruby-ronn_0.9.1-2_all.deb ./debhelper/libdebhelper-perl_13.3.4_all.deb ./debhelper/debhelper_13.3.4_all.deb ./goipp/golang-github-openprinting-goipp-dev_1.0.0-1_all.deb ~/kylin_ipp_deb_arm64/
+</code></pre>
 
                     </main>
 
