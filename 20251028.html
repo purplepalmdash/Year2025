@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251029 - year2025</title>
+        <title>20251028 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,70 +175,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251029"><a class="header" href="#20251029">20251029</a></h1>
-<h3 id="1-ipp-usb-buildinguosarm64"><a class="header" href="#1-ipp-usb-buildinguosarm64">1. ipp-usb building(uos/arm64)</a></h3>
-<p>run docker instance for getting the source code:</p>
-<pre><code>sudo docker run -it -v ~/ipp:/mnt8 debian:bullseye /bin/bash
-In docker
-apt update -y
-apt install dpkg-dev
-mkdir debhelper &amp;&amp; cd debhelper 
- apt source debhelper
-cd .. &amp;&amp; mkdir ronn &amp;&amp; cd ronn
-apt source ronn
-cd .. &amp;&amp; mkdir goipp &amp;&amp; cd goipp
-apt source golang-github-openprinting-goipp-dev
-cd ../ &amp;&amp; mkdir ipp &amp;&amp; cd ipp
-apt source ipp-usb
-cd ../ &amp;&amp; mkdir gem2deb &amp;&amp; cd gem2deb
-apt source gem2deb
-cd ..
-tar czvf combine.tar.gz debhelper  goipp  ipp  ronn gem2deb
+                        <h1 id="20251028"><a class="header" href="#20251028">20251028</a></h1>
+<h3 id="1-mdbok-serve-port"><a class="header" href="#1-mdbok-serve-port">1. mdbok serve port</a></h3>
+<p>Via:</p>
+<pre><code>mdbook serve --port 3001
 </code></pre>
-<p>In uos vm , compile the deb:</p>
-<pre><code>mkdir ipp
-cd ipp
-tar xzvf /home/test/combine.tar.gz
-apt update
-apt install build-essential devscripts fakeroot
-cd gem2deb
- vim gem2deb-1.4/debian/rules 
-cd gem2deb-1.4/
-apt build-dep .
-debuild -us -uc
-cd ..
-apt install ./gem2deb_1.4_arm64.deb ./gem2deb-test-runner_1.4_arm64.deb 
-
- cd ../ronn/ruby-ronn-0.9.1/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./ronn_0.9.1-2_all.deb ./ruby-ronn_0.9.1-2_all.deb 
- cd ../debhelper/debhelper-13.3.4/
- apt build-dep .
- cd ../../goipp/golang-github-openprinting-goipp-1.0.0/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./golang-github-openprinting-goipp-dev_1.0.0-1_all.deb 
- cd ../ipp/ipp-usb-0.9.17/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./ipp-usb_0.9.17-3_arm64.deb 
-
- cp ./gem2deb/gem2deb_1.4_arm64.deb ./gem2deb/gem2deb-test-runner_1.4_arm64.deb ./ipp/ipp-usb_0.9.17-3_arm64.deb ./debhelper/debhelper-13.3.4/dh_installdeb ./debhelper/debhelper-13.3.4/dh_builddeb ./goipp/golang-github-openprinting-goipp-dev_1.0.0-1_all.deb ~/uos_ipp_deb_arm64/
- scp -r uos_ipp_deb_arm64/ dash@192.168.1.213:~
-</code></pre>
+<p>Then in <code>localhost:3001</code> you could visit the mdbook webserver.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251028.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251027.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="20251029.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -246,10 +200,13 @@ apt install ./gem2deb_1.4_arm64.deb ./gem2deb-test-runner_1.4_arm64.deb
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251028.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251027.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="20251029.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>
