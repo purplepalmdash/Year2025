@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251029 - year2025</title>
+        <title>20251030 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,114 +175,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251029"><a class="header" href="#20251029">20251029</a></h1>
-<h3 id="1-ipp-usb-buildinguosarm64"><a class="header" href="#1-ipp-usb-buildinguosarm64">1. ipp-usb building(uos/arm64)</a></h3>
-<p>run docker instance for getting the source code:</p>
-<pre><code>sudo docker run -it -v ~/ipp:/mnt8 debian:bullseye /bin/bash
-In docker
-apt update -y
-apt install dpkg-dev
-mkdir debhelper &amp;&amp; cd debhelper 
- apt source debhelper
-cd .. &amp;&amp; mkdir ronn &amp;&amp; cd ronn
-apt source ronn
-cd .. &amp;&amp; mkdir goipp &amp;&amp; cd goipp
-apt source golang-github-openprinting-goipp-dev
-cd ../ &amp;&amp; mkdir ipp &amp;&amp; cd ipp
-apt source ipp-usb
-cd ../ &amp;&amp; mkdir gem2deb &amp;&amp; cd gem2deb
-apt source gem2deb
-cd ..
-tar czvf combine.tar.gz debhelper  goipp  ipp  ronn gem2deb
-</code></pre>
-<p>In uos vm , compile the deb:</p>
-<pre><code>mkdir ipp
-cd ipp
-tar xzvf /home/test/combine.tar.gz
-apt update
-apt install build-essential devscripts fakeroot
-cd gem2deb
- vim gem2deb-1.4/debian/rules 
-cd gem2deb-1.4/
-apt build-dep .
-debuild -us -uc
-cd ..
-apt install ./gem2deb_1.4_arm64.deb ./gem2deb-test-runner_1.4_arm64.deb 
-
- cd ../ronn/ruby-ronn-0.9.1/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./ronn_0.9.1-2_all.deb ./ruby-ronn_0.9.1-2_all.deb 
- cd ../debhelper/debhelper-13.3.4/
- apt build-dep .
- cd ../../goipp/golang-github-openprinting-goipp-1.0.0/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./golang-github-openprinting-goipp-dev_1.0.0-1_all.deb 
- cd ../ipp/ipp-usb-0.9.17/
- apt build-dep .
- debuild -us -uc
- cd ..
- apt install ./ipp-usb_0.9.17-3_arm64.deb 
-
- cp ./gem2deb/gem2deb_1.4_arm64.deb ./gem2deb/gem2deb-test-runner_1.4_arm64.deb ./ipp/ipp-usb_0.9.17-3_arm64.deb ./debhelper/debhelper-13.3.4/dh_installdeb ./debhelper/debhelper-13.3.4/dh_builddeb ./goipp/golang-github-openprinting-goipp-dev_1.0.0-1_all.deb ~/uos_ipp_deb_arm64/
- scp -r uos_ipp_deb_arm64/ dash@192.168.1.213:~
-</code></pre>
-<h3 id="2-install-nomachine"><a class="header" href="#2-install-nomachine">2. install nomachine</a></h3>
-<p>via:</p>
-<pre><code>sudo rpm -ivh --nodigest --nofiledigest ./nomachine_9.1.24_6_aarch64.rpm
-</code></pre>
-<h3 id="3-fedora-bridge"><a class="header" href="#3-fedora-bridge">3. fedora bridge</a></h3>
-<p>Change to eth0:</p>
-<pre><code>grubby --update-kernel="/boot/vmlinuz-6.17.1-300.fc43.aarch64" --args="net.ifnames=0 biosdevname=0"
-</code></pre>
-<p>Steps:</p>
-<pre><code>nmcli con down "Wired connection 1"
-nmcli con add type bridge con-name bridge-br0 ifname br0
-nmcli con add type ethernet con-name bridge-slave-eth0 ifname eth0 master bridge-br0 slave-type bridge
-nmcli con mod bridge-br0 ipv4.method auto ipv6.method auto
-nmcli con mod bridge-br0 bridge.stp no
-nmcli con up bridge-br0
-nmcli con up bridge-slave-eth0
-nmcli device status
-</code></pre>
-<p>Be sure to disable power hibernation.</p>
-<h3 id="4-ipp-usb-buildingkylinv10arm64"><a class="header" href="#4-ipp-usb-buildingkylinv10arm64">4. ipp-usb building(kylinv10/arm64)</a></h3>
-<p>Building Steps:</p>
-<pre><code> cd debhelper/debhelper-13.3.4/
- apt -y build-dep . &amp;&amp; debuild -us -uc
- cd ../
- apt install ./debhelper_13.3.4_all.deb ./libdebhelper-perl_13.3.4_all.deb 
- cd ../ronn/ruby-ronn-0.9.1/
- apt -y build-dep . &amp;&amp; debuild -us -uc
- cd ../
- apt install ./ruby-ronn_0.9.1-2_all.deb ./ronn_0.9.1-2_all.deb 
- cd ../goipp/golang-github-openprinting-goipp-1.0.0/
- apt -y build-dep . &amp;&amp; debuild -us -uc
- cd ..
- apt install ./golang-github-openprinting-goipp-dev_1.0.0-1_all.deb -y
- cd ../ipp/ipp-usb-0.9.17/
- apt -y build-dep . &amp;&amp; debuild -us -uc
- cd ..
- apt install ./ipp-usb_0.9.17-3_arm64.deb 
- cd ..
- mkdir ~/kylin_ipp_deb_arm64
- cp ./ipp/ipp-usb_0.9.17-3_arm64.deb ./ronn/ronn_0.9.1-2_all.deb ./ronn/ruby-ronn_0.9.1-2_all.deb ./debhelper/libdebhelper-perl_13.3.4_all.deb ./debhelper/debhelper_13.3.4_all.deb ./goipp/golang-github-openprinting-goipp-dev_1.0.0-1_all.deb ~/kylin_ipp_deb_arm64/
-</code></pre>
+                        <h1 id="20251030"><a class="header" href="#20251030">20251030</a></h1>
+<h3 id="1-nothing"><a class="header" href="#1-nothing">1. nothing</a></h3>
+<p>did nothing.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251028.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251029.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251030.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -290,13 +194,10 @@ nmcli device status
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251028.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251029.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251030.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
