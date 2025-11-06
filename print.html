@@ -20005,6 +20005,72 @@ root@ubuntu2004desktop:/home/test# chmod 0755 /usr/lib/cups/filter/gstobmp
 sudo apt update
 sudo apt install cn.189.cloud.deepin
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251105"><a class="header" href="#20251105">20251105</a></h1>
+<h3 id="1-zkfd-issue"><a class="header" href="#1-zkfd-issue">1. zkfd issue</a></h3>
+<p>ubuntu23.04 could not run:</p>
+<pre><code>root@ubuntu2304:/home/test# apt-cache policy libcupsfilters2
+libcupsfilters2:
+  Installed: 2.0~rc1-0ubuntu1
+  Candidate: 2.0~rc1-0ubuntu1.1
+  Version table:
+     2.0~rc1-0ubuntu1.1 500
+        500 http://mirrors.ustc.edu.cn/ubuntu-old-releases/ubuntu lunar-updates/main amd64 Packages
+ *** 2.0~rc1-0ubuntu1 500
+        500 http://mirrors.ustc.edu.cn/ubuntu-old-releases/ubuntu lunar/main amd64 Packages
+        100 /var/lib/dpkg/status
+root@ubuntu2304:/home/test# apt-cache policy libcupsfilters1
+N: Unable to locate package libcupsfilters1
+
+失败的根本原因（非常明确）：
+D [05/Nov/2025:09:05:20 +0800] [Job 6] FP-630KII: error while loading shared libraries: libcupsfilters.so.1: cannot open shared object file: No such file or directory
+这行日志完美地解释了为什么 hotpotfilter 会失败。
+    hotpotfilter 启动时，它尝试加载它所依赖的共享库 libcupsfilters.so.1。
+    系统报告该文件不存在。
+    因此，hotpotfilter 进程立即崩溃，导致了 status 127 和整个打印作业的失败。
+</code></pre>
+<p>ubuntu22.04 runnable:</p>
+<pre><code># apt-cache policy libcupsfilters1
+libcupsfilters1:
+  已安装：1.28.15-0ubuntu1.2
+  候选： 1.28.15-0ubuntu1.4
+  版本列表：
+     1.28.15-0ubuntu1.4 500
+        500 http://mirrors.lzu.edu.cn/ubuntu jammy-updates/main amd64 Packages
+        500 http://mirrors.ustc.edu.cn/ubuntu jammy-security/main amd64 Packages
+ *** 1.28.15-0ubuntu1.2 100
+        100 /var/lib/dpkg/status
+     1.28.15-0ubuntu1 500
+        500 http://mirrors.lzu.edu.cn/ubuntu jammy/main amd64 Packages
+</code></pre>
+<p>ubuntu23.04 could not replace libcupsfilter2 with libcupsfilter1:</p>
+<pre><code># apt remove  libcupsfilters2
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  cups-daemon cups-ipp-utils cups-ppdc cups-server-common hplip-data libcupsfilters2-common libcupsimage2 libhpmud0 libimagequant0 liblouisutdml-bin liblouisutdml-data liblouisutdml9
+  libpoppler-cpp0v5 libppd2-common libqpdf29 libraqm0 libsane-hpaio printer-driver-postscript-hp python3-olefile python3-pil python3-renderpm python3-reportlab python3-reportlab-accel
+  ssl-cert
+Use 'sudo apt autoremove' to remove them.
+The following additional packages will be installed:
+  foomatic-filters
+</code></pre>
+<p>Solvement:</p>
+<pre><code>ls yilai/
+libcupsfilters1_1.28.7-2+m4+1nfs5_amd64.deb  libjpeg62-turbo_1%3a2.0.6-4+nfs5_amd64.deb  libtiff5_4.2.0-3+m6+2nfs5_amd64.deb  libwebp6_0.6.1-4+m2+0nfs5_amd64.deb
+cd yilai &amp;&amp; sudo apt install ./*.deb
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251106"><a class="header" href="#20251106">20251106</a></h1>
+<h3 id="1-workingtipsubuntu2204"><a class="header" href="#1-workingtipsubuntu2204">1. workingtips(ubuntu2204)</a></h3>
+<p>Change the default wine:</p>
+<pre><code> sudo update-alternatives --install /usr/bin/wine wine  /opt/bisheng/bin/wine 102
+ sudo update-alternatives --config wine
+</code></pre>
+<p>Install deep-wine:</p>
+<pre><code>dpkg --add-architecture i386
+wget -O- https://deepin-wine.i-m.dev/setup.sh | sh
+apt install com.jisupdfeditor.deepin
+</code></pre>
 
                     </main>
 
