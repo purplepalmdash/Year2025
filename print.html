@@ -20071,6 +20071,17 @@ cd yilai &amp;&amp; sudo apt install ./*.deb
 wget -O- https://deepin-wine.i-m.dev/setup.sh | sh
 apt install com.jisupdfeditor.deepin
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251107"><a class="header" href="#20251107">20251107</a></h1>
+<h3 id="1-strace"><a class="header" href="#1-strace">1. strace</a></h3>
+<p>get the drp filter strace:</p>
+<pre><code>root@ubuntu2204pureprinteruos:~# ps -ef | grep drp
+root        3263       1  0 09:51 ?        00:00:00 /usr/bin/drp_filter_service
+test        3265       1  0 09:51 ?        00:00:00 /usr/bin/drp_filter_service
+test        3403    3265  0 09:51 ?        00:00:00 [drp_filter_serv] &lt;defunct&gt;
+root        3419    3224  0 09:52 pts/1    00:00:00 grep --color=auto drp
+root@ubuntu2204pureprinteruos:~# strace -f -p 3265 2&gt;&amp;1 | tee ubuntu_drp_strace.txt
+
+</code></pre>
 
                     </main>
 
