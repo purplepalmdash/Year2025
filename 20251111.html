@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251107 - year2025</title>
+        <title>20251111 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,59 +175,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251107"><a class="header" href="#20251107">20251107</a></h1>
-<h3 id="1-strace"><a class="header" href="#1-strace">1. strace</a></h3>
-<p>get the drp filter strace:</p>
-<pre><code>root@ubuntu2204pureprinteruos:~# ps -ef | grep drp
-root        3263       1  0 09:51 ?        00:00:00 /usr/bin/drp_filter_service
-test        3265       1  0 09:51 ?        00:00:00 /usr/bin/drp_filter_service
-test        3403    3265  0 09:51 ?        00:00:00 [drp_filter_serv] &lt;defunct&gt;
-root        3419    3224  0 09:52 pts/1    00:00:00 grep --color=auto drp
-root@ubuntu2204pureprinteruos:~# strace -f -p 3265 2&gt;&amp;1 | tee ubuntu_drp_strace.txt
-
-</code></pre>
-<h3 id="2-ubuntu2204-installation-issue"><a class="header" href="#2-ubuntu2204-installation-issue">2. ubuntu22.04 installation issue</a></h3>
-<p>Issue:</p>
-<pre><code> test@ubuntu2204desktop:~$ locale
-LANG=en_US
-LANGUAGE=en_US:
-LC_CTYPE="en_US"
-LC_NUMERIC=zh_CN.UTF-8
-LC_TIME=zh_CN.UTF-8
-LC_COLLATE="en_US"
-LC_MONETARY=zh_CN.UTF-8
-LC_MESSAGES="en_US"
-LC_PAPER=zh_CN.UTF-8
-LC_NAME=zh_CN.UTF-8
-LC_ADDRESS=zh_CN.UTF-8
-LC_TELEPHONE=zh_CN.UTF-8
-LC_MEASUREMENT=zh_CN.UTF-8
-LC_IDENTIFICATION=zh_CN.UTF-8
-LC_ALL=
-test@ubuntu2204desktop:~$ /usr/libexec/gnome-terminal-server 
-Non UTF-8 locale (ISO-8859-1) is not supported! 
-</code></pre>
-<p>Solved via:</p>
-<pre><code>sudo apt-get install language-pack-en
-sudo localectl set-locale LANG=en_US.UTF-8
-</code></pre>
-<h3 id="3-install-dde"><a class="header" href="#3-install-dde">3. Install dde</a></h3>
-<p>Steps:</p>
-<pre><code>sudo add-apt-repository ppa:ubuntudde-dev/stable
-sudo apt install ubuntudde-dde
+                        <h1 id="20251111"><a class="header" href="#20251111">20251111</a></h1>
+<h3 id="1-holdunhold"><a class="header" href="#1-holdunhold">1. hold/unhold</a></h3>
+<p>create a txt file and then hold/unhold.</p>
+<pre><code>test@printer:~$ cat hold.txt 
+  acl avahi-daemon colord colord-data cups-browsed cups-client cups-common cups-core-drivers cups-daemon cups-filters
+  cups-filters-core-drivers cups-ipp-utils cups-ppdc cups-server-common fontconfig-config fonts-dejavu-core
+  fonts-droid-fallback fonts-noto-mono fonts-urw-base35 ghostscript ipp-usb libacl1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libavahi-core7 libavahi-glib1 libcairo2 libcolord2 libcolorhug2 libcups2 libcupsfilters1 libdaemon0
+  libdeflate0 libexif12 libfontconfig1 libfontembed1 libgd3 libgnutls30 libgphoto2-6 libgphoto2-l10n libgphoto2-port12
+  libgs9 libgs9-common libhogweed6 libidn11 libieee1284-3 libijs-0.35 libjbig0 libjbig2dec0 libjpeg62-turbo liblcms2-2
+  liblocale-gettext-perl liblouis-data liblouis20 liblouisutdml-bin liblouisutdml-data liblouisutdml9 libnettle8 libnss-mdns
+  libopenjp2-7 libpaper-utils libpaper1 libperl5.32 libpixman-1-0 libpoppler-cpp0v5 libpoppler-glib8 libpoppler102 libqpdf28
+  libsane-common libsane1 libsensors-config libsensors5 libsnmp-base libsnmp40 libtext-charwidth-perl libtext-iconv-perl
+  libtiff5 libwebp6 libxcb-render0 libxcb-shm0 libxpm4 libxrender1 perl perl-base perl-modules-5.32 poppler-data
+  poppler-utils sane-utils ssl-cert update-inetd
+ xargs -a hold.txt sudo apt-mark hold
+apt-mark showhold
+tr ' ' '\n' &lt; hold.txt | grep -v '^$' | xargs sudo apt-mark unhold
+apt-mark showhold
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251106.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251110.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251110.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -235,13 +211,10 @@ sudo apt install ubuntudde-dde
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251106.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251110.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251110.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

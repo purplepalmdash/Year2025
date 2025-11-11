@@ -20082,6 +20082,36 @@ root        3419    3224  0 09:52 pts/1    00:00:00 grep --color=auto drp
 root@ubuntu2204pureprinteruos:~# strace -f -p 3265 2&gt;&amp;1 | tee ubuntu_drp_strace.txt
 
 </code></pre>
+<h3 id="2-ubuntu2204-installation-issue"><a class="header" href="#2-ubuntu2204-installation-issue">2. ubuntu22.04 installation issue</a></h3>
+<p>Issue:</p>
+<pre><code> test@ubuntu2204desktop:~$ locale
+LANG=en_US
+LANGUAGE=en_US:
+LC_CTYPE="en_US"
+LC_NUMERIC=zh_CN.UTF-8
+LC_TIME=zh_CN.UTF-8
+LC_COLLATE="en_US"
+LC_MONETARY=zh_CN.UTF-8
+LC_MESSAGES="en_US"
+LC_PAPER=zh_CN.UTF-8
+LC_NAME=zh_CN.UTF-8
+LC_ADDRESS=zh_CN.UTF-8
+LC_TELEPHONE=zh_CN.UTF-8
+LC_MEASUREMENT=zh_CN.UTF-8
+LC_IDENTIFICATION=zh_CN.UTF-8
+LC_ALL=
+test@ubuntu2204desktop:~$ /usr/libexec/gnome-terminal-server 
+Non UTF-8 locale (ISO-8859-1) is not supported! 
+</code></pre>
+<p>Solved via:</p>
+<pre><code>sudo apt-get install language-pack-en
+sudo localectl set-locale LANG=en_US.UTF-8
+</code></pre>
+<h3 id="3-install-dde"><a class="header" href="#3-install-dde">3. Install dde</a></h3>
+<p>Steps:</p>
+<pre><code>sudo add-apt-repository ppa:ubuntudde-dev/stable
+sudo apt install ubuntudde-dde
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="20251110"><a class="header" href="#20251110">20251110</a></h1>
 <h3 id="1-ubuntu2304-installation"><a class="header" href="#1-ubuntu2304-installation">1. ubuntu23.04 installation</a></h3>
 <p>Should disable networking, or it will failed.<br />
@@ -20103,6 +20133,26 @@ Linux ubuntu220405desktopprinter 5.15.0-161-generic #171-Ubuntu SMP Sat Oct 11 0
 <h3 id="3-debian-version-vs-ubuntu-version"><a class="header" href="#3-debian-version-vs-ubuntu-version">3. debian version vs ubuntu version</a></h3>
 <p>from <code>https://askubuntu.com/questions/445487/what-debian-version-are-the-different-ubuntu-versions-based-on</code></p>
 <p><img src="./images/2025_11_10_17_52_52_666x830.jpg" alt="./images/2025_11_10_17_52_52_666x830.jpg" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251111"><a class="header" href="#20251111">20251111</a></h1>
+<h3 id="1-holdunhold"><a class="header" href="#1-holdunhold">1. hold/unhold</a></h3>
+<p>create a txt file and then hold/unhold.</p>
+<pre><code>test@printer:~$ cat hold.txt 
+  acl avahi-daemon colord colord-data cups-browsed cups-client cups-common cups-core-drivers cups-daemon cups-filters
+  cups-filters-core-drivers cups-ipp-utils cups-ppdc cups-server-common fontconfig-config fonts-dejavu-core
+  fonts-droid-fallback fonts-noto-mono fonts-urw-base35 ghostscript ipp-usb libacl1 libavahi-client3 libavahi-common-data
+  libavahi-common3 libavahi-core7 libavahi-glib1 libcairo2 libcolord2 libcolorhug2 libcups2 libcupsfilters1 libdaemon0
+  libdeflate0 libexif12 libfontconfig1 libfontembed1 libgd3 libgnutls30 libgphoto2-6 libgphoto2-l10n libgphoto2-port12
+  libgs9 libgs9-common libhogweed6 libidn11 libieee1284-3 libijs-0.35 libjbig0 libjbig2dec0 libjpeg62-turbo liblcms2-2
+  liblocale-gettext-perl liblouis-data liblouis20 liblouisutdml-bin liblouisutdml-data liblouisutdml9 libnettle8 libnss-mdns
+  libopenjp2-7 libpaper-utils libpaper1 libperl5.32 libpixman-1-0 libpoppler-cpp0v5 libpoppler-glib8 libpoppler102 libqpdf28
+  libsane-common libsane1 libsensors-config libsensors5 libsnmp-base libsnmp40 libtext-charwidth-perl libtext-iconv-perl
+  libtiff5 libwebp6 libxcb-render0 libxcb-shm0 libxpm4 libxrender1 perl perl-base perl-modules-5.32 poppler-data
+  poppler-utils sane-utils ssl-cert update-inetd
+ xargs -a hold.txt sudo apt-mark hold
+apt-mark showhold
+tr ' ' '\n' &lt; hold.txt | grep -v '^$' | xargs sudo apt-mark unhold
+apt-mark showhold
+</code></pre>
 
                     </main>
 
