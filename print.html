@@ -20153,6 +20153,36 @@ apt-mark showhold
 tr ' ' '\n' &lt; hold.txt | grep -v '^$' | xargs sudo apt-mark unhold
 apt-mark showhold
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="20251112"><a class="header" href="#20251112">20251112</a></h1>
+<h3 id="1-ubuntu2004-mixed-installation"><a class="header" href="#1-ubuntu2004-mixed-installation">1. ubuntu2004 mixed installation</a></h3>
+<p>in mixed ubuntu 20.04 environment:</p>
+<pre><code> ubuntu-desktop : Depends: software-properties-gtk but it is not going to be installed
+                  Depends: ubuntu-desktop-minimal but it is not going to be installed
+                  Depends: ubuntu-release-upgrader-gtk but it is not going to be installed
+                  Depends: update-manager but it is not going to be installed
+
+</code></pre>
+<h3 id="2-ubuntu2004-bisheng"><a class="header" href="#2-ubuntu2004-bisheng">2. ubuntu20.04 bisheng</a></h3>
+<p>Server版本安装，最小化，非图形界面，而后：</p>
+<pre><code>sudo apt update -y
+sudo apt upgrade -y
+sudo dpkg --add-architecture i386
+sudo add-apt-repository ppa:ubuntudde-dev/stable
+sudo apt-get install ubuntudde-dde
+sudo apt install -y gnome-terminal sakura cups
+scp -r dash@192.168.1.208:~/hacker .
+cd hacker/modified_bisheng
+sudo apt install ./*.deb
+sudo chown -R root:root /usr/lib/cups/filter
+sudo chown -R root:root /usr/lib/cups/filter/gstobmp
+sudo systemctl restart cups
+</code></pre>
+<p>如果需要手动添加：</p>
+<pre><code>sudo system-config-printer
+</code></pre>
+<p>打印测试:</p>
+<pre><code>sudo lp -d FP-630KII kkk.txt
+</code></pre>
 
                     </main>
 
