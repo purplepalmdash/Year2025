@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>20251112 - year2025</title>
+        <title>20251113 - year2025</title>
 
 
         <!-- Custom HTML head -->
@@ -175,48 +175,118 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="20251112"><a class="header" href="#20251112">20251112</a></h1>
-<h3 id="1-ubuntu2004-mixed-installation"><a class="header" href="#1-ubuntu2004-mixed-installation">1. ubuntu2004 mixed installation</a></h3>
-<p>in mixed ubuntu 20.04 environment:</p>
-<pre><code> ubuntu-desktop : Depends: software-properties-gtk but it is not going to be installed
-                  Depends: ubuntu-desktop-minimal but it is not going to be installed
-                  Depends: ubuntu-release-upgrader-gtk but it is not going to be installed
-                  Depends: update-manager but it is not going to be installed
+                        <h1 id="20251113"><a class="header" href="#20251113">20251113</a></h1>
+<h3 id="1-gxdedebian13"><a class="header" href="#1-gxdedebian13">1. gxde(debian13)</a></h3>
+<p>Step:</p>
+<pre><code>test@gxde:~$ uname -a
+Linux gxde 6.12.43+deb13-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.12.43-1 (2025-08-27) x86_64 GNU/Linux
+test@gxde:~$ cat /etc/debian_version 
+13.1
 
+wget https://repo.gxde.top/gxde-os/lizhi/g/gxde-source/gxde-source_1.1.11_all.deb
+sudo apt install ./gxde-source_1.1.11_all.deb 
+sudo apt update
+sudo apt-get install aptss
+sudo apt-get install gxde-testing-source -y
+sudo aptss update
+sudo aptss install gxde-desktop gxde-desktop-extra -y
+sudo reboot
 </code></pre>
-<h3 id="2-ubuntu2004-bisheng"><a class="header" href="#2-ubuntu2004-bisheng">2. ubuntu20.04 bisheng</a></h3>
-<p>Server版本安装，最小化，非图形界面，而后：</p>
-<pre><code>sudo apt update -y
-sudo apt upgrade -y
-sudo dpkg --add-architecture i386
-sudo add-apt-repository ppa:ubuntudde-dev/stable
-sudo apt-get install ubuntudde-dde
-sudo apt install -y gnome-terminal sakura cups
-scp -r dash@192.168.1.208:~/hacker .
-cd hacker/modified_bisheng
+<p>Verification of bisheng:</p>
+<pre><code>sudo dpkg --add-architecture i386
+cd modified_bisheng/
 sudo apt install ./*.deb
-sudo chown -R root:root /usr/lib/cups/filter
-sudo chown -R root:root /usr/lib/cups/filter/gstobmp
-sudo systemctl restart cups
+sudo chown root:root /usr/lib/cups/filter/gstobmp 
+sudo chown -R root /usr/lib/cups/filter/
 </code></pre>
-<p>如果需要手动添加：</p>
-<pre><code>sudo system-config-printer
+<p>bisheng could be worked properly on debian13.</p>
+<h3 id="2-redroid-on-fedora"><a class="header" href="#2-redroid-on-fedora">2. redroid on fedora</a></h3>
+<p>Install docker-ce:</p>
+<pre><code>sudo dnf remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine
+sudo dnf -y install dnf-plugins-core
+sudo dnf-3 config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+ sudo dnf install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo su
+grubby --update-kernel ALL --args selinux=0
+grub2-mkconfig &gt; /boot/grub2/grub.cfg
+reboot
 </code></pre>
-<p>打印测试:</p>
-<pre><code>sudo lp -d FP-630KII kkk.txt
+<p>After booted:</p>
+<pre><code>$ sudo lsmod | grep nfnet
+nfnetlink              20480  5 nft_compat,nf_tables,ip_set
+test@fedora:~$ sudo docker run -itd --rm --privileged \
+    --pull always \
+    -v ~/data11:/data \
+    -p 5555:5555 \
+    --name redroid12 redroid/redroid:12.0.0-latest
 </code></pre>
-
+<h3 id="3-lxcfsdocker-limitation"><a class="header" href="#3-lxcfsdocker-limitation">3. lxcfs/docker limitation</a></h3>
+<p>Install lxcfs:</p>
+<pre><code>sudo yum install -y lxcfs
+</code></pre>
+<p>创建一个覆盖文件来修改服务:</p>
+<pre><code>sudo systemctl edit lxcfs.service
+</code></pre>
+<p>在打开的编辑器里，粘贴以下内容。这会告诉 lxcfs 启动时带上<code>--enable-cfs</code>参数:</p>
+<pre><code>[Service]
+ExecStart=
+ExecStart=/usr/bin/lxcfs --enable-cfs /var/lib/lxcfs
+</code></pre>
+<p>注意:<br />
+<code>ExecStart=</code>是必须的，它会清除旧的启动命令。<br />
+<code>ExecStart=/usr/bin/lxcfs ... </code>是新的启动命令，加入了<code> --enable-cfs</code></p>
+<p>保存并退出编辑器。重新加载 systemd 并重启 lxcfs 服务：</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl restart lxcfs
+</code></pre>
+<p>Test:</p>
+<p>分别创建一个使用lxcfs加持的redroid容器实例以及不使用lxcfs加持的redroid实例:</p>
+<pre><code># 转发到5556端口, 注意-v后添加的lxcfs目录:   
+sudo docker run -itd --privileged     -v ~/data12Limit:/data     -p 5556:5555     --name redroid12limit --memory="8192m" --cpus="4" -v /var/lib/lxcfs/proc/meminfo:/proc/meminfo:ro   -v /var/lib/lxcfs/proc/cpuinfo:/proc/cpuinfo:ro   -v /var/lib/lxcfs/proc/stat:/proc/stat:ro   -v /var/lib/lxcfs/proc/uptime:/proc/uptime:ro redroid/redroid:12.0.0-latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128  androidboot.redroid_fps=120
+# 转发到5557端口，注意这里没有映射任何lxcfs到容器中
+sudo docker run -itd --privileged     -v ~/data12LimitNOLXC:/data -p 5557:5555 --name redroid12limit_no_lxcfs --memory="8192m" --cpus="4" redroid/redroid:12.0.0-latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128  androidboot.redroid_fps=120
+</code></pre>
+<p>外部使用adb/scrcpy进行测试,测试软件为鲁大师:</p>
+<pre><code>dash@ai:~$ adb connect 10.0.0.176:5556
+connected to 10.0.0.176:5556
+dash@ai:~$ adb connect 10.0.0.176:5557
+connected to 10.0.0.176:5557
+dash@ai:~$ adb -s 10.0.0.176:5556 install ludashi_home.apk 
+Performing Streamed Install
+Success
+dash@ai:~$ adb -s 10.0.0.176:5557 install ludashi_home.apk 
+Performing Streamed Install
+Success
+</code></pre>
+<h3 id="4-netdata"><a class="header" href="#4-netdata">4. netdata</a></h3>
+<p>Install on fedora:</p>
+<pre><code>wget -O /tmp/netdata-kickstart.sh https://get.netdata.cloud/kickstart.sh &amp;&amp; sh /tmp/netdata-kickstart.sh --nightly-channel
+</code></pre>
+<p>Result:</p>
+<div class="table-wrapper"><table><thead><tr><th>配置</th><th>单核分</th><th>多核跑分</th></tr></thead><tbody>
+<tr><td>无限制</td><td>671</td><td>1856</td></tr>
+<tr><td>4核8G(lxcfs)</td><td>747</td><td>1477</td></tr>
+<tr><td>4核8G(无lxcfs)</td><td>689</td><td>1409</td></tr>
+</tbody></table>
+</div>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="20251111.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20251112.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="20251113.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -224,13 +294,10 @@ sudo systemctl restart cups
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="20251111.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20251112.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="20251113.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>
