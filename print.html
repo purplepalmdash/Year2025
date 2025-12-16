@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c959cc16.js";
+            window.path_to_searchindex_js = "searchindex-7f3e10d7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-446a5290.js"></script>
+        <script src="toc-06721a9b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -20714,6 +20714,23 @@ cat fcitx5_10.log | grep -i qq
 </code></pre>
 <p>Everything will be OK.</p>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251208"><a class="header" href="#20251208">20251208</a></h1>
+<h3 id="1-vncviewer-passwordless-login"><a class="header" href="#1-vncviewer-passwordless-login">1. vncviewer passwordless login</a></h3>
+<p>Steps:</p>
+<pre><code>$ vncpasswd ~/.vncpasswd
+Password:
+Verify:
+$ vncviewer -passwd ~/.vncpasswd xxx.xxx.xxx.xxx:15901
+</code></pre>
+<h3 id="2-uninstall-vmware"><a class="header" href="#2-uninstall-vmware">2. uninstall vmware</a></h3>
+<p>Step:</p>
+<pre><code>sudo vmware-usbarbitrator --stop
+sudo systemctl stop vmware
+sudo /usr/bin/vmware-installer --uninstall-product vmware-workstation
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251209"><a class="header" href="#20251209">20251209</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20251211"><a class="header" href="#20251211">20251211</a></h1>
 <h3 id="1-win10-autologin"><a class="header" href="#1-win10-autologin">1. win10 autologin</a></h3>
 <p>Steps:</p>
@@ -20740,6 +20757,71 @@ cat fcitx5_10.log | grep -i qq
 </code></pre>
 <p>Convert to virtualbox format:</p>
 <pre><code>qemu-img convert -f qcow2 -O vdi your-image.qcow2 your-image-virtualbox.vdi
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251212"><a class="header" href="#20251212">20251212</a></h1>
+<h3 id="1-ubuntu-install-vmware-tools"><a class="header" href="#1-ubuntu-install-vmware-tools">1. ubuntu install vmware tools</a></h3>
+<p>Installed via:</p>
+<pre><code>sudo apt install -y open-vm-tools open-vm-tools-desktop
+</code></pre>
+<h3 id="2-hyper-v"><a class="header" href="#2-hyper-v">2. hyper-v</a></h3>
+<p>Install following functionalities:</p>
+<p><img src="images/2025_12_12_09_46_19_429x245.jpg" alt="./images/2025_12_12_09_46_19_429x245.jpg"></p>
+<p><img src="images/2025_12_12_09_46_33_341x88.jpg" alt="./images/2025_12_12_09_46_33_341x88.jpg"></p>
+<p><img src="images/2025_12_12_09_46_42_434x157.jpg" alt="./images/2025_12_12_09_46_42_434x157.jpg"></p>
+<p>Create vm:</p>
+<p><img src="images/2025_12_12_09_52_59_795x568.jpg" alt="./images/2025_12_12_09_52_59_795x568.jpg"></p>
+<p>disable dynamic memory:</p>
+<p><img src="images/2025_12_12_09_54_03_697x243.jpg" alt="./images/2025_12_12_09_54_03_697x243.jpg"></p>
+<p>Enable nested virtualization:</p>
+<p><img src="images/2025_12_12_09_57_07_777x329.jpg" alt="./images/2025_12_12_09_57_07_777x329.jpg"></p>
+<p>Install system:</p>
+<p><img src="images/2025_12_12_09_58_27_734x507.jpg" alt="./images/2025_12_12_09_58_27_734x507.jpg"></p>
+<p>Disable secure boot:</p>
+<p><img src="images/2025_12_12_10_00_18_691x341.jpg" alt="./images/2025_12_12_10_00_18_691x341.jpg"></p>
+<p>After installation:</p>
+<p><img src="images/2025_12_12_10_24_00_513x124.jpg" alt="./images/2025_12_12_10_24_00_513x124.jpg"></p>
+<h3 id="3-nested-kvm"><a class="header" href="#3-nested-kvm">3. Nested kvm</a></h3>
+<p>结论：
+0. 在现有IDV架构(Ubuntu+Qemu/KVM+Win/Linux&lt;嵌套KVM&gt;)下，不管如何伪装CPU及调整虚拟化参数，VMWare都拒绝启动VT-x/EPT使能的虚拟机。业界没有找到(Vmware-Nested-ON-KVM)成功的先例，常见的求助帖很多，没有跑通的先例。</p>
+<ol>
+<li>
+<p>全链路KVM嵌套虚拟化是当前IDV下嵌套虚拟化算力的最优解。
+即：全部使用Linux,虚拟化全部使用KVM –– 物理机(Linux+KVM)–&gt;第一层虚拟机(Linux+KVM)-&gt;第二层虚拟机(Linux+KVM)。</p>
+</li>
+<li>
+<p>在第一层虚拟机不得不选择Windows的前提下，Hyper-V是嵌套虚拟化方案下最大化第二层算力功能(vt-x)和性能(各项跑分数据)的最优解。
+物理机(Linux+KVM)–&gt;第一层虚拟机(Windows+Hyper-V)-&gt;第二层虚拟机(Linux+KVM)。</p>
+</li>
+<li>
+<p>VMWare Hypervisor的二层嵌套虚拟化的开启仅当“第一层也为VMWare Hypervisor“时可以被使能。</p>
+</li>
+<li>
+<p>即便是全链路VMWare Hypervisor嵌套虚拟化，第二层在开启vt-x后的性能损耗依然过大，尤其是内存及I/O跑分的下降极为明显。</p>
+</li>
+<li>
+<p>在现有IDV的技术架构下，如果客户(使用windows)有嵌套虚拟化的需求，IDV方案会推荐客户使用：
+Hyper-V &gt; VirtualBox &gt; VMWare</p>
+</li>
+<li>
+<p>同构嵌套(如L0_VMWARE-&gt;L1_VMWARE)和异构嵌套(L0_KVM-&gt;L1_VMWARE)的考量：
+虚拟化里可以套用“本是同根生”的概念。 如果是 L0 (VMware) -&gt; L1 (VMware)，这属于同构嵌套 (Homogeneous Nesting)。VMware 对自家的 VMX 虚拟化实现非常了解，它知道如何完美地将物理 CPU 的 VT-x 特性透传给下一层。在VMware 上跑 VMware，就像俄罗斯套娃，契合度是 100% 的。</p>
+</li>
+</ol>
+<p>但如果线上的环境是 L0 (KVM) -&gt; L1 (VMware)，这就形成了异构嵌套 (Heterogeneous Nesting)。 这就好比让说中文的人（KVM）去给说英文的人（VMware）当翻译。虽然 KVM 很强大，也支持标准 VMX，但在一些极其底层“方言”细节上（比如 VMX Preemption Timer, Shadow VMCS 的具体实现，特定的 MSR 寄存器行为），KVM 的模拟方式和 VMware 期待的“标准物理机”不一样。</p>
+<p>VMware Workstation 是一个非常“傲娇”的软件，它在启动 VMX 引擎时通常会进行严格的环境自检。一旦它发现底层的 VMX 行为有不符合它对物理机的预期，它就会为了稳定性直接报错罢工。</p>
+<p>而因为VMWare WorkStation是闭源软件，对它行为的猜测只能是基于黑盒猜测。
+未来VMWare将全面转向KVM, 届时其自用的vmmon模块可能就不再是必须具备的组件，届时才有可能实现真正的基于VMWARE的全链路KVM虚拟化。
+现阶段因为vmmon和VMWare自己实现的hypervisor的闭源特性，大概率不能直接在KVM上直接运行。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251216"><a class="header" href="#20251216">20251216</a></h1>
+<h3 id="1-benchmark-score"><a class="header" href="#1-benchmark-score">1. benchmark score</a></h3>
+<p>benchmark result.</p>
+<pre><code>硬件规格	CPU Mark	Memory Mark
+Host-裸金属	16811	2588
+Windows虚机(kvm)	13440	2403
+ubuntu虚机(L2 vmware)	8926	1850
+Rocky虚机(L3 kvmInvmware)	2281	153
 </code></pre>
 
                     </main>
