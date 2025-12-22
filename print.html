@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-8e42863b.js";
+            window.path_to_searchindex_js = "searchindex-53866069.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7a476674.js"></script>
+        <script src="toc-cd23ae06.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -20838,6 +20838,41 @@ Rocky虚机(L3 kvmInvmware)	2281	153
 <p><img src="images/2025_12_18_09_57_07_445x226.jpg" alt="./images/2025_12_18_09_57_07_445x226.jpg"></p>
 <p>Configure the custom storage:</p>
 <p><img src="images/2025_12_18_11_47_52_417x272.jpg" alt="./images/2025_12_18_11_47_52_417x272.jpg"></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251222"><a class="header" href="#20251222">20251222</a></h1>
+<h3 id="1-win11-activation"><a class="header" href="#1-win11-activation">1. win11 activation</a></h3>
+<p>Via(in powershell):</p>
+<pre><code>irm https://get.activated.win | iex
+</code></pre>
+<h3 id="2-nitrogen-tips"><a class="header" href="#2-nitrogen-tips">2. NitroGen Tips</a></h3>
+<p>Install git:</p>
+<pre><code>https://git-scm.com/download/win
+点击 "64-bit Git for Windows Setup" 开始下载。
+</code></pre>
+<p>Install python:</p>
+<pre><code>推荐下载 Python 3.10 版本（兼容性好）：https://www.python.org/downloads/release/python-31011/
+拉到页面最下方，找到 "Files"，选择 "Windows installer (64-bit)" 下载。
+</code></pre>
+<p>Set the pip’s repository:</p>
+<pre><code>pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+mkdir Code
+cd Code
+git clone https://github.com/MineDojo/NitroGen.git
+cd NitroGen
+
+# 2. 创建虚拟环境 (这步很重要，防报错)
+python -m venv venv
+.\venv\Scripts\activate
+
+# 3. 安装 PyTorch (显卡加速库)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
+pip install -e .
+
+set HF_ENDPOINT=https://hf-mirror.com
+huggingface-cli download nvidia/NitroGen ng.pt --local-dir . --local-dir-use-symlinks False
+
+</code></pre>
 
                     </main>
 
