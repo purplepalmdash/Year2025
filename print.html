@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-53866069.js";
+            window.path_to_searchindex_js = "searchindex-ad53c08f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cd23ae06.js"></script>
+        <script src="toc-13362ffb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -20871,6 +20871,55 @@ pip install -e .
 
 set HF_ENDPOINT=https://hf-mirror.com
 huggingface-cli download nvidia/NitroGen ng.pt --local-dir . --local-dir-use-symlinks False
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20251225"><a class="header" href="#20251225">20251225</a></h1>
+<h3 id="1-nixos-update"><a class="header" href="#1-nixos-update">1. nixos update</a></h3>
+<p>Run as root:</p>
+<pre><code>export http_proxy=socks5h://192.168.1.33:21080
+export https_proxy=socks5h://192.168.1.33:21080
+export all_proxy=socks5h://192.168.1.33:21080
+nix flake update
+nixos-rebuild switch --flake . -L
+</code></pre>
+<p>After flake switch:</p>
+<pre><code>sudo nixos-rebuild switch --option substituters  "https://mirrors.sjtug.sjtu.edu.cn/nix-channels/store"  --show-trace
+</code></pre>
+<p>Changes:</p>
+<pre><code># cat /etc/nixos/flake.nix 
+......
+
+  inputs = {
+    # Stable Nixpkgs for your desktop
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+
+    # Home Manager from stable and unstable
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+</code></pre>
+<h3 id="2-run-gemini-cli-under-nixos"><a class="header" href="#2-run-gemini-cli-under-nixos">2. run gemini-cli under nixos</a></h3>
+<p>Steps:</p>
+<pre><code>gost -L http://:8118 -F socks5://192.168.1.33:21080
+export http_proxy=http://127.0.0.1:8118
+export https_proxy=http://127.0.0.1:8118
+export GEMINI_API_KEY='XXXXXXXX' &amp;&amp; export GOOGLE_CLOUD_PROJECT='xxxxxxxxxxxxxxx'
+gemini-cli
+</code></pre>
+<h3 id="3-building-kernel"><a class="header" href="#3-building-kernel">3. building kernel</a></h3>
+<p>Ubuntu24.04, manually build kernel:</p>
+<pre><code>scripts/config --set-str SYSTEM_TRUSTED_KEYS ""
+scripts/config --set-str SYSTEM_REVOCATION_KEYS ""
+</code></pre>
+<p>Download/patch:</p>
+<pre><code>axel https://mirrors.ustc.edu.cn/kernel.org/linux/kernel/v6.x/linux-6.6.117.tar.xz
+cd /usr/src
+test@nuc11test:/usr/src$ sudo tar xJvf /home/test/linux-6.6.117.tar.xz 
+wget -O debooster_series.mbox https://lore.kernel.org/lkml/20251110033232.12538-1-kernellwp@gmail.com/t.mbox
+
 
 </code></pre>
 
