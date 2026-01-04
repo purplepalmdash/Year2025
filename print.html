@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ec57b78c.js";
+            window.path_to_searchindex_js = "searchindex-932a8d1a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-19510d19.js"></script>
+        <script src="toc-dbc2489b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -20983,6 +20983,79 @@ parsecmgmt -a run -p dedup -i native -n 4
 否则张口就来你后面要如何如何，明年要发生啥事，那纯属扯淡。
 
 还有一个词叫巴纳姆效应。
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260104"><a class="header" href="#20260104">20260104</a></h1>
+<h3 id="1-opencodeon-my-opencode"><a class="header" href="#1-opencodeon-my-opencode">1. OpenCode/On-my-opencode</a></h3>
+<p>Steps:</p>
+<pre><code>curl -fsSL https://opencode.ai/install | bash
+curl -fsSL https://bun.sh/install | bash
+source ~/.bashrc 
+bunx oh-my-opencode install
+</code></pre>
+<p>Summary:</p>
+<pre><code>dash@ubuntu2404:~$ bunx oh-my-opencode install
+┌   oMoMoMoMo... 
+│
+◇  OpenCode 1.0.223 ✓
+│
+◇  Do you have a Claude Pro/Max subscription?
+│  No
+│
+◇  Do you have a ChatGPT Plus/Pro subscription?
+│  No
+│
+◇  Will you integrate Google Gemini?
+│  No
+│
+◇  Plugin added to /home/dash/.config/opencode/opencode.json
+│
+◇  Config written to /home/dash/.config/opencode/oh-my-opencode.json
+│
+▲  No model providers configured. Using opencode/big-pickle as fallback.
+│
+◇  Installation Complete ────────────────────╮
+│                                            │
+│  Configuration Summary                     │
+│                                            │
+│    ○ Claude                                │
+│    ○ ChatGPT                               │
+│    ○ Gemini                                │
+│                                            │
+│  ────────────────────────────────────────  │
+│                                            │
+│  Agent Configuration                       │
+│                                            │
+│    • Sisyphus     → big-pickle             │
+│    • Oracle       → big-pickle             │
+│    • Librarian    → big-pickle             │
+│    • Frontend     → big-pickle             │
+│                                            │
+├────────────────────────────────────────────╯
+│
+◆  Installation complete!
+│
+│  Run opencode to start!
+│
+◇  🪄 The Magic Word ───────────────────────────────────────────────╮
+│                                                                   │
+│  Include ultrawork (or ulw) in your prompt.                       │
+│  All features work like magic—parallel agents, background tasks,  │
+│  deep exploration, and relentless execution until completion.     │
+│                                                                   │
+├───────────────────────────────────────────────────────────────────╯
+│
+│  ★ If you found this helpful, consider starring the repo!
+│
+│    gh repo star code-yeongyu/oh-my-opencode
+│
+└  oMoMoMoMo... Enjoy!
+</code></pre>
+<h3 id="2-disable-hyper-threading"><a class="header" href="#2-disable-hyper-threading">2. disable hyper-threading</a></h3>
+<p>step:</p>
+<pre><code>$ sudo vim /etc/default/grub
+nosmt
+$ sudo update-grub2 &amp;&amp; sudo reboot
 </code></pre>
 
                     </main>
