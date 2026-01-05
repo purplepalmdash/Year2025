@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-932a8d1a.js";
+            window.path_to_searchindex_js = "searchindex-b7863bff.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dbc2489b.js"></script>
+        <script src="toc-c8d2871e.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21057,6 +21057,39 @@ bunx oh-my-opencode install
 nosmt
 $ sudo update-grub2 &amp;&amp; sudo reboot
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260105"><a class="header" href="#20260105">20260105</a></h1>
+<h3 id="1-benchmark-new-node"><a class="header" href="#1-benchmark-new-node">1. benchmark new node</a></h3>
+<p>Create new disk:</p>
+<pre><code>qemu-img create -f qcow2 -b ubuntu2404benchmark.qcow2 -F qcow2 bench5.qcow2
+qemu-img create -f qcow2 -b ubuntu2404benchmark.qcow2 -F qcow2 bench6.qcow2
+</code></pre>
+<p>Re-gen machine id:</p>
+<pre><code>sudo rm -f /etc/machine-id
+sudo rm -f /var/lib/dbus/machine-id
+sudo systemd-machine-id-setup
+</code></pre>
+<p>Login to vm:</p>
+<pre><code>sudo apt install -y nfs-kernel-server nfs-common
+sudo mkdir -p /mnt/dbench
+sudo mount 192.168.122.1:/data/dbench_test /mnt/dbench
+cd ~
+tar xzvf /mnt/dbench/parsec-benchmark_full.tar.gz
+sudo apt install -y git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison dwarves pkg-config gettext build-essential gcc-multilib libstdc++-14-dev-i386-cross
+
+cd ~/parsec-benchmark
+. env.sh
+bin/parsecmgmt -a uninstall -p dedup
+bin/parsecmgmt -a clean -p dedup
+env AR=/usr/bin/ar bin/parsecmgmt -a build -p dedup
+
+
+</code></pre>
+<h3 id="2-ollama"><a class="header" href="#2-ollama">2. ollama</a></h3>
+<p><img src="images/2026_01_05_17_43_03_673x733.jpg" alt="./images/2026_01_05_17_43_03_673x733.jpg"></p>
+<p><img src="images/2026_01_05_17_45_02_870x613.jpg" alt="./images/2026_01_05_17_45_02_870x613.jpg"></p>
+<p><img src="images/2026_01_05_17_45_16_877x581.jpg" alt="./images/2026_01_05_17_45_16_877x581.jpg"></p>
+<p><img src="images/2026_01_05_17_45_29_775x517.jpg" alt="./images/2026_01_05_17_45_29_775x517.jpg"></p>
 
                     </main>
 
