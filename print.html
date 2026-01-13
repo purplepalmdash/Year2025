@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d39ab746.js";
+            window.path_to_searchindex_js = "searchindex-e5f9ce28.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-8c83bc12.js"></script>
+        <script src="toc-fd34a63b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21157,6 +21157,24 @@ sys     1m25.534s
 <h1 id="20260112"><a class="header" href="#20260112">20260112</a></h1>
 <h3 id="1-hint"><a class="header" href="#1-hint">1. hint</a></h3>
 <p>劳动法咨询/危险废品处理/污水池清理/清理污水池/</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260113"><a class="header" href="#20260113">20260113</a></h1>
+<h3 id="1-docker-run-rerank-model"><a class="header" href="#1-docker-run-rerank-model">1. docker run rerank model</a></h3>
+<p>run docker instance:</p>
+<pre><code>sudo docker run --name xinference -d -p 9997:9997   --gpus all   -e XINFERENCE_MODEL_SRC=modelscope   -v $PWD/model_data:/root/.xinference/cache   xprobe/xinference:latest xinference-local -H 0.0.0.0 --port 9997
+</code></pre>
+<p>Download <code>bge-reranker-large</code>:</p>
+<pre><code>curl -X POST "http://127.0.0.1:9997/v1/models" -H "Content-Type: application/json" -d '{
+           "model_engine": "transformers",
+           "model_name": "bge-reranker-large",
+           "model_type": "rerank"
+         }'
+</code></pre>
+<p>Get the result:</p>
+<pre><code>curl http://localhost:9997/v1/models
+{"object":"list","data":[{"id":"bge-reranker-large","object":"model","created":0,"owned_by":"xinference","model_type":"rerank","address":"0.0.0.0:35277","accelerators":["0"],"type":"normal","model_name":"bge-reranker-large","language":["en","zh"],"model_revision":"v0.0.1","replica":1}]}
+
+</code></pre>
 
                     </main>
 
