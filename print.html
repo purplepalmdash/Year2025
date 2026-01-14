@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e5f9ce28.js";
+            window.path_to_searchindex_js = "searchindex-78a6c95d.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-fd34a63b.js"></script>
+        <script src="toc-ee37855b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21174,6 +21174,42 @@ sys     1m25.534s
 <pre><code>curl http://localhost:9997/v1/models
 {"object":"list","data":[{"id":"bge-reranker-large","object":"model","created":0,"owned_by":"xinference","model_type":"rerank","address":"0.0.0.0:35277","accelerators":["0"],"type":"normal","model_name":"bge-reranker-large","language":["en","zh"],"model_revision":"v0.0.1","replica":1}]}
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260114"><a class="header" href="#20260114">20260114</a></h1>
+<h3 id="1-pve-console"><a class="header" href="#1-pve-console">1. pve console</a></h3>
+<p>VGA display:</p>
+<p><img src="images/2026_01_14_10_07_54_515x245.jpg" alt="./images/2026_01_14_10_07_54_515x245.jpg"></p>
+<h3 id="2-pve-files"><a class="header" href="#2-pve-files">2. pve files</a></h3>
+<p>Added spice port for vga none:</p>
+<pre><code>args: -spice port=5999,addr=0.0.0.0,disable-ticketing=on,image-compression=off,seamless-migration=on
+bios: ovmf
+boot: order=virtio0;sata1;net0;sata0
+cores: 4
+cpu: host
+efidisk0: local-lvm:vm-101-disk-0,efitype=4m,ms-cert=2023,pre-enrolled-keys=1,size=4M
+hostpci0: 0000:01:00,pcie=1
+machine: pc-q35-10.1
+memory: 8192
+meta: creation-qemu=10.1.2,ctime=1768376367
+name: win10nvidiaovmfq35
+net0: virtio=BC:24:11:F5:D3:F0,bridge=vmbr0,firewall=1
+numa: 0
+ostype: win10
+sata0: local:iso/virtio-win-0.1.266.iso,media=cdrom,size=707456K
+sata1: local:iso/zh-cn_windows_10_business_editions_version_21h2_updated_aug_2022_x64_dvd_4ca2b84d.iso,media=cdrom,size=5779762K
+scsihw: virtio-scsi-single
+smbios1: uuid=e3f3a9d0-0fcc-4629-8b98-52e15bd72c5c
+sockets: 1
+usb0: host=1-3
+usb1: host=1-4
+usb2: spice
+usb3: spice
+usb4: spice
+usb5: spice
+vga: none
+virtio0: local-lvm:vm-101-disk-1,iothread=1,size=60G
+vmgenid: 8205988a-fee0-49cb-b949-f61fa6baf330
 </code></pre>
 
                     </main>
