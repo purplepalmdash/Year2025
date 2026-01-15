@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-78a6c95d.js";
+            window.path_to_searchindex_js = "searchindex-69bf8188.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ee37855b.js"></script>
+        <script src="toc-690b5b6e.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21210,6 +21210,94 @@ usb5: spice
 vga: none
 virtio0: local-lvm:vm-101-disk-1,iothread=1,size=60G
 vmgenid: 8205988a-fee0-49cb-b949-f61fa6baf330
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260115"><a class="header" href="#20260115">20260115</a></h1>
+<h3 id="1-change-default-browser"><a class="header" href="#1-change-default-browser">1. change default browser</a></h3>
+<p>via:</p>
+<pre><code> xdg-settings get default-web-browser
+google-chrome.desktop
+ xdg-settings set default-web-browser firefox.desktop
+ xdg-settings get default-web-browser                
+firefox.desktop
+</code></pre>
+<h3 id="2-spice-related"><a class="header" href="#2-spice-related">2. spice related</a></h3>
+<p>Configuration of spice pasword secret:</p>
+<pre><code># cat /etc/pve/qemu-server/101.conf 
+args: -object secret,id=sec0,data=MTIzNDU2,format=base64  -spice port=5999,addr=0.0.0.0,password-secret=sec0,image-compression=off,seamless-migration=on
+</code></pre>
+<p>AutoCreate vv files:</p>
+<pre><code>root@pve:~# cat gen-spice-ticket.sh 
+#!/bin/bash
+
+# ==========================================
+# Proxmox SPICE 临时票据生成器 (Hard-Mod版)
+# 作者: 锅云老莫
+# 功能: 运行时热修改 SPICE 密码，生成连接文件
+# ==========================================
+
+VMID=$1
+HOST_IP=$2
+SPICE_PORT=5999
+EXPIRATION=300  # 有效期 5 分钟 (秒)
+
+if [ -z "$VMID" ] || [ -z "$HOST_IP" ]; then
+    echo "Usage: $0 &lt;VMID&gt; &lt;PVE_IP&gt;"
+    echo "Example: $0 101 192.168.1.208"
+    exit 1
+fi
+
+# 自动获取当前节点名称
+NODE=$(uname -n)
+
+# 1. 生成高强度随机票据 (8位 Hex)
+TICKET=$(openssl rand -hex 4)
+echo "------------------------------------------------"
+echo "Target VM: $VMID @ $NODE"
+echo "Generated Ticket: $TICKET"
+
+# 2. 热修改密码 (Runtime Override)
+# 这会覆盖掉 args 中通过 password-secret 设置的硬编码密码
+echo "&gt;&gt;&gt; Injecting ticket into QEMU Monitor..."
+
+# 设置密码 (使用 --command 避免参数解析歧义)
+# 这里的 output 应该通常为空 (null) 或者 JSON 格式
+pvesh create /nodes/$NODE/qemu/$VMID/monitor --command "set_password spice $TICKET"
+if [ $? -ne 0 ]; then
+    echo "ERROR: Failed to set password via QMP. Is the VM running?"
+    exit 1
+fi
+
+# 设置过期时间
+echo "&gt;&gt;&gt; Setting expiration to $EXPIRATION seconds..."
+pvesh create /nodes/$NODE/qemu/$VMID/monitor --command "expire_password spice +$EXPIRATION"
+
+# 3. 生成 .vv 连接文件
+FILENAME="vm-${VMID}-spice.vv"
+
+cat &gt; $FILENAME &lt;&lt;EOF
+[virt-viewer]
+type=spice
+host=$HOST_IP
+port=$SPICE_PORT
+password=$TICKET
+# 允许跳过证书检查 (因为是 args 手动开启的 TCP 模式)
+delete-this-file=1
+title=Proxmox VM $VMID (Ticket Expires in ${EXPIRATION}s)
+toggle-fullscreen=0
+release-cursor=Ctrl+Alt
+EOF
+
+echo "------------------------------------------------"
+echo "Success! Temporary ticket activated."
+echo "Connection file: $FILENAME"
+echo "Valid for: $EXPIRATION seconds"
+echo "------------------------------------------------"
+</code></pre>
+<p>Run via:</p>
+<pre><code>$ ./gen-spice-ticket.sh 101 192.168.1.168
+$ ls *.vv
+vm-101-spice.vv
 </code></pre>
 
                     </main>
