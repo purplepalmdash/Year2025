@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-35e0ba08.js";
+            window.path_to_searchindex_js = "searchindex-6537bd24.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-c30c02db.js"></script>
+        <script src="toc-1d7f1190.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21547,6 +21547,23 @@ apt-get install -y python3-software-properties python3-systemd python3-twisted
 apt-get install -y python3-update-manager python3-urllib3 python3-wadllib
 apt-get install -y python3-wheel python3-zipp python3-zope.interface
 apt-get install -y python-is-python3 ninja-build autocon
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260122"><a class="header" href="#20260122">20260122</a></h1>
+<h3 id="1-unprivileged-redroid"><a class="header" href="#1-unprivileged-redroid">1. unprivileged redroid</a></h3>
+<p>Via:</p>
+<pre><code>sudo docker run -itd -v ~/datano:/data -p 5111:5555 --name redroidnopriv --memory="8192m" --cpus="4" --cap-drop=ALL --cap-add=SETPCAP --cap-add=AUDIT_WRITE --cap-add=SYS_CHROOT --cap-add=CHOWN --cap-add=DAC_OVERRIDE --cap-add=FOWNER --cap-add=SETGID --cap-add=SETUID --cap-add=SYSLOG --cap-add=SYS_ADMIN --cap-add=WAKE_ALARM --cap-add=SYS_PTRACE --cap-add=BLOCK_SUSPEND --cap-add=MKNOD --cap-add=KILL --cap-add=SYS_RESOURCE --cap-add=NET_RAW --cap-add=NET_ADMIN --cap-add=NET_BIND_SERVICE --cap-add=SYS_NICE --cap-add=AUDIT_CONTROL --cap-add=DAC_READ_SEARCH --cap-add=IPC_LOCK --cap-add=SYS_MODULE --security-opt=apparmor=unconfined --security-opt=seccomp=unconfined --device=/dev/dri/renderD128:/dev/dri/renderD128 --device=/dev/fuse:/dev/fuse:rwm --device-cgroup-rule='c 509:* rwm' --device-cgroup-rule='c 13:* rwm' redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
+</code></pre>
+<h3 id="2-xfs-related"><a class="header" href="#2-xfs-related">2. xfs related</a></h3>
+<p><img src="images/2026_01_22_16_57_26_1489x828.jpg" alt="./images/2026_01_22_16_57_26_1489x828.jpg"></p>
+<pre><code># vim /etc/fstab
+.....   default,pquota
+# grubby --update-kernel="/boot/vmlinuz-5.10.0"  --args="rootflags=uquota,pquota"
+# reboot
+</code></pre>
+<p>TEst :</p>
+<pre><code>   78  docker run -itd  -p 5111:5555 --storage-opt size=50G --name redroidnopriv --memory="8192m" --cpus="4" --privileged  redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
+   85  docker run -itd -v ~/datano:/data -p 5111:5555 --storage-opt size=15G --name redroidnopriv --memory="8192m" --cpus="4" --privileged  redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
 </code></pre>
 
                     </main>
