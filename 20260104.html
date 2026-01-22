@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6537bd24.js";
+            window.path_to_searchindex_js = "searchindex-7ed03734.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1d7f1190.js"></script>
+        <script src="toc-63bcf6d2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -245,6 +245,70 @@ bunx oh-my-opencode install
 <pre><code>$ sudo vim /etc/default/grub
 nosmt
 $ sudo update-grub2 &amp;&amp; sudo reboot
+</code></pre>
+<h3 id="3-benchmark-result"><a class="header" href="#3-benchmark-result">3. benchmark result</a></h3>
+<p>Hardware:</p>
+<pre><code>Intel Xeon Gold 6442Y, 24 Core
+384GB ram
+</code></pre>
+<p>Kernel Build(Not Patched):</p>
+<pre><code>Not Patched
+vm1: 
+real    53m33.650s
+user    1066m59.578s
+sys     155m32.379s
+vm2:
+real    53m32.899s
+user    1067m12.912s
+sys     155m31.269s
+vm3:
+real    52m45.177s
+user    1055m40.876g
+sys     153m21.767s
+vm4:
+real    53m27.964s
+user    1065m27.408s
+sys     154m51.498s
+
+</code></pre>
+<p>Kernel Build(Patched):</p>
+<pre><code>Patched
+vm1: 
+real    51m55.287s
+user    1041m41.305s
+sys     150m31.387s
+vm2:
+real    52m50.661s
+user    1054m3.906s
+sys     152m37.287s
+vm3:
+real    52m51.759s
+user    1055m1.740s
+sys     151m18.827s
+vm4:
+real    52m43.403s
+user    1052m3.961s
+sys     152m28.865s
+</code></pre>
+<p>parsec-benchmar,dedup (Not Patched):</p>
+<pre><code>vm1: 
+304.434s    49 times
+vm2:
+303.948s    48 times
+vm3:
+302.314s    48 times
+vm4:
+300.058s    48 times
+</code></pre>
+<p>parsec-benchmar,dedup (Patched):</p>
+<pre><code>vm1: 
+300.527s    56 times
+vm2:
+301.429s    57 times
+vm3:
+300.085s    56 times
+vm4:
+300.120s    56 times
 </code></pre>
 
                     </main>
