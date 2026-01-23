@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7ed03734.js";
+            window.path_to_searchindex_js = "searchindex-bcb89662.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-63bcf6d2.js"></script>
+        <script src="toc-54273b0b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21694,6 +21694,18 @@ apt-get install -y python-is-python3 ninja-build autocon
 <p>TEst :</p>
 <pre><code>   78  docker run -itd  -p 5111:5555 --storage-opt size=50G --name redroidnopriv --memory="8192m" --cpus="4" --privileged  redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
    85  docker run -itd -v ~/datano:/data -p 5111:5555 --storage-opt size=15G --name redroidnopriv --memory="8192m" --cpus="4" --privileged  redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260123"><a class="header" href="#20260123">20260123</a></h1>
+<h3 id="1-show-ips-mac-address"><a class="header" href="#1-show-ips-mac-address">1. show ip’s mac address</a></h3>
+<p>Via:</p>
+<pre><code> ip neigh show 192.168.1.62 
+192.168.1.62 dev eth0 lladdr 74:56:3c:0a:b6:2d REACHABLE
+</code></pre>
+<h3 id="2-priviledged"><a class="header" href="#2-priviledged">2. priviledged</a></h3>
+<p>Steps:</p>
+<pre><code> sudo docker run -itd -v ~/datano:/data -p 5222:5555 --storage-opt size=15G --name redroidttt --memory="8192m" --cpus="4" --cap-drop=ALL --cap-add=SETPCAP --cap-add=AUDIT_WRITE --cap-add=SYS_CHROOT --cap-add=CHOWN --cap-add=DAC_OVERRIDE --cap-add=FOWNER --cap-add=SETGID --cap-add=SETUID --cap-add=SYSLOG --cap-add=SYS_ADMIN --cap-add=WAKE_ALARM --cap-add=SYS_PTRACE --cap-add=BLOCK_SUSPEND --cap-add=MKNOD --cap-add=KILL --cap-add=SYS_RESOURCE --cap-add=NET_RAW --cap-add=NET_ADMIN --cap-add=NET_BIND_SERVICE --cap-add=SYS_NICE --cap-add=AUDIT_CONTROL --cap-add=DAC_READ_SEARCH --cap-add=IPC_LOCK --cap-add=SYS_MODULE --security-opt=apparmor=unconfined --security-opt=seccomp=unconfined --device=/dev/dri/renderD128:/dev/dri/renderD128 --device=/dev/fuse:/dev/fuse:rwm --device-cgroup-rule='c 242:* rwm' --device-cgroup-rule='c 13:* rwm' redroid/redroid:12.0.0-latest androidboot.redroid_width=1080 androidboot.redroid_height=1920 androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128 androidboot.redroid_fps=120
+
 </code></pre>
 
                     </main>
