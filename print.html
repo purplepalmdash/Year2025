@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-162a934d.js";
+            window.path_to_searchindex_js = "searchindex-9af5408f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-67e7c299.js"></script>
+        <script src="toc-17bf4b86.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21793,6 +21793,28 @@ Discarding blocks...Done.
 <p>nvidia free api:</p>
 <pre><code>https://build.nvidia.com/explore/discover
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260202"><a class="header" href="#20260202">20260202</a></h1>
+<h3 id="1-console-output"><a class="header" href="#1-console-output">1. console output</a></h3>
+<p>Edit grub:</p>
+<pre><code>nomodeset console=tty0 console=ttyS0,115200n8
+</code></pre>
+<h3 id="2-meminfo-patch"><a class="header" href="#2-meminfo-patch">2. meminfo patch</a></h3>
+<p>From patch:</p>
+<pre><code>framework/base/core/jni/android_util_Process.cpp
+framework/base/core/jni/android_os_Debug.cpp
+</code></pre>
+<h3 id="3-redroid13-building"><a class="header" href="#3-redroid13-building">3. redroid13 building</a></h3>
+<p>Building:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-13.0.0_r82
+git clone https://github.com/remote-android/local_manifests.git  .repo/local_manifests -b 13.0.0
+repo sync -j1 --force-sync
+repo forall -c "git lfs pull"
+git clone https://github.com/remote-android/redroid-patches.git
+$  `pwd`/redroid-patches/apply-patch.sh /media/sda/redroid/redroid11/
+</code></pre>
+<p>Then building via docker.</p>
 
                     </main>
 
