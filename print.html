@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9af5408f.js";
+            window.path_to_searchindex_js = "searchindex-c6401cef.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-17bf4b86.js"></script>
+        <script src="toc-75962d33.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21815,6 +21815,108 @@ git clone https://github.com/remote-android/redroid-patches.git
 $  `pwd`/redroid-patches/apply-patch.sh /media/sda/redroid/redroid11/
 </code></pre>
 <p>Then building via docker.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260203"><a class="header" href="#20260203">20260203</a></h1>
+<h3 id="1-licheepi4a"><a class="header" href="#1-licheepi4a">1. licheepi4a</a></h3>
+<p>Steps(Preparation):</p>
+<pre><code>$ sudo apt install -y fastboot
+wget https://fast-mirror.isrc.ac.cn/revyos/extra/images/lpi4a/20240720/u-boot-with-spl-lpi4a-16g.bin
+wget https://fast-mirror.isrc.ac.cn/revyos/extra/images/lpi4a/20240720/boot-lpi4a-20240720_171951.ext4.zst
+wget https://fast-mirror.isrc.ac.cn/revyos/extra/images/lpi4a/20240720/root-lpi4a-20240720_171951.ext4.zst
+</code></pre>
+<p>Get the files:</p>
+<pre><code>dash@ai:/media/big/riscv$ ls
+boot-lpi4a-20240720_171951.ext4.zst  root-lpi4a-20240720_171951.ext4.zst  u-boot-with-spl-lpi4a-16g.bin
+$ unzstd boot-lpi4a-20240720_171951.ext4.zst 
+$ unzstd root-lpi4a-20240720_171951.ext4.zst 
+</code></pre>
+<p>flash step:</p>
+<pre><code>sudo fastboot flash ram u-boot-with-spl-lpi4a-16g.bin 
+sudo fastboot reboot
+sleep 1
+sudo fastboot flash uboot u-boot-with-spl-lpi4a-16g.bin
+sudo fastboot flash boot boot-lpi4a-20240720_171951.ext4
+sudo fastboot flash root root-lpi4a-20240720_171951.ext4
+</code></pre>
+<p>After flash into, login with <code>debian/debian</code>:</p>
+<pre><code>debian@revyos-lpi4a:~$ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2FB3A9E77911527E
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2FB3A9E77911527E
+$ sudo apt update
+sudo apt upgrade (will failed)
+sudo dpkg -i --force-overwrite /var/cache/apt/archives/th1520-debian-opensbi_2025.05.10+sdk2.0.2_riscv64.deb
+sudo apt upgrade
+</code></pre>
+<p>Correct steps:</p>
+<pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 2FB3A9E77911527E
+sudo apt-mark hold th1520-vendor-opensbi
+sudo apt-mark hold linux-image-5.10.113-th1520
+sudo apt-mark hold linux-headers-5.10.113-th1520
+sudo apt-mark hold th1520-boot-firmware
+sudo apt-mark hold th1520-vendor-opensbi
+sudo apt-mark hold th1520-npu
+sudo apt-mark hold th1520-vpu
+sudo apt-mark hold mesa-vulkan-drivers 
+sudo apt-mark hold libgl1-mesa-dri 
+sudo apt-mark hold libgbm1 
+sudo apt-mark hold libglx-mesa0
+sudo apt-mark hold libegl-mesa0
+sudo apt-mark hold libgl1-mesa-dri
+sudo apt-mark hold libglapi-mesa
+sudo apt-mark hold libglx-mesa0
+sudo apt-mark hold mesa-vulkan-drivers
+sudo apt-mark hold libdrm2
+sudo apt-mark hold libdrm-common
+sudo apt-mark hold libvulkan1
+sudo apt update -y &amp;&amp; sudo apt upgrade -y
+</code></pre>
+<h3 id="2-redroid-15-building"><a class="header" href="#2-redroid-15-building">2. redroid 15 building</a></h3>
+<p>Steps:</p>
+<pre><code>sudo apt install -y libxml2-utils
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-15.0.0_r36
+git clone https://github.com/remote-android/local_manifests.git  .repo/local_manifests -b 15.0.0
+repo sync -j1 --force-sync
+repo forall -c "git lfs pull"
+git clone https://github.com/remote-android/redroid-patches.git
+`pwd`/redroid-patches/apply-patch.sh /media/sda/redroid/redroid11/
+sudo docker run -it --rm --hostname redroid-builder --name redroid-builder -v `pwd`:/src redroid-builder
+
+
+确定源码是 Android 15，可以直接修改报错的源文件 build/make/core/version_util.mk。
+找到第 48 行左右：
+# 找到这段代码并注释掉，或者在前面加一个 # 符号
+# $(error Do not set TARGET_PLATFORM_VERSION directly. Use RELEASE_PLATFORM_VERSION. value: $(TARGET_PLATFORM_VERSION).)
+
+source build/envsetup.sh
+# get the lunch options via device/redroid/AndroidProduct.mk
+lunch redroid_arm64-ap3a-userdebug
+time m -j32
+#### build completed successfully (01:37:36 (hh:mm:ss)) ####
+
+
+real	97m35.406s
+user	2763m10.685s
+sys	235m48.482s
+
+</code></pre>
+<h3 id="3-change-repo"><a class="header" href="#3-change-repo">3. Change repo</a></h3>
+<p>临时切换repo sync:</p>
+<pre><code>vim .repo/manifests/.git/config
+
+## 清华源
+https://mirrors.tuna.tsinghua.edu.cn/git/AOSP/
+
+## 北外源
+https://mirrors.bfsu.edu.cn/git/AOSP/
+
+## 中科大源
+
+https://mirrors.ustc.edu.cn/aosp
+
+如果太慢，切换成ipv6试试
+如清华源改为
+https://mirrors6.tuna.tsinghua.edu.cn/git/AOSP/
+</code></pre>
 
                     </main>
 
