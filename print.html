@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-02e79322.js";
+            window.path_to_searchindex_js = "searchindex-12102102.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7583c4eb.js"></script>
+        <script src="toc-819fe123.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -21918,6 +21918,35 @@ https://mirrors.ustc.edu.cn/aosp
 https://mirrors6.tuna.tsinghua.edu.cn/git/AOSP/
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260204"><a class="header" href="#20260204">20260204</a></h1>
+<h3 id="1-redroid15-buiding"><a class="header" href="#1-redroid15-buiding">1. redroid15 buiding</a></h3>
+<p>5600G:</p>
+<pre><code>
+#### build completed successfully (04:18:45 (hh:mm:ss)) ####
+real    258m44.944s
+user    2771m25.724s
+sys     230m7.901s
+</code></pre>
+<p>i5-10400:</p>
+<pre><code>
+#### build completed successfully (04:29:35 (hh:mm:ss)) ####
+real    269m34.895s
+user    2946m12.950s
+sys     169m40.616s
+</code></pre>
+<p>kbox:</p>
+<pre><code>i5:
+real    248m3.171s
+user    2769m13.710s
+sys     163m59.053s
+amd:
+real    246m13.238s
+user    2640m41.893s
+sys     228m43.608s
+
+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260205"><a class="header" href="#20260205">20260205</a></h1>
 <h3 id="1-on-building-kbox"><a class="header" href="#1-on-building-kbox">1. on building kbox</a></h3>
 <p>Steps:</p>
@@ -22039,6 +22068,35 @@ reserved_context_size = 50000
 [mcp.client]
 tool_call_timeout_ms = 60000
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260207"><a class="header" href="#20260207">20260207</a></h1>
+<h3 id="1-vllm"><a class="header" href="#1-vllm">1. vllm</a></h3>
+<p>Install modelscope:</p>
+<pre><code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple modelscope "modelscope[cli]" -U --break-system-packages
+modelscope download Qwen/Qwen2.5-72B-Instruct-AWQ
+</code></pre>
+<p>vllm docker image download.</p>
+<pre><code> sudo docker pull vllm/vllm-openai:nightly
+sudo docker run --runtime nvidia --gpus all   --ipc=host   --shm-size=32g   -v /home/dash/.cache/modelscope/hub:/root/.cache/modelscope/hub:ro   -p 8000:8000   --name vllm-qwen25-72b-awq-new   -e LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib/x86_64-linux-gnu/tegra:/lib/x86_64-linux-gnu   vllm/vllm-openai:nightly   --host 0.0.0.0   --port 8000   --model /root/.cache/modelscope/hub/models/Qwen/Qwen2___5-72B-Instruct-AWQ   --quantization awq   --dtype auto   --tensor-parallel-size 1   --max-model-len 15760 --gpu-memory-utilization 0.96 --enforce-eager   --max-num-batched-tokens 2048  --max-num-seqs 1
+</code></pre>
+<p>Test:</p>
+<pre><code>$ curl http://localhost:8000/v1/models
+{"object":"list","data":[{"id":"/root/.cache/modelscope/hub/models/Qwen/Qwen2___5-72B-Instruct-AWQ","object":"model","created":1770467297,"owned_by":"vllm","root":"/root/.cache/modelscope/hub/models/Qwen/Qwen2___5-72B-Instruct-AWQ","parent":null,"max_model_len":15760,"permission":[{"id":"modelperm-90f7e2eaa7b4e065","object":"model_permission","created":1770467297,"allow_create_engine":false,"allow_sampling":true,"allow_logprobs":true,"allow_search_indices":false,"allow_view":true,"allow_fine_tuning":false,"organization":"*","group":null,"is_blocking":false}]}]}
+</code></pre>
+<p>Simple introduction:</p>
+<pre><code>$ curl http://localhost:8000/v1/chat/completions   -H "Content-Type: application/json"   -d '{
+    "model": "/root/.cache/modelscope/hub/models/Qwen/Qwen2___5-72B-Instruct-AWQ",
+    "messages": [{"role": "user", "content": "你好，请用中文自我介绍"}],
+    "max_tokens": 100
+  }'
+{"id":"chatcmpl-a4c0d23f267397ae","object":"chat.completion","created":1770467364,"model":"/root/.cache/modelscope/hub/models/Qwen/Qwen2___5-72B-Instruct-AWQ","choices":[{"index":0,"message":{"role":"assistant","content":"你好，我是Qwen，由阿里云研发的超大规模语言模型。我能够生成各种类型的文本，如文章、故事、诗歌等，并能根据不同的场景和需求进行调整。我还能够回答问题、提供信息查询服务，以及进行多轮对话，以更好地理解和满足用户的需求。很高兴认识你，希望可以成为你的得力助手！","refusal":null,"annotations":null,"audio":null,"function_call":null,"tool_calls":[],"reasoning":null},"logprobs":null,"finish_reason":"stop","stop_reason":null,"token_ids":null}],"service_tier":null,"system_fingerprint":null,"usage":{"prompt_tokens":35,"total_tokens":111,"completion_tokens":76,"prompt_tokens_details":null},"prompt_logprobs":null,"prompt_token_ids":null,"kv_transfer_params":null}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260208"><a class="header" href="#20260208">20260208</a></h1>
+<h3 id="1-vllm-added"><a class="header" href="#1-vllm-added">1. vllm added</a></h3>
+<p><img src="images/2026_02_08_10_56_21_744x132.jpg" alt="./images/2026_02_08_10_56_21_744x132.jpg"></p>
+<p>Create test app:</p>
+<p><img src="images/2026_02_08_11_01_08_740x562.jpg" alt="./images/2026_02_08_11_01_08_740x562.jpg"></p>
 
                     </main>
 
