@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-12102102.js";
+            window.path_to_searchindex_js = "searchindex-c1058be9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-819fe123.js"></script>
+        <script src="toc-69cd260c.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -11537,7 +11537,7 @@ echo -e "OK\nFix"  /etc/profiles/per-user/dash/bin/parted ---pretend-input-tty "
 <p><img src="images/2025_07_06_09_25_21_391x356.jpg" alt="./images/2025_07_06_09_25_21_391x356.jpg"></p>
 <p>Make modifications to networking:</p>
 <p><img src="images/2025_07_06_09_29_15_414x450.jpg" alt="./images/2025_07_06_09_29_15_414x450.jpg"></p>
-<p>Apply the modifications via <code>service networking restart</code>. Then setup the passwd for root <code>passwd root</code>.</p>
+<p>Apply the modifications via <code>service network restart</code>. Then setup the passwd for root <code>passwd root</code>.</p>
 <p>Enable access luci from wan:</p>
 <pre><code>uci set firewall.wan_https_allow=rule
 uci set firewall.wan_https_allow.name='Allow Luci from WAN'
@@ -22069,6 +22069,8 @@ reserved_context_size = 50000
 tool_call_timeout_ms = 60000
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260206"><a class="header" href="#20260206">20260206</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260207"><a class="header" href="#20260207">20260207</a></h1>
 <h3 id="1-vllm"><a class="header" href="#1-vllm">1. vllm</a></h3>
 <p>Install modelscope:</p>
@@ -22097,6 +22099,159 @@ sudo docker run --runtime nvidia --gpus all   --ipc=host   --shm-size=32g   -v /
 <p><img src="images/2026_02_08_10_56_21_744x132.jpg" alt="./images/2026_02_08_10_56_21_744x132.jpg"></p>
 <p>Create test app:</p>
 <p><img src="images/2026_02_08_11_01_08_740x562.jpg" alt="./images/2026_02_08_11_01_08_740x562.jpg"></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260224"><a class="header" href="#20260224">20260224</a></h1>
+<h3 id="1-nim-models"><a class="header" href="#1-nim-models">1. NIM models</a></h3>
+<p>Query via:</p>
+<pre><code>NVIDIA_API_KEY=nvapi-xxxxx
+curl -s https://integrate.api.nvidia.com/v1/models \
+  -H "Authorization: Bearer $NVIDIA_API_KEY" \
+  | jq .
+</code></pre>
+<h3 id="2-tyy-glm5-trial"><a class="header" href="#2-tyy-glm5-trial">2. tyy glm5 trial</a></h3>
+<p><code>vim ~/opencode.json</code>:</p>
+<pre><code>"ctyun-wishub": {
+  "npm": "@ai-sdk/openai-compatible",
+  "name": "天翼云 Wishub",
+  "options": {
+    "baseURL": "https://wishub-x6.ctyun.cn/v1",
+    "apiKey": "xxxxxxxxxxxxxxxxxxxx"
+  },
+  "models": {
+    "6d3a57c3a6fb465e968b604783b89eda": {
+      "name": "Wishub 自定义模型"
+    }
+  }
+}
+</code></pre>
+<h3 id="3-dify-usage"><a class="header" href="#3-dify-usage">3. dify usage</a></h3>
+<p><img src="images/2026_02_24_11_25_50_588x355.jpg" alt="./images/2026_02_24_11_25_50_588x355.jpg"></p>
+<h3 id="4-wake-on-lan"><a class="header" href="#4-wake-on-lan">4. wake-on-lan</a></h3>
+<p>via:</p>
+<pre><code>sudo ethtool -i eth0 | grep -i wake
+</code></pre>
+<h3 id="5-crossgfw-for-libvirt"><a class="header" href="#5-crossgfw-for-libvirt">5. crossgfw for libvirt</a></h3>
+<p>Virtual Network configuration:</p>
+<p><img src="images/2026_02_24_14_40_01_394x565.jpg" alt="./images/2026_02_24_14_40_01_394x565.jpg"></p>
+<p>Download the openwrt image from ustc mirror:</p>
+<pre><code>$ axel https://mirrors.ustc.edu.cn/openwrt/releases/24.10.5/targets/x86/generic/openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img.gz
+$ gunzip openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img.gz
+$ qemu-img info openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img 
+image: openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img
+file format: raw
+virtual size: 120 MiB (126123520 bytes)
+disk size: 120 MiB
+</code></pre>
+<p>Resize:</p>
+<pre><code>qemu-img resize -f raw  openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img 512M
+loop_device=$(losetup -f)
+losetup $loop_device openwrt-24.10.5-x86-generic-generic-ext4-combined-efi.img
+echo -e "OK\nFix" /usr/sbin/parted ---pretend-input-tty "$loop_device" print
+parted /dev/loop31 resizepart 2 100%
+parted /dev/loop31 print
+</code></pre>
+<p>Import the img, use bios, then add 2 nics:</p>
+<p><img src="images/2026_02_24_15_08_46_686x324.jpg" alt="./images/2026_02_24_15_08_46_686x324.jpg"></p>
+<pre><code>nable access luci from wan:
+
+uci set firewall.wan_https_allow=rule
+uci set firewall.wan_https_allow.name='Allow Luci from WAN'
+uci set firewall.wan_https_allow.src='wan'
+uci set firewall.wan_https_allow.proto='tcp'
+uci set firewall.wan_https_allow.dest_port='80 443'
+uci set firewall.wan_https_allow.target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall reload
+
+Enable ssh from wan:
+
+
+uci add firewall wan_ssh_allow
+uci set firewall.wan_ssh_allow=rule
+uci set firewall.wan_ssh_allow.name='Allow SSH from WAN'
+uci set firewall.wan_ssh_allow.src='wan'
+uci set firewall.wan_ssh_allow.proto='tcp'
+uci set firewall.wan_ssh_allow.dest_port='22'
+uci set firewall.wan_ssh_allow.target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall reload
+</code></pre>
+<p>use openssh instead of dropbear:</p>
+<pre><code># 1. 更新软件源
+opkg update
+
+# 2. 安装 openssh-server（建议连客户端和 sftp 一起装）
+opkg install openssh-server openssh-client openssh-sftp-server
+
+# 3. 强烈建议先把 dropbear 改端口或停用，避免冲突
+uci set dropbear.@dropbear[0].Port='2222'
+uci commit dropbear
+/etc/init.d/dropbear restart
+# 或者直接禁用 dropbear（小心不要把自己锁在外面）
+# /etc/init.d/dropbear disable
+# /etc/init.d/dropbear stop
+
+# 4. 修改 sshd 配置（最重要一步！默认不允许 root 密码登录）
+vi /etc/ssh/sshd_config
+
+# 找到并修改这两行（去掉 # 注释，并改成 yes）
+PermitRootLogin yes
+PasswordAuthentication yes
+
+# 保存退出
+
+# 5. 启动并设置开机自启
+/etc/init.d/sshd enable
+/etc/init.d/sshd start
+# 或重启
+/etc/init.d/sshd restart
+</code></pre>
+<p>Configuration:</p>
+<pre><code>config device
+	option name 'br-lan'
+	option type 'bridge'
+	list ports 'eth1'
+
+config interface 'lan'
+	option device 'br-lan'
+	option proto 'static'
+	option ipaddr '10.16.17.2'
+	option netmask '255.255.255.0'
+	option ip6assign '60'
+
+config interface 'wan'
+	option device 'eth0'
+	option proto 'static'
+	option ipaddr '192.168.1.215'
+	option netmask '255.255.255.0'
+	option gateway '192.168.1.1'
+</code></pre>
+<p>dns configuration:</p>
+<pre><code>uci set network.wan.peerdns='0'                # 关闭自动获取 peer DNS
+uci add_list network.wan.dns='223.5.5.5'
+uci add_list network.wan.dns='223.6.6.6'       # 可选，推荐
+uci commit network
+/etc/init.d/network reload
+</code></pre>
+<h3 id="6-64-bit-openwrt"><a class="header" href="#6-64-bit-openwrt">6. 64-bit openwrt</a></h3>
+<pre><code>axel https://mirrors.ustc.edu.cn/openwrt/releases/24.10.5/targets/x86/64/openwrt-24.10.5-x86-64-generic-ext4-combined-efi.img.gz
+unzip *.gz
+qemu-img resize openwrt-24.10.5-x86-64-generic-ext4-combined-efi.img +1G
+</code></pre>
+<p>Use gparted for enlarge the partition:</p>
+<p><img src="images/2026_02_24_16_17_36_770x317.jpg" alt="./images/2026_02_24_16_17_36_770x317.jpg"></p>
+<p><img src="images/2026_02_24_16_18_16_561x201.jpg" alt="./images/2026_02_24_16_18_16_561x201.jpg"></p>
+<p>shunt:</p>
+<p><img src="images/2026_02_24_17_23_20_715x653.jpg" alt="./images/2026_02_24_17_23_20_715x653.jpg"></p>
+<p><img src="images/2026_02_24_17_23_40_911x317.jpg" alt="./images/2026_02_24_17_23_40_911x317.jpg"></p>
+<p>xray socks:</p>
+<p><img src="images/2026_02_24_17_24_06_576x353.jpg" alt="./images/2026_02_24_17_24_06_576x353.jpg"></p>
+<p>Test/dns:</p>
+<p><img src="images/2026_02_24_17_24_26_942x547.jpg" alt="./images/2026_02_24_17_24_26_942x547.jpg"></p>
+<h3 id="7-openclaw-installation"><a class="header" href="#7-openclaw-installation">7. openclaw installation</a></h3>
+<p>Install via:</p>
+<pre><code>curl -fsSL https://openclaw.ai/install.sh | bash
+</code></pre>
 
                     </main>
 
