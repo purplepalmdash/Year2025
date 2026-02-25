@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ed052bf4.js";
+            window.path_to_searchindex_js = "searchindex-7fff8750.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-69cd260c.js"></script>
+        <script src="toc-1d57b364.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22269,6 +22269,21 @@ qemu-img resize openwrt-24.10.5-x86-64-generic-ext4-combined-efi.img +1G
  Logs: openclaw logs --follow                                                                                                 
  gateway connected | idle                                                                                                     
  agent main | session main (openclaw-tui) | anthropic/claude-opus-4-6 | think low | tokens ?/200k     
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260225"><a class="header" href="#20260225">20260225</a></h1>
+<h3 id="1-nim-configuration-for-openclaw"><a class="header" href="#1-nim-configuration-for-openclaw">1. nim configuration for openclaw</a></h3>
+<pre><code>openclaw config set 'models.providers.nim' --json '{"baseUrl": "https://integrate.api.nvidia.com/v1", "apiKey": "xxxxxxxxxxx","api": "openai-completions","models": [{"id":"moonshotai/kimi-k2.5", "name": "moonshotai/kimi-k2.5"}]}'
+openclaw config set models.mode merge
+openclaw models set nim/moonshotai/kimi-k2.5
+openclaw gateway restart
+</code></pre>
+<h3 id="2-docker-cpuset"><a class="header" href="#2-docker-cpuset">2. docker cpuset</a></h3>
+<p>update via:</p>
+<pre><code>[root@redroid ~]# docker update --cpuset-cpus "0,5" redroid11nobang
+redroid11nobang
+[root@redroid ~]# docker update --cpuset-cpus "1,2" redroid11nobang
+redroid11nobang
 </code></pre>
 
                     </main>
