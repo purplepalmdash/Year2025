@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7fff8750.js";
+            window.path_to_searchindex_js = "searchindex-22c5423f.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1d57b364.js"></script>
+        <script src="toc-fd661467.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22284,6 +22284,51 @@ openclaw gateway restart
 redroid11nobang
 [root@redroid ~]# docker update --cpuset-cpus "1,2" redroid11nobang
 redroid11nobang
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260226"><a class="header" href="#20260226">20260226</a></h1>
+<h3 id="1-paddleocr-installation"><a class="header" href="#1-paddleocr-installation">1. paddleocr installation</a></h3>
+<p>Start docker instance via:</p>
+<pre><code>$ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
+  &amp;&amp; curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
+     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+     sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/$(ARCH) /
+#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/experimental/deb/$(ARCH) /
+$ sudo apt update
+$ sudo apt-get install -y nvidia-container-toolkit
+$ sudo nvidia-ctk runtime configure --runtime=docker
+$ sudo docker run --gpus device=0 --network host   -v $(pwd)/PaddleOCR-VL-1.5-0.9B:/model   ccr-2vdh3abv-pub.cnc.bj.baidubce.com/paddlepaddle/paddleocr-genai-vllm-server:latest-nvidia-gpu   paddleocr genai_server     --model_name PaddleOCR-VL-1.5-0.9B     --model_dir /model     --host 0.0.0.0 --port 8080 --backend vllm
+</code></pre>
+<p>Install pip items:</p>
+<pre><code>python -m pip install paddlepaddle-gpu==3.2.1 -i https://www.paddlepaddle.org.cn/packages/stable/cu126/ --break-system-packages  &amp;&amp; python -m pip install -U "paddleocr[doc-parser]" -i https://pypi.tuna.tsinghua.edu.cn/simple --break-system-packages
+</code></pre>
+<h3 id="2-test-paddleocr"><a class="header" href="#2-test-paddleocr">2. test paddleocr</a></h3>
+<p>Steps:</p>
+<pre><code>from openai import OpenAI
+from paddleocr import PaddleOCRVL
+
+client = OpenAI(api_key="xx", base_url="http://localhost:8080/v1/")
+print("models:", client.models.list().data)
+
+pipeline = PaddleOCRVL(
+    vl_rec_backend="vllm-server",
+    vl_rec_server_url="http://localhost:8080/v1",
+    vl_rec_model_name="PaddleOCR-VL-1.5-0.9B",  # PaddleOCR-VL-1.5-0.9B
+)
+output = pipeline.predict(
+    "https://paddle-model-ecology.bj.bcebos.com/paddlex/imgs/demo_image/paddleocr_vl_demo.png"
+)
+for res in output:
+    res.print()
+    res.save_to_json(save_path="output")
+    res.save_to_markdown(save_path="output")
+$ python test.py
+</code></pre>
+<h3 id="3-huggingface-download"><a class="header" href="#3-huggingface-download">3. huggingface download</a></h3>
+<p>Via:</p>
+<pre><code>export HF_ENDPOINT=https://hf-mirror.com
+HF_ENDPOINT=https://hf-mirror.com huggingface-cli download PaddlePaddle/PaddleOCR-VL-1.5 --local-dir ./PaddleOCR-VL-1.5-0.9B
 </code></pre>
 
                     </main>
