@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-22c5423f.js";
+            window.path_to_searchindex_js = "searchindex-d6f7c2c2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-fd661467.js"></script>
+        <script src="toc-2e8cc328.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22329,6 +22329,75 @@ $ python test.py
 <p>Via:</p>
 <pre><code>export HF_ENDPOINT=https://hf-mirror.com
 HF_ENDPOINT=https://hf-mirror.com huggingface-cli download PaddlePaddle/PaddleOCR-VL-1.5 --local-dir ./PaddleOCR-VL-1.5-0.9B
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260227"><a class="header" href="#20260227">20260227</a></h1>
+<h3 id="1-iflow-cli"><a class="header" href="#1-iflow-cli">1. iflow cli</a></h3>
+<p>Install via:</p>
+<p>Failed:</p>
+<pre><code>$ sudo apt install -y npm
+$ sudo npm i -g @iflow-ai/iflow-cli 
+</code></pre>
+<p>Install via:</p>
+<pre><code>bash -c "$(curl -fsSL https://gitee.com/iflow-ai/iflow-cli/raw/main/install.sh)"
+</code></pre>
+<h3 id="2-qwen3"><a class="header" href="#2-qwen3">2. Qwen3</a></h3>
+<p>Install nvcc:</p>
+<pre><code>wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-keyring_1.1-1_all.deb                                                                             
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt update     
+sudo apt install -y cuda-toolkit-13-1
+export PATH=/usr/local/cuda-13.1/bin${PATH:+:${PATH}}                                   
+export LD_LIBRARY_PATH=/usr/local/cuda-13.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}                                                                                               
+nvcc --version
+echo 'export PATH=/usr/local/cuda-13.1/bin${PATH:+:${PATH}}' &gt;&gt; ~/.bashrc               
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-13.1/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' &gt;&gt; ~/.bash                                                                             
+source ~/.bashrc
+</code></pre>
+<p>Build llama-cli:</p>
+<pre><code>git clone https://github.com/ggerganov/llama.cpp.git --depth 1                          
+cd llama.cpp                                                                            
+rm -rf build
+CMAKE_ARGS="-DGGML_CUDA=ON -DCMAKE_CUDA_ARCHITECTURES=86" cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja   -DCMAKE_CUDA_COMPILER=/usr/local/cuda-13.1/bin/nvcc
+cmake --build build --config Release -j$(nproc)
+./build/bin/llama-cli --version
+</code></pre>
+<p>Test the cuda:</p>
+<pre><code>huggingface-cli download Qwen/Qwen2.5-0.5B-Instruct-GGUF Qwen2.5-0.5B-Instruct-Q8_0.gguf   --local-dir ~/models/test   --local-dir-use-symlinks False
+./build/bin/llama-cli \
+  -m ~/models/test/qwen2.5-0.5b-instruct-q8_0.gguf \
+  -p "Hello" -n 32 \
+  --n-gpu-layers -1 \
+  --verbose 2&gt;&amp;1 | grep -i "cuda\|ggml_cuda\|gpu\|offload\|cublas"
+</code></pre>
+<p>Fetch the model:</p>
+<pre><code>pip install -U huggingface_hub[cli] --break-system-packages
+export HF_ENDPOINT=https://hf-mirror.com
+hf download unsloth/Qwen3.5-35B-A3B-GGUF Qwen3.5-35B-A3B-Q8_0.gguf --local-dir ./models/Qwen3.5-35B-A3B-GGUF
+</code></pre>
+<p>Usage in opencode:</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "my-llama-server": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Qwen3.5-35B local (A6000)",
+      "options": {
+        "baseURL": "http://192.168.1.100:8080/v1",
+        "apiKey": "lm-studio"   // 可以随便填，llama-server 不校验
+      },
+      "models": {
+        "Qwen3.5-35B-A3B-Q8_0": {
+          "name": "Qwen3.5-35B-A3B Q8_0 (local)",
+          "limit": {
+            "context": 131072,
+            "output": 65536
+          }
+        }
+      }
+    }
+  }
+}
 </code></pre>
 
                     </main>
