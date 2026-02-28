@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d6f7c2c2.js";
+            window.path_to_searchindex_js = "searchindex-86980255.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-2e8cc328.js"></script>
+        <script src="toc-cdf6c0b1.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22399,6 +22399,19 @@ hf download unsloth/Qwen3.5-35B-A3B-GGUF Qwen3.5-35B-A3B-Q8_0.gguf --local-dir .
   }
 }
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260228"><a class="header" href="#20260228">20260228</a></h1>
+<h3 id="1-hwe-for-ubuntu2404"><a class="header" href="#1-hwe-for-ubuntu2404">1. hwe for ubuntu2404</a></h3>
+<p>via:</p>
+<pre><code>sudo apt install --install-recommends linux-generic-hwe-24.04
+</code></pre>
+<p>Intel gpu:</p>
+<pre><code>$ sudo add-apt-repository -y ppa:kobuk-team/intel-graphics
+$ sudo apt update
+$ sudo apt install -y     intel-opencl-icd     libze-intel-gpu1     libze1     intel-metrics-discovery     intel-gsc     clinfo     intel-media-va-driver-non-free     libmfx-gen1.2     libvpl2     vainfo     mesa-va-drivers     libegl-mesa0 libgbm1     libgl1-mesa-dri     libglapi-mesa     libglx-mesa0     libigdgmm12
+</code></pre>
+<p><img src="images/2026_02_28_10_32_50_1044x508.jpg" alt="./images/2026_02_28_10_32_50_1044x508.jpg"></p>
+<p>z790A启动时会报above 4g decoding未打开的问题，事实上已经打开，主要是因为xe申请大约32G的空间，无法满足。后续将换到amd平台上进行验证是可以的。</p>
 
                     </main>
 
