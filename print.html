@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4d2fa6ab.js";
+            window.path_to_searchindex_js = "searchindex-ad2d6314.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-57fa6d09.js"></script>
+        <script src="toc-511c4e67.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22513,6 +22513,34 @@ $ sudo apt install -y     intel-opencl-icd     libze-intel-gpu1     libze1     i
 5. 继续处理后续页，直到30页完成或我叫停
 
 启动测试，现在开始，不要等待确认。
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260303"><a class="header" href="#20260303">20260303</a></h1>
+<h3 id="1-archlinux-openclaw"><a class="header" href="#1-archlinux-openclaw">1. archlinux openclaw</a></h3>
+<p>feishu privilege:</p>
+<p><img src="images/2026_03_03_10_18_38_737x530.jpg" alt="./images/2026_03_03_10_18_38_737x530.jpg"></p>
+<pre><code>sudo pacman -S nodejs npm git base-devel
+</code></pre>
+<p><img src="images/2026_03_03_10_36_26_1577x723.jpg" alt="./images/2026_03_03_10_36_26_1577x723.jpg"></p>
+<p>nixos install feishu, then everything will be OK .</p>
+<h3 id="2-add-channel"><a class="header" href="#2-add-channel">2. add channel:</a></h3>
+<p>via command line :</p>
+<pre><code>test@openclaw:~/.openclaw/workspace$  openclaw channels add --channel feishu --token qxxxxxx
+
+🦞 OpenClaw 2026.2.23 (b817600) — Because the right answer is usually a script.
+
+│
+◇  Install Feishu plugin?
+│  Download from npm (@openclaw/feishu)
+Downloading @openclaw/feishu…
+Extracting /tmp/openclaw-npm-pack-e2dNz4/openclaw-feishu-2026.3.2.tgz…
+Plugin "feishu" has 1 suspicious code pattern(s). Run "openclaw security audit --deep" for details.
+Installing to /home/test/.openclaw/extensions/feishu…
+Installing plugin dependencies…
+</code></pre>
+<pre><code>
+openclaw gateway restart
+
 </code></pre>
 
                     </main>
