@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ad2d6314.js";
+            window.path_to_searchindex_js = "searchindex-d319e608.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-511c4e67.js"></script>
@@ -200,6 +200,49 @@ Installing plugin dependencies…
 <pre><code>
 openclaw gateway restart
 
+</code></pre>
+<h3 id="3-qwen35-35b-with-graphical"><a class="header" href="#3-qwen35-35b-with-graphical">3. Qwen3.5-35B with graphical</a></h3>
+<p>Via:</p>
+<pre><code>./build/bin/llama-server \
+  -m /home/dash/models/Qwen3.5-35B-A3B-GGUF/Qwen3.5-35B-A3B-Q8_0.gguf \
+   --mmproj /home/dash/models/Qwen3.5-35B-A3B-GGUF/mmproj-F32.gguf \
+  --host 0.0.0.0 \
+  --port 8080 \
+  --n-gpu-layers -1 \
+  --ctx-size 262144 \
+  --flash-attn on \
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0 \
+  --threads $(nproc) \
+  --parallel 1 --jinja --reasoning-format deepseek
+</code></pre>
+<p>Test via:</p>
+<pre><code>curl http://192.168.1.60:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer lm-studio" \
+  -d '{
+    "model": "Qwen3.5-35B-A3B-Q8_0",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {
+            "type": "text",
+            "text": "这张图片里是什么？请详细描述一下。"
+          },
+          {
+            "type": "image_url",
+            "image_url": {
+              "url": "https://y.zdmimg.com/202402/04/65bee3b7654084905.jpg_e600.jpg"
+            }
+          }
+        ]
+      }
+    ],
+    "temperature": 0.7,
+    "max_tokens": 512,
+    "stream": false
+  }'
 </code></pre>
 
                     </main>
