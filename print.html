@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-65407a21.js";
+            window.path_to_searchindex_js = "searchindex-1956b58d.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-21d8f879.js"></script>
+        <script src="toc-7d956320.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22604,6 +22604,31 @@ openclaw gateway restart
 <p><img src="images/2026_03_05_14_32_19_1559x495.jpg" alt="./images/2026_03_05_14_32_19_1559x495.jpg"></p>
 <p>飞书客户端点开应用:</p>
 <p><img src="images/2026_03_05_14_33_49_578x226.jpg" alt="./images/2026_03_05_14_33_49_578x226.jpg"></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260306"><a class="header" href="#20260306">20260306</a></h1>
+<h3 id="1-openclaw-config"><a class="header" href="#1-openclaw-config">1. openclaw config</a></h3>
+<p>tool’s profile should be full:</p>
+<pre><code>openclaw config get tools
+如果返回：
+{ "profile": "messaging" }
+</code></pre>
+<p>profiles:</p>
+<pre><code>messaging —— 只能发消息、管理会话
+default —— 默认工具集
+coding —— 编程相关工具
+full —— 完整工具集，包含命令执行
+all —— 所有工具全开
+</code></pre>
+<p>Switch to full:</p>
+<pre><code>openclaw config set tools.profile full
+systemctl restart openclaw-gateway
+</code></pre>
+<h3 id="2-hongxin-domain-name"><a class="header" href="#2-hongxin-domain-name">2. hongxin domain name</a></h3>
+<p>domain name:</p>
+<pre><code>hongxing.qzz.io
+</code></pre>
+<p><img src="images/2026_03_06_17_53_23_1184x450.jpg" alt="./images/2026_03_06_17_53_23_1184x450.jpg"></p>
+<p>注意，该域名只有180天可用，如果需要继续使用则需要操作如下</p>
 
                     </main>
 
