@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-12e477bd.js";
+            window.path_to_searchindex_js = "searchindex-ff5b6d30.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1b796a8e.js"></script>
+        <script src="toc-176aa76f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22684,6 +22684,24 @@ chmod -R 777 ~/.cache/huggingface
   -v /root/.cloudflared:/etc/cloudflared \
   cloudflare/cloudflared:latest \
   tunnel --no-autoupdate run --token 你的token
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260309"><a class="header" href="#20260309">20260309</a></h1>
+<h3 id="1-google-chrome-issue-on-ubuntu2404"><a class="header" href="#1-google-chrome-issue-on-ubuntu2404">1. Google-chrome issue on ubuntu24.04</a></h3>
+<p>After upgrading to ubuntu24.04, google-chrome fails to work:</p>
+<p>Issue is listed as:</p>
+<pre><code>$ google-chrome-stable 
+[478277:478277:0309/083253.865703:FATAL:sandbox/linux/services/credentials.cc:131] Check failed: . : 权限不够 (13)
+追踪或断点陷阱 (核心已转储)
+</code></pre>
+<p>Solved via:</p>
+<pre><code>$ sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+echo 'kernel.apparmor_restrict_unprivileged_userns = 0' | sudo tee /etc/sysctl.d/60-apparmor-namespace.conf
+</code></pre>
+<h3 id="2-openclaw-update"><a class="header" href="#2-openclaw-update">2. openclaw update</a></h3>
+<p>via :</p>
+<pre><code>openclaw update
 </code></pre>
 
                     </main>
