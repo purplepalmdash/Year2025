@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3d18fdd5.js";
+            window.path_to_searchindex_js = "searchindex-860d0085.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-fc5964ff.js"></script>
+        <script src="toc-084d1573.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22714,6 +22714,14 @@ echo 'kernel.apparmor_restrict_unprivileged_userns = 0' | sudo tee /etc/sysctl.d
 <h3 id="3-set-tcpip-5555"><a class="header" href="#3-set-tcpip-5555">3. set tcpip 5555</a></h3>
 <p>via:</p>
 <pre><code>adb -s 92UAY04L95 tcpip 5555
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260311"><a class="header" href="#20260311">20260311</a></h1>
+<h3 id="1-get-fd"><a class="header" href="#1-get-fd">1. Get fd</a></h3>
+<p>Via:</p>
+<pre><code>ls -l /proc/pid/fd | wc -l
+ls -l /proc/pid/fd | grep -i socket | wc -l
+ls -l /proc/pid/fd | grep -i pipe | wc -l
 </code></pre>
 
                     </main>
