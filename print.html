@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-860d0085.js";
+            window.path_to_searchindex_js = "searchindex-87ec4293.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-084d1573.js"></script>
+        <script src="toc-62270e87.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22722,6 +22722,51 @@ echo 'kernel.apparmor_restrict_unprivileged_userns = 0' | sudo tee /etc/sysctl.d
 <pre><code>ls -l /proc/pid/fd | wc -l
 ls -l /proc/pid/fd | grep -i socket | wc -l
 ls -l /proc/pid/fd | grep -i pipe | wc -l
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260312"><a class="header" href="#20260312">20260312</a></h1>
+<h3 id="1-cuttlefishubuntu2404"><a class="header" href="#1-cuttlefishubuntu2404">1. cuttlefish(Ubuntu2404)</a></h3>
+<pre><code>sudo apt update -y
+sudo apt upgrade -y
+sudo curl -fsSL https://us-apt.pkg.dev/doc/repo-signing-key.gpg | sudo apt-key add -
+$ cat /etc/apt/sources.list
+# Ubuntu sources have moved to /etc/apt/sources.list.d/ubuntu.sources
+deb https://us-apt.pkg.dev/projects/android-cuttlefish-artifacts android-cuttlefish main
+sudo apt update -y
+sudo apt install cuttlefish-base cuttlefish-user cuttlefish-orchestration
+sudo usermod -aG kvm,cvdnetwork,render $USER
+sudo reboot
+</code></pre>
+<p>After reboot:</p>
+<pre><code>test@cuttlefish:~/cf$ ls
+android-info.txt  bootloader           cuttlefish_runtime    init_boot.img                        metadata.img  super.img     vbmeta.img
+bin               cuttlefish           cuttlefish_runtime.1  launcher_pseudo_fetcher_config.json  misc.img      userdata.img  vbmeta_system.img
+boot.img          cuttlefish_assembly  etc                   lib64                                nativetest64  usr           vendor_boot.img
+$ HOME=$PWD ./bin/launch_cvd   --daemon   --start_webrtc=true     --num_instances=1 --cpus=8 --memory_mb=8192
+</code></pre>
+<p>Start the 2nd instance:</p>
+<pre><code># 第二个实例（从 instance 2 开始）
+HOME=$PWD ./bin/launch_cvd \
+  --daemon \
+  --start_webrtc=true \
+  --num_instances=1 \
+  --base_instance_num=2 \
+  --cpus=8 \
+  --memory_mb=8192
+</code></pre>
+<h3 id="2-tyy-issue"><a class="header" href="#2-tyy-issue">2. tyy issue</a></h3>
+<p>disconnected(4008): connect failed.</p>
+<p><img src="images/2026_03_12_08_23_30_338x674.jpg" alt="./images/2026_03_12_08_23_30_338x674.jpg"></p>
+<p>In cuttlefish, is the same.</p>
+<pre><code>ssh into the proot environment, then :    
+
+root@localhost:~# !2
+ss -ltnp | grep -i 18789
+Cannot open netlink socket: Permission denied
+</code></pre>
+<h3 id="3-ss-installation"><a class="header" href="#3-ss-installation">3. ss installation</a></h3>
+<p>Install via:</p>
+<pre><code>$ apt install iproute2
 </code></pre>
 
                     </main>
