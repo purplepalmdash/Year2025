@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-87ec4293.js";
+            window.path_to_searchindex_js = "searchindex-5625bc80.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-62270e87.js"></script>
+        <script src="toc-a52c05d9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22767,6 +22767,34 @@ Cannot open netlink socket: Permission denied
 <h3 id="3-ss-installation"><a class="header" href="#3-ss-installation">3. ss installation</a></h3>
 <p>Install via:</p>
 <pre><code>$ apt install iproute2
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260324"><a class="header" href="#20260324">20260324</a></h1>
+<h3 id="1-b60-pro-benchmark"><a class="header" href="#1-b60-pro-benchmark">1. b60 pro benchmark</a></h3>
+<p>On ubuntu25.10.</p>
+<pre><code>clinfo | grep "Intel.*Arc"
+wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg &gt; /dev/null
+echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+sudo apt update
+sudo apt install -y intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mkl
+sudo apt install intel-opencl-icd intel-level-zero-gpu
+wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | sudo tee /usr/share/keyrings/oneapi-archive-keyring.gpg &gt; /dev/null
+echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+sudo apt update
+sudo apt install intel-basekit
+source /opt/intel/oneapi/setvars.sh
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+cmake -B build -DGGML_SYCL=ON   -DCMAKE_C_COMPILER=icx   -DCMAKE_CXX_COMPILER=icpx   -DCMAKE_BUILD_TYPE=Release   -DGGML_SYCL_F16=ON
+cmake --build build --config Release -j$(nproc)
+sudo apt install -y python3-pip
+pip install -U huggingface_hub[cli] --break-system-packages
+./build/bin/llama-server   -hf unsloth/Qwen3.5-27B-GGUF:Q4_K_M -ngl 99   -fa on     --jinja   --host 0.0.0.0 --port 8080   -c 32768 --fit off --split-mode none --main-gpu 0
+</code></pre>
+<p>But the token generation speed is pretty slow(around 14 token/s)</p>
+<p>Watch the performance:</p>
+<pre><code>watch -n 1 "xpu-smi stats -d 0"
+
 </code></pre>
 
                     </main>
