@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5625bc80.js";
+            window.path_to_searchindex_js = "searchindex-70a1b224.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a52c05d9.js"></script>
+        <script src="toc-5b0ab343.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22795,6 +22795,31 @@ pip install -U huggingface_hub[cli] --break-system-packages
 <p>Watch the performance:</p>
 <pre><code>watch -n 1 "xpu-smi stats -d 0"
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260325"><a class="header" href="#20260325">20260325</a></h1>
+<h3 id="1-scrcpy-issue-1"><a class="header" href="#1-scrcpy-issue-1">1. scrcpy issue</a></h3>
+<p>List all of the available codecs:</p>
+<pre><code>scrcpy --list-encoders
+(audio)aac/flac/(video)h264
+</code></pre>
+<p>Then connect via:</p>
+<pre><code>scrcpy --audio-codec=aac
+</code></pre>
+<p><img src="images/2026_03_25_10_55_28_819x414.jpg" alt="./images/2026_03_25_10_55_28_819x414.jpg"></p>
+<h3 id="2-virt-wifi"><a class="header" href="#2-virt-wifi">2. virt wifi</a></h3>
+<p>modprobe some modules:</p>
+<pre><code>sudo modprobe mac80211_hwsim
+sudo modprobe iptable_nat
+</code></pre>
+<h3 id="3-detection"><a class="header" href="#3-detection">3. detection</a></h3>
+<p>via:</p>
+<pre><code>D NetworkMonitor/100: PROBE_HTTP http://connectivitycheck.gstatic.com/generate_204 tim
+D NetworkMonitor/100: PROBE_HTTPS https://www.google.com/generate_204 tim
+...
+
+i think the solution is adb shell settings put global captive_portal_https_url https://www.noisyfox.cn/generate_204
+and the https://www.noisyfox.cn/generate_204 can be replaced by any 204 servies
 </code></pre>
 
                     </main>
