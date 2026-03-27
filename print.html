@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a65fa231.js";
+            window.path_to_searchindex_js = "searchindex-4d8b6385.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7620f562.js"></script>
+        <script src="toc-589e3420.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22767,6 +22767,37 @@ Cannot open netlink socket: Permission denied
 <h3 id="3-ss-installation"><a class="header" href="#3-ss-installation">3. ss installation</a></h3>
 <p>Install via:</p>
 <pre><code>$ apt install iproute2
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260317"><a class="header" href="#20260317">20260317</a></h1>
+<h3 id="1-restart-cuttlefish"><a class="header" href="#1-restart-cuttlefish">1. restart cuttlefish</a></h3>
+<p>command:</p>
+<pre><code>HOME=$PWD ./bin/launch_cvd \
+  --daemon \
+  --start_webrtc=true \
+  --num_instances=1 \
+  --cpus=8 \
+  --memory_mb=8192
+</code></pre>
+<h3 id="2-rebuild-redroid13"><a class="header" href="#2-rebuild-redroid13">2. rebuild redroid13</a></h3>
+<p>Code preparation:</p>
+<pre><code>mkdir redroid13
+cd redroid13/
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-13.0.0_r82
+repo sync
+git -c http.proxy=socks5h://192.168.1.213:14389 clone https://github.com/remote-android/local_manifests.git  .repo/local_manifests -b 13.0.0
+# redsocks enable
+HTTP_PROXY=socks5h:://192.168.1.213:14389 HTTPS_PROXY=socks5h://192.168.1.213:14389 repo sync -j1 --force-sync
+repo forall -c "git lfs pull"
+/media/sda/redroid/redroid-patches/apply-patch.sh /media/sda/redroid/redroid13/
+</code></pre>
+<p>Build via:</p>
+<pre><code>sudo docker run -it --hostname redroid13 --name redroid13 -v `pwd`:/src redroid-builder
+cd /src
+source build/envsetup.sh
+lunch
+m -j12 dist
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260324"><a class="header" href="#20260324">20260324</a></h1>
