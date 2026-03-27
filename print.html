@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d351be3b.js";
+            window.path_to_searchindex_js = "searchindex-a65fa231.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e7c5d11f.js"></script>
+        <script src="toc-7620f562.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22838,6 +22838,32 @@ and the https://www.noisyfox.cn/generate_204 can be replaced by any 204 servies
 03-26 06:49:33.132    20  8263 W libc    : Unable to set property "ctl.interface_start" to "aidl/android.hardware.wifi.supplicant.ISupplicant/default": error code: 0x20
 03-26 06:49:33.132    20  8263 I servicemanager: Tried to start aidl service android.hardware.wifi.supplicant.ISupplicant/default as a lazy service, but was unable to. Usually this happens when a service is not installed, but if the service is intended to be used as a lazy service, then it may be configured incorrectly.
 $ logcat -b all | grep -i hostapd
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260327"><a class="header" href="#20260327">20260327</a></h1>
+<h3 id="1-reback-files"><a class="header" href="#1-reback-files">1. reback files</a></h3>
+<p>Steps:</p>
+<pre><code>cd /media/sda/redroid/redroid13
+
+# 1. ConnectivityManager.java 所在的仓库
+cd packages/modules/Connectivity
+git checkout -- framework/src/android/net/ConnectivityManager.java
+cd ../../..
+
+# 2. FakeWiFi.java 和 WifiManager.java 所在的仓库（同一个仓库）
+cd packages/modules/Wifi
+git checkout -- framework/java/android/net/wifi/FakeWiFi.java
+git checkout -- framework/java/android/net/wifi/WifiManager.java
+cd ../../..
+</code></pre>
+<p>Build via:</p>
+<pre><code>m framework-wifi.stubs.source-update-current-api
+m -j12 dist
+</code></pre>
+<h3 id="2-opencode-restore"><a class="header" href="#2-opencode-restore">2. opencode restore</a></h3>
+<p>List all of the sessions:</p>
+<pre><code>opencode session list
+opencode --session xxxxxxxxxxxx
 </code></pre>
 
                     </main>
