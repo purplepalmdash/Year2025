@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4d8b6385.js";
+            window.path_to_searchindex_js = "searchindex-43896b2c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-589e3420.js"></script>
+        <script src="toc-0788ecc7.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22895,6 +22895,21 @@ m -j12 dist
 <p>List all of the sessions:</p>
 <pre><code>opencode session list
 opencode --session xxxxxxxxxxxx
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260328"><a class="header" href="#20260328">20260328</a></h1>
+<h3 id="1-for-houdini"><a class="header" href="#1-for-houdini">1. for houdini</a></h3>
+<p>Refers to : <code>Can't get libhoudini to work with android 13.</code>–– <code>https://github.com/remote-android/redroid-doc/issues/685</code><br>Modification:</p>
+<pre><code>$ vim system/linkerconfig/contents/namespace/systemdefault.cc
+
+   ns.AddSearchPath(system_ext + "/${LIB}");
++
++  //for houdini
++  ns.AddSearchPath("/system/lib/arm");
++  ns.AddSearchPath("/system/lib64/arm64");
++
+
+$ time m -j 12
 </code></pre>
 
                     </main>
