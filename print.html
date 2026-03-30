@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-43896b2c.js";
+            window.path_to_searchindex_js = "searchindex-be6556d1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0788ecc7.js"></script>
+        <script src="toc-7b6333c1.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22910,6 +22910,21 @@ opencode --session xxxxxxxxxxxx
 +
 
 $ time m -j 12
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260330"><a class="header" href="#20260330">20260330</a></h1>
+<h3 id="1-vnc-nohost"><a class="header" href="#1-vnc-nohost">1. vnc nohost</a></h3>
+<p>Via:</p>
+<pre><code>$ vim ~/.vnc/config
+localhost=no
+</code></pre>
+<h3 id="2-totally-disable-sleep"><a class="header" href="#2-totally-disable-sleep">2. totally disable sleep</a></h3>
+<p>ubuntu24.04 via:</p>
+<pre><code>sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+</code></pre>
+<h3 id="3-activate-officewin"><a class="header" href="#3-activate-officewin">3. activate office/win</a></h3>
+<p>via:</p>
+<pre><code>irm https://get.activated.win | iex
 </code></pre>
 
                     </main>
