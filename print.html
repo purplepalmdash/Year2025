@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-be6556d1.js";
+            window.path_to_searchindex_js = "searchindex-588cb3a8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7b6333c1.js"></script>
+        <script src="toc-8158d158.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22925,6 +22925,51 @@ localhost=no
 <h3 id="3-activate-officewin"><a class="header" href="#3-activate-officewin">3. activate office/win</a></h3>
 <p>via:</p>
 <pre><code>irm https://get.activated.win | iex
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260331"><a class="header" href="#20260331">20260331</a></h1>
+<h3 id="1-ubuntu22042404-aosp-building"><a class="header" href="#1-ubuntu22042404-aosp-building">1. ubuntu22.04/24.04 aosp building</a></h3>
+<pre><code>sudo apt install -y \
+    build-essential ccache libncurses6 libssl-dev m4 unzip zip brotli bc \
+    bison curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick \
+    lib32ncurses-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses-dev \
+    libsdl1.2-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool \
+    squashfs-tools xsltproc zip zlib1g-dev adb fastboot python-is-python3 \
+    abootimg git-lfs libtinfo6
+# 方法一：添加 focal 仓库安装（推荐）
+echo "deb http://security.ubuntu.com/ubuntu focal-security main universe" | sudo tee /etc/apt/sources.list.d/ubuntu-focal-sources.list
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install libncurses5:i386 libncurses5
+</code></pre>
+<h3 id="2-openeuler2003-repository"><a class="header" href="#2-openeuler2003-repository">2. openeuler20.03 repository</a></h3>
+<p>20.03 items:</p>
+<pre><code>[openEuler-everything]
+name=openEuler-everything
+baseurl=http://repo.huaweicloud.com/openeuler/openEuler-20.03-LTS/everything/aarch64/
+enabled=1
+gpgcheck=0
+gpgkey=https://repo.huaweicloud.com/openeuler/openEuler-20.03-LTS/everything/aarch64/RPM-GPG-KEY-openEuler
+
+[openEuler-EPOL]
+name=openEuler-epol
+baseurl=http://repo.huaweicloud.com/openeuler/openEuler-20.03-LTS/EPOL/aarch64/
+enabled=1
+gpgcheck=0
+
+[openEuler-update]
+name=openEuler-update
+baseurl=http://repo.huaweicloud.com/openeuler/openEuler-20.03-LTS/update/aarch64/
+enabled=1
+gpgcheck=0
+</code></pre>
+<h3 id="3-emulator-with-cpumemdisk"><a class="header" href="#3-emulator-with-cpumemdisk">3. emulator with cpu/mem/disk</a></h3>
+<p>via:</p>
+<pre><code>emulator -partition-size 20480 -memory 8192 -qemu -smp 4
+</code></pre>
+<h3 id="4-get-page-size"><a class="header" href="#4-get-page-size">4. get page size</a></h3>
+<p>Via:</p>
+<pre><code>getconf PAGESIZE
 </code></pre>
 
                     </main>
