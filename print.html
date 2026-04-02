@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-588cb3a8.js";
+            window.path_to_searchindex_js = "searchindex-c1d57e6e.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-8158d158.js"></script>
+        <script src="toc-f7876748.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22970,6 +22970,30 @@ gpgcheck=0
 <h3 id="4-get-page-size"><a class="header" href="#4-get-page-size">4. get page size</a></h3>
 <p>Via:</p>
 <pre><code>getconf PAGESIZE
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260401"><a class="header" href="#20260401">20260401</a></h1>
+<h3 id="1-emulator"><a class="header" href="#1-emulator">1. emulator</a></h3>
+<p>items for get emulator working.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260402"><a class="header" href="#20260402">20260402</a></h1>
+<h3 id="1-ghostscript"><a class="header" href="#1-ghostscript">1. ghostscript</a></h3>
+<p>around 46MB(from 500MB):</p>
+<pre><code>gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -dColorImageResolution=150 -sOutputFile=compressed.pdf wangqi.pdf
+</code></pre>
+<h3 id="2-lineageos-workingtips"><a class="header" href="#2-lineageos-workingtips">2. lineageOS workingtips</a></h3>
+<p>Versions:</p>
+<pre><code>aosp13 -&gt; lineage 20
+aosp16 -&gt;  lineage 23.2
+</code></pre>
+<p>After sync:</p>
+<pre><code>lineage 23.2, Fanqiang Enable,  
+ repo sync prebuilts/misc -j1 --force-sync
+</code></pre>
+<p>Breakfast:</p>
+<pre><code>lineage 23.2/20, Fanqiang enable.   
+
+breakfast virtio_x86_64
 </code></pre>
 
                     </main>
