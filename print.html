@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c1d57e6e.js";
+            window.path_to_searchindex_js = "searchindex-6d6112c7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f7876748.js"></script>
+        <script src="toc-467a90ff.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -22994,6 +22994,153 @@ aosp16 -&gt;  lineage 23.2
 <pre><code>lineage 23.2/20, Fanqiang enable.   
 
 breakfast virtio_x86_64
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260403"><a class="header" href="#20260403">20260403</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260407"><a class="header" href="#20260407">20260407</a></h1>
+<h3 id="1-reback-modification"><a class="header" href="#1-reback-modification">1. reback modification</a></h3>
+<p>Steps:</p>
+<pre><code>cd /media/big/lineageos/lineageos22
+
+# 1. 强制恢复这几个关键文件到上游原始状态
+git -C device/virt/virt-common checkout -- configs/scripts/create_partition_table.sh
+git -C device/virt/virt-common checkout -- build/tasks/01-diskimage.mk
+git -C device/virt/virt-common checkout -- services/preinstall_check/preinstall_check.cpp
+git -C device/virt/virt-common checkout -- BoardConfigVirtCommon.mk
+
+git -C device/virt/virtio_x86_64 checkout -- BoardConfig.mk
+
+# 2. 彻底删除编译输出（非常重要）
+rm -rf out/target/product/virtio_x86_64/
+
+# 3. 重新生成磁盘镜像，使用官方默认配置
+make -j$(nproc) diskimage-vda
+</code></pre>
+<p>Verification:</p>
+<pre><code>git -C device/virt/virt-common status --short
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260408"><a class="header" href="#20260408">20260408</a></h1>
+<h3 id="1-ext4-creation"><a class="header" href="#1-ext4-creation">1. ext4 creation</a></h3>
+<p>Via:</p>
+<pre><code>dash@aiBox:~$ diff build_image.py /media/sda/redroid/lineageos21/build/make/tools/releasetools/build_image.py 
+127a128,188
+&gt; def CheckAndFixExt4InodeCount(in_dir, prop_dict, out_file, target_out, fs_config):
+&gt;   """Build ext4 image and ensure final inode count is not smaller than the
+&gt;   requested extfs_inode_count.
+&gt; 
+&gt;   If the actual inode count is smaller than requested, enlarge image_size /
+&gt;   partition_size and retry several times.
+&gt; 
+&gt;   Returns:
+&gt;     A tuple of (mkfs_output, fs_dict).
+&gt; 
+&gt;   Raises:
+&gt;     BuildImageError: if the requested inode count still cannot be satisfied.
+&gt;   """
+&gt;   requested = int(prop_dict.get("extfs_inode_count", "-1"))
+&gt; 
+&gt;   mkfs_output = BuildImageMkfs(in_dir, prop_dict, out_file, target_out, fs_config)
+&gt; 
+&gt;   sparse_image = False
+&gt;   if "extfs_sparse_flag" in prop_dict and "disable_sparse" not in prop_dict:
+&gt;     sparse_image = True
+&gt;   fs_dict = GetFilesystemCharacteristics(prop_dict.get("fs_type", ""), out_file, sparse_image)
+&gt; 
+&gt;   if requested &lt; 0:
+&gt;     return mkfs_output, fs_dict
+&gt; 
+&gt;   max_rounds = 8
+&gt;   grow_step = 128 * BYTES_IN_MB
+&gt; 
+&gt;   actual_inode_count = int(fs_dict.get("Inode count", "0"))
+&gt;   round_no = 0
+&gt;   while actual_inode_count &lt; requested and round_no &lt; max_rounds:
+&gt;     logger.warning(
+&gt;         "Ext4 inode target NOT satisfied for %s: requested=%d actual=%d "
+&gt;         "(round %d/%d). Increasing image size and retrying.",
+&gt;         out_file, requested, actual_inode_count, round_no + 1, max_rounds)
+&gt; 
+&gt;     try:
+&gt;       os.remove(out_file)
+&gt;     except OSError:
+&gt;       pass
+&gt; 
+&gt;     new_size = int(prop_dict["image_size"]) + grow_step
+&gt;     prop_dict["image_size"] = str(new_size)
+&gt;     prop_dict["partition_size"] = str(new_size)
+&gt; 
+&gt;     mkfs_output = BuildImageMkfs(in_dir, prop_dict, out_file, target_out, fs_config)
+&gt;     fs_dict = GetFilesystemCharacteristics(prop_dict.get("fs_type", ""), out_file, sparse_image)
+&gt;     actual_inode_count = int(fs_dict.get("Inode count", "0"))
+&gt;     round_no += 1
+&gt; 
+&gt;   if actual_inode_count &lt; requested:
+&gt;     raise BuildImageError(
+&gt;         "Failed to satisfy extfs_inode_count for {}: requested {}, actual {} "
+&gt;         "after {} retries. Please increase partition size or reduce reserved size."
+&gt;         .format(out_file, requested, actual_inode_count, max_rounds))
+&gt; 
+&gt;   logger.info(
+&gt;       "Ext4 inode target satisfied for %s: requested=%d actual=%d size=%s",
+&gt;       out_file, requested, actual_inode_count, prop_dict.get("image_size"))
+&gt;   return mkfs_output, fs_dict
+&gt; 
+608a670,682
+&gt;       #if int(prop_dict["extfs_inode_count"]) &gt;= 0:
+&gt;       #  extfs_inode_count = prop_dict["extfs_inode_count"]
+&gt;       #  inodes = int(fs_dict.get("Inode count", extfs_inode_count))
+&gt;       #  inodes -= int(fs_dict.get("Free inodes", "0"))
+&gt;       #  # add .2% margin or 1 inode, whichever is greater
+&gt;       #  spare_inodes = inodes * 2 // 1000
+&gt;       #  min_spare_inodes = 1
+&gt;       #  if spare_inodes &lt; min_spare_inodes:
+&gt;       #    spare_inodes = min_spare_inodes
+&gt;       #  inodes += spare_inodes
+&gt;       #  prop_dict["extfs_inode_count"] = str(inodes)
+&gt;       #  logger.info(
+&gt;       #      "Allocating %d Inodes for %s.", inodes, out_file)
+610,612c684,686
+&lt;         extfs_inode_count = prop_dict["extfs_inode_count"]
+&lt;         inodes = int(fs_dict.get("Inode count", extfs_inode_count))
+&lt;         inodes -= int(fs_dict.get("Free inodes", "0"))
+---
+&gt;         requested_inodes = int(prop_dict["extfs_inode_count"])
+&gt;         used_inodes = int(fs_dict.get("Inode count", requested_inodes))
+&gt;         used_inodes -= int(fs_dict.get("Free inodes", "0"))
+614c688
+&lt;         spare_inodes = inodes * 2 // 1000
+---
+&gt;         spare_inodes = used_inodes * 2 // 1000
+618,619c692,694
+&lt;         inodes += spare_inodes
+&lt;         prop_dict["extfs_inode_count"] = str(inodes)
+---
+&gt;         suggested_inodes = used_inodes + spare_inodes
+&gt;         final_inodes = max(requested_inodes, suggested_inodes)
+&gt;         prop_dict["extfs_inode_count"] = str(final_inodes)
+621c696,697
+&lt;             "Allocating %d Inodes for %s.", inodes, out_file)
+---
+&gt;             "Allocating %d Inodes for %s (requested=%d used=%d suggested=%d).",
+&gt;             final_inodes, out_file, requested_inodes, used_inodes, suggested_inodes)
+648a725,728
+&gt; #  if not mkfs_output:
+&gt; #    mkfs_output = BuildImageMkfs(
+&gt; #        in_dir, prop_dict, out_file, target_out, fs_config)
+&gt; 
+650,651c730,736
+&lt;     mkfs_output = BuildImageMkfs(
+&lt;         in_dir, prop_dict, out_file, target_out, fs_config)
+---
+&gt;     if fs_type.startswith("ext"):
+&gt;       mkfs_output, _ = CheckAndFixExt4InodeCount(
+&gt;           in_dir, prop_dict, out_file, target_out, fs_config)
+&gt;     else:
+&gt;       mkfs_output = BuildImageMkfs(
+&gt;           in_dir, prop_dict, out_file, target_out, fs_config)
+&gt; 
 </code></pre>
 
                     </main>
