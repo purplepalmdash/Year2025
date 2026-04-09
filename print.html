@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6c9e3660.js";
+            window.path_to_searchindex_js = "searchindex-e62b882b.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-4f545b21.js"></script>
@@ -23141,6 +23141,11 @@ make -j$(nproc) diskimage-vda
 &gt;       mkfs_output = BuildImageMkfs(
 &gt;           in_dir, prop_dict, out_file, target_out, fs_config)
 &gt; 
+</code></pre>
+<h3 id="2-blissos-building"><a class="header" href="#2-blissos-building">2. blissos building</a></h3>
+<p>repo sync:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init -u https://github.com/BlissOS/platform_manifest.git -b typhoon-x86 --git-lfs
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260409"><a class="header" href="#20260409">20260409</a></h1>
