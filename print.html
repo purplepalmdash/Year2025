@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6d6112c7.js";
+            window.path_to_searchindex_js = "searchindex-6c9e3660.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-467a90ff.js"></script>
+        <script src="toc-4f545b21.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23141,6 +23141,50 @@ make -j$(nproc) diskimage-vda
 &gt;       mkfs_output = BuildImageMkfs(
 &gt;           in_dir, prop_dict, out_file, target_out, fs_config)
 &gt; 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260409"><a class="header" href="#20260409">20260409</a></h1>
+<h3 id="1-waydroid-installation"><a class="header" href="#1-waydroid-installation">1. waydroid installation</a></h3>
+<p>Install waydroid and make it auto-start.</p>
+<pre><code>sudo apt update -y
+sudo  apt upgrade -y
+sudo apt install cage weston
+sudo apt install -y lightdm
+sudo vim /usr/bin/waydroid-session.sh
+    #!/bin/sh
+    # 对于 Cage（极简 kiosk，最推荐）
+    exec cage -s waydroid show-full-ui
+sudo chmod 777 /usr/bin/waydroid-session.sh
+sudo vim /usr/share/wayland-sessions/waydroid.desktop
+    [Desktop Entry]
+    Name=WayDroid Fullscreen
+    Comment=Android in full screen kiosk mode
+    Exec=/usr/bin/waydroid-session.sh
+    Type=Application
+sudo apt install curl ca-certificates -y
+curl -s https://repo.waydro.id | sudo bash
+sudo apt install waydroid -y
+sudo waydroid init
+sudo reboot
+git clone https://github.com/casualsnek/waydroid_script
+cd waydroid_script
+sudo apt install python3.12-venv
+python3 -m venv venv
+venv/bin/pip install -r requirements.txt
+sudo venv/bin/python3 main.py
+sudo mkdir -p /etc/lightdm/lightdm.conf.d
+sudo nano /etc/lightdm/lightdm.conf.d/99-waydroid.conf
+sudo nano /etc/lightdm/lightdm.conf
+    [Seat:*]
+    user-session=waydroid
+    autologin-user=test
+    autologin-user-timeout=0
+    allow-guest=false
+    greeter-hide-users=true
+    greeter-session=lightdm-gtk-greeter   # 加上这行，提高兼容性
+sudo groupadd -r nopasswdlogin 
+sudo gpasswd -a test nopasswdlogin
+sudo waydroid install yyb.apk 
 </code></pre>
 
                     </main>
