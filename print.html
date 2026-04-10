@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e62b882b.js";
+            window.path_to_searchindex_js = "searchindex-e7a0cd61.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-4f545b21.js"></script>
+        <script src="toc-3ddad9a0.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23190,6 +23190,49 @@ sudo nano /etc/lightdm/lightdm.conf
 sudo groupadd -r nopasswdlogin 
 sudo gpasswd -a test nopasswdlogin
 sudo waydroid install yyb.apk 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260410"><a class="header" href="#20260410">20260410</a></h1>
+<h3 id="1-waydroid-workingtips"><a class="header" href="#1-waydroid-workingtips">1. waydroid workingtips</a></h3>
+<p>Install via:</p>
+<pre><code>tar xvf waydroiddebs.tar
+cat /etc/apt/sources.list 
+......
+deb [trusted=yes] file:///home/test/waydroiddebs/ ./
+......
+apt update -y
+apt install -y waydroid
+
+# extract the /var/lib/waydroid
+sudo tar xzvf var_lib_waydroid.tar.gz -C / --same-owner --same-permissions
+# extract the data 
+sudo tar xzvf local_share_waydroid.tar.gz \
+  -C /home/test/.local/share/ \
+  --strip-components=4 \
+  --same-permissions
+waydroid session start
+
+$ sudo waydroid shell
+[sudo] test 的密码： 
+127|:/ # getprop | grep boot | grep com                                                      
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [11187999051525]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+</code></pre>
+<p>Then Configure the lightdm and autologin:</p>
+<pre><code>$ sudo groupadd -r autologin 2&gt;/dev/null || true
+$ sudo gpasswd -a test autologin
+$ cat deploy/99-waydroid.conf
+[Seat:*]
+user-session=waydroid
+autologin-session=waydroid 
+autologin-user=test
+autologin-user-timeout=0
+allow-guest=false
+greeter-hide-users=true
+greeter-session=lightdm-gtk-greeter
+
 </code></pre>
 
                     </main>
