@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-77dfeddb.js";
+            window.path_to_searchindex_js = "searchindex-05026c94.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-ebe5e997.js"></script>
@@ -23234,6 +23234,19 @@ greeter-hide-users=true
 greeter-session=lightdm-gtk-greeter
 
 </code></pre>
+<h3 id="2-waydroid-on-vm"><a class="header" href="#2-waydroid-on-vm">2. waydroid on vm</a></h3>
+<p>change to swiftshader:</p>
+<pre><code>You can force Waydroid to run without GPU acceleration by modifying the waydroid configuration file:
+
+nano /var/lib/waydroid/waydroid.cfg
+Add the following lines in the [properties] section:
+
+ro.hardware.gralloc=default
+ro.hardware.egl=swiftshader
+Apply the configuration with:
+
+sudo waydroid upgrade -o
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260413"><a class="header" href="#20260413">20260413</a></h1>
 <h3 id="1-del-gw"><a class="header" href="#1-del-gw">1. del gw</a></h3>
@@ -23283,6 +23296,17 @@ Platform for Weixin(WeChat):
    (○) Allow all direct messages
    (○) Only allow listed user IDs
    (○) Disable direct messages
+
+</code></pre>
+<h3 id="3-rebuild-blissos15"><a class="header" href="#3-rebuild-blissos15">3. rebuild blissos15</a></h3>
+<p>Build steps:</p>
+<pre><code>cd /media/big/blissos
+source build/envsetup.sh
+lunch bliss_x86_64-userdebug
+cargo install bindgen-cli --version 0.69.4 --force
+rm -rf out/target/product/x86_64/obj_x86/AOSPEXT/MESA3D/
+make blissify iso_img -j16
+ls out/target/product/x86_64/*.iso -l -h
 
 </code></pre>
 
