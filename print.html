@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-02510d3d.js";
+            window.path_to_searchindex_js = "searchindex-77dfeddb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-331b1db5.js"></script>
+        <script src="toc-ebe5e997.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23239,6 +23239,51 @@ greeter-session=lightdm-gtk-greeter
 <h3 id="1-del-gw"><a class="header" href="#1-del-gw">1. del gw</a></h3>
 <p>via:</p>
 <pre><code>sudo ip route del default via 192.168.1.33 dev eth0
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260414"><a class="header" href="#20260414">20260414</a></h1>
+<h3 id="1-waydroidarm64-working-tips"><a class="header" href="#1-waydroidarm64-working-tips">1. waydroid(arm64) working tips</a></h3>
+<p>Steps:</p>
+<pre><code>sudo apt update -y
+sudo apt install -y lightdm
+# select lightdm as default wm
+sudo reboot
+</code></pre>
+<p>Choose wayland sessions:</p>
+<pre><code>echo $XDG_SESSION_TYPE
+wayland
+</code></pre>
+<p>Install waydroid:</p>
+<pre><code>curl -s https://repo.waydro.id | sudo bash
+sudo apt-get install -y waydroid
+sudo waydroid init
+</code></pre>
+<h3 id="2-hermesubuntu2204"><a class="header" href="#2-hermesubuntu2204">2. hermes(ubuntu2204)</a></h3>
+<p>Install steps:</p>
+<pre><code>sudo apt install -y curl git build-essential
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+</code></pre>
+<p>Select provider:</p>
+<pre><code>Custom endpoint
+API base URL [e.g. https://api.example.com/v1]: http://192.168.1.165:8080/v1
+API base URL [e.g. https://api.example.com/v1]: http://192.168.1.165:8080/v1
+API key [optional]: 
+Verified endpoint via http://192.168.1.165:8080/v1/models (1 model(s) visible)
+  Detected model: Qwen3.5-35B-A3B-Uncensored-HauhauCS-Aggressive-Q8_0.gguf
+  Use this model? [Y/n]: y
+Context length in tokens [leave blank for auto-detect]: 
+Display name [192.168.1.165:8080]: horsepower
+
+Platform for Weixin(WeChat):    
+
+  How should direct messages be authorized?
+  ↑↓ navigate  ENTER/SPACE select  ESC cancel
+
+ → (●) Use DM pairing approval (recommended)
+   (○) Allow all direct messages
+   (○) Only allow listed user IDs
+   (○) Disable direct messages
+
 </code></pre>
 
                     </main>
