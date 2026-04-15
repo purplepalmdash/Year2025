@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-05026c94.js";
+            window.path_to_searchindex_js = "searchindex-960e23f0.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ebe5e997.js"></script>
+        <script src="toc-95cdb202.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23308,6 +23308,40 @@ rm -rf out/target/product/x86_64/obj_x86/AOSPEXT/MESA3D/
 make blissify iso_img -j16
 ls out/target/product/x86_64/*.iso -l -h
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260415"><a class="header" href="#20260415">20260415</a></h1>
+<h3 id="1-bliss-building"><a class="header" href="#1-bliss-building">1. bliss building</a></h3>
+<p>Added in following files:</p>
+<pre><code>dash@horse:/media/big/blissos$ vim vendor/bliss/config/bliss_packages.mk 
+dash@horse:/media/big/blissos$ vim vendor/bliss/config/BoardConfigBliss.mk 
+
+Verification:    
+
+get_build_var PRODUCT_PACKAGES | grep houdini
+get_build_var TARGET_CPU_ABI_LIST_64_BIT 
+</code></pre>
+<h3 id="2-adb-pair"><a class="header" href="#2-adb-pair">2. adb pair</a></h3>
+<p>aosp 13, first pair, then connect to specific port.</p>
+<h3 id="3-transfer-aosp-src"><a class="header" href="#3-transfer-aosp-src">3. transfer aosp src</a></h3>
+<p>SRC machine:</p>
+<pre><code>$ pwd
+/media/big
+$ du -hs blissos/
+328G blissos/
+$ sudo tar --exclude='blissos/out' -cf - blissos | pv | nc -q 1 192.168.1.214 9999
+</code></pre>
+<p>Dest machine:</p>
+<pre><code>dash@aiBox:/media/sda/blissos$ nc -l -p 9999 | pv | tar -xf - -C  /media/sda/blissos
+ 176GiB 0:29:50 [ 100MiB/s] [            &lt;=&gt;                                                 ]
+dash@aiBox:/media/sda/blissos$ ls
+blissos
+dash@aiBox:/media/sda/blissos$ du -hs blissos/
+181G    blissos/
+</code></pre>
+<p>Building waydroid:</p>
+<pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install bindgen-cli --version 0.69.4 --force
 </code></pre>
 
                     </main>
