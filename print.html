@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-960e23f0.js";
+            window.path_to_searchindex_js = "searchindex-80043585.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-95cdb202.js"></script>
+        <script src="toc-d4b59262.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23342,6 +23342,16 @@ dash@aiBox:/media/sda/blissos$ du -hs blissos/
 <p>Building waydroid:</p>
 <pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 cargo install bindgen-cli --version 0.69.4 --force
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260417"><a class="header" href="#20260417">20260417</a></h1>
+<h3 id="1-custom-image-for-waydroid"><a class="header" href="#1-custom-image-for-waydroid">1. custom image for waydroid</a></h3>
+<p>Steps:</p>
+<pre><code>dash@test:~$ sudo mkdir -p /etc/waydroid-extra/images
+dash@test:~$ ls
+公共的  模板  视频  图片  文档  下载  音乐  桌面  snap  system.img  vendor.img
+dash@test:~$ sudo mv *.img /etc/waydroid-extra/images/
+dash@test:~$ sudo waydroid init -f
 </code></pre>
 
                     </main>
