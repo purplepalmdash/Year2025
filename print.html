@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3196c3f6.js";
+            window.path_to_searchindex_js = "searchindex-f213a544.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-71e25c26.js"></script>
+        <script src="toc-56c3b083.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23384,6 +23384,14 @@ $  time make vendorimage -j12
 [  113.104214] init: processing action (ro.postinstall.fstab.prefix=/system &amp;&amp; sys.cppreopt=requested) from (/system/etc/init/cppreopts.rc:26)
 [  113.104278] init: Unable to set property 'ro.boottime.init.mount_all.default' from uid:0 gid:0 pid:1: Read-only property was already set
 [  113.105076] init: Unable to set property 'ro.crypto.state' from uid:0 gid:0 pid:1: Read-only property was already set
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260421"><a class="header" href="#20260421">20260421</a></h1>
+<h3 id="1-redroid16"><a class="header" href="#1-redroid16">1. redroid16</a></h3>
+<p>Initialize the repo and sync:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-16.0.0_r2
+repo sync
 </code></pre>
 
                     </main>
