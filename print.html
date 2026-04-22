@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-98b8f60c.js";
+            window.path_to_searchindex_js = "searchindex-6639d396.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-fe416cfe.js"></script>
+        <script src="toc-d0d184a1.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23353,6 +23353,55 @@ dash@test:~$ ls
 dash@test:~$ sudo mv *.img /etc/waydroid-extra/images/
 dash@test:~$ sudo waydroid init -f
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260418"><a class="header" href="#20260418">20260418</a></h1>
+<h3 id="1-build-waydroid"><a class="header" href="#1-build-waydroid">1. build waydroid</a></h3>
+<pre><code>mkdir newwaydroid
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init -u https://mirrors.bfsu.edu.cn/git/lineageOS/LineageOS/android.git -b lineage-20.0 --git-lfs
+</code></pre>
+<p>Edit the repo config file:</p>
+<pre><code>$ cat .repo/manifests/default.xml | more
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;manifest&gt;
+
++  &lt;remote  name="github"
++           fetch="https://github.com/" /&gt;
++
++  &lt;remote  name="lineage"
++           fetch="https://mirrors.bfsu.edu.cn/git/lineageOS/"
++           review="review.lineageos.org" /&gt;
++
+  &lt;remote  name="private"
+           fetch="ssh://git@github.com" /&gt;
+
+  &lt;remote  name="aosp"
++           fetch="https://mirrors.bfsu.edu.cn/git/AOSP"
+           review="android-review.googlesource.com"
+           revision="refs/tags/android-13.0.0_r75" /&gt;
+
+  &lt;default revision="refs/heads/lineage-20.0"
++           remote="lineage"
+           sync-c="true"
+           sync-j="4" /&gt;
+</code></pre>
+<p>Now repo sync for twice:</p>
+<pre><code># without pass gfw
+repo sync
+# with pass gfw
+repo sync -j1 --fail-fast
+repo forall -c "git lfs pull"
+</code></pre>
+<p>Now build the image via:</p>
+<pre><code>. build/envsetup.sh
+lunch lineage_waydroid_x86_64-userdebug
+make systemimage -j$(nproc --all)
+make vendorimage -j$(nproc --all)
+$ ls out/target/product/waydroid_x86_64/*.img -l -h
+-rw-rw-r-- 1 dash dash 1.7G Apr 18 08:08 out/target/product/waydroid_x86_64/system.img
+-rw-rw-r-- 1 dash dash 115M Apr 18 08:29 out/target/product/waydroid_x86_64/vendor.img
+</code></pre>
+<p>Then you could verify it.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260420"><a class="header" href="#20260420">20260420</a></h1>
 <h3 id="1-waydroidaosp-items"><a class="header" href="#1-waydroidaosp-items">1. waydroid(aosp) items</a></h3>
