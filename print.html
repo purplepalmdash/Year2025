@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f213a544.js";
+            window.path_to_searchindex_js = "searchindex-98b8f60c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-56c3b083.js"></script>
+        <script src="toc-fe416cfe.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23392,6 +23392,46 @@ $  time make vendorimage -j12
 <pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
 repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-16.0.0_r2
 repo sync
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260422"><a class="header" href="#20260422">20260422</a></h1>
+<h3 id="1-lineageos-14-build"><a class="header" href="#1-lineageos-14-build">1. lineageos 14 build</a></h3>
+<p>ffmpeg should be changed to specific commit.</p>
+<pre><code>cd /media/ssd/lineageos/a14_waydroid/external/ffmpeg
+
+# 先确保没有未提交的修改（如果有，先 stash 或 commit）
+git status
+
+# 推荐方式（Git 2.23+ 更现代）
+git restore --source=9552caeebc441c762f7f10eb6ce9a455d635fdb6 -- .
+</code></pre>
+<p>Then:</p>
+<pre><code>export TARGET_USE_MESA=false
+
+vim vendor/intel/media-driver/media_softlet/linux/common/os/i915/include/mos_bufmgr_api.h
+Add: #include &lt;errno.h&gt;
+
+vim external/minigbm/gbm_mesa_driver/Android.mk
+
+最外层加：
+复制ifeq ($(TARGET_USE_MESA),true)
+...原文件内容...
+endif
+
+或者至少把定义 libgbm_mesa_wrapper 的那段包起来。
+</code></pre>
+<p>Then:</p>
+<pre><code>source build/envsetup.sh
+export TARGET_USE_MESA=false
+lunch lineage_waydroid_x86_64-ap2a-userdebug
+source "$HOME/.cargo/env"
+time make systemimage -j12
+time make vendorimage -j12
+</code></pre>
+<h3 id="2-redroid16-build"><a class="header" href="#2-redroid16-build">2. redroid16 build</a></h3>
+<p>lunch and build step:</p>
+<pre><code>lunch redroid_x86_64-aosp_current-userdebug
+time m -j12
 </code></pre>
 
                     </main>
