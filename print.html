@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-936b7ffc.js";
+            window.path_to_searchindex_js = "searchindex-42dfdb55.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-4cfd9f43.js"></script>
+        <script src="toc-356ecaaa.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23514,6 +23514,20 @@ bindgen --version
 rustup target add x86_64-linux-android
 rustup target add i686-linux-android
 make vendorimage -j12
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260424"><a class="header" href="#20260424">20260424</a></h1>
+<h3 id="1-scrcpy-new-version"><a class="header" href="#1-scrcpy-new-version">1. scrcpy new version</a></h3>
+<p>Steps:</p>
+<pre><code>wget https://github.com/Genymobile/scrcpy/releases/download/v3.3.4/scrcpy-linux-x86_64-v3.3.4.tar.gz
+tar -xvf scrcpy-linux-x86_64-v3.3.4.tar.gz
+cd scrcpy-linux-x86_64-v3.3.4
+./scrcpy -s 
+</code></pre>
+<p>Default version on ubuntu24.04(22.04) is too old.</p>
+<h3 id="2-redroid16-build-1"><a class="header" href="#2-redroid16-build-1">2. redroid16 build</a></h3>
+<p>via:</p>
+<pre><code>lunch redroid_x86_64_only-bp2a-userdebug     # 你的 build 是 BP2A 开头，可能是 Android 16 相关
 </code></pre>
 
                     </main>
