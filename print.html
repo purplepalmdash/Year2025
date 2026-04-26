@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-42dfdb55.js";
+            window.path_to_searchindex_js = "searchindex-30ce32d4.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-356ecaaa.js"></script>
+        <script src="toc-950f0c41.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23528,6 +23528,39 @@ cd scrcpy-linux-x86_64-v3.3.4
 <h3 id="2-redroid16-build-1"><a class="header" href="#2-redroid16-build-1">2. redroid16 build</a></h3>
 <p>via:</p>
 <pre><code>lunch redroid_x86_64_only-bp2a-userdebug     # 你的 build 是 BP2A 开头，可能是 Android 16 相关
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260426"><a class="header" href="#20260426">20260426</a></h1>
+<h3 id="1-lineageos-230-build"><a class="header" href="#1-lineageos-230-build">1. lineageos 23.0 build</a></h3>
+<p>Know the build id:</p>
+<pre><code>$ cat ./build/make/core/build_id.mk
+#
+# Copyright (C) 2008 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# BUILD_ID is usually used to specify the branch name
+# (like "MAIN") or a branch name and a release candidate
+# (like "CRB01").  It must be a single word, and is
+# capitalized by convention.
+
+BUILD_ID=BP2A.250805.005
+</code></pre>
+<p>So we know the build id is <code>bp2a</code>.</p>
+<p>Build step:</p>
+<pre><code>[0.042s] dash@horse:/media/big/lineageos/waydroid_lineageos23.0$ sudo docker run --name=buildwaydroidlineageos230  -v `pwd`:/mnt/lineage -it  waydroid-build-24.04:aosp14build bash -c 'sleep infinity'
+root@72c9f29edb29:/mnt/lineage# lunch lineage_waydroid_x86_64-bp2a-userdebug 
+root@72c9f29edb29:/mnt/lineage# time make systemimage -j12 &amp;&amp; time make vendorimage -j12  
 </code></pre>
 
                     </main>
