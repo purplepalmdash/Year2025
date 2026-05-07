@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7ee0b3e8.js";
+            window.path_to_searchindex_js = "searchindex-768178f6.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-217edda4.js"></script>
@@ -23663,6 +23663,25 @@ Configuration file: /opt/intel/oneapi/compiler/2026.0/bin/compiler/../icpx.cfg
   -m models/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf \
   -ngl 99 -c 16384 --port 8080
 
+
+</code></pre>
+<h3 id="4-docker-speedup"><a class="header" href="#4-docker-speedup">4. docker speedup</a></h3>
+<p>via:</p>
+<pre><code>$ cat /etc/docker/daemon.json 
+{
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+      "registry-mirrors": [ 
+	       "https://docker.xuanyuan.me",
+    "https://docker.m.daocloud.io",
+    "https://docker.1ms.run",
+    "https://docker.1panel.live"
+      ]
+}
 
 </code></pre>
 
