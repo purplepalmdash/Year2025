@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b91b5404.js";
+            window.path_to_searchindex_js = "searchindex-7ee0b3e8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-b8a7d3ef.js"></script>
+        <script src="toc-217edda4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23570,6 +23570,101 @@ root@72c9f29edb29:/mnt/lineage# time make systemimage -j12 &amp;&amp; time make 
 <p>With <code>scp -C</code> we enable gzip compress/decompress.</p>
 <h3 id="2-kernel-419"><a class="header" href="#2-kernel-419">2. kernel 4.19</a></h3>
 <p>Use android 4.19 kernel for centos 7.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260506"><a class="header" href="#20260506">20260506</a></h1>
+<h3 id="1-rtl8152-on-openwrt"><a class="header" href="#1-rtl8152-on-openwrt">1. RTL8152 On OpenWRT</a></h3>
+<p>Via:</p>
+<pre><code>opkg update
+opkg install kmod-usb-net-rtl8152 r8152-firmware
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260507"><a class="header" href="#20260507">20260507</a></h1>
+<h3 id="1-hermes-conf"><a class="header" href="#1-hermes-conf">1. hermes conf</a></h3>
+<p>Select the model provider:</p>
+<pre><code>
+ → (○) Custom endpoint (enter URL manually)
+
+</code></pre>
+<h3 id="2-lock-the-screen"><a class="header" href="#2-lock-the-screen">2. lock the screen</a></h3>
+<p>Install slock, and configure its key-binding in awesome desktop.</p>
+<h3 id="3-intel-b60"><a class="header" href="#3-intel-b60">3. intel b60</a></h3>
+<p>Install b60 related  drivers:</p>
+<pre><code>sudo usermod -aG render $USER
+sudo add-apt-repository -y ppa:kobuk-team/intel-graphics-testing
+sudo apt update
+sudo apt install -y   intel-opencl-icd   libze-intel-gpu1 libze1   intel-level-zero-gpu   clinfo   intel-gsc   mesa-vulkan-drivers   intel-media-va-driver-non-free vainfo
+# Intel完整的编译器套件
+sudo apt install -y intel-basekit
+sudo apt install vulkan-tools
+sudo reboot
+lspci | grep -i arc
+lsmod | grep -E 'xe|i915'
+dpkg -l | grep -E 'intel|ze|opencl|level-zero|clinfo' | cat
+id
+clinfo -l
+vulkaninfo --summary | grep Intel
+</code></pre>
+<p>toolchain info:</p>
+<pre><code>dash@ai:~$ source /opt/intel/oneapi/setvars.sh
+ 
+:: initializing oneAPI environment ...
+   -bash: BASH_VERSION = 5.3.9(1)-release
+   args: Using "$@" for setvars.sh arguments: 
+:: advisor -- latest
+:: ccl -- latest
+:: compiler -- latest
+:: dal -- latest
+:: debugger -- latest
+:: dev-utilities -- latest
+:: dnnl -- latest
+:: dpcpp-ct -- latest
+:: dpl -- latest
+:: ipp -- latest
+:: ippcp -- latest
+:: mkl -- latest
+:: mpi -- latest
+:: tbb -- latest
+:: tcm -- latest
+:: umf -- latest
+:: vtune -- latest
+:: oneAPI environment initialized ::
+ 
+dash@ai:~$ which icx
+/opt/intel/oneapi/compiler/2026.0/bin/icx
+dash@ai:~$ which icpx
+/opt/intel/oneapi/compiler/2026.0/bin/icpx
+dash@ai:~$ icx --version
+Intel(R) oneAPI DPC++/C++ Compiler 2026.0.0 (2026.0.0.20260331)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /opt/intel/oneapi/compiler/2026.0/bin/compiler
+Configuration file: /opt/intel/oneapi/compiler/2026.0/bin/compiler/../icx.cfg
+dash@ai:~$ icpx --version
+Intel(R) oneAPI DPC++/C++ Compiler 2026.0.0 (2026.0.0.20260331)
+Target: x86_64-unknown-linux-gnu
+Thread model: posix
+InstalledDir: /opt/intel/oneapi/compiler/2026.0/bin/compiler
+Configuration file: /opt/intel/oneapi/compiler/2026.0/bin/compiler/../icpx.cfg
+</code></pre>
+<p>Download models:</p>
+<pre><code> export HF_ENDPOINT=https://hf-mirror.com
+ pip install -U "huggingface_hub[cli]" --break-system-packages
+ hf download unsloth/gemma-4-26B-A4B-it-GGUF   --local-dir ./models   --include "*UD-Q4_K_M.gguf"
+
+./build/bin/llama-cli \
+  -m models/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf \
+  -ngl 99 \                  # 几乎全 offload 到 GPU
+  --color -c 8192 --temp 0.7 \
+  -p "你好，请介绍一下自己。"
+
+服务器模式（推荐搭配 SillyTavern 或 Open WebUI）：bash
+
+./build/bin/llama-server \
+  -m models/gemma-4-26B-A4B-it-UD-Q4_K_XL.gguf \
+  -ngl 99 -c 16384 --port 8080
+
+
+</code></pre>
 
                     </main>
 
