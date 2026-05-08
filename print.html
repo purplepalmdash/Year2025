@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-768178f6.js";
+            window.path_to_searchindex_js = "searchindex-d02c6356.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-217edda4.js"></script>
+        <script src="toc-8abd1e5b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23683,6 +23683,60 @@ Configuration file: /opt/intel/oneapi/compiler/2026.0/bin/compiler/../icpx.cfg
       ]
 }
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260508"><a class="header" href="#20260508">20260508</a></h1>
+<h3 id="1-intel-b60-1"><a class="header" href="#1-intel-b60-1">1. intel b60</a></h3>
+<p>Detect the devices:</p>
+<pre><code>source /opt/intel/oneapi/setvars.sh   # 如果还没 source
+
+# 查看 SYCL 设备列表
+sycl-ls
+
+# 或者 llama.cpp 自带工具
+./build/bin/llama-ls-sycl-device
+
+Found 2 SYCL devices:
+|  |                   |                                       |       |Max    |        |Max  |Global |                     |
+|  |                   |                                       |       |compute|Max work|sub  |mem    |                     |
+|ID|        Device Type|                                   Name|Version|units  |group   |group|size   |       Driver version|
+|--|-------------------|---------------------------------------|-------|-------|--------|-----|-------|---------------------|
+| 0| [level_zero:gpu:0]|             Intel Arc Pro B60 Graphics|   20.1|    160|    1024|   32| 25669M|         1.15.37833+4|
+| 1| [level_zero:gpu:1]|                 Intel UHD Graphics 730|   12.2|     32|     512|   32|123990M|         1.15.37833+4|
+SYCL Optimization Feature:
+|ID|        Device Type|Reorder|
+|--|-------------------|-------|
+| 0| [level_zero:gpu:0]|      Y|
+| 1| [level_zero:gpu:1]|      Y|
+</code></pre>
+<p>Run the instance:</p>
+<pre><code>source /opt/intel/oneapi/setvars.sh
+export ONEAPI_DEVICE_SELECTOR=level_zero:0
+./build/bin/llama-cli -m /media/nvme/intelxe/models/gemma-4-26B-A4B-it-UD-Q4_K_M.gguf -ngl 99 --split-mode none  --main-gpu 0   -c 8192 --temp 0.7   -p "你好，请介绍一下自己。" 
+</code></pre>
+<h3 id="2-ollama-related"><a class="header" href="#2-ollama-related">2. ollama related</a></h3>
+<p>Specify gpu 1 for running:</p>
+<pre><code>sudo docker run -d --gpus '"device=1"'   -v /home/dash/ollama:/root/.ollama   -p 11434:11434   --name ollama   --restart always   ollama/ollama
+</code></pre>
+<p>Test:</p>
+<pre><code>curl http://localhost:11434/api/generate -d '{
+  "model": "gemma4:e2b",
+  "prompt": "讲个关于程序员的笑话，300字。",
+  "stream": false
+}'
+</code></pre>
+<p>Remove unnecessary models:</p>
+<pre><code>sudo docker exec -it ollama bash
+ollama list
+ollama rm gemma4:e4b
+</code></pre>
+<h3 id="3-xpu-smi"><a class="header" href="#3-xpu-smi">3. xpu-smi</a></h3>
+<p>via:</p>
+<pre><code>sudo xpu-smi stats -d 0
+</code></pre>
+<h3 id="4-virtualbox-dkms-status"><a class="header" href="#4-virtualbox-dkms-status">4. virtualbox dkms status</a></h3>
+<p>Close the secure boot.</p>
+<pre><code>[  148.300638] Loading of module with unavailable key is rejected， 如何解决这个问题？
 </code></pre>
 
                     </main>
