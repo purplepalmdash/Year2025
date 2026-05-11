@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-56942ea1.js";
+            window.path_to_searchindex_js = "searchindex-bc83931c.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-09d9ad6f.js"></script>
@@ -229,6 +229,14 @@ sudo systemctl restart sshd
 <h3 id="5-redroid-on-rockylinux"><a class="header" href="#5-redroid-on-rockylinux">5. redroid on rockylinux</a></h3>
 <p>Enable psi:</p>
 <pre><code>sudo grubby --update-kernel=ALL --args="psi=1"
+</code></pre>
+<h3 id="6-split-pdf"><a class="header" href="#6-split-pdf">6. split pdf</a></h3>
+<p>Install mupdf and mupdf-tools:</p>
+<pre><code>sudo pacman -S mupdf
+sudo pacman -S mupdf-tools
+</code></pre>
+<p>then split using:</p>
+<pre><code>mutool poster -x 2 input.pdf output.pdf
 </code></pre>
 
                     </main>
