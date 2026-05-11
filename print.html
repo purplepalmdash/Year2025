@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5d04eb6e.js";
+            window.path_to_searchindex_js = "searchindex-56942ea1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f32b18e8.js"></script>
+        <script src="toc-09d9ad6f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23879,6 +23879,63 @@ sudo docker exec -it ollama ollama run gemma4:e2b
     api_key: ''
     timeout: 180
     extra_body: {}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260511"><a class="header" href="#20260511">20260511</a></h1>
+<h3 id="1-reverse-ssh-to-llm"><a class="header" href="#1-reverse-ssh-to-llm">1. reverse-ssh to LLM</a></h3>
+<p>Local’s b60 to home:</p>
+<pre><code>ssh -p 16522 -R 28080:127.0.0.1:8080 dash@xxx.xxx.xxx.com
+ssh -p 16522 -R 28081:127.0.0.1:11434 dash@xxx.xxx.xxx.com
+</code></pre>
+<p>Verify:</p>
+<pre><code>dash@horse:~$ curl http://localhost:28080/v1/models
+{"models":[{"name":"Qwen3.6-27B-Q4_K_M.gguf","model":"Qwen3.6-27B-Q4_K_M.gguf","modified_at":"","size":"","digest":"","type":"model","description":"","tags":[""],"capabilities":["completion"],"parameters":"","details":{"parent_model":"","format":"gguf","family":"","families":[""],"parameter_size":"","quantization_level":""}}],"object":"list","data":[{"id":"Qwen3.6-27B-Q4_K_M.gguf","aliases":[],"tags":[],"object":"model","created":1778463453,"owned_by":"llamacpp","meta":{"vocab_type":2,"n_vocab":248320,"n_ctx_train":262144,"n_embd":5120,"n_params":26895998464,"size":16806250496}}]}dash@horse:~$ curl http://localhost:28081/v1/models
+{"object":"list","data":[{"id":"gemma4:e2b","object":"model","created":1778206475,"owned_by":"library"}]}
+</code></pre>
+<h3 id="2-nixoslegacy-grub"><a class="header" href="#2-nixoslegacy-grub">2. nixos(legacy grub)</a></h3>
+<p>Install steps:</p>
+<pre><code>sudo fdisk -l
+sudo parted /dev/vda -- mklabel msdos
+sudo parted /dev/vda -- mkpart primary 1MB -2GB
+sudo parted /dev/vda -- set  1 boot on
+sudo parted /dev/vda -- mkpart primary linux-swap -2GB 100%
+sudo mkfs.ext4 -L nixos /dev/vda1
+sudo mkswap -L sway /dev/vda2
+sudo mount /dev/disk/by-label/nixos /mnt
+sudo swapon /dev/vda2
+sudo nixos-generate-config --root /mnt
+sudo vim /mnt/etc/nixos/configuration.nix 
+sudo nixos-install 
+nixos-enter --root /mnt -c 'passwd dash'
+sudo nixos-enter --root /mnt -c 'passwd dash'
+</code></pre>
+<h3 id="3-docker-on-rockylinux"><a class="header" href="#3-docker-on-rockylinux">3. docker on rockylinux</a></h3>
+<p>Step:</p>
+<pre><code># 添加 Docker 官方仓库（CentOS 版对 Rocky 兼容）
+sudo dnf config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# 将仓库地址替换为阿里云镜像（关键加速步骤）
+sudo sed -i 's+download.docker.com+mirrors.aliyun.com/docker-ce+' /etc/yum.repos.d/docker-ce.repo
+# 更新缓存
+sudo dnf makecache
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker
+sudo systemctl status docker
+</code></pre>
+<p>Be sure to disable firewalld and selinux, then you could run redroid.</p>
+<h3 id="4-binding-problem"><a class="header" href="#4-binding-problem">4. binding problem</a></h3>
+<p><code>ssh -p 16522 -R 0.0.0.0:28082:127.0.0.1:8080 dash@xxx.xx.com </code> only listens <code>127.0.0.1</code>, for listening <code>0.0.0.0</code>, do following modification.</p>
+<pre><code>编辑 sshd 配置：
+sudo vim /etc/ssh/sshd_config
+找到或添加下面这行（推荐 clientspecified，更灵活）：
+GatewayPorts clientspecified
+# 或者直接允许所有：
+# GatewayPorts yes
+重启 sshd：
+sudo systemctl restart sshd
+</code></pre>
+<h3 id="5-redroid-on-rockylinux"><a class="header" href="#5-redroid-on-rockylinux">5. redroid on rockylinux</a></h3>
+<p>Enable psi:</p>
+<pre><code>sudo grubby --update-kernel=ALL --args="psi=1"
 </code></pre>
 
                     </main>
