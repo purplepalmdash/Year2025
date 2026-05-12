@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-bc83931c.js";
+            window.path_to_searchindex_js = "searchindex-ba7fedf3.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-09d9ad6f.js"></script>
+        <script src="toc-f3fe4b75.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23944,6 +23944,39 @@ sudo pacman -S mupdf-tools
 </code></pre>
 <p>then split using:</p>
 <pre><code>mutool poster -x 2 input.pdf output.pdf
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260512"><a class="header" href="#20260512">20260512</a></h1>
+<h3 id="1-archlinux-upgrade"><a class="header" href="#1-archlinux-upgrade">1. archlinux upgrade</a></h3>
+<p>Conflict solution, Rdd for uninstall the conflicted packages:</p>
+<pre><code>sudo pacman -Rdd geocode-glib-common
+</code></pre>
+<h3 id="2-rsync-dir"><a class="header" href="#2-rsync-dir">2. rsync dir</a></h3>
+<p>Step:</p>
+<pre><code>rsync -avz --delete nuc11:~/Music/ ~/Music/
+</code></pre>
+<h3 id="3-rocky-update-kernel"><a class="header" href="#3-rocky-update-kernel">3. rocky update kernel</a></h3>
+<p>via:</p>
+<pre><code>grubby --update-kernel="/boot/vmlinuz-5.14.0-284.11.1.el9_2.x86_64" --args="net.ifnames=0 biosdevname0"
+grubby --update-kernel=ALL --args="net.ifnames=0 biosdevname0"
+grubby --update-kernel=ALL --args="console=tty0 console=ttyS0,115200n8"
+</code></pre>
+<h3 id="4-ubuntu2604flex170"><a class="header" href="#4-ubuntu2604flex170">4. ubuntu2604(flex170)</a></h3>
+<p>Result:</p>
+<pre><code>	Capabilities: [400 v1] Latency Tolerance Reporting
+		Max snoop latency: 0ns
+		Max no snoop latency: 0ns
+	Kernel modules: i915, xe
+
+test@ubuntuvfio:~$ sudo lspci | grep -i vga
+00:02.0 VGA compatible controller: Intel Corporation ATS-M [Data Center GPU Flex 170] (rev 08)
+test@ubuntuvfio:~$ uname -a
+Linux ubuntuvfio 7.0.0-14-generic #14-Ubuntu SMP PREEMPT_DYNAMIC Mon Apr 13 11:09:53 UTC 2026 x86_64 GNU/Linux
+test@ubuntuvfio:~$ cat /etc/issue
+Ubuntu 26.04 LTS \n \l
+
+test@ubuntuvfio:~$ ls /dev/dri
+ls: cannot access '/dev/dri': No such file or directory
 </code></pre>
 
                     </main>
