@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-ba7fedf3.js";
+            window.path_to_searchindex_js = "searchindex-15c6a86a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f3fe4b75.js"></script>
+        <script src="toc-b5e0b172.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -23978,6 +23978,34 @@ Ubuntu 26.04 LTS \n \l
 test@ubuntuvfio:~$ ls /dev/dri
 ls: cannot access '/dev/dri': No such file or directory
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260513"><a class="header" href="#20260513">20260513</a></h1>
+<h3 id="1-pinim"><a class="header" href="#1-pinim">1. pi(NIM)</a></h3>
+<p>Update to newest version:</p>
+<pre><code>pi update
+</code></pre>
+<p>Install <code>pi-nvidia-nim</code> will failed:</p>
+<pre><code>pi -e https://github.com/xRyul/pi-nvidia-nim
+
+Cloning into '/tmp/pi-extensions/git-github.com/57452135/xRyul/pi-nvidia-nim'...
+remote: Enumerating objects: 215, done.
+remote: Counting objects: 100% (40/40), done.
+remote: Compressing objects: 100% (27/27), done.
+remote: Total 215 (delta 24), reused 28 (delta 13), pack-reused 175 (from 1)
+Receiving objects: 100% (215/215), 7.85 MiB | 2.01 MiB/s, done.
+Resolving deltas: 100% (111/111), done.
+up to date, audited 1 package in 351ms
+found 0 vulnerabilities
+Error: Failed to load extension "/tmp/pi-extensions/git-github.com/57452135/xRyul/pi-nvidia-nim/index.ts": Failed to load extension: Cannot find module '@earendil-works/pi-ai'
+Require stack:
+/tmp/pi-extensions/git-github.com/57452135/xRyul/pi-nvidia-nim/index.ts
+</code></pre>
+<p>Then we switch to <code>pi install</code>  for automatically dependency:</p>
+<pre><code>pi install git:github.com/xRyul/pi-nvidia-nim
+cd ~/.pi/agent/git/github.com/xRyul/pi-nvidia-nim
+npm install
+</code></pre>
+<p>After pi launched, type <code>/model</code> in pi, then select NIM’s models.</p>
 
                     </main>
 
