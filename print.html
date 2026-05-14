@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-15c6a86a.js";
+            window.path_to_searchindex_js = "searchindex-a81ed7ed.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-b5e0b172.js"></script>
+        <script src="toc-f74c0145.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24006,6 +24006,76 @@ cd ~/.pi/agent/git/github.com/xRyul/pi-nvidia-nim
 npm install
 </code></pre>
 <p>After pi launched, type <code>/model</code> in pi, then select NIM’s models.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260514"><a class="header" href="#20260514">20260514</a></h1>
+<h3 id="1-firefox-hardware-acceleration"><a class="header" href="#1-firefox-hardware-acceleration">1. firefox hardware acceleration</a></h3>
+<p>view <code>about:support</code>, WebRender not enabled.</p>
+<p>archlinux:</p>
+<pre><code>sudo pacman -Rns xf86-video-intel
+Enable multilib
+sudo nano /etc/pacman.conf
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+sudo pacman -S mesa lib32-mesa
+</code></pre>
+<p>After rebooted:</p>
+<pre><code>glxinfo | grep "OpenGL renderer"
+</code></pre>
+<h3 id="2qwen36-mtp"><a class="header" href="#2qwen36-mtp">2.qwen36 mtp</a></h3>
+<p>Download via:</p>
+<pre><code>dash@horse:~$ export HF_ENDPOINT=https://hf-mirror.com
+dash@horse:~$ hf download  unsloth/Qwen3.6-27B-MTP-GGUF --include "*Q4_K_M.gguf" --local-dir ./models/Qwen3.6-27B-MTP-GGUF
+$ hf download  unsloth/Qwen3.6-27B-MTP-GGUF --include "mmproj-F16.gguf" --local-dir ./models/Qwen3.6-27B-MTP-GGUF
+</code></pre>
+<p>35b models:</p>
+<pre><code> hf download unsloth/Qwen3.6-35B-A3B-MTP-GGUF --include "Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf" --local-dir   ./models/Qwen3.6-35B-MTP-GGUF
+</code></pre>
+<h3 id="3-lv-extendshrink"><a class="header" href="#3-lv-extendshrink">3. lv extend/shrink</a></h3>
+<p>Via:</p>
+<pre><code># 查看当前 LVM 情况
+lvdisplay
+vgs
+lvs
+df -h
+
+# 从 /home 缩小 200G 给根分区（示例）
+# 先缩小 /home 的逻辑卷和文件系统
+lvreduce -L -200G -r /dev/centos/home     # -r 会自动 resize 文件系统（CentOS 8+ 推荐）
+
+# 再扩大 root
+lvextend -L +200G -r /dev/centos/root
+</code></pre>
+<h3 id="4-iso-make"><a class="header" href="#4-iso-make">4. iso make</a></h3>
+<p>Make iso via:</p>
+<pre><code>xorriso -as mkisofs -o output.iso -R -J -V "MyVolume" /path/to/your_directory
+</code></pre>
+<h3 id="5-mtp-model-startup"><a class="header" href="#5-mtp-model-startup">5. mtp model startup</a></h3>
+<p>Startup command:</p>
+<pre><code>CUDA_VISIBLE_DEVICES=0 ./build/bin/llama-server   -m /home/dash/models/Qwen3.6-35B-MTP-GGUF/Qwen3.6-35B-A3B-UD-Q4_K_XL.gguf   --mmproj /home/dash/models/Qwen3.6-35B-MTP-GGUF/mmproj-F16.gguf   --host 0.0.0.0   --port 8080   --ctx-size 262144   -ngl 99 
+  --flash-attn on \
+  --cache-type-k q8_0 \
+  --cache-type-v q8_0 \
+  --jinja \
+  -t 0 \
+  --no-mmap \
+  --spec-type draft-mtp \
+  --spec-draft-n-max 3 \
+  -np 1 --cont-batching off --no-warmup
+</code></pre>
+<h3 id="6-mtp-llamacpp"><a class="header" href="#6-mtp-llamacpp">6. MTP llama.cpp</a></h3>
+<p>via:</p>
+<pre><code>cd Code
+git clone -b mtp-clean https://github.com/am17an/llama.cpp.git
+# 或者官方 PR：
+# git clone https://github.com/ggml-org/llama.cpp.git
+# cd llama.cpp
+# git fetch origin pull/22673/head:mtp
+# git checkout mtp
+
+cd llama.cpp
+cmake -B build -DBUILD_SHARED_LIBS=OFF -DGGML_CUDA=ON   # CPU/Metal 就把 CUDA=OFF
+cmake --build build --config Release -j --clean-first --target llama-cli llama-server
+</code></pre>
 
                     </main>
 
