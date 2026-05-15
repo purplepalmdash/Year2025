@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a81ed7ed.js";
+            window.path_to_searchindex_js = "searchindex-e01a10e7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-f74c0145.js"></script>
+        <script src="toc-697cffe0.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24075,6 +24075,16 @@ git clone -b mtp-clean https://github.com/am17an/llama.cpp.git
 cd llama.cpp
 cmake -B build -DBUILD_SHARED_LIBS=OFF -DGGML_CUDA=ON   # CPU/Metal 就把 CUDA=OFF
 cmake --build build --config Release -j --clean-first --target llama-cli llama-server
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260515"><a class="header" href="#20260515">20260515</a></h1>
+<h3 id="1-vulkan-configuration"><a class="header" href="#1-vulkan-configuration">1. vulkan configuration</a></h3>
+<p>Configuration for <code>build.prop</code>:</p>
+<pre><code>$ sudo docker cp b60:/vendor/build.prop .
+$ sudo cat build.prop | grep vulkan
+ro.hwui.use_vulkan=
+ro.hardware.vulkan=intel
+$ sudo docker cp build.prop  b60:/vendor/build.prop
 </code></pre>
 
                     </main>
