@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-e01a10e7.js";
+            window.path_to_searchindex_js = "searchindex-69e872c3.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-697cffe0.js"></script>
+        <script src="toc-838e6d65.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24085,6 +24085,126 @@ $ sudo cat build.prop | grep vulkan
 ro.hwui.use_vulkan=
 ro.hardware.vulkan=intel
 $ sudo docker cp build.prop  b60:/vendor/build.prop
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260518"><a class="header" href="#20260518">20260518</a></h1>
+<h3 id="1-vfiorockylinux"><a class="header" href="#1-vfiorockylinux">1. vfio(RockyLinux)</a></h3>
+<p>变更操作:</p>
+<pre><code># cat /etc/modprobe.d/vfio.conf 
+options vfio-pci ids=8086:56c2
+# grubby --update-kernel=ALL --args="vfio-pci.ids=8086:56c2"
+# grubby --update-kernel=ALL --args="rd.driver.pre=vfio-pci"
+</code></pre>
+<h3 id="2-net-issue"><a class="header" href="#2-net-issue">2. net issue</a></h3>
+<pre><code>cd /app/cxxx/log/ubuntuqcow2
+
+# cat start_flex1.sh 
+#!/bin/bash
+
+#bak  testflex1.qcow2
+# lspci | grep -i display
+#21:00.0 Display controller: Intel Corporation Device 56c2 (rev 08)
+#47:00.0 Display controller: Intel Corporation Device 56c2 (rev 08)
+
+/usr/libexec/qemu-kvm \
+  -name rocky-passthrough \
+  -enable-kvm \
+  -machine q35,accel=kvm \
+  -cpu host,kvm=off \
+  -smp 24,sockets=1,cores=24,threads=1 \
+  -m 64G \
+  -drive file=./testflex1.qcow2,format=qcow2,if=none,id=virtio-disk0,cache=none,aio=native \
+  -device virtio-blk-pci,drive=virtio-disk0,id=disk0,bootindex=1 \
+  -device vfio-pci,host=21:00.0,multifunction=on \
+  -netdev bridge,id=net0,br=virbr0 \
+  -device virtio-net-pci,netdev=net0,mac=52:54:00:12:34:56 \
+  -vga none \
+  -nographic \
+  -chardev stdio,id=char0,mux=on \
+  -serial chardev:char0 \
+  -mon chardev=char0 \
+  -boot c
+</code></pre>
+<p>In host level, enable following.</p>
+<pre><code># 1. 在 FORWARD 链最前面插入规则（优先级最高）
+sudo iptables -I FORWARD 1 -i virbr0 -j ACCEPT
+sudo iptables -I FORWARD 1 -o virbr0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# 2. 确保 NAT 规则也被优先处理
+sudo iptables -t nat -I POSTROUTING 1 -s 192.168.122.0/24 ! -d 192.168.122.0/24 -j MASQUERADE
+</code></pre>
+<p>In guest level(ubuntu2204):</p>
+<pre><code>test@ubuntu2204vfio:~$ uname -a
+Linux ubuntu2204vfio 5.15.0-119-generic #129-Ubuntu SMP Fri Aug 2 19:25:20 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+test@ubuntu2204vfio:~$ cat /etc/issue
+Ubuntu 22.04.5 LTS \n \l
+# sudo apt update -y &amp;&amp; sudo apt upgrade -y
+# sudo reboot
+test@ubuntu2204vfio:~$ uname -a
+Linux ubuntu2204vfio 5.15.0-179-generic #189-Ubuntu SMP Tue May 5 18:20:56 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+</code></pre>
+<p>Install driver:</p>
+<pre><code>test@ubuntu2204vfio:~$ sudo ./intel-gpu-ubuntu-jammy-2523.run 
+
+$ sudo apt install -y \
+    linux-headers-$(uname -r) \
+    linux-modules-extra-$(uname -r) \
+    flex bison \
+    intel-fw-gpu intel-i915-dkms xpu-smi
+$ sudo reboot
+</code></pre>
+<p>Examine the driver:</p>
+<pre><code>test@ubuntu2204vfio:~$ sudo touch /etc/cloud/cloud-init.disabled
+[sudo] password for test: 
+test@ubuntu2204vfio:~$ uname -a
+Linux ubuntu2204vfio 5.15.0-179-generic #189-Ubuntu SMP Tue May 5 18:20:56 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+test@ubuntu2204vfio:~$ sudo lspci | grep -i display
+00:02.0 Display controller: Intel Corporation Device 56c2 (rev 08)
+test@ubuntu2204vfio:~$ sudo lspci -vvnn -s 00:02.0 | grep 'in use' -A3 -B3
+	Capabilities: [400 v1] Latency Tolerance Reporting
+		Max snoop latency: 0ns
+		Max no snoop latency: 0ns
+	Kernel driver in use: i915
+	Kernel modules: i915
+
+test@ubuntu2204vfio:~$ sudo xpu-smi stats -d 0
++-----------------------------+--------------------------------------------------------------------+
+| Device ID                   | 0                                                                  |
++-----------------------------+--------------------------------------------------------------------+
+| GPU Utilization (%)         | N/A                                                                |
+| EU Array Active (%)         | N/A                                                                |
+| EU Array Stall (%)          | N/A                                                                |
+| EU Array Idle (%)           | N/A                                                                |
+|                             |                                                                    |
+| Compute Engine Util (%)     | N/A                                                                |
+| Render Engine Util (%)      | N/A                                                                |
+| Media Engine Util (%)       | N/A                                                                |
+| Decoder Engine Util (%)     | N/A                                                                |
+| Encoder Engine Util (%)     | N/A                                                                |
+| Copy Engine Util (%)        | N/A                                                                |
+| Media EM Engine Util (%)    | N/A                                                                |
+| 3D Engine Util (%)          | N/A                                                                |
++-----------------------------+--------------------------------------------------------------------+
+| Reset                       | N/A                                                                |
+| Programming Errors          | N/A                                                                |
+| Driver Errors               | N/A                                                                |
+| Cache Errors Correctable    | N/A                                                                |
+| Cache Errors Uncorrectable  | N/A                                                                |
+| Mem Errors Correctable      | N/A                                                                |
+| Mem Errors Uncorrectable    | N/A                                                                |
++-----------------------------+--------------------------------------------------------------------+
+| GPU Power (W)               | 39                                                                 |
+| GPU Frequency (MHz)         | 2050                                                               |
+| Media Engine Freq (MHz)     | 1025                                                               |
+| GPU Core Temperature (C)    | 38                                                                 |
+| GPU Memory Temperature (C)  | N/A                                                                |
+| GPU Memory Read (kB/s)      | 0                                                                  |
+| GPU Memory Write (kB/s)     | 96                                                                 |
+| GPU Memory Bandwidth (%)    | 0                                                                  |
+| GPU Memory Used (MiB)       | 27                                                                 |
+| GPU Memory Util (%)         | 0                                                                  |
+| Xe Link Throughput (kB/s)   | N/A                                                                |
++-----------------------------+--------------------------------------------------------------------+
 </code></pre>
 
                     </main>
