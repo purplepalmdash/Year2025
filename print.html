@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-69e872c3.js";
+            window.path_to_searchindex_js = "searchindex-6aeffde8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-838e6d65.js"></script>
+        <script src="toc-0b4ec517.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24205,6 +24205,25 @@ test@ubuntu2204vfio:~$ sudo xpu-smi stats -d 0
 | GPU Memory Util (%)         | 0                                                                  |
 | Xe Link Throughput (kB/s)   | N/A                                                                |
 +-----------------------------+--------------------------------------------------------------------+
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260519"><a class="header" href="#20260519">20260519</a></h1>
+<h3 id="1-re-gen-machineid"><a class="header" href="#1-re-gen-machineid">1. Re-gen machineID</a></h3>
+<p>Via:</p>
+<pre><code>sudo rm -f /etc/machine-id
+sudo systemd-machine-id-setup
+</code></pre>
+<h3 id="2-auto-load-binder"><a class="header" href="#2-auto-load-binder">2. Auto-load binder</a></h3>
+<p>Via:</p>
+<pre><code>test@testflex2:~$ cat /etc/modprobe.d/binder_linux.conf
+# 为 binder_linux 模块设置参数
+options binder_linux devices="binder,hwbinder,vndbinder"
+test@testflex2:~$ cat /etc/modules-load.d/binder_linux.conf
+binder_linux
+</code></pre>
+<h3 id="3-multi-port-reverse-proxy"><a class="header" href="#3-multi-port-reverse-proxy">3. Multi port Reverse proxy</a></h3>
+<p>Via:</p>
+<pre><code>ssh -p16522 -R 0.0.0.0:20025:127.0.0.1:22 -R 0.0.0.0:20026:127.0.0.1:6555 -R 0.0.0.0:20027:127.0.0.1:6556 dash@yqnyjy.ddns.net
 </code></pre>
 
                     </main>
