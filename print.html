@@ -16,8 +16,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-2459343d.css">
-        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/general-0392ca55.css">
+        <link rel="stylesheet" href="css/chrome-fc474251.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6aeffde8.js";
+            window.path_to_searchindex_js = "searchindex-977d5013.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0b4ec517.js"></script>
+        <script src="toc-af466eb7.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24225,6 +24225,22 @@ binder_linux
 <p>Via:</p>
 <pre><code>ssh -p16522 -R 0.0.0.0:20025:127.0.0.1:22 -R 0.0.0.0:20026:127.0.0.1:6555 -R 0.0.0.0:20027:127.0.0.1:6556 dash@yqnyjy.ddns.net
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260520"><a class="header" href="#20260520">20260520</a></h1>
+<h3 id="1-install-pi"><a class="header" href="#1-install-pi">1. Install pi:</a></h3>
+<p>Install with one line:</p>
+<pre><code>curl -fsSL https://pi.dev/install.sh | sh
+pi 
+</code></pre>
+<p>Install nim plugin:</p>
+<pre><code> pi -e https://github.com/xRyul/pi-nvidia-nim
+vim ~/.bashrc
+# 推荐（pi-nvidia-nim 扩展优先使用这个）
+export NVIDIA_NIM_API_KEY=nvapi-你的密钥在这里
+
+# 或者使用这个（也兼容）
+export NVIDIA_API_KEY=nvapi-你的密钥在这里
+</code></pre>
 
                     </main>
 
@@ -24258,11 +24274,11 @@ binder_linux
 
         <script src="elasticlunr-ef4e11c1.min.js"></script>
         <script src="mark-09e88c2c.min.js"></script>
-        <script src="searcher-c2a407aa.js"></script>
+        <script src="searcher-09f2665d.js"></script>
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-a0b12cfe.js"></script>
+        <script src="book-c22b7243.js"></script>
 
         <!-- Custom JS scripts -->
 
