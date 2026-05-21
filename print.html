@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-977d5013.js";
+            window.path_to_searchindex_js = "searchindex-0dd81a53.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-af466eb7.js"></script>
+        <script src="toc-cbb153a5.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24240,6 +24240,26 @@ export NVIDIA_NIM_API_KEY=nvapi-你的密钥在这里
 
 # 或者使用这个（也兼容）
 export NVIDIA_API_KEY=nvapi-你的密钥在这里
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260521"><a class="header" href="#20260521">20260521</a></h1>
+<h3 id="1-git-specify-proxy-for-on-time"><a class="header" href="#1-git-specify-proxy-for-on-time">1. git specify proxy for on time</a></h3>
+<p>Via:</p>
+<pre><code>git  -c http.proxy=socks5h://192.168.1.208:1080 -c https.proxy=socks5h://192.168.1.208:1080  clone https://github.com/ggerganov/llama.cpp.git .
+</code></pre>
+<h3 id="2-pi-dev-console-context"><a class="header" href="#2-pi-dev-console-context">2. pi dev console context</a></h3>
+<p>via:</p>
+<pre><code>npm install -g context-mode
+pi install npm:context-model npm:context-mode
+cat ~/.pi/agent/settings.json
+Add:    
+
+  "mcpServers": {
+    "context-mode": {
+      "command": "context-mode"
+    }
+  }
+
 </code></pre>
 
                     </main>
