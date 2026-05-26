@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0dd81a53.js";
+            window.path_to_searchindex_js = "searchindex-04ca7c85.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cbb153a5.js"></script>
+        <script src="toc-cb212989.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24260,6 +24260,38 @@ Add:
     }
   }
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260526"><a class="header" href="#20260526">20260526</a></h1>
+<h3 id="1-n100-wol"><a class="header" href="#1-n100-wol">1. n100 wol</a></h3>
+<p>Configure via:</p>
+<pre><code>test@n100:~$ sudo ethtool enp2s0 | grep 'Wake-on'
+	Supports Wake-on: pumbg
+	Wake-on: d
+test@n100:~$ cat &lt;&lt;EOF | sudo tee /etc/systemd/system/wol.service
+[Unit]
+Description=Enable Wake On LAN
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/sbin/ethtool -s enp2s0 wol g
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+test@n100:~$ sudo vim /etc/systemd/system/wol.service 
+test@n100:~$ sudo systemctl daemon-reload
+test@n100:~$ sudo systemctl enable --now wol.service
+Created symlink /etc/systemd/system/multi-user.target.wants/wol.service → /etc/systemd/system/wol.service.
+test@n100:~$ sudo ethtool enp2s0 | grep 'Wake-on'
+	Supports Wake-on: pumbg
+	Wake-on: g
+
+</code></pre>
+<p>Wakeup via:</p>
+<pre><code>ssh root@192.168.1.172 'wakeonlan -i  10.171.172.255 xx:xx:xx'
 </code></pre>
 
                     </main>
