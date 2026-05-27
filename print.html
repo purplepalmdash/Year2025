@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-04ca7c85.js";
+            window.path_to_searchindex_js = "searchindex-ecbdfba0.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cb212989.js"></script>
+        <script src="toc-c8e84a10.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24292,6 +24292,16 @@ test@n100:~$ sudo ethtool enp2s0 | grep 'Wake-on'
 </code></pre>
 <p>Wakeup via:</p>
 <pre><code>ssh root@192.168.1.172 'wakeonlan -i  10.171.172.255 xx:xx:xx'
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260527"><a class="header" href="#20260527">20260527</a></h1>
+<h3 id="1-nuc11-4-screens"><a class="header" href="#1-nuc11-4-screens">1. nuc11 4 screens</a></h3>
+<p>via:</p>
+<pre><code> xrandr --output DP1 --mode 1920x1080 --left-of DP2 &amp;&amp; xrandr --output DP4 --mode 1920x1080 --below DP1 &amp;&amp; xrandr --output DP3 --mode 1920x1080 --below DP2
+</code></pre>
+<h3 id="2-grep-exclude-2-folders"><a class="header" href="#2-grep-exclude-2-folders">2. grep exclude 2 folders</a></h3>
+<p>via:</p>
+<pre><code>grep -r --exclude-dir=project-objects --exclude-dir=projects "mesa" ./ -r
 </code></pre>
 
                     </main>
