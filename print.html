@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-40fff052.js";
+            window.path_to_searchindex_js = "searchindex-95c6159e.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-96ea3cf2.js"></script>
+        <script src="toc-3e25b9b2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24307,6 +24307,64 @@ test@n100:~$ sudo ethtool enp2s0 | grep 'Wake-on'
 <h1 id="20260528"><a class="header" href="#20260528">20260528</a></h1>
 <h3 id="1-intel-aic-issue"><a class="header" href="#1-intel-aic-issue">1. Intel Aic issue</a></h3>
 <p>Could not run on uhd630.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260529"><a class="header" href="#20260529">20260529</a></h1>
+<h3 id="1-buildcic"><a class="header" href="#1-buildcic">1. buildcic</a></h3>
+<p>Steps:</p>
+<pre><code>mkdir -p ~/Code/cic
+repo init -u https://github.com/projectceladon/manifest.git -b celadon/p/mr0/master -m cic
+vim .repo/manifests/cic
+vim .repo/manifests/default.xml
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo sync -c --no-tags 
+</code></pre>
+<p>Modification of cic/default.xml :</p>
+<pre><code>test@nuc11test:~/Code/cic$ cat .repo/manifests/cic | grep bfsu -A3 -B3
+&lt;manifest&gt;
+
+  &lt;remote  name="aosp"
+           fetch="https://mirrors.bfsu.edu.cn/git/AOSP" /&gt;
+  &lt;default revision="refs/tags/android-9.0.0_r55"
+           remote="aosp"
+           sync-c="true"
+test@nuc11test:~/Code/cic$ cat .repo/manifests/default.xml | grep bfsu -A3 -B3
+&lt;manifest&gt;
+
+  &lt;remote  name="aosp"
+           fetch="https://mirrors.bfsu.edu.cn/git/AOSP" /&gt;
+  &lt;default revision="refs/tags/android-9.0.0_r48"
+           remote="aosp"
+           sync-c="true"
+</code></pre>
+<h3 id="2-celadon-build-docker-images"><a class="header" href="#2-celadon-build-docker-images">2 celadon build docker images</a></h3>
+<p>Steps:</p>
+<pre><code>git clone https://github.com/projectceladon/celadon-build-environment
+docker build celadon-build-environment
+docker tag &lt;ID&gt; celadon-build-environment:latest
+cd ~/SourceCodeOfCeladon
+sudo docker run -it -v `pwd`:/src celadon-build-environment /bin/bash
+</code></pre>
+<h3 id="3-build-cic-in-docker"><a class="header" href="#3-build-cic-in-docker">3. build cic in docker</a></h3>
+<p>In docker instance, you should manually add locale, and use python2 instead of python3, because the docker instance is based on ubuntu22.04, then you could trigger build:</p>
+<pre><code>dash@aiBox:/media/sda/celadon/cic/cic$ sudo docker run -it -v `pwd`:/src celadon-build-environment /bin/bash                                                                                  
+celadon@d7ce6465194a:~$ cd /src                                                                                                                                                               
+celadon@d7ce6465194a:/src$ ls                                                                                                                                                                 Android.bp  art     bootable        build          cts     developers   device    frameworks  kernel   libnativehelper  packages  platform_testing  sdk     test       tools                  
+Makefile    bionic  bootstrap.bash  compatibility  dalvik  development  external  hardware    libcore  manifests        pdk       prebuilts         system  toolchain  vendor      
+
+sudo add-apt-repository universe
+sudo apt update
+sudo apt install python2
+mkdir -p ~/bin
+ln -s /usr/bin/python2 ~/bin/python
+export PATH=~/bin:$PATH
+sudo apt-get install locales
+sudo locale-gen en_US.UTF-8
+sudo update-locale LANG=en_US.UTF-8
+locale -a
+source build/envsetup.sh
+lunch cic_dev-userdebug
+time make -j14 cic
+</code></pre>
 
                     </main>
 
