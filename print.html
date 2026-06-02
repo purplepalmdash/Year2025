@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4c333d8a.js";
+            window.path_to_searchindex_js = "searchindex-bec199dc.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-34f266d9.js"></script>
+        <script src="toc-e382e9bf.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24364,6 +24364,57 @@ locale -a
 source build/envsetup.sh
 lunch cic_dev-userdebug
 time make -j14 cic
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260530"><a class="header" href="#20260530">20260530</a></h1>
+<h3 id="1-civ-in-bare-metal"><a class="header" href="#1-civ-in-bare-metal">1. CIV in bare metal</a></h3>
+<p>Nuc11:</p>
+<p><img src="images/2026_05_30_10_06_41_1028x606.jpg" alt="./images/2026_05_30_10_06_41_1028x606.jpg"></p>
+<p>Disable Secure Boot:</p>
+<p><img src="images/2026_05_30_10_13_45_857x377.jpg" alt="./images/2026_05_30_10_13_45_857x377.jpg"></p>
+<p>Check <code>Internal UEFI Shell</code> in <code>Boot Priority</code>:</p>
+<p><img src="images/2026_05_30_10_14_12_861x527.jpg" alt="./images/2026_05_30_10_14_12_861x527.jpg"></p>
+<p>Save &amp; Exit Setup:</p>
+<p><img src="images/2026_05_30_10_15_06_978x557.jpg" alt="./images/2026_05_30_10_15_06_978x557.jpg"></p>
+<p>Boot-&gt;Boot Priority:</p>
+<p><img src="images/2026_05_30_10_07_15_877x406.jpg" alt="./images/2026_05_30_10_07_15_877x406.jpg"></p>
+<p>Set the boot priority:</p>
+<p><img src="images/2026_05_30_10_16_04_905x676.jpg" alt="./images/2026_05_30_10_16_04_905x676.jpg"></p>
+<p>Save and reboot the machine.<br>Auto Flash:</p>
+<p><img src="images/2026_05_30_11_44_37_1253x799.jpg" alt="./images/2026_05_30_11_44_37_1253x799.jpg"></p>
+<p>After Flash:</p>
+<p><img src="images/2026_05_30_11_46_27_887x524.jpg" alt="./images/2026_05_30_11_46_27_887x524.jpg"></p>
+<pre><code>1|caas:/ # dumpsys SurfaceFlinger  | grep GLES
+GLES: Intel, Mesa Intel(R) Xe Graphics (TGL GT2), OpenGL ES 3.2 Mesa 21.1.5 (git-4096b2ff69)
+test@nuc11test:~/scrcpy-linux-x86_64-v4.0$ ./scrcpy --list-encoders
+scrcpy 4.0 &lt;https://github.com/Genymobile/scrcpy&gt;
+INFO: ADB device found:
+INFO:     --&gt; (tcpip)  10.171.172.240:5555             device  AOSP_on_Intel_Platform
+/home/test/scrcpy-linux-x86_64-v4.0/scrcpy-server: 1 file pushed, 0 skipped. 662.5 MB/s (732226 bytes in 0.001s)
+[server] INFO: Device: [Intel] intel AOSP on Intel Platform (Android 11)
+[server] INFO: List of video encoders:
+    --video-codec=h264 --video-encoder=OMX.Intel.hw_ve.h264           (hw) [vendor]
+    --video-codec=h264 --video-encoder=c2.android.avc.encoder         (sw)
+    --video-codec=h264 --video-encoder=OMX.google.h264.encoder        (sw) (alias for c2.android.avc.encoder)
+    --video-codec=h265 --video-encoder=OMX.Intel.hw_ve.h265           (hw) [vendor]
+    --video-codec=h265 --video-encoder=c2.android.hevc.encoder        (sw)
+[server] INFO: List of audio encoders:
+    --audio-codec=opus --audio-encoder=c2.android.opus.encoder        (sw)
+    --audio-codec=aac --audio-encoder=c2.android.aac.encoder          (sw)
+    --audio-codec=aac --audio-encoder=OMX.google.aac.encoder          (sw) (alias for c2.android.aac.encoder)
+    --audio-codec=flac --audio-encoder=c2.android.flac.encoder        (sw)
+    --audio-codec=flac --audio-encoder=OMX.google.flac.encoder        (sw) (alias for c2.android.flac.encoder)
+</code></pre>
+<h3 id="2-lxgw-on-ubuntu2204"><a class="header" href="#2-lxgw-on-ubuntu2204">2. lxgw on ubuntu22.04</a></h3>
+<p>Quickly download and use lxgw on ubuntu2204:</p>
+<pre><code>wget https://codeload.github.com/lxgw/LxgwWenKai/zip/refs/heads/main
+unzip LxgwWenKai-main.zip
+cd LxgwWenKai-main/
+cd fonts/TTF/
+sudo mkdir -p /usr/local/share/fonts/lxgw-wenkai
+sudo cp * /usr/local/share/fonts/lxgw-wenkai/
+sudo fc-cache -fv
+fc-list | grep -i "lxgw"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260601"><a class="header" href="#20260601">20260601</a></h1>
