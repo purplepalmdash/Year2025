@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-7a9f6c6a.js";
+            window.path_to_searchindex_js = "searchindex-5ca73957.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e046c132.js"></script>
+        <script src="toc-5a58a909.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24429,6 +24429,37 @@ fc-list | grep -i "lxgw"
 <h3 id="1-save-to-targzdocker"><a class="header" href="#1-save-to-targzdocker">1. save to tar.gz(docker)</a></h3>
 <p>via:</p>
 <pre><code>sudo docker save myapp:latest | gzip &gt; myapp_image.tar.gz
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260605"><a class="header" href="#20260605">20260605</a></h1>
+<h3 id="1-openeuler-kernel"><a class="header" href="#1-openeuler-kernel">1. openeuler kernel</a></h3>
+<p>sp3 kernel:</p>
+<pre><code>wget https://mirrors.lzu.edu.cn/openeuler/openEuler-22.03-LTS-SP3/source/Packages/kernel-5.10.0-182.0.0.95.oe2203sp3.src.rpm 
+build with j8
+time rpmbuild -ba kernel.spec --define '_smp_mflags -j
+</code></pre>
+<p>Then refers to <code>./20250827.md</code></p>
+<h3 id="2-iptables-rules"><a class="header" href="#2-iptables-rules">2. iptables rules</a></h3>
+<p>Delete and re-run:</p>
+<pre><code>sudo iptables -t nat -D PREROUTING -p tcp -d 10.0.0.176 --dport 15111 -j DNAT --to-destination 192.168.122.29:5111
+sudo iptables -t nat -D PREROUTING -p tcp --dport 15111 -j DNAT --to-destination 192.168.122.29:5111
+sudo iptables -D FORWARD -p tcp -d 192.168.122.29 --dport 5111 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -D FORWARD -p tcp -s 192.168.122.29 --sport 5111 -m state --state ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -t nat -L -n -v
+sudo iptables -L -n -v
+sudo iptables -t nat -A PREROUTING -p tcp -d 10.0.0.176 --dport 15111 -j DNAT --to-destination 192.168.122.29:5111
+sudo iptables -I FORWARD 1 -p tcp -d 192.168.122.29 --dport 5111 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+sudo iptables -I FORWARD 2 -p tcp -s 192.168.122.29 --sport 5111 -m state --state ESTABLISHED,RELATED -j ACCEPT
+</code></pre>
+<h3 id="3-install-old-kernel"><a class="header" href="#3-install-old-kernel">3. Install old kernel</a></h3>
+<p>newer/older via:</p>
+<pre><code># rpm -ivh kernel-5.10.0-182.0.0.95.aarch64.rpm 
+Verifying...                          ################################# [100%]
+Preparing...                          ################################# [100%]
+    package kernel-5.10.0_xxxxxxxxxxxx.aarch64 (which is newer than kernel-5.10.0-182.0.0.95.aarch64) is already installed
+</code></pre>
+<p>Solved via:</p>
+<pre><code>rpm -ivh --oldpackage kernel-5.10.0-182.0.0.95.aarch64.rpm
 </code></pre>
 
                     </main>
