@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5ca73957.js";
+            window.path_to_searchindex_js = "searchindex-0da68d34.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-5a58a909.js"></script>
+        <script src="toc-7a6c361d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24460,6 +24460,64 @@ Preparing...                          ################################# [100%]
 </code></pre>
 <p>Solved via:</p>
 <pre><code>rpm -ivh --oldpackage kernel-5.10.0-182.0.0.95.aarch64.rpm
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260608"><a class="header" href="#20260608">20260608</a></h1>
+<h3 id="1-build-openeuler-kernel"><a class="header" href="#1-build-openeuler-kernel">1. Build OpenEuler Kernel</a></h3>
+<p>Find the committment under <code>https://gitee.com/src-openeuler/kernel/commit/59664facbc4bba10fe81fc251a9f2f7c4406a31e </code>, then:</p>
+<pre><code>git clone https://atomgit.com/src-openeuler/kernel.git
+cd kernel
+# 切换到分支
+git checkout openEuler-22.03-LTS-SP1
+# 强制重置分支到指定 commit（会丢弃该 commit 之后的所有本地修改/提交）
+git reset --hard 59664facbc4bba10fe81fc251a9f2f7c4406a31e
+</code></pre>
+<p>Install dependencies:</p>
+<pre><code>sudo dnf install rpm-build rpmdevtools dnf-plugins-core
+sudo dnf builddep kernel.spec 
+</code></pre>
+<p>As mock setup the rpmdev tree:</p>
+<pre><code>su - mock
+cd /home/mock
+rpmdev-setuptree
+
+cd ~/Code/kernel
+cp kernel.spec ~/rpmbuild/SPECS/
+cp ~/Code/kernel/* ~/rpmbuild/SOURCES
+</code></pre>
+<p>Fetch the kernel:</p>
+<pre><code>git clone https://gitee.com/openeuler/kernel.git
+cd kernel
+ git tag | grep 5.10.0-136.92
+git checkout 5.10.0-136.92.0
+cd ..
+tar czvf kernel.tar.gz kernel
+</code></pre>
+<p>Move the kernel.tar.gz to <code>~/rpmbuild/SOURCES</code>.</p>
+<p>Then build:</p>
+<pre><code>cd ~/rpmbuild/SPECS
+time rpmbuild -ba kernel.spec
+</code></pre>
+<h3 id="2-scp-issue"><a class="header" href="#2-scp-issue">2. scp issue</a></h3>
+<p>Solved via:</p>
+<pre><code> scp ctyunos.qcow2 my163:~/abc.qcow2
+ctyun@localhost's password: 
+subsystem request failed on channel 0
+scp: Connection closed
+ dash~ 
+ scp -O ctyunos.qcow2 my163:~/abc.qcow2
+</code></pre>
+<h3 id="3-rpm-file-file"><a class="header" href="#3-rpm-file-file">3. rpm file file</a></h3>
+<p>via:</p>
+<pre><code>rpm -qf /usr/bin/scrcpy
+</code></pre>
+<p>Will output which rpm contains this file.</p>
+<h3 id="4-docker-network-1"><a class="header" href="#4-docker-network-1">4. docker network</a></h3>
+<p>Steps:</p>
+<pre><code>docker network ls
+docker network create --driver bridge testkkk
+docker run --name containername --network testkkk xxx:xxx
+docker network inspect testkkk
 </code></pre>
 
                     </main>
