@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-0da68d34.js";
+            window.path_to_searchindex_js = "searchindex-5bf73071.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7a6c361d.js"></script>
+        <script src="toc-04290468.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24460,6 +24460,37 @@ Preparing...                          ################################# [100%]
 </code></pre>
 <p>Solved via:</p>
 <pre><code>rpm -ivh --oldpackage kernel-5.10.0-182.0.0.95.aarch64.rpm
+</code></pre>
+<h3 id="4-build-dep"><a class="header" href="#4-build-dep">4. build-dep</a></h3>
+<p>Solve the dep via:</p>
+<pre><code>dnf install dnf-plugins-core
+yum-builddep kernel.spec
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260606"><a class="header" href="#20260606">20260606</a></h1>
+<h3 id="1-build-el-kernel"><a class="header" href="#1-build-el-kernel">1. build EL Kernel</a></h3>
+<pre><code>docker run -it openeuler/openeuler:22.03-lts-sp1 /bin/bash
+sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#https://mirrors.lzu.edu.cn/openeuler/#g'          -i.bak          /etc/yum.repos.d/openEuler.repo
+yum makecache
+yum install -y wget
+useradd -m mock
+wget https://mirrors.lzu.edu.cn/openeuler/openEuler-22.03-LTS-SP1/source/Packages/kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm
+yum install -y rpm-build asciidoc audit-libs-devel binutils-devel bison clang dwarves elfutils-devel elfutils-libelf-devel flex gcc glibc-static gtk2-devel java-1.8.0-openjdk java-1.8.0-openjdk-devel java-devel libbabeltrace-devel libcap-devel libcap-ng-devel libunwind-devel libzstd-devel llvm m4 make ncurses-devel net-tools newt-devel numactl-devel openssl-devel pciutils-devel perl-generators python3-devel python3-docutils rsync xmlto xz-devel zlib-devel
+dnf install dnf-plugins-core
+yum-builddep kernel.spec
+mv kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm /home/mock/
+chmod 777 /home/mock/kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm 
+
+su mock
+
+Make modifications for kernel. 
+
+time rpmbuild -bb kernel.spec --define '_smp_mflags -j8' --define 'debug_package %{nil}' --define 'build_debuginfo 0'
+</code></pre>
+<h3 id="2-tcpdump-in-aic"><a class="header" href="#2-tcpdump-in-aic">2. tcpdump in aic</a></h3>
+<p>via:</p>
+<pre><code>tcpdump -i  eth0 -nne tcp port 9000
+
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260608"><a class="header" href="#20260608">20260608</a></h1>
