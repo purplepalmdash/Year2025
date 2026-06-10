@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5bf73071.js";
+            window.path_to_searchindex_js = "searchindex-28dcee92.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-04290468.js"></script>
+        <script src="toc-07d271e1.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24549,6 +24549,27 @@ scp: Connection closed
 docker network create --driver bridge testkkk
 docker run --name containername --network testkkk xxx:xxx
 docker network inspect testkkk
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260610"><a class="header" href="#20260610">20260610</a></h1>
+<h3 id="1-force-reboot"><a class="header" href="#1-force-reboot">1. force reboot</a></h3>
+<p>via:</p>
+<pre><code>reboot -f
+
+reboot -f 的具体行为：不经过完整的 shutdown 流程，不会逐一停止服务、同步磁盘、卸载文件系统等。
+更快，但风险稍高（可能导致数据未完全写入磁盘）。
+在图形界面卡死、无法正常关机时特别有用。
+在 systemd 系统上，-f 实际上会让它直接调用 reboot() 系统调用，而不是走 systemctl reboot 的正常路径。
+</code></pre>
+<p>Or:</p>
+<pre><code>echo 1 &gt; /proc/sys/kernel/sysrq
+作用：开启 Magic SysRq 功能（系统请求功能）。
+默认情况下，有些系统会禁用或部分禁用它，这条命令把它完全打开。
+1 表示开启所有 SysRq 功能。
+echo b &gt; /proc/sysrq-trigger
+作用：向内核发出 立即重启 的指令。
+b 代表 reBoot（重启）。
+执行后，内核会马上重启，就像你按了电脑的 Reset 键一样，但它是软件层面触发的。
 </code></pre>
 
                     </main>
