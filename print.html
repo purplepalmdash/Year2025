@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-28dcee92.js";
+            window.path_to_searchindex_js = "searchindex-0eb3b546.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-07d271e1.js"></script>
+        <script src="toc-0e277fe0.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24570,6 +24570,19 @@ echo b &gt; /proc/sysrq-trigger
 作用：向内核发出 立即重启 的指令。
 b 代表 reBoot（重启）。
 执行后，内核会马上重启，就像你按了电脑的 Reset 键一样，但它是软件层面触发的。
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260611"><a class="header" href="#20260611">20260611</a></h1>
+<h3 id="1-cpulimit"><a class="header" href="#1-cpulimit">1. cpulimit</a></h3>
+<p>Install:</p>
+<pre><code>sudo apt install -y cpulimit
+</code></pre>
+<p>Limit via:</p>
+<pre><code>sudo crontab -e
+
+@reboot while ! pgrep -x "kkk-mon" &gt; /dev/null; do sleep 5; done; /usr/bin/cpulimit -e kkk-mon -l 5 -b
+@reboot while ! pgrep -x "fuckddh" &gt; /dev/null; do sleep 5; done; /usr/bin/cpulimit -e fuckddh -l 5 -b
+
 </code></pre>
 
                     </main>
