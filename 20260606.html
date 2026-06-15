@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-531d18d8.js";
+            window.path_to_searchindex_js = "searchindex-545bcb81.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-59a7f664.js"></script>
+        <script src="toc-01534429.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -191,6 +191,21 @@ chmod 777 /home/mock/kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm
 su mock
 
 Make modifications for kernel. 
+
+  rpm -ivh kernel-5.10.0-136.12.0.86.oe2203sp1.src.rpm 
+  cd /home/mock/rpmbuild/SOURCES
+  tar xzvf kernel.tar.gz 
+  cd kernel
+  cp arch/arm64/configs/openeuler_defconfig .config
+  make menuconfig
+  cp .config ~/configkernel
+  rm -rf kernel
+  tar xzvf kernel.tar.gz 
+  cp ~/configkernel kernel/arch/arm64/configs/openeuler_defconfig
+    rm -f kernel.tar.gz 
+    tar czvf kernel.tar.gz kernel/
+    rm -rf kernel
+  cd ../SPECS/
 
 time rpmbuild -bb kernel.spec --define '_smp_mflags -j8' --define 'debug_package %{nil}' --define 'build_debuginfo 0'
 </code></pre>
