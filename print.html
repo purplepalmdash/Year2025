@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-545bcb81.js";
+            window.path_to_searchindex_js = "searchindex-bee12569.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-01534429.js"></script>
+        <script src="toc-3ad423c8.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -24693,6 +24693,25 @@ TRACE_FILE  copy-link-files.json  local_manifests  manifest.xml  manifests  mani
 [0.008s] dash@home4500:/media/sda/testmesaredroid13$ sudo du -hs .repo/
 28G     .repo/
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260614"><a class="header" href="#20260614">20260614</a></h1>
+<h3 id="1-ccache"><a class="header" href="#1-ccache">1. ccache</a></h3>
+<p>Set ccache via:</p>
+<pre><code>cd /mnt/lineage/
+source build/envsetup.sh 
+git config --global --add safe.directory "*"
+source build/envsetup.sh 
+apply-waydroid-patches 
+export USE_CCACHE=1
+export CCACHE_COMPRESS=1
+export CCACHE_DIR="/ccache"
+export CCACHE_EXEC=/usr/bin/ccache
+${CCACHE_EXEC} -M  50G
+</code></pre>
+<pre><code>lunch lineage_waydroid_tv_x86_64-userdebug
+make systemimage -j$(nproc --all)
+make vendorimage -j$(nproc --all)
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260615"><a class="header" href="#20260615">20260615</a></h1>
