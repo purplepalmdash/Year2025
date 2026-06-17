@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-d97f5f8f.js";
+            window.path_to_searchindex_js = "searchindex-8672842d.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-c8d56a1e.js"></script>
+        <script src="toc-7ba02226.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -25074,6 +25074,15 @@ Then:
 [root@euler DKMS_RPM_linux-5.4.270]# dkms status
 va-gfx, 25.03.01.09, 5.10.0-136.12.0.86.aarch64, aarch64: installed
 va-pci, 25.03.01.09, 5.10.0-136.12.0.86.aarch64, aarch64: installed
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260617"><a class="header" href="#20260617">20260617</a></h1>
+<h3 id="1-redroid11-with-vnc"><a class="header" href="#1-redroid11-with-vnc">1. redroid11 with vnc</a></h3>
+<p>Step:</p>
+<pre><code>cd /media/sda/a11_vnc
+# 把 manifest 工程直接钉到"删除 vncserver 之前"的最后一版
+repo init -u https://github.com/remote-android/platform_manifests.git \  -b 5cd2b0e1103f78aab90a25744d08518675fe6b87
+repo sync -c -j$(nproc)
 </code></pre>
 
                     </main>
