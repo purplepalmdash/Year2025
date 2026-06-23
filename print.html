@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f64555be.js";
+            window.path_to_searchindex_js = "searchindex-333cb729.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-d10bf23f.js"></script>
+        <script src="toc-62cbdb33.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -25214,6 +25214,25 @@ test@ubuntu2004:~$ nodejs --version
 v23.11.1
 
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260623"><a class="header" href="#20260623">20260623</a></h1>
+<h3 id="1-waydroidredroidstartup"><a class="header" href="#1-waydroidredroidstartup">1. waydroid(redroid)startup</a></h3>
+<pre><code>$ cat startwaydroid.sh
+sudo docker run --privileged \
+  -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/run/xdg/wayland-0 \
+  -v /home/dash/data1:/data \
+  -p 5555:5555 \
+  -it supechicken/waydroid:lineage-23.2 \
+  ro.hardware.hwcomposer=waydroid
+sudo docker run --privileged \
+  -v $XDG_RUNTIME_DIR/$WAYLAND_DISPLAY:/run/xdg/wayland-0 \
+  -v /home/dash/data2:/data \
+  -p 5556:5555 \
+  -it supechicken/waydroid:lineage-23.2 \
+  ro.hardware.hwcomposer=waydroid
+</code></pre>
+<p>Effect:</p>
+<p><img src="images/2026_06_23_17_49_58_1528x875.jpg" alt="./images/2026_06_23_17_49_58_1528x875.jpg"></p>
 
                     </main>
 
