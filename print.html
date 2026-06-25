@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a19cbd87.js";
+            window.path_to_searchindex_js = "searchindex-23f515ec.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dbf2ae40.js"></script>
+        <script src="toc-b2b02178.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -25274,6 +25274,28 @@ The result is vendor
 </code></pre>
 <p>Extract the docker images via:</p>
 <pre><code>sudo mount system.img system -o ro &amp;&amp; sudo mount vendor.img vendor -o ro &amp;&amp; sudo tar --xattrs -c vendor -C system --exclude="./vendor" . | sudo docker import --platform=linux/amd64 -c 'ENTRYPOINT ["/init", "ro.hardware.hwcomposer=redroid", "ro.adb.secure=0", "ro.hardware.hwcomposer=waydroid"]' - ownwaydroid232 &amp;&amp; sudo umount system &amp;&amp; sudo umount vendo
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260625"><a class="header" href="#20260625">20260625</a></h1>
+<h3 id="1-intel-dg1-on-arm64"><a class="header" href="#1-intel-dg1-on-arm64">1. Intel dg1 on arm64</a></h3>
+<p>Issue:</p>
+<pre><code>[   11.496106] xe 0000:09:00.0: Adding to iommu group 17
+[   11.496159] xe 0000:09:00.0: Your graphics device 4909 is not officially supported
+               by xe driver in this kernel version. To force Xe probe,
+               use xe.force_probe='4909' and i915.force_probe='!4909'
+               module parameters or CONFIG_DRM_XE_FORCE_PROBE='4909' and
+               CONFIG_DRM_I915_FORCE_PROBE='!4909' configuration options
+</code></pre>
+<p>Added :</p>
+<pre><code>$ sudo vim /etc/default/grub
+GRUB_CMDLINE_LINUX_DEFAULT="console=tty0 net.ifnames=0 biosdevname=0 xe.force_probe='4909'  i915.force_probe='!4909'"
+$ sudo update-grub2
+</code></pre>
+<h3 id="2-kdewayland"><a class="header" href="#2-kdewayland">2. kde(wayland)</a></h3>
+<p>Install via:</p>
+<pre><code>sudo apt update
+sudo apt install -y kubuntu-desktop
+ sudo apt install plasma-workspace-wayland
 </code></pre>
 
                     </main>
