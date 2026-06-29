@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c59c3f93.js";
+            window.path_to_searchindex_js = "searchindex-c456a225.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e66a08b3.js"></script>
+        <script src="toc-eeb86175.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -403,6 +403,75 @@ cd android-cuttlefish-1.5.0
 [0.072s] test@2504vm:~/Code/android-cuttlefish-1.5.0$ vim base/debian/control 
 libtinfo5-&gt;libtinfo6
 tools/buildutils/build_packages.sh
+</code></pre>
+<h3 id="5-cf-mediaplayer"><a class="header" href="#5-cf-mediaplayer">5. cf media.player</a></h3>
+<p>Result:</p>
+<pre><code>vsoc_x86_64:/ $ test@nuc11test:~$ adb shell
+vsoc_x86_64:/ $ dumpsys SurfaceFlinger | grep GLES
+GLES: Mesa/X.org, virgl, OpenGL ES 3.2 Mesa 20.3.4 (git-fdb6234126)
+vsoc_x86_64:/ $ dumpsys media.player | grep 'hw-' 
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+vsoc_x86_64:/ $ test@nuc11test:~$ adb shell
+vsoc_x86_64:/ $ dumpsys SurfaceFlinger | grep GLES
+GLES: Google (Intel), Android Emulator OpenGL ES Translator (Mesa Intel(R) Iris(R) Xe Graphics (TGL GT2)), OpenGL ES 3.1 (OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.1)
+vsoc_x86_64:/ $ 
+vsoc_x86_64:/ $ dumpsys media.player | grep 'hw-'
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+      hw-accelerated: 0 ]
+
 </code></pre>
 
                     </main>
