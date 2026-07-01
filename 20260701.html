@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f2413e94.js";
+            window.path_to_searchindex_js = "searchindex-03015ef0.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-aec5cda3.js"></script>
@@ -175,6 +175,24 @@
                 <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="20260701"><a class="header" href="#20260701">20260701</a></h1>
+<h3 id="1-astamdgpu-issue"><a class="header" href="#1-astamdgpu-issue">1. ast/amdgpu issue</a></h3>
+<p>Under x11, though disabled ast(blacklisted ast), the Xorg still use ast card for displaying.</p>
+<p>Using following configuration for letting amdgpu for the primary gpu:</p>
+<pre><code>sudo nano /etc/X11/xorg.conf.d/10-amdgpu.conf
+
+Section "Device"
+    Identifier "AMD Graphics"
+    Driver "amdgpu"
+    BusID "PCI:8:0:0"
+    Option "PrimaryGPU" "yes"
+EndSection
+
+Section "Device"
+    Identifier "ASPEED Graphics"
+    Driver "ast"
+    Option "PrimaryGPU" "no"
+EndSection
+</code></pre>
 
                     </main>
 
