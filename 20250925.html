@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,7 +178,7 @@
 <h3 id="1-nixos-guvcview"><a class="header" href="#1-nixos-guvcview">1. nixos guvcview</a></h3>
 <p>Install guvcview then could get the capture pictures.</p>
 <p>Be sure to make this configuration:</p>
-<p><img src="./images/2025_09_25_09_03_49_794x448.jpg" alt="./images/2025_09_25_09_03_49_794x448.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_25_09_03_49_794x448.jpg" alt="./images/2025_09_25_09_03_49_794x448.jpg"><span class="img-wrapper"><img src="./images/2025_09_25_09_03_49_794x448.jpg" alt="./images/2025_09_25_09_03_49_794x448.jpg"></span></label></p>
 <h3 id="2-pve-windows"><a class="header" href="#2-pve-windows">2. pve windows</a></h3>
 <p>Qemu parameters:</p>
 <pre><code>/usr/bin/kvm -id 103 -name seabioszt,debug-threads=on -no-shutdown -chardev socket,id=qmp,path=/var/run/qemu-server/103.qmp,server=on,wait=off -mon chardev=qmp,mode=control -chardev socket,id=qmp-event,path=/var/run/qmeventd.sock,reconnect-ms=5000 -mon chardev=qmp-event,mode=control -pidfile /var/run/qemu-server/103.pid -daemonize -smbios type=1,uuid=d9457600-5acd-47cd-9782-5b2d8976cda4 -smp 8,sockets=1,cores=8,maxcpus=8 -nodefaults -boot menu=on,strict=on,reboot-timeout=1000,splash=/usr/share/qemu-server/bootsplash.jpg -vga none -nographic -cpu qemu64,+aes,enforce,+kvm_pv_eoi,+kvm_pv_unhalt,+pni,+popcnt,+sse4.1,+sse4.2,+ssse3 -m 8192 -global PIIX4_PM.disable_s3=1 -global PIIX4_PM.disable_s4=1 -device pci-bridge,id=pci.1,chassis_nr=1,bus=pci.0,addr=0x1e -device pci-bridge,id=pci.2,chassis_nr=2,bus=pci.1,addr=0x1e -device pci-bridge,id=pci.3,chassis_nr=3,bus=pci.0,addr=0x5 -device vmgenid,guid=7e6d2221-038a-428f-9db0-c28e44ba3282 -device piix3-usb-uhci,id=uhci,bus=pci.0,addr=0x1.0x2 -device qemu-xhci,p2=15,p3=15,id=xhci,bus=pci.1,addr=0x1b -device usb-tablet,id=tablet,bus=uhci.0,port=1 -device vfio-pci,host=0000:00:02.0,id=hostpci0,bus=pci.0,addr=0x2 -device usb-host,bus=xhci.0,port=1,vendorid=0x30fa,productid=0x0300,id=usb0 -device usb-host,bus=xhci.0,port=2,vendorid=0x1a2c,productid=0x0e24,id=usb1 -chardev socket,path=/var/run/qemu-server/103.qga,server=on,wait=off,id=qga0 -device virtio-serial,id=qga0,bus=pci.0,addr=0x8 -device virtserialport,chardev=qga0,name=org.qemu.guest_agent.0 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x3,free-page-reporting=on -iscsi initiator-name=iqn.1993-08.org.debian:01:dcb1c95a9a20 -device ahci,id=ahci0,multifunction=on,bus=pci.0,addr=0x7 -drive file=/dev/pve/vm-103-disk-0,if=none,id=drive-sata0,format=raw,cache=none,aio=io_uring,detect-zeroes=on -device ide-hd,bus=ahci0.0,drive=drive-sata0,id=sata0,bootindex=100 -drive file=/var/lib/vz/template/iso/XiaoBing.iso,if=none,id=drive-sata1,media=cdrom,format=raw,aio=io_uring -device ide-cd,bus=ahci0.1,drive=drive-sata1,id=sata1,bootindex=101 -drive file=/var/lib/vz/template/iso/windows7x64_ultimate_2025.iso,if=none,id=drive-sata2,media=cdrom,format=raw,aio=io_uring -device ide-cd,bus=ahci0.2,drive=drive-sata2,id=sata2,bootindex=103 -drive file=/var/lib/vz/template/iso/virtio-win-0.1.248.iso,if=none,id=drive-sata3,media=cdrom,format=raw,aio=io_uring -device ide-cd,bus=ahci0.3,drive=drive-sata3,id=sata3,bootindex=104 -netdev type=tap,id=net0,ifname=tap103i0,script=/usr/libexec/qemu-server/pve-bridge,downscript=/usr/libexec/qemu-server/pve-bridgedown -device e1000,mac=BC:24:11:78:C1:B4,netdev=net0,bus=pci.0,addr=0x12,id=net0,bootindex=102 -machine smm=off,type=pc+pve1 -set device.hostpci0.addr=02.0 -set device.hostpci0.x-igd-gms=1 -set device.hostpci0.x-igd-opregion=on
@@ -225,9 +225,9 @@ apt build-dep seabios
 </code></pre>
 <p>Rebuild, not OK.</p>
 <p>proxmox seabios version(1.16.3):</p>
-<p><img src="./images/2025_09_25_15_55_21_1299x356.jpg" alt="./images/2025_09_25_15_55_21_1299x356.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_25_15_55_21_1299x356.jpg" alt="./images/2025_09_25_15_55_21_1299x356.jpg"><span class="img-wrapper"><img src="./images/2025_09_25_15_55_21_1299x356.jpg" alt="./images/2025_09_25_15_55_21_1299x356.jpg"></span></label></p>
 <p>Release 1.16.3:</p>
-<p><img src="./images/2025_09_25_15_56_23_663x824.jpg" alt="./images/2025_09_25_15_56_23_663x824.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_25_15_56_23_663x824.jpg" alt="./images/2025_09_25_15_56_23_663x824.jpg"><span class="img-wrapper"><img src="./images/2025_09_25_15_56_23_663x824.jpg" alt="./images/2025_09_25_15_56_23_663x824.jpg"></span></label></p>
 <p>Download 1.16.3.tar.gz, and transfer it into the docker build instance.</p>
 <pre><code>make menuconfig
 make
@@ -301,7 +301,7 @@ libslirp-v4.2.0.tar.gz
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

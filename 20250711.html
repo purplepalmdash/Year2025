@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -189,7 +189,7 @@
 ......
 </code></pre>
 <p>Line 309-310 means <code>--cpu 1</code> –&gt; 1024(CpuShares):</p>
-<p><img src="./images/2025_07_11_10_30_33_807x288.jpg" alt="./images/2025_07_11_10_30_33_807x288.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_11_10_30_33_807x288.jpg" alt="./images/2025_07_11_10_30_33_807x288.jpg"><span class="img-wrapper"><img src="./images/2025_07_11_10_30_33_807x288.jpg" alt="./images/2025_07_11_10_30_33_807x288.jpg"></span></label></p>
 <p><code>stress -c 8</code> in docker instance will result <code>8*100%</code> in top.</p>
 <p>Solution(manually binding cpu core):</p>
 <pre><code>$ sudo docker info --format '{{.CgroupDriver}}'
@@ -199,11 +199,11 @@ $ sudo su
 # echo "0-1" &gt; docker-7ba1489669f71014023acc44afff8f6a1f60830b9c18398e2150c4e80a6c3e42.scope/cpuset.cpus
 </code></pre>
 <p>Stress 8:</p>
-<p><img src="./images/2025_07_11_10_34_14_770x344.jpg" alt="./images/2025_07_11_10_34_14_770x344.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_11_10_34_14_770x344.jpg" alt="./images/2025_07_11_10_34_14_770x344.jpg"><span class="img-wrapper"><img src="./images/2025_07_11_10_34_14_770x344.jpg" alt="./images/2025_07_11_10_34_14_770x344.jpg"></span></label></p>
 <p>Stress 2:</p>
-<p><img src="./images/2025_07_11_10_34_44_784x296.jpg" alt="./images/2025_07_11_10_34_44_784x296.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_11_10_34_44_784x296.jpg" alt="./images/2025_07_11_10_34_44_784x296.jpg"><span class="img-wrapper"><img src="./images/2025_07_11_10_34_44_784x296.jpg" alt="./images/2025_07_11_10_34_44_784x296.jpg"></span></label></p>
 <p>run stress command:</p>
-<p><img src="./images/2025_07_11_10_34_58_655x177.jpg" alt="./images/2025_07_11_10_34_58_655x177.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_11_10_34_58_655x177.jpg" alt="./images/2025_07_11_10_34_58_655x177.jpg"><span class="img-wrapper"><img src="./images/2025_07_11_10_34_58_655x177.jpg" alt="./images/2025_07_11_10_34_58_655x177.jpg"></span></label></p>
 <p>Possible modification, update the client for sending more parametes to zun:</p>
 <p><code>https://github.com/openstack/python-zunclient</code></p>
 <h3 id="2-kollaqueen"><a class="header" href="#2-kollaqueen">2. kolla(Queen)</a></h3>
@@ -287,7 +287,7 @@ yum install python-devel libffi-devel gcc openssl-devel libselinux-python -y
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

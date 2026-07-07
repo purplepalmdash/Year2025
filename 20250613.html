@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,12 +177,12 @@
                         <h1 id="20250613"><a class="header" href="#20250613">20250613</a></h1>
 <h3 id="1-ansible-for-openstack-deployment"><a class="header" href="#1-ansible-for-openstack-deployment">1. ansible for openstack deployment</a></h3>
 <p>Test network environment:</p>
-<p><img src="./images/2025_06_13_11_06_54_420x504.jpg" alt="./images/2025_06_13_11_06_54_420x504.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_13_11_06_54_420x504.jpg" alt="./images/2025_06_13_11_06_54_420x504.jpg"><span class="img-wrapper"><img src="./images/2025_06_13_11_06_54_420x504.jpg" alt="./images/2025_06_13_11_06_54_420x504.jpg"></span></label></p>
 <pre><code>qemu-img create -f qcow2 -b ubuntu220405openstackcompute_autodeploy1.qcow2 -F qcow2 testansible_controller.qcow2
 qemu-img create -f qcow2 -b ubuntu220405openstackcompute_autodeploy1.qcow2 -F qcow2 testansible_compute.qcow2
 </code></pre>
 <p>Create vms:</p>
-<p><img src="./images/2025_06_13_11_15_06_992x743.jpg" alt="./images/2025_06_13_11_15_06_992x743.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_13_11_15_06_992x743.jpg" alt="./images/2025_06_13_11_15_06_992x743.jpg"><span class="img-wrapper"><img src="./images/2025_06_13_11_15_06_992x743.jpg" alt="./images/2025_06_13_11_15_06_992x743.jpg"></span></label></p>
 <p>Manually setup ip addr on controller(192.168.150.40), then transfer deploy materials to controller.</p>
 <pre><code>test@compute:~$ tar xzvf openstack_deployment.tar.gz 
 root@compute:/etc/netplan# cat /etc/netplan/eth0.yaml 
@@ -204,7 +204,7 @@ test@controller:~$ sudo vim /etc/hosts
 127.0.1.1 controller
 </code></pre>
 <p>Change inventory definitions:</p>
-<p><img src="./images/2025_06_13_11_22_28_436x274.jpg" alt="./images/2025_06_13_11_22_28_436x274.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_13_11_22_28_436x274.jpg" alt="./images/2025_06_13_11_22_28_436x274.jpg"><span class="img-wrapper"><img src="./images/2025_06_13_11_22_28_436x274.jpg" alt="./images/2025_06_13_11_22_28_436x274.jpg"></span></label></p>
 <p>should add mykey:</p>
 <pre><code> ssh-keygen -N ""
  openstack keypair create --public-key ~/.ssh/id_rsa.pub mykey
@@ -273,7 +273,7 @@ openstack security group rule create --protocol icmp --dst-port 20:65535 --remot
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

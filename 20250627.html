@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -253,15 +253,15 @@ root@cgroup:/home/test# diff libvirt-8.0.0/src/lxc/lxc_process.c 8/libvirt-8.0.0
 configure/build/make install
 </code></pre>
 <p>Result: redroid11 still not start OK.</p>
-<p><img src="./images/2025_06_27_14_37_05_1137x728.jpg" alt="./images/2025_06_27_14_37_05_1137x728.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_27_14_37_05_1137x728.jpg" alt="./images/2025_06_27_14_37_05_1137x728.jpg"><span class="img-wrapper"><img src="./images/2025_06_27_14_37_05_1137x728.jpg" alt="./images/2025_06_27_14_37_05_1137x728.jpg"></span></label></p>
 <p>Change the kernel options:</p>
 <pre><code>systemd.unified_cgroup_hierarchy=1
 update-grub2 &amp;&amp; reboot
 </code></pre>
 <p>Lots of defucnct in redroid11:</p>
-<p><img src="./images/2025_06_27_14_42_38_927x736.jpg" alt="./images/2025_06_27_14_42_38_927x736.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_27_14_42_38_927x736.jpg" alt="./images/2025_06_27_14_42_38_927x736.jpg"><span class="img-wrapper"><img src="./images/2025_06_27_14_42_38_927x736.jpg" alt="./images/2025_06_27_14_42_38_927x736.jpg"></span></label></p>
 <p>redroid12, also not ok:</p>
-<p><img src="./images/2025_06_27_14_43_05_930x682.jpg" alt="./images/2025_06_27_14_43_05_930x682.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_06_27_14_43_05_930x682.jpg" alt="./images/2025_06_27_14_43_05_930x682.jpg"><span class="img-wrapper"><img src="./images/2025_06_27_14_43_05_930x682.jpg" alt="./images/2025_06_27_14_43_05_930x682.jpg"></span></label></p>
 <p>Reverse the changes for <code>lxc_process.c</code> and rebuild, reboot.</p>
 <pre><code>root@cgroup:/home/test# virsh -c lxc:/// start redroid12hw
 error: Failed to start domain 'redroid12hw'
@@ -323,7 +323,7 @@ error: error from service: GDBus.Error:org.freedesktop.machine1.NoMachineForPID:
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

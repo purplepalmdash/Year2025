@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,11 +177,11 @@
                         <h1 id="20250707"><a class="header" href="#20250707">20250707</a></h1>
 <h3 id="1-ibox-on-openeuler"><a class="header" href="#1-ibox-on-openeuler">1. ibox on openeuler</a></h3>
 <p>Install OpenEuler 22.03.4(<code>sudo dd if=./openEuler-22.03-LTS-SP4-aarch64-dvd.iso of=/dev/sdb bs=10M &amp;&amp; sudo sync</code>):</p>
-<p><img src="./images/2025_07_07_09_00_19_914x247.jpg" alt="./images/2025_07_07_09_00_19_914x247.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_09_00_19_914x247.jpg" alt="./images/2025_07_07_09_00_19_914x247.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_09_00_19_914x247.jpg" alt="./images/2025_07_07_09_00_19_914x247.jpg"></span></label></p>
 <p>disk layout:</p>
-<p><img src="./images/2025_07_07_09_01_49_769x313.jpg" alt="./images/2025_07_07_09_01_49_769x313.jpg"></p>
-<p><img src="./images/2025_07_07_09_02_09_619x360.jpg" alt="./images/2025_07_07_09_02_09_619x360.jpg"></p>
-<p><img src="./images/2025_07_07_09_02_39_617x377.jpg" alt="./images/2025_07_07_09_02_39_617x377.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_09_01_49_769x313.jpg" alt="./images/2025_07_07_09_01_49_769x313.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_09_01_49_769x313.jpg" alt="./images/2025_07_07_09_01_49_769x313.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_09_02_09_619x360.jpg" alt="./images/2025_07_07_09_02_09_619x360.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_09_02_09_619x360.jpg" alt="./images/2025_07_07_09_02_09_619x360.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_09_02_39_617x377.jpg" alt="./images/2025_07_07_09_02_39_617x377.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_09_02_39_617x377.jpg" alt="./images/2025_07_07_09_02_39_617x377.jpg"></span></label></p>
 <p>Replace repository:</p>
 <pre><code>sudo sed -E 's#https?://(repo|mirrors)\.openeuler\.org/#https://mirrors.ustc.edu.cn/openeuler/#g' \
          -i.bak \
@@ -334,24 +334,24 @@ CONTAINER_DATA_PATH=`pwd`/data/
 ANDROID_IMG=inno-11-arm64-release-redroid_2.4.4.17
 </code></pre>
 <p>Change modifications:</p>
-<p><img src="./images/2025_07_07_16_51_41_483x358.jpg" alt="./images/2025_07_07_16_51_41_483x358.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_16_51_41_483x358.jpg" alt="./images/2025_07_07_16_51_41_483x358.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_16_51_41_483x358.jpg" alt="./images/2025_07_07_16_51_41_483x358.jpg"></span></label></p>
 <p>Make modifications to <code>/root/Code/2.4.4.17/drivers/binderfs/5.10/Makefile</code>:</p>
-<p><img src="./images/2025_07_07_16_53_20_678x93.jpg" alt="./images/2025_07_07_16_53_20_678x93.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_16_53_20_678x93.jpg" alt="./images/2025_07_07_16_53_20_678x93.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_16_53_20_678x93.jpg" alt="./images/2025_07_07_16_53_20_678x93.jpg"></span></label></p>
 <p>Create ibox:</p>
 <pre><code>./ibox.sh install
 ./ibox.sh start 1 2
 </code></pre>
 <p>Result:</p>
-<p><img src="./images/2025_07_07_17_21_59_503x853.jpg" alt="./images/2025_07_07_17_21_59_503x853.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_17_21_59_503x853.jpg" alt="./images/2025_07_07_17_21_59_503x853.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_17_21_59_503x853.jpg" alt="./images/2025_07_07_17_21_59_503x853.jpg"></span></label></p>
 <h3 id="2-zue-on-openstack"><a class="header" href="#2-zue-on-openstack">2. zue on openstack</a></h3>
 <p>Followed via <code>https://asterfusion.com/blog20240802-openstack-zun/?srsltid=AfmBOorLissgEI9JbeZp4MZJKlvECiwKRjGk8lAQvXMCPWyvOYzRUB4n</code>, but failed with many issues:</p>
-<p><img src="./images/2025_07_07_16_14_48_394x518.jpg" alt="./images/2025_07_07_16_14_48_394x518.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_16_14_48_394x518.jpg" alt="./images/2025_07_07_16_14_48_394x518.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_16_14_48_394x518.jpg" alt="./images/2025_07_07_16_14_48_394x518.jpg"></span></label></p>
 <pre><code>docker run --net test_net -it cirros /bin/sh
 docker: Error response from daemon: failed to create endpoint nifty_bell on network test_net: NetworkDriver.CreateEndpoint: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 ERRO[0001] error waiting for container: context canceled 
 </code></pre>
 <p>Environment:</p>
-<p><img src="./images/2025_07_07_16_15_24_529x371.jpg" alt="./images/2025_07_07_16_15_24_529x371.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_07_16_15_24_529x371.jpg" alt="./images/2025_07_07_16_15_24_529x371.jpg"><span class="img-wrapper"><img src="./images/2025_07_07_16_15_24_529x371.jpg" alt="./images/2025_07_07_16_15_24_529x371.jpg"></span></label></p>
 
                     </main>
 
@@ -401,7 +401,7 @@ ERRO[0001] error waiting for container: context canceled
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

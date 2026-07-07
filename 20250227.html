@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -211,7 +211,7 @@ systemctl disable dnsmasq(lxc-net issue)
 Image resized.
 </code></pre>
 <p>Create and start the vm, then use gparted for resize the disk.</p>
-<p><img src="./images/20250227_102358_x.jpg" alt="./images/20250227_102358_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_102358_x.jpg" alt="./images/20250227_102358_x.jpg"><span class="img-wrapper"><img src="./images/20250227_102358_x.jpg" alt="./images/20250227_102358_x.jpg"></span></label></p>
 <p>Install packages:</p>
 <pre><code>sudo vim /etc/dpkg/dpkg.cfg
 sudo apt install -y iotop vim nethogs s-tui lxc lxc-templates lxcfs smplayer
@@ -222,12 +222,12 @@ sudo apt install ./libvirt0_7.0.0-3+deb11u3_arm64.deb ./libvirt-daemon_7.0.0-3+d
 <p>Download iso:</p>
 <pre><code>wget https://cdimage.debian.org/cdimage/archive/11.11.0/arm64/iso-dvd/debian-11.11.0-arm64-DVD-1.iso
 </code></pre>
-<p><img src="./images/20250227_103756_x.jpg" alt="./images/20250227_103756_x.jpg"></p>
-<p><img src="./images/20250227_103811_x.jpg" alt="./images/20250227_103811_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_103756_x.jpg" alt="./images/20250227_103756_x.jpg"><span class="img-wrapper"><img src="./images/20250227_103756_x.jpg" alt="./images/20250227_103756_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_103811_x.jpg" alt="./images/20250227_103811_x.jpg"><span class="img-wrapper"><img src="./images/20250227_103811_x.jpg" alt="./images/20250227_103811_x.jpg"></span></label></p>
 <p>make secure boot off:</p>
-<p><img src="./images/20250227_103853_x.jpg" alt="./images/20250227_103853_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_103853_x.jpg" alt="./images/20250227_103853_x.jpg"><span class="img-wrapper"><img src="./images/20250227_103853_x.jpg" alt="./images/20250227_103853_x.jpg"></span></label></p>
 <p>Automatically retrieve file(so you need to unplugin the ethernet for speedup ):</p>
-<p><img src="./images/20250227_104626_x.jpg" alt="./images/20250227_104626_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_104626_x.jpg" alt="./images/20250227_104626_x.jpg"><span class="img-wrapper"><img src="./images/20250227_104626_x.jpg" alt="./images/20250227_104626_x.jpg"></span></label></p>
 <pre><code>root@debian:/home/test# cat /etc/apt/sources.list
 # 默认注释了源码仓库，如有需要可自行取消注释
 deb http://mirrors.ustc.edu.cn/debian bullseye main contrib non-free
@@ -247,9 +247,9 @@ deb-src http://mirrors.ustc.edu.cn/debian bullseye-updates main contrib non-free
 </code></pre>
 <h4 id="41-zkfdarm30g"><a class="header" href="#41-zkfdarm30g">4.1 zkfdarm30g</a></h4>
 <p>libvirt info:</p>
-<p><img src="./images/20250227_140904_x.jpg" alt="./images/20250227_140904_x.jpg"></p>
-<p><img src="./images/20250227_140914_x.jpg" alt="./images/20250227_140914_x.jpg"></p>
-<p><img src="./images/20250227_140923_x.jpg" alt="./images/20250227_140923_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_140904_x.jpg" alt="./images/20250227_140904_x.jpg"><span class="img-wrapper"><img src="./images/20250227_140904_x.jpg" alt="./images/20250227_140904_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_140914_x.jpg" alt="./images/20250227_140914_x.jpg"><span class="img-wrapper"><img src="./images/20250227_140914_x.jpg" alt="./images/20250227_140914_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_140923_x.jpg" alt="./images/20250227_140923_x.jpg"><span class="img-wrapper"><img src="./images/20250227_140923_x.jpg" alt="./images/20250227_140923_x.jpg"></span></label></p>
 <p>Disable screensave, lock, enable ssh</p>
 <pre><code>$ sudo vim /etc/default/grub
 GRUB_CMDLINE_LINUX_DEFAULT="quiet splash net.ifnames=0 biosdevname=0 ipv6.disable=1"
@@ -291,17 +291,17 @@ load-module module-alsa-card device_id=1
 <p>shutdown the vm.</p>
 <h4 id="42-uosarm30g"><a class="header" href="#42-uosarm30g">4.2 uosarm30g</a></h4>
 <p>libvirt info:</p>
-<p><img src="./images/20250227_141415_x.jpg" alt="./images/20250227_141415_x.jpg"></p>
-<p><img src="./images/20250227_141425_x.jpg" alt="./images/20250227_141425_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_141415_x.jpg" alt="./images/20250227_141415_x.jpg"><span class="img-wrapper"><img src="./images/20250227_141415_x.jpg" alt="./images/20250227_141415_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_141425_x.jpg" alt="./images/20250227_141425_x.jpg"><span class="img-wrapper"><img src="./images/20250227_141425_x.jpg" alt="./images/20250227_141425_x.jpg"></span></label></p>
 <p>Install with kernel5.10 support</p>
-<p><img src="./images/20250227_141625_x.jpg" alt="./images/20250227_141625_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_141625_x.jpg" alt="./images/20250227_141625_x.jpg"><span class="img-wrapper"><img src="./images/20250227_141625_x.jpg" alt="./images/20250227_141625_x.jpg"></span></label></p>
 <p>Use rambuf:</p>
-<p><img src="./images/20250227_151057_x.jpg" alt="./images/20250227_151057_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_151057_x.jpg" alt="./images/20250227_151057_x.jpg"><span class="img-wrapper"><img src="./images/20250227_151057_x.jpg" alt="./images/20250227_151057_x.jpg"></span></label></p>
 <p>Disable :</p>
-<p><img src="./images/20250227_151109_x.jpg" alt="./images/20250227_151109_x.jpg"></p>
-<p><img src="./images/20250227_151140_x.jpg" alt="./images/20250227_151140_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_151109_x.jpg" alt="./images/20250227_151109_x.jpg"><span class="img-wrapper"><img src="./images/20250227_151109_x.jpg" alt="./images/20250227_151109_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_151140_x.jpg" alt="./images/20250227_151140_x.jpg"><span class="img-wrapper"><img src="./images/20250227_151140_x.jpg" alt="./images/20250227_151140_x.jpg"></span></label></p>
 <p>ssh-keygen:</p>
-<p><img src="./images/20250227_151300_x.jpg" alt="./images/20250227_151300_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_151300_x.jpg" alt="./images/20250227_151300_x.jpg"><span class="img-wrapper"><img src="./images/20250227_151300_x.jpg" alt="./images/20250227_151300_x.jpg"></span></label></p>
 <p>Inject the ssh key into /root/.ssh/.</p>
 <pre><code>apt update -y
 apt install -y xserver-xorg-input-evdev smplayer
@@ -323,12 +323,12 @@ vim /etc/pulse/default.pa
 </code></pre>
 <h4 id="43-kylinarm30g"><a class="header" href="#43-kylinarm30g">4.3 kylinarm30g</a></h4>
 <p>libvirt info:</p>
-<p><img src="./images/20250227_142218_x.jpg" alt="./images/20250227_142218_x.jpg"></p>
-<p><img src="./images/20250227_142227_x.jpg" alt="./images/20250227_142227_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_142218_x.jpg" alt="./images/20250227_142218_x.jpg"><span class="img-wrapper"><img src="./images/20250227_142218_x.jpg" alt="./images/20250227_142218_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_142227_x.jpg" alt="./images/20250227_142227_x.jpg"><span class="img-wrapper"><img src="./images/20250227_142227_x.jpg" alt="./images/20250227_142227_x.jpg"></span></label></p>
 <pre><code>$ sudo apt install -y openssh-server
 </code></pre>
 <p>Disable security related:</p>
-<p><img src="./images/20250227_144335_x.jpg" alt="./images/20250227_144335_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_144335_x.jpg" alt="./images/20250227_144335_x.jpg"><span class="img-wrapper"><img src="./images/20250227_144335_x.jpg" alt="./images/20250227_144335_x.jpg"></span></label></p>
 <p>Disable screensaver, lock, related.</p>
 <pre><code>$ setstatus disable -p
 $ sudo vim /etc/default/grub
@@ -377,11 +377,11 @@ $  sudo apt install -y xserver-xorg-input-evdev
 </code></pre>
 <h4 id="44-debianarm30g"><a class="header" href="#44-debianarm30g">4.4 debianarm30g</a></h4>
 <p>libvirt info:</p>
-<p><img src="./images/20250227_153435_x.jpg" alt="./images/20250227_153435_x.jpg"></p>
-<p><img src="./images/20250227_153445_x.jpg" alt="./images/20250227_153445_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_153435_x.jpg" alt="./images/20250227_153435_x.jpg"><span class="img-wrapper"><img src="./images/20250227_153435_x.jpg" alt="./images/20250227_153435_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_153445_x.jpg" alt="./images/20250227_153445_x.jpg"><span class="img-wrapper"><img src="./images/20250227_153445_x.jpg" alt="./images/20250227_153445_x.jpg"></span></label></p>
 <p>Changes to rambuf.</p>
-<p><img src="./images/20250227_155416_x.jpg" alt="./images/20250227_155416_x.jpg"></p>
-<p><img src="./images/20250227_155438_x.jpg" alt="./images/20250227_155438_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_155416_x.jpg" alt="./images/20250227_155416_x.jpg"><span class="img-wrapper"><img src="./images/20250227_155416_x.jpg" alt="./images/20250227_155416_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_155438_x.jpg" alt="./images/20250227_155438_x.jpg"><span class="img-wrapper"><img src="./images/20250227_155438_x.jpg" alt="./images/20250227_155438_x.jpg"></span></label></p>
 <pre><code># apt install -y vim smplayer glmark2 xserver-xorg-video-amdgpu firmware-amd-graphics xserver-xorg-input-evdev
 # vim /etc/lightdm/lightdm.conf
 minimum-vt=8
@@ -407,20 +407,20 @@ usermod -aG audio test
 </code></pre>
 <h4 id="45-ubuntu2204arm30g"><a class="header" href="#45-ubuntu2204arm30g">4.5 ubuntu2204arm30g</a></h4>
 <p>libvirt info:</p>
-<p><img src="./images/20250227_154402_x.jpg" alt="./images/20250227_154402_x.jpg"></p>
-<p><img src="./images/20250227_154410_x.jpg" alt="./images/20250227_154410_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_154402_x.jpg" alt="./images/20250227_154402_x.jpg"><span class="img-wrapper"><img src="./images/20250227_154402_x.jpg" alt="./images/20250227_154402_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_154410_x.jpg" alt="./images/20250227_154410_x.jpg"><span class="img-wrapper"><img src="./images/20250227_154410_x.jpg" alt="./images/20250227_154410_x.jpg"></span></label></p>
 <pre><code>sudo apt update -y &amp;&amp; sudo apt upgrade -y
 sudo apt install -y mate-desktop-environment-core mate-desktop-environment mate-desktop-environment-extras lightdm
 sudo systemctl set-default graphical.target
 sudo vim /etc/lightdm/lightdm.conf
 sudo reboot
 </code></pre>
-<p><img src="./images/20250227_162243_x.jpg" alt="./images/20250227_162243_x.jpg"></p>
-<p><img src="./images/20250227_163105_x.jpg" alt="./images/20250227_163105_x.jpg"></p>
-<p><img src="./images/20250227_163124_x.jpg" alt="./images/20250227_163124_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_162243_x.jpg" alt="./images/20250227_162243_x.jpg"><span class="img-wrapper"><img src="./images/20250227_162243_x.jpg" alt="./images/20250227_162243_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_163105_x.jpg" alt="./images/20250227_163105_x.jpg"><span class="img-wrapper"><img src="./images/20250227_163105_x.jpg" alt="./images/20250227_163105_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_163124_x.jpg" alt="./images/20250227_163124_x.jpg"><span class="img-wrapper"><img src="./images/20250227_163124_x.jpg" alt="./images/20250227_163124_x.jpg"></span></label></p>
 <p>Change language:</p>
-<p><img src="./images/20250227_163237_x.jpg" alt="./images/20250227_163237_x.jpg"></p>
-<p><img src="./images/20250227_163256_x.jpg" alt="./images/20250227_163256_x.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_163237_x.jpg" alt="./images/20250227_163237_x.jpg"><span class="img-wrapper"><img src="./images/20250227_163237_x.jpg" alt="./images/20250227_163237_x.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/20250227_163256_x.jpg" alt="./images/20250227_163256_x.jpg"><span class="img-wrapper"><img src="./images/20250227_163256_x.jpg" alt="./images/20250227_163256_x.jpg"></span></label></p>
 <pre><code>sudo apt install -y fonts-wqy-microhei fonts-wqy-zenhei xfonts-wqy smplayer glmark2
 </code></pre>
 <p>Install firefox, download it from nightly build, and create shortcuts.</p>
@@ -488,7 +488,7 @@ add test to several groups.
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -224,9 +224,9 @@ scanimage -d 'airscan:e0:Pantum M6200NW series[18523C] (USB)' --format=png&gt;1.
 </code></pre>
 <h3 id="2-uos-local-printer"><a class="header" href="#2-uos-local-printer">2. uos local printer</a></h3>
 <p>Open security related:</p>
-<p><img src="./images/2025_10_23_10_36_35_724x326.jpg" alt="./images/2025_10_23_10_36_35_724x326.jpg"></p>
-<p><img src="./images/2025_10_23_10_37_13_738x196.jpg" alt="./images/2025_10_23_10_37_13_738x196.jpg"></p>
-<p><img src="./images/2025_10_23_10_37_25_812x278.jpg" alt="./images/2025_10_23_10_37_25_812x278.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_10_36_35_724x326.jpg" alt="./images/2025_10_23_10_36_35_724x326.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_10_36_35_724x326.jpg" alt="./images/2025_10_23_10_36_35_724x326.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_10_37_13_738x196.jpg" alt="./images/2025_10_23_10_37_13_738x196.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_10_37_13_738x196.jpg" alt="./images/2025_10_23_10_37_13_738x196.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_10_37_25_812x278.jpg" alt="./images/2025_10_23_10_37_25_812x278.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_10_37_25_812x278.jpg" alt="./images/2025_10_23_10_37_25_812x278.jpg"></span></label></p>
 <p>Install ipp-usb and enable avahi-daemon:</p>
 <pre><code>apt install ./ipp-usb_0.9.17-3+b4_amd64.deb
 systemctl enable ipp-usb
@@ -275,7 +275,7 @@ device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW
 </code></pre>
 <h3 id="4-zkfd-arm64"><a class="header" href="#4-zkfd-arm64">4. zkfd arm64</a></h3>
 <p>usb device redirection:</p>
-<p><img src="./images/2025_10_23_14_48_33_403x311.jpg" alt="./images/2025_10_23_14_48_33_403x311.jpg">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_14_48_33_403x311.jpg" alt="./images/2025_10_23_14_48_33_403x311.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_14_48_33_403x311.jpg" alt="./images/2025_10_23_14_48_33_403x311.jpg"></span></label>
 In buiding airscan:</p>
 <pre><code>ln -s /usr/local/lib/aarch64-linux-gnu/sane/libsane-airscan.so /usr/lib/aarch64-linux-gnu/sane/
 sudo ln -s /usr/local/etc/sane.d/dll.d/airscan /etc/sane.d/dll.d/
@@ -316,7 +316,7 @@ scanimage: open of device escl:http://127.0.0.1:60000 failed: Out of memory
 # scanimage -L
 device `airscan:e0:Pantum M6200NW series[18523C] (USB)' is a eSCL Pantum M6200NW series[18523C] (USB) ip=127.0.0.1, ::1
 </code></pre>
-<p><img src="./images/2025_10_23_15_26_35_942x644.jpg" alt="./images/2025_10_23_15_26_35_942x644.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_15_26_35_942x644.jpg" alt="./images/2025_10_23_15_26_35_942x644.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_15_26_35_942x644.jpg" alt="./images/2025_10_23_15_26_35_942x644.jpg"></span></label></p>
 <h3 id="6-uos-arm64"><a class="header" href="#6-uos-arm64">6. uos arm64</a></h3>
 <p>old style:</p>
 <pre><code>systemctl enable avahi-daemon
@@ -352,8 +352,8 @@ crontab -e
 @reboot sleep 5 &amp;&amp; systemctl restart ipp-usb
 
 </code></pre>
-<p><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg"></p>
-<p><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_17_43_31_853x602.jpg" alt="./images/2025_10_23_17_43_31_853x602.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg"><span class="img-wrapper"><img src="./images/2025_10_23_17_43_39_715x294.jpg" alt="./images/2025_10_23_17_43_39_715x294.jpg"></span></label></p>
 
                     </main>
 
@@ -403,7 +403,7 @@ crontab -e
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

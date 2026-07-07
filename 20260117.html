@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -180,11 +180,11 @@
 <p>验证 UsbDk 是否正常工作： 打开 CMD 或 PowerShell，运行：</p>
 <pre><code>"C:\Program Files\UsbDk Runtime Library\UsbDkController.exe" -n
 </code></pre>
-<p><img src="./images/2026_01_17_11_32_34_564x232.jpg" alt="./images/2026_01_17_11_32_34_564x232.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2026_01_17_11_32_34_564x232.jpg" alt="./images/2026_01_17_11_32_34_564x232.jpg"><span class="img-wrapper"><img src="./images/2026_01_17_11_32_34_564x232.jpg" alt="./images/2026_01_17_11_32_34_564x232.jpg"></span></label></p>
 <p>如果能列出你电脑上的一大堆 USB 设备树，说明 UsbDk 已经就绪。</p>
 <h3 id="2-开发编译环境"><a class="header" href="#2-开发编译环境">2. 开发/编译环境</a></h3>
 <p>下载MASY2<code>https://www.msys2.org/</code>并安装：</p>
-<p><img src="./images/2026_01_17_11_53_26_416x674.jpg" alt="./images/2026_01_17_11_53_26_416x674.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2026_01_17_11_53_26_416x674.jpg" alt="./images/2026_01_17_11_53_26_416x674.jpg"><span class="img-wrapper"><img src="./images/2026_01_17_11_53_26_416x674.jpg" alt="./images/2026_01_17_11_53_26_416x674.jpg"></span></label></p>
 <p>打开<code>MSYS2 UCRT64</code>.</p>
 <p>更新系统 + 安装基本工具:</p>
 <pre><code>pacman -Syu
@@ -207,7 +207,7 @@ pacman -Syu
 cd usbredir
 </code></pre>
 <p>更改源文件，激活usbdk为backend<code>tools/usbredirect.c</code>, line 602:</p>
-<p><img src="./images/2026_01_17_11_56_51_610x493.jpg" alt="./images/2026_01_17_11_56_51_610x493.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2026_01_17_11_56_51_610x493.jpg" alt="./images/2026_01_17_11_56_51_610x493.jpg"><span class="img-wrapper"><img src="./images/2026_01_17_11_56_51_610x493.jpg" alt="./images/2026_01_17_11_56_51_610x493.jpg"></span></label></p>
 <p>创建构建目录并配置（meson 会自动检测 ucrt64 的工具链）</p>
 <pre><code>mkdir build
 cd build
@@ -288,7 +288,7 @@ cores: 4
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

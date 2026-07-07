@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,38 +177,38 @@
                         <h1 id="20250924"><a class="header" href="#20250924">20250924</a></h1>
 <h3 id="1-win7-verificationh470"><a class="header" href="#1-win7-verificationh470">1. win7 verification(h470)</a></h3>
 <p><code>匹配旧机器</code>， 卡在“安装程序正在更新注册表配置“页面， 再度重启后，无限重启，无法进入系统。</p>
-<p><img src="./images/2025_09_24_10_20_41_974x630.jpg" alt="./images/2025_09_24_10_20_41_974x630.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_10_20_41_974x630.jpg" alt="./images/2025_09_24_10_20_41_974x630.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_10_20_41_974x630.jpg" alt="./images/2025_09_24_10_20_41_974x630.jpg"></span></label></p>
 <p><code>匹配新机器</code>， 安装完毕后，蓝屏：</p>
 <p>0000003B</p>
 <h3 id="2-win7-蓝屏镜像再应用"><a class="header" href="#2-win7-蓝屏镜像再应用">2. win7 蓝屏镜像再应用</a></h3>
 <p>思路：去掉里面的Intel核显驱动。自行安装驱动。</p>
 <h4 id="21-蓝屏镜像bios化"><a class="header" href="#21-蓝屏镜像bios化">2.1 蓝屏镜像bios化</a></h4>
-<p><img src="./images/2025_09_24_10_42_16_700x505.jpg" alt="./images/2025_09_24_10_42_16_700x505.jpg">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_10_42_16_700x505.jpg" alt="./images/2025_09_24_10_42_16_700x505.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_10_42_16_700x505.jpg" alt="./images/2025_09_24_10_42_16_700x505.jpg"></span></label>
 卡在:</p>
-<p><img src="./images/2025_09_24_10_42_40_680x377.jpg" alt="./images/2025_09_24_10_42_40_680x377.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_10_42_40_680x377.jpg" alt="./images/2025_09_24_10_42_40_680x377.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_10_42_40_680x377.jpg" alt="./images/2025_09_24_10_42_40_680x377.jpg"></span></label></p>
 <h4 id="22-蓝屏镜像uefi化"><a class="header" href="#22-蓝屏镜像uefi化">2.2 蓝屏镜像uefi化</a></h4>
 <p>无法启动，报蓝屏（因硬件发生改变）</p>
 <h3 id="3-win7安装uefibios"><a class="header" href="#3-win7安装uefibios">3. win7安装(uefi/bios)</a></h3>
 <h4 id="31-bios"><a class="header" href="#31-bios">3.1 bios</a></h4>
 <p>分区：</p>
-<p><img src="./images/2025_09_24_10_49_17_856x660.jpg" alt="./images/2025_09_24_10_49_17_856x660.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_10_49_17_856x660.jpg" alt="./images/2025_09_24_10_49_17_856x660.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_10_49_17_856x660.jpg" alt="./images/2025_09_24_10_49_17_856x660.jpg"></span></label></p>
 <p>不需要选uefi相关:</p>
-<p><img src="./images/2025_09_24_10_50_02_799x563.jpg" alt="./images/2025_09_24_10_50_02_799x563.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_10_50_02_799x563.jpg" alt="./images/2025_09_24_10_50_02_799x563.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_10_50_02_799x563.jpg" alt="./images/2025_09_24_10_50_02_799x563.jpg"></span></label></p>
 <h4 id="32-uefi"><a class="header" href="#32-uefi">3.2 uefi</a></h4>
 <p>第一步: 1Core的配置，可以安装成功。qxl+vnc.此时打开双网卡，打开rdesktop, 备份相关配置</p>
 <pre><code>root@idv-TC-9073:~/workspace# virsh dumpxml win7_test_uefi&gt;vnc_win7_test_uefi.xml
 </code></pre>
 <p>第二步：改一个透传的配置出来，此时因为显卡驱动没有安装，应该可以在显示器上看到画面（分辨率不正常)</p>
-<p><img src="./images/2025_09_24_11_35_11_714x623.jpg" alt="./images/2025_09_24_11_35_11_714x623.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_35_11_714x623.jpg" alt="./images/2025_09_24_11_35_11_714x623.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_35_11_714x623.jpg" alt="./images/2025_09_24_11_35_11_714x623.jpg"></span></label></p>
 <p>备份。</p>
 <pre><code># cp win7_test_uefi.qcow2 win7_test_uefi.qcow2.beforeuhd630
 </code></pre>
 <p>方法1：  安装自己下载的驱动:</p>
-<p><img src="./images/2025_09_24_11_41_43_636x643.jpg" alt="./images/2025_09_24_11_41_43_636x643.jpg"></p>
-<p><img src="./images/2025_09_24_11_42_00_823x464.jpg" alt="./images/2025_09_24_11_42_00_823x464.jpg"></p>
-<p><img src="./images/2025_09_24_11_43_49_589x477.jpg" alt="./images/2025_09_24_11_43_49_589x477.jpg">
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_41_43_636x643.jpg" alt="./images/2025_09_24_11_41_43_636x643.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_41_43_636x643.jpg" alt="./images/2025_09_24_11_41_43_636x643.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_42_00_823x464.jpg" alt="./images/2025_09_24_11_42_00_823x464.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_42_00_823x464.jpg" alt="./images/2025_09_24_11_42_00_823x464.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_43_49_589x477.jpg" alt="./images/2025_09_24_11_43_49_589x477.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_43_49_589x477.jpg" alt="./images/2025_09_24_11_43_49_589x477.jpg"></span></label>
 自己安装的驱动进入到蓝屏状态：</p>
-<p><img src="./images/2025_09_24_11_50_09_799x580.jpg" alt="./images/2025_09_24_11_50_09_799x580.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_50_09_799x580.jpg" alt="./images/2025_09_24_11_50_09_799x580.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_50_09_799x580.jpg" alt="./images/2025_09_24_11_50_09_799x580.jpg"></span></label></p>
 <p>恢复状态：</p>
 <pre><code>virsh destroy win7_test_uefi
 cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2
@@ -216,21 +216,21 @@ virsh start win7_test_uefi
 </code></pre>
 <p>方法2：  驱动总裁自己安装uhd630驱动</p>
 <p>方法2.1 安装最新的26.20.18.8061</p>
-<p><img src="./images/2025_09_24_11_49_22_912x477.jpg" alt="./images/2025_09_24_11_49_22_912x477.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_49_22_912x477.jpg" alt="./images/2025_09_24_11_49_22_912x477.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_49_22_912x477.jpg" alt="./images/2025_09_24_11_49_22_912x477.jpg"></span></label></p>
 <p>安装完毕后的设备管理器:</p>
-<p><img src="./images/2025_09_24_11_52_27_669x536.jpg" alt="./images/2025_09_24_11_52_27_669x536.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_52_27_669x536.jpg" alt="./images/2025_09_24_11_52_27_669x536.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_52_27_669x536.jpg" alt="./images/2025_09_24_11_52_27_669x536.jpg"></span></label></p>
 <p>驱动版本：</p>
-<p><img src="./images/2025_09_24_11_52_43_391x422.jpg" alt="./images/2025_09_24_11_52_43_391x422.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_52_43_391x422.jpg" alt="./images/2025_09_24_11_52_43_391x422.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_52_43_391x422.jpg" alt="./images/2025_09_24_11_52_43_391x422.jpg"></span></label></p>
 <p>按提示重启,蓝屏：</p>
-<p><img src="./images/2025_09_24_11_52_56_644x313.jpg" alt="./images/2025_09_24_11_52_56_644x313.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_52_56_644x313.jpg" alt="./images/2025_09_24_11_52_56_644x313.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_52_56_644x313.jpg" alt="./images/2025_09_24_11_52_56_644x313.jpg"></span></label></p>
 <p>恢复状态:</p>
 <pre><code>virsh destroy win7_test_uefi &amp;&amp; cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2 &amp;&amp; virsh start win7_test_uefi
 </code></pre>
 <p>方法2.2 安装稳定的26.20.18.8012</p>
-<p><img src="./images/2025_09_24_11_56_18_885x415.jpg" alt="./images/2025_09_24_11_56_18_885x415.jpg"></p>
-<p><img src="./images/2025_09_24_11_58_38_417x383.jpg" alt="./images/2025_09_24_11_58_38_417x383.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_56_18_885x415.jpg" alt="./images/2025_09_24_11_56_18_885x415.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_56_18_885x415.jpg" alt="./images/2025_09_24_11_56_18_885x415.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_58_38_417x383.jpg" alt="./images/2025_09_24_11_58_38_417x383.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_58_38_417x383.jpg" alt="./images/2025_09_24_11_58_38_417x383.jpg"></span></label></p>
 <p>重启后蓝屏:</p>
-<p><img src="./images/2025_09_24_11_59_51_815x607.jpg" alt="./images/2025_09_24_11_59_51_815x607.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_11_59_51_815x607.jpg" alt="./images/2025_09_24_11_59_51_815x607.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_11_59_51_815x607.jpg" alt="./images/2025_09_24_11_59_51_815x607.jpg"></span></label></p>
 <p>恢复状态:</p>
 <pre><code>virsh destroy win7_test_uefi &amp;&amp; cp win7_test_uefi.qcow2.beforeuhd630 win7_test_uefi.qcow2 &amp;&amp; virsh start win7_test_uefi
 </code></pre>
@@ -241,16 +241,16 @@ virsh start win7_test_uefi
 <p>remove vnc/qxl, then add igpu/mouse/keyboard, add vnc/qxl.</p>
 <p>Add qemu args.</p>
 <p>Start machine.</p>
-<p><img src="./images/2025_09_24_12_13_10_1594x1187.jpg" alt="./images/2025_09_24_12_13_10_1594x1187.jpg"></p>
-<p><img src="./images/2025_09_24_12_10_40_790x716.jpg" alt="./images/2025_09_24_12_10_40_790x716.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_13_10_1594x1187.jpg" alt="./images/2025_09_24_12_13_10_1594x1187.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_13_10_1594x1187.jpg" alt="./images/2025_09_24_12_13_10_1594x1187.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_10_40_790x716.jpg" alt="./images/2025_09_24_12_10_40_790x716.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_10_40_790x716.jpg" alt="./images/2025_09_24_12_10_40_790x716.jpg"></span></label></p>
 <p>安装驱动:</p>
-<p><img src="./images/2025_09_24_12_11_14_903x308.jpg" alt="./images/2025_09_24_12_11_14_903x308.jpg"></p>
-<p><img src="./images/2025_09_24_12_13_42_679x383.jpg" alt="./images/2025_09_24_12_13_42_679x383.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_11_14_903x308.jpg" alt="./images/2025_09_24_12_11_14_903x308.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_11_14_903x308.jpg" alt="./images/2025_09_24_12_11_14_903x308.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_13_42_679x383.jpg" alt="./images/2025_09_24_12_13_42_679x383.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_13_42_679x383.jpg" alt="./images/2025_09_24_12_13_42_679x383.jpg"></span></label></p>
 <p>Kernel output issue:</p>
-<p><img src="./images/2025_09_24_12_14_40_1200x634.jpg" alt="./images/2025_09_24_12_14_40_1200x634.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_14_40_1200x634.jpg" alt="./images/2025_09_24_12_14_40_1200x634.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_14_40_1200x634.jpg" alt="./images/2025_09_24_12_14_40_1200x634.jpg"></span></label></p>
 <p>屏幕保持黑</p>
-<p><img src="./images/2025_09_24_12_17_37_919x350.jpg" alt="./images/2025_09_24_12_17_37_919x350.jpg"></p>
-<p><img src="./images/2025_09_24_12_19_46_944x427.jpg" alt="./images/2025_09_24_12_19_46_944x427.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_17_37_919x350.jpg" alt="./images/2025_09_24_12_17_37_919x350.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_17_37_919x350.jpg" alt="./images/2025_09_24_12_17_37_919x350.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_12_19_46_944x427.jpg" alt="./images/2025_09_24_12_19_46_944x427.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_12_19_46_944x427.jpg" alt="./images/2025_09_24_12_19_46_944x427.jpg"></span></label></p>
 <h3 id="4-pvelegacy-bios"><a class="header" href="#4-pvelegacy-bios">4. pve(legacy bios)</a></h3>
 <p>i3-8100 with csm(legacy):</p>
 <pre><code># bootctl status
@@ -310,58 +310,58 @@ root@kucf:~# update-initramfs -u -k all &amp;&amp; update-grub2
 Edit 100.conf for removing our previous host-pci passthrough items and parameters.    
 </code></pre>
 <p>必须使用default的显卡来进行xiaobing.iso+恢复镜像的第一步安装, 这是因为默认的xiaobing.iso启动会启动本机的操作系统，而此时本机硬盘上为空。。</p>
-<p><img src="./images/2025_09_24_16_00_09_1102x667.jpg" alt="./images/2025_09_24_16_00_09_1102x667.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_16_00_09_1102x667.jpg" alt="./images/2025_09_24_16_00_09_1102x667.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_16_00_09_1102x667.jpg" alt="./images/2025_09_24_16_00_09_1102x667.jpg"></span></label></p>
 <p>分区为MBR：</p>
-<p><img src="./images/2025_09_24_16_01_53_830x622.jpg" alt="./images/2025_09_24_16_01_53_830x622.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_16_01_53_830x622.jpg" alt="./images/2025_09_24_16_01_53_830x622.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_16_01_53_830x622.jpg" alt="./images/2025_09_24_16_01_53_830x622.jpg"></span></label></p>
 <p>直接安装:</p>
-<p><img src="./images/2025_09_24_16_02_40_712x544.jpg" alt="./images/2025_09_24_16_02_40_712x544.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_16_02_40_712x544.jpg" alt="./images/2025_09_24_16_02_40_712x544.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_16_02_40_712x544.jpg" alt="./images/2025_09_24_16_02_40_712x544.jpg"></span></label></p>
 <p>第一步完成以后，直接关机。</p>
-<p><img src="./images/2025_09_24_16_05_59_941x689.jpg" alt="./images/2025_09_24_16_05_59_941x689.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_16_05_59_941x689.jpg" alt="./images/2025_09_24_16_05_59_941x689.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_16_05_59_941x689.jpg" alt="./images/2025_09_24_16_05_59_941x689.jpg"></span></label></p>
 <h3 id="5-pvelegacy-verification"><a class="header" href="#5-pvelegacy-verification">5. pve(legacy verification)</a></h3>
 <h4 id="51-csmuefii440fxpc"><a class="header" href="#51-csmuefii440fxpc">5.1 csm(uefi)+i440fx+pc</a></h4>
-<p>csm(display: uefi), choose uefi:<br><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"></p>
+<p>csm(display: uefi), choose uefi:<br><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"></span></label></p>
 <p>hardware configuration:</p>
-<p><img src="./images/2025_09_24_19_14_10_797x429.jpg" alt="./images/2025_09_24_19_14_10_797x429.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_14_10_797x429.jpg" alt="./images/2025_09_24_19_14_10_797x429.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_14_10_797x429.jpg" alt="./images/2025_09_24_19_14_10_797x429.jpg"></span></label></p>
 <p>guest infos:</p>
-<p><img src="./images/2025_09_24_19_14_36_764x1069.jpg" alt="./images/2025_09_24_19_14_36_764x1069.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_14_36_764x1069.jpg" alt="./images/2025_09_24_19_14_36_764x1069.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_14_36_764x1069.jpg" alt="./images/2025_09_24_19_14_36_764x1069.jpg"></span></label></p>
 <p>no signal on screen.</p>
-<p><img src="./images/2025_09_24_19_16_26_866x646.jpg" alt="./images/2025_09_24_19_16_26_866x646.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_16_26_866x646.jpg" alt="./images/2025_09_24_19_16_26_866x646.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_16_26_866x646.jpg" alt="./images/2025_09_24_19_16_26_866x646.jpg"></span></label></p>
 <h4 id="52-csmuefiq35pc"><a class="header" href="#52-csmuefiq35pc">5.2 csm(uefi)+q35+pc</a></h4>
 <p>hardware configuration:</p>
-<p><img src="./images/2025_09_24_19_18_17_797x460.jpg" alt="./images/2025_09_24_19_18_17_797x460.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_18_17_797x460.jpg" alt="./images/2025_09_24_19_18_17_797x460.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_18_17_797x460.jpg" alt="./images/2025_09_24_19_18_17_797x460.jpg"></span></label></p>
 <p>guest infos:</p>
-<p><img src="./images/2025_09_24_19_22_38_1313x712.jpg" alt="./images/2025_09_24_19_22_38_1313x712.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_22_38_1313x712.jpg" alt="./images/2025_09_24_19_22_38_1313x712.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_22_38_1313x712.jpg" alt="./images/2025_09_24_19_22_38_1313x712.jpg"></span></label></p>
 <h4 id="53-csmlegacyi440fxpc"><a class="header" href="#53-csmlegacyi440fxpc">5.3 csm(legacy)+i440fx+pc</a></h4>
 <p>Choose legacy:</p>
-<p><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_26_03_1171x624.jpg" alt="./images/2025_09_24_19_26_03_1171x624.jpg"></span></label></p>
 <p>cpu keep 100%</p>
-<p><img src="./images/2025_09_24_19_30_59_929x362.jpg" alt="./images/2025_09_24_19_30_59_929x362.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_30_59_929x362.jpg" alt="./images/2025_09_24_19_30_59_929x362.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_30_59_929x362.jpg" alt="./images/2025_09_24_19_30_59_929x362.jpg"></span></label></p>
 <h4 id="54-csmlegacyq35pc"><a class="header" href="#54-csmlegacyq35pc">5.4 csm(legacy)+q35+pc</a></h4>
 <p>console output(stuck at last):</p>
-<p><img src="./images/2025_09_24_19_32_23_1136x691.jpg" alt="./images/2025_09_24_19_32_23_1136x691.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_32_23_1136x691.jpg" alt="./images/2025_09_24_19_32_23_1136x691.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_32_23_1136x691.jpg" alt="./images/2025_09_24_19_32_23_1136x691.jpg"></span></label></p>
 <p>screen output:</p>
-<p><img src="./images/2025_09_24_19_33_51_1197x710.jpg" alt="./images/2025_09_24_19_33_51_1197x710.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_33_51_1197x710.jpg" alt="./images/2025_09_24_19_33_51_1197x710.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_33_51_1197x710.jpg" alt="./images/2025_09_24_19_33_51_1197x710.jpg"></span></label></p>
 <p>guest info:</p>
-<p><img src="./images/2025_09_24_19_35_04_810x810.jpg" alt="./images/2025_09_24_19_35_04_810x810.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_35_04_810x810.jpg" alt="./images/2025_09_24_19_35_04_810x810.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_35_04_810x810.jpg" alt="./images/2025_09_24_19_35_04_810x810.jpg"></span></label></p>
 <h4 id="55-csmclosed"><a class="header" href="#55-csmclosed">5.5 csm(closed)</a></h4>
 <p>Close method</p>
 <p>Change all of the items to UEFI:</p>
-<p><img src="./images/2025_09_24_19_56_58_1007x566.jpg" alt="./images/2025_09_24_19_56_58_1007x566.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_56_58_1007x566.jpg" alt="./images/2025_09_24_19_56_58_1007x566.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_56_58_1007x566.jpg" alt="./images/2025_09_24_19_56_58_1007x566.jpg"></span></label></p>
 <p>Change Boot option filter:</p>
-<p><img src="./images/2025_09_24_19_57_23_1147x579.jpg" alt="./images/2025_09_24_19_57_23_1147x579.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_57_23_1147x579.jpg" alt="./images/2025_09_24_19_57_23_1147x579.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_57_23_1147x579.jpg" alt="./images/2025_09_24_19_57_23_1147x579.jpg"></span></label></p>
 <p>Reboot and re-enter bios:</p>
-<p><img src="./images/2025_09_24_19_57_43_1112x299.jpg" alt="./images/2025_09_24_19_57_43_1112x299.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_57_43_1112x299.jpg" alt="./images/2025_09_24_19_57_43_1112x299.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_57_43_1112x299.jpg" alt="./images/2025_09_24_19_57_43_1112x299.jpg"></span></label></p>
 <p>Boot page:</p>
-<p><img src="./images/2025_09_24_19_58_04_1165x590.jpg" alt="./images/2025_09_24_19_58_04_1165x590.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_58_04_1165x590.jpg" alt="./images/2025_09_24_19_58_04_1165x590.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_58_04_1165x590.jpg" alt="./images/2025_09_24_19_58_04_1165x590.jpg"></span></label></p>
 <p>Before vm start:</p>
-<p><img src="./images/2025_09_24_19_58_25_1098x626.jpg" alt="./images/2025_09_24_19_58_25_1098x626.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_58_25_1098x626.jpg" alt="./images/2025_09_24_19_58_25_1098x626.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_58_25_1098x626.jpg" alt="./images/2025_09_24_19_58_25_1098x626.jpg"></span></label></p>
 <h4 id="56-csmclosedq35pc"><a class="header" href="#56-csmclosedq35pc">5.6 csm(closed)+q35+pc</a></h4>
-<p><img src="./images/2025_09_24_19_59_10_932x663.jpg" alt="./images/2025_09_24_19_59_10_932x663.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_19_59_10_932x663.jpg" alt="./images/2025_09_24_19_59_10_932x663.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_19_59_10_932x663.jpg" alt="./images/2025_09_24_19_59_10_932x663.jpg"></span></label></p>
 <h4 id="57-csmclosedi440pc"><a class="header" href="#57-csmclosedi440pc">5.7 csm(closed)+i440+pc</a></h4>
 <p>no signal on screen. but rdesktop OK, uhd works with no output.</p>
-<p><img src="./images/2025_09_24_20_01_49_710x602.jpg" alt="./images/2025_09_24_20_01_49_710x602.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_20_01_49_710x602.jpg" alt="./images/2025_09_24_20_01_49_710x602.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_20_01_49_710x602.jpg" alt="./images/2025_09_24_20_01_49_710x602.jpg"></span></label></p>
 <h4 id="58-try"><a class="header" href="#58-try">5.8. try</a></h4>
-<p><img src="./images/2025_09_24_20_18_08_754x419.jpg" alt="./images/2025_09_24_20_18_08_754x419.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_20_18_08_754x419.jpg" alt="./images/2025_09_24_20_18_08_754x419.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_20_18_08_754x419.jpg" alt="./images/2025_09_24_20_18_08_754x419.jpg"></span></label></p>
 <pre><code>args: -set device.hostpci0.addr=02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on
 boot: order=scsi0;sata0;sata1;sata2;net0
 cores: 8
@@ -390,9 +390,9 @@ vmgenid: bc7e7233-7113-4e4d-802c-9f9ef98affc0
 <p>So: uefi+i440+legacy-igd=1 try?</p>
 <h3 id="6-pveovmfi440legacy-igd1"><a class="header" href="#6-pveovmfi440legacy-igd1">6. pve(ovmf+i440+legacy-igd=1)</a></h3>
 <p>Result:</p>
-<p><img src="./images/2025_09_24_22_36_10_1428x866.jpg" alt="./images/2025_09_24_22_36_10_1428x866.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_22_36_10_1428x866.jpg" alt="./images/2025_09_24_22_36_10_1428x866.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_22_36_10_1428x866.jpg" alt="./images/2025_09_24_22_36_10_1428x866.jpg"></span></label></p>
 <p>hardware:</p>
-<p><img src="./images/2025_09_24_22_36_35_809x531.jpg" alt="./images/2025_09_24_22_36_35_809x531.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_24_22_36_35_809x531.jpg" alt="./images/2025_09_24_22_36_35_809x531.jpg"><span class="img-wrapper"><img src="./images/2025_09_24_22_36_35_809x531.jpg" alt="./images/2025_09_24_22_36_35_809x531.jpg"></span></label></p>
 <pre><code>args: -set device.hostpci0.addr=02.0 -set device.hostpci0.x-igd-gms=0x2 -set device.hostpci0.x-igd-opregion=on
 bios: ovmf
 boot: order=sata0;sata1
@@ -475,7 +475,7 @@ vmgenid: 8322e4cf-e000-47af-9694-c6e1afbc5984
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

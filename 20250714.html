@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -177,11 +177,11 @@
                         <h1 id="20250714"><a class="header" href="#20250714">20250714</a></h1>
 <h3 id="1-centos7-virgl-redroid"><a class="header" href="#1-centos7-virgl-redroid">1. centos7 virgl redroid</a></h3>
 <p>Create a vm using import disk:</p>
-<p><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg"></span></label></p>
 <p>Q35/bios:</p>
-<p><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg"></span></label></p>
 <p>Change IP:</p>
-<p><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg"></span></label></p>
 <p>change hostname to <code>nvidiaredroidcentos</code>.</p>
 <p>Login the vm, then install kernel:</p>
 <pre><code># scp -r dash@192.168.1.8:/media/sda/iso/houdini12/centos .
@@ -192,9 +192,9 @@ kernel-5.10.26-2.x86_64.rpm  kernel-headers-5.10.26-2.x86_64.rpm
 # shutdown -h now
 </code></pre>
 <p>Change setting to virgl:</p>
-<p><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg"></span></label></p>
 <p>Using nvidia card:</p>
-<p><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg"></span></label></p>
 <pre><code># dmesg | grep -i virgl
 [    1.861350] [drm] features: +virgl +edid
 # ls /dev/dri/
@@ -221,7 +221,7 @@ redroid_x86_64:/ # dumpsys SurfaceFlinger | grep GLES
 GLES: Mesa, virgl (NVIDIA GeForce RTX 4070/PCIe/SSE2), OpenGL ES 3.2 Mesa 24.0.8 (git-441f064c1c)
 </code></pre>
 <p>Issue(Ludashi download issue):</p>
-<p><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg"></span></label></p>
 <h3 id="2-centos7-openstack-queens--zun--redroid12"><a class="header" href="#2-centos7-openstack-queens--zun--redroid12">2. (centos7) OpenStack queens + zun + redroid12</a></h3>
 <h4 id="21-base-image"><a class="header" href="#21-base-image">2.1 Base image</a></h4>
 <p>AIM: 5.10 as the default kernel, docker-ce installed and configured.</p>
@@ -241,13 +241,13 @@ ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 <p>undefine the vm, get the qcow2 file.</p>
 <h4 id="22-create-vms"><a class="header" href="#22-create-vms">2.2 Create vms</a></h4>
 <p>queens1:</p>
-<p><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg"></p>
-<p><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg"></p>
-<p><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg"></span></label></p>
 <p>queens2:</p>
-<p><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg"></span></label></p>
 <p>queen3:</p>
-<p><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg"></span></label></p>
 <h4 id="23-deployment"><a class="header" href="#23-deployment">2.3. deployment</a></h4>
 <p>Each node install pip:</p>
 <pre><code>yum install python-devel libffi-devel gcc openssl-devel libselinux-python lvm2 -y
@@ -268,7 +268,7 @@ pip install docker
 10.171.172.23	queen3
 </code></pre>
 <p>password-less login:</p>
-<p><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg"></span></label></p>
 <p>queen1 node:</p>
 <pre><code>git clone https://github.com/openstack/kolla-ansible
 cd kolla-ansible
@@ -373,7 +373,7 @@ kolla-ansible -i ./multinode post-deploy -vv
 keystone_admin_password: 5zGzqMear5ZVltRtRpETFiggoXiz0fmY7TZ1e7iV
 </code></pre>
 <p>horizon with zun ui supportd:</p>
-<p><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg"></span></label></p>
 <p>Create network(int/ext):</p>
 <pre><code>openstack router create Ext-Router
 openstack network create --internal --provider-network-type vxlan int-net
@@ -384,7 +384,7 @@ openstack subnet create ext-net-sub --network ext-net --subnet-range 10.171.172.
 openstack router set Ext-Router --external-gateway ext-net
 </code></pre>
 <p>Network topology:</p>
-<p><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg"></span></label></p>
 <h4 id="25-zun-instance"><a class="header" href="#25-zun-instance">2.5 zun instance</a></h4>
 <p>Get the network infos:</p>
 <pre><code># openstack network list
@@ -409,7 +409,7 @@ a0f3d7caa4b8   ubuntu:latest                                          "sleep 360
 root@queen3:/#  apt update -y &amp;&amp; apt install -y net-tools
 root@queen3:/#  ifconfig
 </code></pre>
-<p><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg"></span></label></p>
 <p>instance stop:</p>
 <pre><code>[root@queen1 kolla]# openstack appcontainer list
 +--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
@@ -456,9 +456,9 @@ Unable to establish connection to http://10.171.172.24:35357/v3/auth/tokens: HTT
 +--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
 </code></pre>
 <p>Allocating a floating IP :</p>
-<p><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg"></span></label></p>
 <p>Recreate the security group:</p>
-<p><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg"></span></label></p>
 <p>In docker instance:</p>
 <pre><code>root@queen3:/# apt update -y &amp;&amp; apt install -y net-tools iputils-ping
 root@queen3:/# ping -c2 223.5.5.5
@@ -500,7 +500,7 @@ zun-1.0.1
 zun-1.0.1
 </code></pre>
 <p>Release note(<code>https://fossies.org/linux/zun/ChangeLog</code>):</p>
-<p><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg"></span></label></p>
 <p>Rocky version:</p>
 <pre><code>[root@queen1 ~]# docker run -it kolla/centos-source-zun-api:rocky /bin/bash
 ()[root@46e8671fcd28 /]# ls zun-base-source/
@@ -566,7 +566,7 @@ DefaultTimeoutStopSec=20s
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

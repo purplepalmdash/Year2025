@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -182,13 +182,13 @@
 5.10.90-c1dc2c9a39ac
 </code></pre>
 <p>Import qcow2, first use qxl/spice for verification, then shutdown, add igpu/usb device:</p>
-<p><img src="./images/2025_09_15_08_56_57_587x461.jpg" alt="./images/2025_09_15_08_56_57_587x461.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_08_56_57_587x461.jpg" alt="./images/2025_09_15_08_56_57_587x461.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_08_56_57_587x461.jpg" alt="./images/2025_09_15_08_56_57_587x461.jpg"></span></label></p>
 <p>Edit the vm:</p>
 <pre><code># virsh edit win10
 OVMF_CODE.fd-&gt;OVMF.fd
 Add -set parameter
 </code></pre>
-<p><img src="./images/2025_09_15_09_01_50_1540x862.jpg" alt="./images/2025_09_15_09_01_50_1540x862.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_09_01_50_1540x862.jpg" alt="./images/2025_09_15_09_01_50_1540x862.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_09_01_50_1540x862.jpg" alt="./images/2025_09_15_09_01_50_1540x862.jpg"></span></label></p>
 <h3 id="2-i7-10700-verification"><a class="header" href="#2-i7-10700-verification">2. i7-10700 verification</a></h3>
 <p>Hardware info:</p>
 <pre><code>root@idv-C5520V:~# lscpu | grep Model
@@ -199,8 +199,8 @@ root@idv-C5520V:~# uname -r
 
 </code></pre>
 <p>Import system:</p>
-<p><img src="./images/2025_09_15_09_09_03_577x453.jpg" alt="./images/2025_09_15_09_09_03_577x453.jpg"></p>
-<p><img src="./images/2025_09_15_09_09_29_647x489.jpg" alt="./images/2025_09_15_09_09_29_647x489.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_09_09_03_577x453.jpg" alt="./images/2025_09_15_09_09_03_577x453.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_09_09_03_577x453.jpg" alt="./images/2025_09_15_09_09_03_577x453.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_09_09_29_647x489.jpg" alt="./images/2025_09_15_09_09_29_647x489.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_09_09_29_647x489.jpg" alt="./images/2025_09_15_09_09_29_647x489.jpg"></span></label></p>
 <p>The effect are as listed as the i5-10400.</p>
 <h3 id="3-i5-10400tc-9073"><a class="header" href="#3-i5-10400tc-9073">3. i5-10400(tc-9073)</a></h3>
 <p>Hardware info:</p>
@@ -211,7 +211,7 @@ root@idv-TC-9073:/var/lib/libvirt/images# uname -r
 5.10.90-c1dc2c9a39ac
 </code></pre>
 <p>test vm:</p>
-<p><img src="./images/2025_09_15_09_25_45_567x408.jpg" alt="./images/2025_09_15_09_25_45_567x408.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_09_25_45_567x408.jpg" alt="./images/2025_09_15_09_25_45_567x408.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_09_25_45_567x408.jpg" alt="./images/2025_09_15_09_25_45_567x408.jpg"></span></label></p>
 <p>when start, the machine will remain black,</p>
 <p>dmesg output:</p>
 <pre><code>[   60.862887] vfio-pci 0000:00:02.0: vgaarb: changed VGA decodes: olddecodes=io+mem,decodes=io+mem:owns=io+mem
@@ -298,24 +298,24 @@ make LOCALVERSION="-newnew" -j `nproc` O=./build V=1
 </div>
 <h3 id="6-libvirt-based"><a class="header" href="#6-libvirt-based">6. libvirt based</a></h3>
 <p>Create vm:</p>
-<p><img src="./images/2025_09_15_15_26_42_447x340.jpg" alt="./images/2025_09_15_15_26_42_447x340.jpg"></p>
-<p><img src="./images/2025_09_15_15_27_16_351x207.jpg" alt="./images/2025_09_15_15_27_16_351x207.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_26_42_447x340.jpg" alt="./images/2025_09_15_15_26_42_447x340.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_26_42_447x340.jpg" alt="./images/2025_09_15_15_26_42_447x340.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_27_16_351x207.jpg" alt="./images/2025_09_15_15_27_16_351x207.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_27_16_351x207.jpg" alt="./images/2025_09_15_15_27_16_351x207.jpg"></span></label></p>
 <p>specify qcow2:</p>
-<p><img src="./images/2025_09_15_15_27_43_353x217.jpg" alt="./images/2025_09_15_15_27_43_353x217.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_27_43_353x217.jpg" alt="./images/2025_09_15_15_27_43_353x217.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_27_43_353x217.jpg" alt="./images/2025_09_15_15_27_43_353x217.jpg"></span></label></p>
 <p>specify name:</p>
-<p><img src="./images/2025_09_15_15_28_24_344x294.jpg" alt="./images/2025_09_15_15_28_24_344x294.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_28_24_344x294.jpg" alt="./images/2025_09_15_15_28_24_344x294.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_28_24_344x294.jpg" alt="./images/2025_09_15_15_28_24_344x294.jpg"></span></label></p>
 <p>Hypervisor details:</p>
-<p><img src="./images/2025_09_15_15_28_49_419x149.jpg" alt="./images/2025_09_15_15_28_49_419x149.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_28_49_419x149.jpg" alt="./images/2025_09_15_15_28_49_419x149.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_28_49_419x149.jpg" alt="./images/2025_09_15_15_28_49_419x149.jpg"></span></label></p>
 <p>rtl8139:</p>
-<p><img src="./images/2025_09_15_15_29_34_452x236.jpg" alt="./images/2025_09_15_15_29_34_452x236.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_29_34_452x236.jpg" alt="./images/2025_09_15_15_29_34_452x236.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_29_34_452x236.jpg" alt="./images/2025_09_15_15_29_34_452x236.jpg"></span></label></p>
 <p>add another iso:</p>
-<p><img src="./images/2025_09_15_15_30_32_516x251.jpg" alt="./images/2025_09_15_15_30_32_516x251.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_30_32_516x251.jpg" alt="./images/2025_09_15_15_30_32_516x251.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_30_32_516x251.jpg" alt="./images/2025_09_15_15_30_32_516x251.jpg"></span></label></p>
 <p>Remove <code>Display Spice</code> and <code>QXL</code>:</p>
-<p><img src="./images/2025_09_15_15_31_31_526x325.jpg" alt="./images/2025_09_15_15_31_31_526x325.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_31_31_526x325.jpg" alt="./images/2025_09_15_15_31_31_526x325.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_31_31_526x325.jpg" alt="./images/2025_09_15_15_31_31_526x325.jpg"></span></label></p>
 <p>4Core 2 threads:</p>
-<p><img src="./images/2025_09_15_15_32_49_443x317.jpg" alt="./images/2025_09_15_15_32_49_443x317.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_32_49_443x317.jpg" alt="./images/2025_09_15_15_32_49_443x317.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_32_49_443x317.jpg" alt="./images/2025_09_15_15_32_49_443x317.jpg"></span></label></p>
 <p>Add igpu/usb host:</p>
-<p><img src="./images/2025_09_15_15_34_28_450x318.jpg" alt="./images/2025_09_15_15_34_28_450x318.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_34_28_450x318.jpg" alt="./images/2025_09_15_15_34_28_450x318.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_34_28_450x318.jpg" alt="./images/2025_09_15_15_34_28_450x318.jpg"></span></label></p>
 <pre><code># virsh edit win720250915
 &lt;domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'&gt;
 
@@ -349,7 +349,7 @@ make LOCALVERSION="-newnew" -j `nproc` O=./build V=1
 &lt;/domain&gt;
 
 </code></pre>
-<p><img src="./images/2025_09_15_15_51_04_908x515.jpg" alt="./images/2025_09_15_15_51_04_908x515.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_09_15_15_51_04_908x515.jpg" alt="./images/2025_09_15_15_51_04_908x515.jpg"><span class="img-wrapper"><img src="./images/2025_09_15_15_51_04_908x515.jpg" alt="./images/2025_09_15_15_51_04_908x515.jpg"></span></label></p>
 
                     </main>
 
@@ -399,7 +399,7 @@ make LOCALVERSION="-newnew" -j `nproc` O=./build V=1
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 

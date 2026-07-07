@@ -15,8 +15,8 @@
         <link rel="icon" href="favicon-de23e50b.svg">
         <link rel="shortcut icon" href="favicon-8114d1fc.png">
         <link rel="stylesheet" href="css/variables-8adf115d.css">
-        <link rel="stylesheet" href="css/general-0392ca55.css">
-        <link rel="stylesheet" href="css/chrome-fc474251.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
         <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a50fc1e9.js";
+            window.path_to_searchindex_js = "searchindex-1489fada.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29f547f2.js"></script>
+        <script src="toc-9a3bfee9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -187,18 +187,18 @@ compute(arm64): # cp hope_openstack_compute.qcow2 bridged_compute.qcow2, 42G
 </code></pre>
 <h4 id="12-vms"><a class="header" href="#12-vms">1.2 vms</a></h4>
 <p>Controller:</p>
-<p><img src="./images/2025_05_27_10_05_51_439x282.jpg" alt="./images/2025_05_27_10_05_51_439x282.jpg"></p>
-<p><img src="./images/2025_05_27_10_04_51_488x439.jpg" alt="./images/2025_05_27_10_04_51_488x439.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_05_51_439x282.jpg" alt="./images/2025_05_27_10_05_51_439x282.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_05_51_439x282.jpg" alt="./images/2025_05_27_10_05_51_439x282.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_04_51_488x439.jpg" alt="./images/2025_05_27_10_04_51_488x439.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_04_51_488x439.jpg" alt="./images/2025_05_27_10_04_51_488x439.jpg"></span></label></p>
 <p>two nics:</p>
-<p><img src="./images/2025_05_27_10_05_11_695x587.jpg" alt="./images/2025_05_27_10_05_11_695x587.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_05_11_695x587.jpg" alt="./images/2025_05_27_10_05_11_695x587.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_05_11_695x587.jpg" alt="./images/2025_05_27_10_05_11_695x587.jpg"></span></label></p>
 <p>Compute:</p>
-<p><img src="./images/2025_05_27_10_02_28_456x444.jpg" alt="./images/2025_05_27_10_02_28_456x444.jpg"></p>
-<p><img src="./images/2025_05_27_10_03_03_445x439.jpg" alt="./images/2025_05_27_10_03_03_445x439.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_02_28_456x444.jpg" alt="./images/2025_05_27_10_02_28_456x444.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_02_28_456x444.jpg" alt="./images/2025_05_27_10_02_28_456x444.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_03_03_445x439.jpg" alt="./images/2025_05_27_10_03_03_445x439.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_03_03_445x439.jpg" alt="./images/2025_05_27_10_03_03_445x439.jpg"></span></label></p>
 <p>two nics:</p>
-<p><img src="./images/2025_05_27_10_03_47_630x543.jpg" alt="./images/2025_05_27_10_03_47_630x543.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_03_47_630x543.jpg" alt="./images/2025_05_27_10_03_47_630x543.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_03_47_630x543.jpg" alt="./images/2025_05_27_10_03_47_630x543.jpg"></span></label></p>
 <h4 id="13-basic-configurations"><a class="header" href="#13-basic-configurations">1.3 Basic configurations</a></h4>
 <p>Controller(10.171.172.21):</p>
-<p><img src="./images/2025_05_27_10_08_31_724x528.jpg" alt="./images/2025_05_27_10_08_31_724x528.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_08_31_724x528.jpg" alt="./images/2025_05_27_10_08_31_724x528.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_08_31_724x528.jpg" alt="./images/2025_05_27_10_08_31_724x528.jpg"></span></label></p>
 <pre><code># vim /etc/systemd/system/network-online.target.wants/NetworkManager-wait-online.service
 ...
 Type=oneshot
@@ -207,10 +207,10 @@ RemainAfterExit=yes
 TimeoutStartSec=5sec
 </code></pre>
 <p>Compute(10.171.172.22):</p>
-<p><img src="./images/2025_05_27_10_11_50_345x182.jpg" alt="./images/2025_05_27_10_11_50_345x182.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_11_50_345x182.jpg" alt="./images/2025_05_27_10_11_50_345x182.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_11_50_345x182.jpg" alt="./images/2025_05_27_10_11_50_345x182.jpg"></span></label></p>
 <p>virgl:</p>
-<p><img src="./images/2025_05_27_10_13_22_540x399.jpg" alt="./images/2025_05_27_10_13_22_540x399.jpg"></p>
-<p><img src="./images/2025_05_27_10_13_30_484x479.jpg" alt="./images/2025_05_27_10_13_30_484x479.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_13_22_540x399.jpg" alt="./images/2025_05_27_10_13_22_540x399.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_13_22_540x399.jpg" alt="./images/2025_05_27_10_13_22_540x399.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_10_13_30_484x479.jpg" alt="./images/2025_05_27_10_13_30_484x479.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_10_13_30_484x479.jpg" alt="./images/2025_05_27_10_13_30_484x479.jpg"></span></label></p>
 <pre><code># vim /etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
 ...
 TimeoutStartSec=5sec
@@ -1029,10 +1029,10 @@ openstack subnet create ext-net-sub --network ext-net --subnet-range 10.171.172.
 openstack router set Ext-Router --external-gateway ext-net
 </code></pre>
 <p>dashboard: 10.171.172.21/horizon:</p>
-<p><img src="./images/2025_05_27_11_31_02_505x469.jpg" alt="./images/2025_05_27_11_31_02_505x469.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_11_31_02_505x469.jpg" alt="./images/2025_05_27_11_31_02_505x469.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_11_31_02_505x469.jpg" alt="./images/2025_05_27_11_31_02_505x469.jpg"></span></label></p>
 <p>admin/000000/default:</p>
-<p><img src="./images/2025_05_27_11_31_21_514x504.jpg" alt="./images/2025_05_27_11_31_21_514x504.jpg"></p>
-<p><img src="./images/2025_05_27_11_31_55_878x672.jpg" alt="./images/2025_05_27_11_31_55_878x672.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_11_31_21_514x504.jpg" alt="./images/2025_05_27_11_31_21_514x504.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_11_31_21_514x504.jpg" alt="./images/2025_05_27_11_31_21_514x504.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_11_31_55_878x672.jpg" alt="./images/2025_05_27_11_31_55_878x672.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_11_31_55_878x672.jpg" alt="./images/2025_05_27_11_31_55_878x672.jpg"></span></label></p>
 <p>Create flavor:</p>
 <pre><code>openstack flavor create --vcpus 4 --ram 6124 --disk 25 C4-6124MB-25G
 </code></pre>
@@ -1066,7 +1066,7 @@ blacklist x_tables
 # cd /usr/lib/python3/dist-packages/nova/ &amp;&amp; find . | grep pyc$ | xargs -I % mv % %.kk
 </code></pre>
 <p>Now you could create the instance from horizon:</p>
-<p><img src="./images/2025_05_27_14_32_19_1411x410.jpg" alt="./images/2025_05_27_14_32_19_1411x410.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_32_19_1411x410.jpg" alt="./images/2025_05_27_14_32_19_1411x410.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_32_19_1411x410.jpg" alt="./images/2025_05_27_14_32_19_1411x410.jpg"></span></label></p>
 <p>Examine the running instance:</p>
 <pre><code>root@compute:~# virsh -c lxc:/// list
  Id     Name                State
@@ -1087,38 +1087,38 @@ console:/ $ getprop | grep boot | grep com
 [sys.bootstat.first_boot_completed]: [1]
 </code></pre>
 <p>Remove all of the security roles:</p>
-<p><img src="./images/2025_05_27_14_34_19_1129x525.jpg" alt="./images/2025_05_27_14_34_19_1129x525.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_34_19_1129x525.jpg" alt="./images/2025_05_27_14_34_19_1129x525.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_34_19_1129x525.jpg" alt="./images/2025_05_27_14_34_19_1129x525.jpg"></span></label></p>
 <p>Add icmp in:</p>
-<p><img src="./images/2025_05_27_14_34_47_710x605.jpg" alt="./images/2025_05_27_14_34_47_710x605.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_34_47_710x605.jpg" alt="./images/2025_05_27_14_34_47_710x605.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_34_47_710x605.jpg" alt="./images/2025_05_27_14_34_47_710x605.jpg"></span></label></p>
 <p>add icmp out:</p>
-<p><img src="./images/2025_05_27_14_35_16_723x690.jpg" alt="./images/2025_05_27_14_35_16_723x690.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_35_16_723x690.jpg" alt="./images/2025_05_27_14_35_16_723x690.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_35_16_723x690.jpg" alt="./images/2025_05_27_14_35_16_723x690.jpg"></span></label></p>
 <p>add tcp in:</p>
-<p><img src="./images/2025_05_27_14_35_54_704x635.jpg" alt="./images/2025_05_27_14_35_54_704x635.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_35_54_704x635.jpg" alt="./images/2025_05_27_14_35_54_704x635.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_35_54_704x635.jpg" alt="./images/2025_05_27_14_35_54_704x635.jpg"></span></label></p>
 <p>add tcp out:</p>
-<p><img src="./images/2025_05_27_14_36_13_713x628.jpg" alt="./images/2025_05_27_14_36_13_713x628.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_36_13_713x628.jpg" alt="./images/2025_05_27_14_36_13_713x628.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_36_13_713x628.jpg" alt="./images/2025_05_27_14_36_13_713x628.jpg"></span></label></p>
 <p>add udp in:</p>
-<p><img src="./images/2025_05_27_14_36_35_688x624.jpg" alt="./images/2025_05_27_14_36_35_688x624.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_36_35_688x624.jpg" alt="./images/2025_05_27_14_36_35_688x624.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_36_35_688x624.jpg" alt="./images/2025_05_27_14_36_35_688x624.jpg"></span></label></p>
 <p>add udp out:</p>
-<p><img src="./images/2025_05_27_14_36_55_653x584.jpg" alt="./images/2025_05_27_14_36_55_653x584.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_36_55_653x584.jpg" alt="./images/2025_05_27_14_36_55_653x584.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_36_55_653x584.jpg" alt="./images/2025_05_27_14_36_55_653x584.jpg"></span></label></p>
 <p>all rules:</p>
-<p><img src="./images/2025_05_27_14_37_14_1098x600.jpg" alt="./images/2025_05_27_14_37_14_1098x600.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_37_14_1098x600.jpg" alt="./images/2025_05_27_14_37_14_1098x600.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_37_14_1098x600.jpg" alt="./images/2025_05_27_14_37_14_1098x600.jpg"></span></label></p>
 <p>Running test:</p>
-<p><img src="./images/2025_05_27_14_38_40_1154x862.jpg" alt="./images/2025_05_27_14_38_40_1154x862.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_38_40_1154x862.jpg" alt="./images/2025_05_27_14_38_40_1154x862.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_38_40_1154x862.jpg" alt="./images/2025_05_27_14_38_40_1154x862.jpg"></span></label></p>
 <p>virgl based result:</p>
-<p><img src="./images/2025_05_27_14_44_47_513x793.jpg" alt="./images/2025_05_27_14_44_47_513x793.jpg"></p>
-<p><img src="./images/2025_05_27_14_45_04_501x724.jpg" alt="./images/2025_05_27_14_45_04_501x724.jpg"></p>
-<p><img src="./images/2025_05_27_14_45_17_526x784.jpg" alt="./images/2025_05_27_14_45_17_526x784.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_44_47_513x793.jpg" alt="./images/2025_05_27_14_44_47_513x793.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_44_47_513x793.jpg" alt="./images/2025_05_27_14_44_47_513x793.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_45_04_501x724.jpg" alt="./images/2025_05_27_14_45_04_501x724.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_45_04_501x724.jpg" alt="./images/2025_05_27_14_45_04_501x724.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_45_17_526x784.jpg" alt="./images/2025_05_27_14_45_17_526x784.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_45_17_526x784.jpg" alt="./images/2025_05_27_14_45_17_526x784.jpg"></span></label></p>
 <h3 id="4-add-new-compute-noderaw-gpu"><a class="header" href="#4-add-new-compute-noderaw-gpu">4. Add new compute node(raw gpu)</a></h3>
 <p>Start host via usb disk:</p>
-<p><img src="./images/2025_05_27_14_59_40_601x274.jpg" alt="./images/2025_05_27_14_59_40_601x274.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_14_59_40_601x274.jpg" alt="./images/2025_05_27_14_59_40_601x274.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_14_59_40_601x274.jpg" alt="./images/2025_05_27_14_59_40_601x274.jpg"></span></label></p>
 <p>Install with hwe kernel:</p>
-<p><img src="./images/2025_05_27_15_03_33_1021x403.jpg" alt="./images/2025_05_27_15_03_33_1021x403.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_15_03_33_1021x403.jpg" alt="./images/2025_05_27_15_03_33_1021x403.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_15_03_33_1021x403.jpg" alt="./images/2025_05_27_15_03_33_1021x403.jpg"></span></label></p>
 <p>Install to external usb disk:</p>
-<p><img src="./images/2025_05_27_15_04_10_679x208.jpg" alt="./images/2025_05_27_15_04_10_679x208.jpg"></p>
-<p><img src="./images/2025_05_27_15_04_47_402x238.jpg" alt="./images/2025_05_27_15_04_47_402x238.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_15_04_10_679x208.jpg" alt="./images/2025_05_27_15_04_10_679x208.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_15_04_10_679x208.jpg" alt="./images/2025_05_27_15_04_10_679x208.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_15_04_47_402x238.jpg" alt="./images/2025_05_27_15_04_47_402x238.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_15_04_47_402x238.jpg" alt="./images/2025_05_27_15_04_47_402x238.jpg"></span></label></p>
 <p>After installation:</p>
-<p><img src="./images/2025_05_27_15_08_46_727x359.jpg" alt="./images/2025_05_27_15_08_46_727x359.jpg"></p>
-<p><img src="./images/2025_05_27_15_09_32_695x379.jpg" alt="./images/2025_05_27_15_09_32_695x379.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_15_08_46_727x359.jpg" alt="./images/2025_05_27_15_08_46_727x359.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_15_08_46_727x359.jpg" alt="./images/2025_05_27_15_08_46_727x359.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_15_09_32_695x379.jpg" alt="./images/2025_05_27_15_09_32_695x379.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_15_09_32_695x379.jpg" alt="./images/2025_05_27_15_09_32_695x379.jpg"></span></label></p>
 <p>Initial Steps:</p>
 <pre><code>Change wait-on-line timeout to 5sec
 add net.ifnames=0 biosdevname=0 in grub configuration and update-grub2
@@ -1315,16 +1315,16 @@ systemctl restart nova-compute
 ufw disable
 </code></pre>
 <p>amd 520 result:</p>
-<p><img src="./images/2025_05_27_17_02_20_528x947.jpg" alt="./images/2025_05_27_17_02_20_528x947.jpg"></p>
-<p><img src="./images/2025_05_27_17_02_54_518x869.jpg" alt="./images/2025_05_27_17_02_54_518x869.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_02_20_528x947.jpg" alt="./images/2025_05_27_17_02_20_528x947.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_02_20_528x947.jpg" alt="./images/2025_05_27_17_02_20_528x947.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_02_54_518x869.jpg" alt="./images/2025_05_27_17_02_54_518x869.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_02_54_518x869.jpg" alt="./images/2025_05_27_17_02_54_518x869.jpg"></span></label></p>
 <p>change to 1920x1080, 120fps:</p>
-<p><img src="./images/2025_05_27_17_13_27_534x810.jpg" alt="./images/2025_05_27_17_13_27_534x810.jpg"></p>
-<p><img src="./images/2025_05_27_17_19_05_526x822.jpg" alt="./images/2025_05_27_17_19_05_526x822.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_13_27_534x810.jpg" alt="./images/2025_05_27_17_13_27_534x810.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_13_27_534x810.jpg" alt="./images/2025_05_27_17_13_27_534x810.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_19_05_526x822.jpg" alt="./images/2025_05_27_17_19_05_526x822.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_19_05_526x822.jpg" alt="./images/2025_05_27_17_19_05_526x822.jpg"></span></label></p>
 <p>rx550 4G:</p>
-<p><img src="./images/2025_05_27_17_45_25_544x886.jpg" alt="./images/2025_05_27_17_45_25_544x886.jpg"></p>
-<p><img src="./images/2025_05_27_17_45_38_563x914.jpg" alt="./images/2025_05_27_17_45_38_563x914.jpg"></p>
-<p><img src="./images/2025_05_27_17_46_12_546x591.jpg" alt="./images/2025_05_27_17_46_12_546x591.jpg"></p>
-<p><img src="./images/2025_05_27_17_50_02_524x882.jpg" alt="./images/2025_05_27_17_50_02_524x882.jpg"></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_45_25_544x886.jpg" alt="./images/2025_05_27_17_45_25_544x886.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_45_25_544x886.jpg" alt="./images/2025_05_27_17_45_25_544x886.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_45_38_563x914.jpg" alt="./images/2025_05_27_17_45_38_563x914.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_45_38_563x914.jpg" alt="./images/2025_05_27_17_45_38_563x914.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_46_12_546x591.jpg" alt="./images/2025_05_27_17_46_12_546x591.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_46_12_546x591.jpg" alt="./images/2025_05_27_17_46_12_546x591.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_05_27_17_50_02_524x882.jpg" alt="./images/2025_05_27_17_50_02_524x882.jpg"><span class="img-wrapper"><img src="./images/2025_05_27_17_50_02_524x882.jpg" alt="./images/2025_05_27_17_50_02_524x882.jpg"></span></label></p>
 
                     </main>
 
@@ -1374,7 +1374,7 @@ ufw disable
 
         <script src="clipboard-1626706a.min.js"></script>
         <script src="highlight-abc7f01d.js"></script>
-        <script src="book-c22b7243.js"></script>
+        <script src="book-609e4cb8.js"></script>
 
         <!-- Custom JS scripts -->
 
