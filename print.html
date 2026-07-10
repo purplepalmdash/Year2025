@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-96d0c1d1.js";
+            window.path_to_searchindex_js = "searchindex-9331a8b2.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3566f7ae.js"></script>
+        <script src="toc-1300b0f9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26042,6 +26042,35 @@ dash@horse:/media/nvme/jun29_232/lineage23.2/device/virt/virt-common$ grep "def_
 ./overlays/overlay/frameworks/base/packages/SettingsProvider/res/values/defaults.xml:    &lt;integer name="def_development_settings_enabled"&gt;1&lt;/integer&gt;
 </code></pre>
 <p>But the configuration is not take effects.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260710"><a class="header" href="#20260710">20260710</a></h1>
+<h3 id="1-sort-via-size"><a class="header" href="#1-sort-via-size">1. sort via size</a></h3>
+<p>Via:</p>
+<pre><code>du -hs | sort -h
+</code></pre>
+<h3 id="2-qemurutabagaarchlinux"><a class="header" href="#2-qemurutabagaarchlinux">2. qemu/rutabaga(archlinux)</a></h3>
+<pre><code>$ LC_ALL=C lscpu | grep Virtualization
+Virtualization:                          AMD-V
+[dash@archgfx ~]$  yay -S qemu-full virt-manager libvirt virt-viewer dnsmasq vde2 bridge-utils openbsd-netcat iptables-nft
+sudo usermod -aG libvirt $(whoami)
+sudo systemctl enable --now libvirtd
+sudo virsh net-start default
+sudo virsh net-autostart default
+sudo pacman -S edk2-ovmf
+</code></pre>
+<h3 id="3-disable-ast-card"><a class="header" href="#3-disable-ast-card">3. disable ast card</a></h3>
+<p>Via:</p>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet initcall_blacklist=simplefb_init amdgpu.modeset=1 sysfb.simplefb=0 initcall_blacklist=simpledrm_platform_driver_init"
+[dash@archgfx ~]$ ls -l /dev/dri/
+total 0
+drwxr-xr-x  2 root root         80 Jul 10 15:57 by-path
+crw-rw----+ 1 root video  226,   0 Jul 10 15:57 card0
+crw-rw-rw-  1 root render 226, 128 Jul 10 15:57 renderD128
+[dash@archgfx ~]$ ls -l /dev/dri/by-path/
+total 0
+lrwxrwxrwx 1 root root  8 Jul 10 15:57 pci-0000:08:00.0-card -&gt; ../card0
+lrwxrwxrwx 1 root root 13 Jul 10 15:57 pci-0000:08:00.0-render -&gt; ../renderD128
+</code></pre>
 
                     </main>
 
