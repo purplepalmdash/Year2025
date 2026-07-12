@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9331a8b2.js";
+            window.path_to_searchindex_js = "searchindex-153e9179.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1300b0f9.js"></script>
+        <script src="toc-cf5d0b6c.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26070,6 +26070,24 @@ crw-rw-rw-  1 root render 226, 128 Jul 10 15:57 renderD128
 total 0
 lrwxrwxrwx 1 root root  8 Jul 10 15:57 pci-0000:08:00.0-card -&gt; ../card0
 lrwxrwxrwx 1 root root 13 Jul 10 15:57 pci-0000:08:00.0-render -&gt; ../renderD128
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260712"><a class="header" href="#20260712">20260712</a></h1>
+<h3 id="1-nomachine-configuration"><a class="header" href="#1-nomachine-configuration">1. nomachine configuration</a></h3>
+<p>archlinux(7.x kernel), solved via:</p>
+<pre><code>~/.nx/config/player.cfg
+
+（如果没有这个文件，就新建一个）添加或修改：
+
+Enable hardware accelerated decoding 0
+
+$ cat ~/.nx/config/player.cfg| grep 'hardware'
+  &lt;option key="Enable hardware accelerated decoding" value="false" /&gt;
+</code></pre>
+<p>Then restart the nomachine, this time you could use nx for connecting remote machine.</p>
+<h3 id="2-archlinuxgodofwar-notebook"><a class="header" href="#2-archlinuxgodofwar-notebook">2. archlinux(GodOfWAR Notebook)</a></h3>
+<p>gtx 1060 via :</p>
+<pre><code>$ yay nvidia-580xx-dkms
 </code></pre>
 
                     </main>
