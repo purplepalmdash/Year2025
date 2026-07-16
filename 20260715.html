@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6cbdac7c.js";
+            window.path_to_searchindex_js = "searchindex-70dc2cc3.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-dffed901.js"></script>
@@ -236,6 +236,50 @@ wsi=surfaceless \
 为什么报错： 宿主机侧的 Gfxstream（运行在 QEMU 进程中）在解析这个结构体时，遇到了它不认识的 sType（结构体类型标识符）：1000102000。
 1000102000 对应的是 Vulkan 扩展里的 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_ROBUSTNESS_FEATURES_EXT。
 结论： 虚拟机内部的 Mesa/Zink 版本非常新，它在创建 Vulkan 实例时链入了这个较新的扩展结构体；而你宿主机编译/链接的 Gfxstream（或 Vulkan SDK/Headers）版本较旧，识别不了这个 sType。Gfxstream 没有做安全的回退处理，而是直接报 unknown structType 并触发了空指针或越界访问，导致 QEMU 崩溃（Core Dumped）。
+</code></pre>
+<h3 id="2-sftp-only-server"><a class="header" href="#2-sftp-only-server">2. sftp only server</a></h3>
+<p>Steps:</p>
+<pre><code>sudo mkdir -p /media/hard/backup/test/uploads
+# 将 test 目录的所有者设为 root，这是 OpenSSH chroot 的硬性要求
+sudo chown root:root /media/hard/backup/test
+sudo chmod 755 /media/hard/backup/test
+
+# 创建一个子目录用于实际存放上传的文件
+sudo chown -R test:sftpusers /media/hard/backup/test/uploads
+sudo chmod 755 /media/hard/backup/test/uploads
+sudo groupadd sftpusers
+sudo useradd -g sftpusers -d /media/hard/backup/test -s /sbin/nologin test
+sudo passwd test
+sudo nano /etc/ssh/sshd_config
+Match Group sftpusers
+    ChrootDirectory /media/hard/backup/test
+    ForceCommand internal-sftp
+    X11Forwarding no
+    AllowTcpForwarding no
+    PasswordAuthentication yes
+
+sudo sshd -t
+sudo systemctl restart ssh
+
+ssh test@your_server_ip
+
+This service allows sftp connections only. Connection to your_server_ip closed.
+
+
+sftp test@your_server_ip
+sftp&gt; cd uploads
+sftp&gt; put local_file.txt
+
+
+sudo chown root:root /media/hard/backup/test
+sudo chmod 755 /media/hard/backup/test
+# 1. 将上级目录的所有者改为 root
+sudo chown root:root /media/hard
+sudo chown root:root /media/hard/backup
+
+# 2. 安全起见，确保它们的权限是 755（去除 backup 目录中组的写权限）
+sudo chmod 755 /media/hard
+sudo chmod 755 /media/hard/backup
 </code></pre>
 
                     </main>

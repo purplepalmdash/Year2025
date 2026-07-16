@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6cbdac7c.js";
+            window.path_to_searchindex_js = "searchindex-70dc2cc3.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-dffed901.js"></script>
@@ -26281,6 +26281,97 @@ EndSection
 <p>Download cf from <code>https://ci.android.com/builds/submitted/10888155/aosp_cf_x86_64_phone-userdebug/latest</code>:</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260714"><a class="header" href="#20260714">20260714</a></h1>
+<h3 id="1-rutabagagfxstreamlineageos"><a class="header" href="#1-rutabagagfxstreamlineageos">1. rutabaga+gfxstream(lineageos)</a></h3>
+<p>Script:</p>
+<pre><code>[dash@archgfx ~]$ cat run_rutabaga_vulkangfx_lineageos.sh 
+#!/bin/bash
+# QEMU + Rutabaga + Gfxstream 启动脚本 - LineageOS 版本
+
+set -e
+
+VM_NAME="venus_lineageos232"
+DISK_PRIMARY="/var/lib/libvirt/images/houdini_lin232.qcow2"
+DISK_SECONDARY="/var/lib/libvirt/images/houdini_lin232_1.qcow2"
+OVMF_CODE="/usr/share/edk2/x64/OVMF_CODE.4m.fd"
+OVMF_VARS="/var/lib/libvirt/qemu/nvram/testb608.fd"
+MEMORY="8G"
+CPUS="4"
+HOSTMEM="4G"
+
+# 显示设置
+DISPLAY_TYPE="gtk,gl=on,show-cursor=on"
+
+echo "🚀 启动 $VM_NAME (Rutabaga + Gfxstream + LineageOS)"
+
+qemu-system-x86_64 \
+    -name "$VM_NAME" \
+    -machine type=q35,accel=kvm \
+    -cpu host \
+    -smp "$CPUS" \
+    -m "$MEMORY" \
+    -enable-kvm \
+    -vga none \
+    -display "$DISPLAY_TYPE" \
+    -device virtio-gpu-rutabaga-pci,\
+hostmem="$HOSTMEM",\
+gfxstream-vulkan=on,\
+cross-domain=on,\
+wsi=surfaceless \
+    \
+    -drive if=pflash,format=raw,file="$OVMF_CODE",readonly=on \
+    -drive if=pflash,format=raw,file="$OVMF_VARS" \
+    \
+    -drive file="$DISK_PRIMARY",format=qcow2,if=virtio,cache=writeback \
+    -drive file="$DISK_SECONDARY",format=qcow2,if=virtio,cache=writeback \
+    \
+    -netdev user,id=net0,hostfwd=tcp::25555-:5555 \
+    -device virtio-net-pci,netdev=net0 \
+    \
+    -device virtio-keyboard-pci \
+    -device virtio-mouse-pci \
+    -device usb-ehci,id=usb \
+    -device usb-tablet,bus=usb.0 \
+    \
+    -audiodev pa,id=sound0 \
+    -device intel-hda \
+    -device hda-duplex,audiodev=sound0 \
+    \
+    -monitor stdio \
+    -serial none
+</code></pre>
+<p>Result:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_07_14_22_27_37_703x554.jpg" alt="./images/2026_07_14_22_27_37_703x554.jpg"><span class="img-wrapper"><img src="images/2026_07_14_22_27_37_703x554.jpg" alt="./images/2026_07_14_22_27_37_703x554.jpg"></span></label></p>
+<pre><code>virtio_x86_64:/ # getprop | grep boot | grep com                                                                            
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-3.drm_upstream]: [5180775290]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+virtio_x86_64:/ # dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES (Ganesh)------------
+GLES: Mesa, llvmpipe (LLVM 16.0.0, 256 bits), OpenGL ES 3.2 Mesa 25.3.3
+virtio_x86_64:/ # lspci -k | grep -i display                                                                                
+00:01.0 Display controller: Red Hat, Inc. Virtio 1.0 GPU (rev 01) virtio-pci
+virtio_x86_64:/ # ls -l /dev/dri/                                                                                           
+total 0
+crw-rw-rw- 1 system graphics 226,   0 2026-07-14 22:25 card0
+crw-rw-rw- 1 system graphics 226, 128 2026-07-14 22:25 renderD128
+virtio_x86_64:/ # uname -a
+Linux localhost 6.12.81-g4f6bf47200d9 #1 SMP PREEMPT Wed Jul  8 14:02:54 UTC 2026 x86_64 Toybox
+virtio_x86_64:/ # dmesg | grep drm
+[    0.403192] ACPI: bus type drm_connector registered
+[    0.403309] [drm] pci: virtio-gpu-pci detected at 0000:00:01.0
+[    0.403809] [drm] Host memory window: 0x380000000000 +0x100000000
+[    0.403814] [drm] features: +virgl +edid +resource_blob +host_visible
+[    0.403815] [drm] features: +context_init
+[    0.404627] [drm] number of scanouts: 1
+[    0.404637] [drm] number of cap sets: 2
+[    0.404934] [drm] cap set 0: id 3, max-version 0, max-size 84
+[    0.405014] [drm] cap set 1: id 5, max-version 0, max-size 16
+[    0.405148] [drm] Initialized virtio_gpu 0.1.0 for 0000:00:01.0 on minor 0
+[    0.434476] virtio-pci 0000:00:01.0: [drm] fb0: virtio_gpudrmfb frame buffer device
+[    1.578260] init: Parsing file /system/etc/init/drmserver.rc...
+......
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260715"><a class="header" href="#20260715">20260715</a></h1>
 <h3 id="1-rutabaga-issue"><a class="header" href="#1-rutabaga-issue">1. rutabaga issue</a></h3>
@@ -26344,6 +26435,50 @@ wsi=surfaceless \
 为什么报错： 宿主机侧的 Gfxstream（运行在 QEMU 进程中）在解析这个结构体时，遇到了它不认识的 sType（结构体类型标识符）：1000102000。
 1000102000 对应的是 Vulkan 扩展里的 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_IMAGE_ROBUSTNESS_FEATURES_EXT。
 结论： 虚拟机内部的 Mesa/Zink 版本非常新，它在创建 Vulkan 实例时链入了这个较新的扩展结构体；而你宿主机编译/链接的 Gfxstream（或 Vulkan SDK/Headers）版本较旧，识别不了这个 sType。Gfxstream 没有做安全的回退处理，而是直接报 unknown structType 并触发了空指针或越界访问，导致 QEMU 崩溃（Core Dumped）。
+</code></pre>
+<h3 id="2-sftp-only-server"><a class="header" href="#2-sftp-only-server">2. sftp only server</a></h3>
+<p>Steps:</p>
+<pre><code>sudo mkdir -p /media/hard/backup/test/uploads
+# 将 test 目录的所有者设为 root，这是 OpenSSH chroot 的硬性要求
+sudo chown root:root /media/hard/backup/test
+sudo chmod 755 /media/hard/backup/test
+
+# 创建一个子目录用于实际存放上传的文件
+sudo chown -R test:sftpusers /media/hard/backup/test/uploads
+sudo chmod 755 /media/hard/backup/test/uploads
+sudo groupadd sftpusers
+sudo useradd -g sftpusers -d /media/hard/backup/test -s /sbin/nologin test
+sudo passwd test
+sudo nano /etc/ssh/sshd_config
+Match Group sftpusers
+    ChrootDirectory /media/hard/backup/test
+    ForceCommand internal-sftp
+    X11Forwarding no
+    AllowTcpForwarding no
+    PasswordAuthentication yes
+
+sudo sshd -t
+sudo systemctl restart ssh
+
+ssh test@your_server_ip
+
+This service allows sftp connections only. Connection to your_server_ip closed.
+
+
+sftp test@your_server_ip
+sftp&gt; cd uploads
+sftp&gt; put local_file.txt
+
+
+sudo chown root:root /media/hard/backup/test
+sudo chmod 755 /media/hard/backup/test
+# 1. 将上级目录的所有者改为 root
+sudo chown root:root /media/hard
+sudo chown root:root /media/hard/backup
+
+# 2. 安全起见，确保它们的权限是 755（去除 backup 目录中组的写权限）
+sudo chmod 755 /media/hard
+sudo chmod 755 /media/hard/backup
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260716"><a class="header" href="#20260716">20260716</a></h1>
