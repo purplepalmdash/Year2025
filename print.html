@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-70dc2cc3.js";
+            window.path_to_searchindex_js = "searchindex-b4048b6a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-dffed901.js"></script>
+        <script src="toc-461ae60a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26587,6 +26587,40 @@ dash@horse:/media/nvme$ sudo du -hs ika
 vendor/lineage_desktop/scripts/apply_source_patches.sh
 vendor/lineage_desktop/scripts/update_microg_prebuilts.py
 vendor/lineage_desktop/scripts/update_native_bridge_prebuilts.py
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260717"><a class="header" href="#20260717">20260717</a></h1>
+<h3 id="1-fedora43-mesa"><a class="header" href="#1-fedora43-mesa">1. fedora43 mesa</a></h3>
+<p>Install ika steps :</p>
+<pre><code>sudo yum copr enable che/mesa
+sudo yum update
+# this will update mesa to 
+$ sudo rpm -qa | grep -i mesa
+mesa-libGLU-9.0.3-7.fc43.x86_64
+mesa-filesystem-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+mesa-dri-drivers-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+mesa-libgbm-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+mesa-libEGL-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+mesa-libGL-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+mesa-vulkan-drivers-26.2.0-0.3.gitd2a8d15.fc43.x86_64
+$ ls
+ika-base-260713-1.fc43.x86_64.rpm    ika-defaults-260713-1.fc43.x86_64.rpm     ika-lineageos-260713-1.fc43.x86_64.rpm  ika-orchestration-260713-1.fc43.x86_64.rpm
+ika-common-260713-1.fc43.x86_64.rpm  ika-integration-260713-1.fc43.x86_64.rpm  ika-metrics-260713-1.fc43.x86_64.rpm    ika-user-260713-1.fc43.x86_64.rpm
+$ sudo yum install -y *.rpm
+$ which ika
+/usr/bin/ika
+$ rpm -qa | grep -i ika
+ika-base-260713-1.fc43.x86_64
+ika-user-260713-1.fc43.x86_64
+ika-integration-260713-1.fc43.x86_64
+ika-defaults-260713-1.fc43.x86_64
+ika-common-260713-1.fc43.x86_64
+ika-orchestration-260713-1.fc43.x86_64
+ika-lineageos-260713-1.fc43.x86_64
+ika-metrics-260713-1.fc43.x86_64
+</code></pre>
+<p>Start via:</p>
+<pre><code>ika restart --gfxstream_vulkan=on
 </code></pre>
 
                     </main>
