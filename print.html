@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-b4048b6a.js";
+            window.path_to_searchindex_js = "searchindex-9a82e94a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-461ae60a.js"></script>
+        <script src="toc-973f3445.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26621,6 +26621,45 @@ ika-metrics-260713-1.fc43.x86_64
 </code></pre>
 <p>Start via:</p>
 <pre><code>ika restart --gfxstream_vulkan=on
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260720"><a class="header" href="#20260720">20260720</a></h1>
+<h3 id="1-build-waydroid-atv-docker-imagefailed"><a class="header" href="#1-build-waydroid-atv-docker-imagefailed">1. Build waydroid-atv docker image(failed)</a></h3>
+<p>Host:</p>
+<pre><code>mkdir waydroid_atv_lineageos23.2
+cd waydroid_atv_lineageos23
+cp -r ../jun29_232/lineage23.2/.repo/ .
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+ repo init -u https://mirrors.bfsu.edu.cn/git/lineageOS/LineageOS/android.git -b lineage-23.2 --git-lfs
+repo sync trusty/vendor/google/aosp
+repo sync -l build/make
+</code></pre>
+<p>Change to crossgfw environment(fedora):</p>
+<pre><code>cd waydroid_atv_lineageos23.2/
+wget -O - https://raw.githubusercontent.com/WayDroid-ATV/android_vendor_waydroid/lineage-23.2/manifest_scripts/generate-manifest.sh | bash
+export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+ repo sync -j1 --fail-fast --force-sync
+repo sync -j8 --fail-fast
+</code></pre>
+<p>Build with :</p>
+<pre><code>  sudo docker run -it --name build_wayd-v `pwd`:/mnt/lineage  -v /home/dash/ccache16:/ccache waydroid-build-24.04:aosp16build /bin/bashbin/bash
+root@beaf8f7303a9:/# cd /mnt/lineage
+
+
+mv external/mesa external/mesa.bak
+build/make/core/base_rules.mk:320: error: external/mesa3d/android: MODULE.TARGET.SHARED_LIBRARIES.meson.dummy.64 already defined by external/mesa.bak/android.
+rm -rf external/mesa.bak
+root@beaf8f7303a9:/mnt/lineage# time make systemimage -j$(nproc --all) &amp;&amp; time make vendorimage -j$(nproc --all)
+build/make/core/base_rules.mk:320: error: external/minigbm/gbm_mesa_driver: MODULE.TARGET.SHARED_LIBRARIES.libgbm_mesa_wrapper already defined by external/minigbm-upstream/gbm_mesa_driver.
+
+root@beaf8f7303a9:/mnt/lineage# mv external/minigbm-upstream/ ~
+mv hardware/mainline/common/libhardware/gralloc/gbm/ ~
+</code></pre>
+<h3 id="2-sync-from-0"><a class="header" href="#2-sync-from-0">2. sync from 0</a></h3>
+<p>sync via:</p>
+<pre><code>root@fedora:/media/nvme/RE_waydroid_atv_lineageos23.2# repo sync
+Syncing: 63% (749/1186) 44:40 | 4 jobs | 0:43 kernel/prebuilts/6.12/arm64 @ kernel/prebuilts/6.12/arm64
+
 </code></pre>
 
                     </main>
