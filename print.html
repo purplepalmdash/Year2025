@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9a82e94a.js";
+            window.path_to_searchindex_js = "searchindex-21092dbb.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-973f3445.js"></script>
+        <script src="toc-e97a245d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26660,6 +26660,28 @@ mv hardware/mainline/common/libhardware/gralloc/gbm/ ~
 <pre><code>root@fedora:/media/nvme/RE_waydroid_atv_lineageos23.2# repo sync
 Syncing: 63% (749/1186) 44:40 | 4 jobs | 0:43 kernel/prebuilts/6.12/arm64 @ kernel/prebuilts/6.12/arm64
 
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260721"><a class="header" href="#20260721">20260721</a></h1>
+<h3 id="1-fast-grep"><a class="header" href="#1-fast-grep">1. fast grep</a></h3>
+<p>via ripgrep:</p>
+<pre><code>rg "redroid" -g '!out/' -g '!.repo/'
+       rg - recursively search the current directory for lines matching a pattern
+
+</code></pre>
+<h3 id="2-find-the-latest-modified-files"><a class="header" href="#2-find-the-latest-modified-files">2. find the latest modified files</a></h3>
+<p>via:</p>
+<pre><code>$ find . -type d \( -name "out" -o -name ".repo" \) -prune -o -type f -printf '%T@ %p\n' | sort -nr | head -n 100 | cut -d' ' -f2-
+./device/virt/virtio-common/services/virtgpu_detect/virtgpu_detect.c
+./device/virt/virtio_x86_64/device.mk
+./device/virt/virt-common/overlays/rro_overlays/LowPerformanceSettingsProviderOverlay/res/values/defaults.xml
+./device/virt/virtio_x86_64/BoardConfig.mk
+./device/virt/virt-common/overlays/overlay/frameworks/base/packages/SettingsProvider/res/values/defaults.xml
+./build/make/target/product/gsi/Android.bp
+</code></pre>
+<h3 id="3-build-waydroid-image"><a class="header" href="#3-build-waydroid-image">3. build waydroid image</a></h3>
+<p>Via:</p>
+<pre><code>sudo mount system.img system -o ro &amp;&amp; sudo mount vendor.img vendor -o ro &amp;&amp; sudo tar --xattrs -c vendor -C system --exclude="./vendor" . | sudo docker import --platform=linux/amd64 -c 'ENTRYPOINT ["/init", "ro.hardware.hwcomposer=redroid", "ro.adb.secure=0"]' - ownwaydroid232jul21 &amp;&amp; sudo umount system &amp;&amp; sudo umount vendor
 </code></pre>
 
                     </main>
