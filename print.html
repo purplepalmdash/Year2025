@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-21092dbb.js";
+            window.path_to_searchindex_js = "searchindex-4da44fff.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e97a245d.js"></script>
+        <script src="toc-45cb7e68.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26683,6 +26683,21 @@ Syncing: 63% (749/1186) 44:40 | 4 jobs | 0:43 kernel/prebuilts/6.12/arm64 @ kern
 <p>Via:</p>
 <pre><code>sudo mount system.img system -o ro &amp;&amp; sudo mount vendor.img vendor -o ro &amp;&amp; sudo tar --xattrs -c vendor -C system --exclude="./vendor" . | sudo docker import --platform=linux/amd64 -c 'ENTRYPOINT ["/init", "ro.hardware.hwcomposer=redroid", "ro.adb.secure=0"]' - ownwaydroid232jul21 &amp;&amp; sudo umount system &amp;&amp; sudo umount vendor
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260722"><a class="header" href="#20260722">20260722</a></h1>
+<h3 id="1-waydroidredroid-build-modification"><a class="header" href="#1-waydroidredroid-build-modification">1. waydroid(redroid) build modification</a></h3>
+<p>Add <code>ANDROID_BUILD_REDROID_HWC</code>:</p>
+<pre><code>$ vim /media/nvme/RE_waydroid_atv_lineageos23.2/device/waydroid/waydroid/waydroid_x86_64//lineage_waydroid_x86_64.mk
+ 16 ANDROID_BUILD_REDROID_HWC := true
+</code></pre>
+<h3 id="2-waydroid-arm64redroid-build-modification"><a class="header" href="#2-waydroid-arm64redroid-build-modification">2. waydroid arm64(redroid) build modification</a></h3>
+<p>Build command:</p>
+<pre><code>lineage_waydroid_arm64-bp4a-userdebug
+dash@horse:/media/nvme/RE_waydroid_atv_lineageos23.2/device/waydroid/waydroid/waydroid_arm64$ sudo vim lineage_waydroid_arm64.mk 
+  ANDROID_BUILD_REDROID_HWC := true
+</code></pre>
+<h3 id="3-issuehoudini"><a class="header" href="#3-issuehoudini">3. issue(houdini)</a></h3>
+<p>no lib files. solved via follow the offcial docs.</p>
 
                     </main>
 
