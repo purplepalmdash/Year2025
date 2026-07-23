@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-4da44fff.js";
+            window.path_to_searchindex_js = "searchindex-fc227711.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-45cb7e68.js"></script>
+        <script src="toc-14a89b34.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -26698,6 +26698,51 @@ dash@horse:/media/nvme/RE_waydroid_atv_lineageos23.2/device/waydroid/waydroid/wa
 </code></pre>
 <h3 id="3-issuehoudini"><a class="header" href="#3-issuehoudini">3. issue(houdini)</a></h3>
 <p>no lib files. solved via follow the offcial docs.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260723"><a class="header" href="#20260723">20260723</a></h1>
+<h3 id="1-re-compact-waydroid-iamge"><a class="header" href="#1-re-compact-waydroid-iamge">1. RE-compact waydroid iamge</a></h3>
+<p>Repack the new image:</p>
+<pre><code>sudo apt install erofs-utils e2fsprogs
+mkdir system_extracted
+sudo fsck.erofs --extract=system_extracted system.img
+
+sudo cp busybox  system_extracted/
+sudo chmod 777 system_extracted/busybox
+
+sudo mkfs.ext4 -d system_extracted/ system_rw.img 5000M
+mv system.img system.img.bak
+mv system_rw.img system.img
+
+RE-pack
+</code></pre>
+<p>Then:</p>
+<pre><code>sudo mount system.img system -o ro &amp;&amp; sudo mount vendor.img vendor -o ro &amp;&amp; sudo tar --xattrs -c vendor -C system --exclude="./vendor" . | sudo docker import --platform=linux/amd64 -c 'ENTRYPOINT ["/busybox", "sleep", "36000"]' - waydroidsleep &amp;&amp; sudo umount system &amp;&amp; sudo umount vendor
+sudo docker run --privileged --name testsleep  -v /home/dash/ownownjjj:/data -p 5555:5555 -itd waydroidsleep
+sudo docker exec -it testsleep /bin/busybox sh
+
+In busybox kernel:    
+
+/init ro.hardware.hwcomposer=redroid ro.adb.secure=0 ro.boot.redroid_fps=60
+Killed
+Failed.....
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_07_23_10_38_34_748x327.jpg" alt="./images/2026_07_23_10_38_34_748x327.jpg"><span class="img-wrapper"><img src="images/2026_07_23_10_38_34_748x327.jpg" alt="./images/2026_07_23_10_38_34_748x327.jpg"></span></label></p>
+<p>Reason:</p>
+<pre><code>直接执行 /init 被内核杀掉（Killed），是因为 Android 的 /init 并不是一个普通的二进制文件，而是设计为必须作为容器/系统的 PID 1 进程运行，并且严重依赖 Linux 命名空间和根文件系统环境。
+</code></pre>
+<h3 id="2-debugredroid"><a class="header" href="#2-debugredroid">2. Debug(Redroid)</a></h3>
+<p>Edit the file for adding sleep for strace:</p>
+<pre><code>dash@horse:/media/nvme/RE_waydroid_atv_lineageos23.2$ sudo vim ./system/core/init/main.cpp 
+
+#elif __has_feature(hwaddress_sanitizer)
+    __hwasan_set_error_report_callback(AsanReportCallback);
+#endif
++        usleep(10000000);  // Sleep for 10 seconds to wait for the system to be ready for init to run.
+
+    // Boost prio which will be restored later
+    setpriority(PRIO_PROCESS, 0, -20);
+    if (!strcmp(basename(argv[0]), "ueventd")) {
+</code></pre>
 
                     </main>
 
