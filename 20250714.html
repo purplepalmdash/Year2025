@@ -1,0 +1,577 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20250714 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-ddf83d7b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-807f21f3.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="20250714"><a class="header" href="#20250714">20250714</a></h1>
+<h3 id="1-centos7-virgl-redroid"><a class="header" href="#1-centos7-virgl-redroid">1. centos7 virgl redroid</a></h3>
+<p>Create a vm using import disk:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_24_11_502x513.jpg" alt="./images/2025_07_14_09_24_11_502x513.jpg"></span></label></p>
+<p>Q35/bios:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_24_49_633x206.jpg" alt="./images/2025_07_14_09_24_49_633x206.jpg"></span></label></p>
+<p>Change IP:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_28_59_568x295.jpg" alt="./images/2025_07_14_09_28_59_568x295.jpg"></span></label></p>
+<p>change hostname to <code>nvidiaredroidcentos</code>.</p>
+<p>Login the vm, then install kernel:</p>
+<pre><code># scp -r dash@192.168.1.8:/media/sda/iso/houdini12/centos .
+# ls centos/
+kernel-5.10.26-2.x86_64.rpm  kernel-headers-5.10.26-2.x86_64.rpm
+# yum install ./kernel-5.10.26-2.x86_64.rpm  ./kernel-headers-5.10.26-2.x86_64.rpm 
+# grub2-mkconfig -o /boot/grub2/grub.cfg
+# shutdown -h now
+</code></pre>
+<p>Change setting to virgl:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_38_44_423x203.jpg" alt="./images/2025_07_14_09_38_44_423x203.jpg"></span></label></p>
+<p>Using nvidia card:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_09_39_03_439x332.jpg" alt="./images/2025_07_14_09_39_03_439x332.jpg"></span></label></p>
+<pre><code># dmesg | grep -i virgl
+[    1.861350] [drm] features: +virgl +edid
+# ls /dev/dri/
+card0  renderD128
+</code></pre>
+<p>Install docker-ce, then import docker image:</p>
+<pre><code># curl -fsSL https://get.docker.com -o get-docker.sh
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# vim /etc/yum.repos.d/docker-ce.repo 
+# gpgcheck=1 --&gt; gpgcheck=0
+# sudo DOWNLOAD_URL=https://mirrors.ustc.edu.cn/docker-ce sh get-docker.sh
+# systemctl enable docker --now
+# docker load&lt;redroidhoudini12intel.tar
+</code></pre>
+<p>Run redroid instance:</p>
+<pre><code># docker run -itd --privileged  -p 5555:5555 --name redroid12  redroidhoudini12:latest androidboot.redroid_width=1080     androidboot.redroid_height=1920     androidboot.redroid_dpi=480 androidboot.redroid_gpu_mode=host androidboot.redroid_gpu_node=/dev/dri/renderD128  androidboot.redroid_fps=120
+# docker exec -it redroid12 sh
+8a5eabf67563:/ # getprop | grep boot | grep com                                              
+[dev.bootcomplete]: [1]
+[ro.boottime.vendor.hwcomposer-2-1]: [299011048305]
+[sys.boot_completed]: [1]
+[sys.bootstat.first_boot_completed]: [1]
+redroid_x86_64:/ # dumpsys SurfaceFlinger | grep GLES                                                                                                                                        
+GLES: Mesa, virgl (NVIDIA GeForce RTX 4070/PCIe/SSE2), OpenGL ES 3.2 Mesa 24.0.8 (git-441f064c1c)
+</code></pre>
+<p>Issue(Ludashi download issue):</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_10_21_43_515x566.jpg" alt="./images/2025_07_14_10_21_43_515x566.jpg"></span></label></p>
+<h3 id="2-centos7-openstack-queens--zun--redroid12"><a class="header" href="#2-centos7-openstack-queens--zun--redroid12">2. (centos7) OpenStack queens + zun + redroid12</a></h3>
+<h4 id="21-base-image"><a class="header" href="#21-base-image">2.1 Base image</a></h4>
+<p>AIM: 5.10 as the default kernel, docker-ce installed and configured.</p>
+<pre><code>cp centos7_base.qcow2 centos7_510_docker_base.qcow2
+</code></pre>
+<p>Install kernel as above steps.<br>Install docker as above steps.</p>
+<p>load the redroid12 images then docker pull nginx/ubuntu.</p>
+<p>docker configuration.</p>
+<pre><code>[root@queenbase ~]# cat /etc/systemd/system/docker.service.d/kolla.conf 
+[Service]
+MountFlags=shared
+[Service]
+ExecStart=
+# ExecStart commandline copied from 'docker-ce' package. Same on CentOS/Debian/Ubuntu systems.
+ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock -H tcp://0.0.0.0:2375
+</code></pre>
+<p>undefine the vm, get the qcow2 file.</p>
+<h4 id="22-create-vms"><a class="header" href="#22-create-vms">2.2 Create vms</a></h4>
+<p>queens1:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_22_55_473x440.jpg" alt="./images/2025_07_14_11_22_55_473x440.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_23_33_493x489.jpg" alt="./images/2025_07_14_11_23_33_493x489.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_26_39_601x229.jpg" alt="./images/2025_07_14_11_26_39_601x229.jpg"></span></label></p>
+<p>queens2:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_30_56_558x275.jpg" alt="./images/2025_07_14_11_30_56_558x275.jpg"></span></label></p>
+<p>queen3:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_33_02_586x376.jpg" alt="./images/2025_07_14_11_33_02_586x376.jpg"></span></label></p>
+<h4 id="23-deployment"><a class="header" href="#23-deployment">2.3. deployment</a></h4>
+<p>Each node install pip:</p>
+<pre><code>yum install python-devel libffi-devel gcc openssl-devel libselinux-python lvm2 -y
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
+[root@queen1 ~]# python2.7 get-pip.py
+[root@queen1 ~]# which pip
+/usr/bin/pip
+[root@queen1 ~]# pip --version
+pip 20.3.4 from /usr/lib/python2.7/site-packages/pip (python 2.7)
+</code></pre>
+<p>Each node install ansible:</p>
+<pre><code>pip install -U ansible==2.7.0
+pip install docker
+</code></pre>
+<p>Each node add following items to <code>/etc/hosts</code>:</p>
+<pre><code>10.171.172.21	queen1
+10.171.172.22	queen2
+10.171.172.23	queen3
+</code></pre>
+<p>password-less login:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_11_52_02_848x280.jpg" alt="./images/2025_07_14_11_52_02_848x280.jpg"></span></label></p>
+<p>queen1 node:</p>
+<pre><code>git clone https://github.com/openstack/kolla-ansible
+cd kolla-ansible
+git checkout tags/queens-eol -b queen
+pip install pbr
+pip install .
+mkdir -p /etc/kolla
+cp etc/kolla/* /etc/kolla/
+cp ansible/inventory/multinode /etc/kolla/
+</code></pre>
+<p>Edit multinode like following:</p>
+<pre><code>[control]
+queen1
+
+[network]
+queen1
+queen2
+queen3
+
+[external-compute]
+queen1
+queen2
+queen3
+
+[monitoring]
+queen1
+
+[storage]
+queen1
+queen2
+queen3
+</code></pre>
+<p>globals.yml modifications:</p>
+<pre><code>kolla_base_distro: "centos"
+kolla_install_type: "source"
+openstack_release: "queens"
+docker_namespace: "kolla"
+network_interface: "eth0"
+neutron_external_interface: "eth1"
+neutron_plugin_agent: "openvswitch"
+enable_cinder: "yes"
+enable_cinder_backend_lvm: "yes"
+enable_haproxy: "yes"
+enable_horizon: "yes"
+enable_horizon_zun: "{{ enable_zun | bool }}"
+enable_kuryr: "yes"
+enable_zun: "yes"
+fernet_token_expiry: 86400
+nova_compute_virt_type: "kvm"
+cinder_volume_group: "cinder-volumes"
+</code></pre>
+<p>generate the password:</p>
+<pre><code>kolla-genpwd
+</code></pre>
+<p>load docker images:</p>
+<pre><code>docker load&lt;centoscontroller.tar
+# for queen2/3
+docker load&lt;node.tar
+</code></pre>
+<p>Modifications for kolla-ansible:</p>
+<pre><code>mkdir /root/origin
+cd /usr/share/kolla-ansible/
+# backup
+cp ./ansible/roles/prechecks/tasks/service_checks.yml /root/origin/
+cp ./ansible/roles/prechecks/tasks/package_checks.yml /root/origin/
+cp ./ansible/roles/prechecks/tasks/user_checks.yml /root/origin/
+cp ./ansible/roles/keystone/tasks/precheck.yml /root/origin/keystone_precheck.yml
+cp ./ansible/roles/cinder/tasks/precheck.yml /root/origin/cinder_precheck.yml
+# modification
+cp /root/modifications/service_checks.yml ./ansible/roles/prechecks/tasks/service_checks.yml
+cp /root/modifications/package_checks.yml ./ansible/roles/prechecks/tasks/package_checks.yml
+cp /root/modifications/user_checks.yml ./ansible/roles/prechecks/tasks/user_checks.yml
+cp /root/modifications/keystone_precheck.yml ./ansible/roles/keystone/tasks/precheck.yml
+cp /root/modifications/cinder_precheck.yml ./ansible/roles/cinder/tasks/precheck.yml
+</code></pre>
+<p>deploy openstack:</p>
+<pre><code>cd /etc/kolla/
+kolla-ansible -i ./multinode prechecks -vv
+kolla-ansible -i ./multinode deploy -vv 
+kolla-ansible -i ./multinode post-deploy -vv
+</code></pre>
+<p>Install openstack client:</p>
+<pre><code>#  cat /etc/yum.repos.d/CentOS-OpenStack-train.repo
+    # CentOS-OpenStack-train.repo
+    #
+    # Please see http://wiki.centos.org/SpecialInterestGroup/Cloud for more
+    # information
+    
+    [centos-openstack-train]
+    name=CentOS-7 - OpenStack train
+    baseurl=https://dl.rockylinux.org/vault/centos/7/cloud/$basearch/openstack-train/
+    gpgcheck=0
+    enabled=1
+    gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Cloud
+    exclude=sip,PyQt4
+# yum install python2-openstackclient
+# pip install python-zunclient
+</code></pre>
+<h4 id="24-openstack-admin"><a class="header" href="#24-openstack-admin">2.4 OpenStack Admin</a></h4>
+<p>Visit <code>10.171.172.24</code>(admin, password is listed as following):</p>
+<pre><code>cat /etc/kolla/passwords.yml | grep -i keystone_admin
+keystone_admin_password: 5zGzqMear5ZVltRtRpETFiggoXiz0fmY7TZ1e7iV
+</code></pre>
+<p>horizon with zun ui supportd:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_07_36_1265x459.jpg" alt="./images/2025_07_14_14_07_36_1265x459.jpg"></span></label></p>
+<p>Create network(int/ext):</p>
+<pre><code>openstack router create Ext-Router
+openstack network create --internal --provider-network-type vxlan int-net
+openstack subnet create int-net-sub --network int-net --subnet-range 177.77.77.0/24 --gateway 177.77.77.1 --dns-nameserver 114.114.114.114
+openstack router add subnet Ext-Router int-net-sub
+openstack network create --provider-physical-network physnet1 --provider-network-type flat  --external ext-net
+openstack subnet create ext-net-sub --network ext-net --subnet-range 10.171.172.24/24 --allocation-pool start=10.171.172.160,end=10.171.172.220 --gateway 10.171.172.1 --dns-nameserver 114.114.114.114 --dhcp
+openstack router set Ext-Router --external-gateway ext-net
+</code></pre>
+<p>Network topology:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_17_00_647x733.jpg" alt="./images/2025_07_14_14_17_00_647x733.jpg"></span></label></p>
+<h4 id="25-zun-instance"><a class="header" href="#25-zun-instance">2.5 zun instance</a></h4>
+<p>Get the network infos:</p>
+<pre><code># openstack network list
++--------------------------------------+---------+--------------------------------------+
+| ID                                   | Name    | Subnets                              |
++--------------------------------------+---------+--------------------------------------+
+| 5678d45a-4903-4f17-9266-bded57efba34 | int-net | efc9b0f3-2f5b-4102-b856-44169b518b4e |
+| d27c46dc-4dde-4c04-af16-1104f0270e61 | ext-net | e63d1f7f-ded0-4fe3-a6fb-736ff7c3ec30 |
++--------------------------------------+---------+--------------------------------------+
+</code></pre>
+<p>Create the int zun instance:</p>
+<pre><code># openstack appcontainer run --name ubuntuint --net network=5678d45a-4903-4f17-9266-bded57efba34  --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+</code></pre>
+<p>Create the int zun instance and specify its running node:</p>
+<pre><code># openstack appcontainer run --name ubuntuintHostQueen3 --net network=5678d45a-4903-4f17-9266-bded57efba34  --cpu 1 --memory 1024 --host queen3  ubuntu:latest sleep 3600
+</code></pre>
+<p>Examine the instance:</p>
+<pre><code>[root@queen3 ~]# docker ps
+CONTAINER ID   IMAGE                                                  COMMAND                   CREATED              STATUS              PORTS     NAMES
+a0f3d7caa4b8   ubuntu:latest                                          "sleep 3600"              About a minute ago   Up About a minute             zun-a7d168ad-2322-4cf8-a5a1-5beb933e91f4
+[root@queen3 ~]# docker exec -it a0f3d7caa4b8 bash
+root@queen3:/#  apt update -y &amp;&amp; apt install -y net-tools
+root@queen3:/#  ifconfig
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_23_55_734x476.jpg" alt="./images/2025_07_14_14_23_55_734x476.jpg"></span></label></p>
+<p>instance stop:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| db03c512-7553-4e22-b41d-5dc925608b5c | ubuntuint           | ubuntu:latest | Running | None       | 177.77.77.4 | []    |
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+[root@queen1 kolla]# openstack appcontainer delete ubuntuint
+Delete for container ubuntuint failed: Cannot delete container db03c512-7553-4e22-b41d-5dc925608b5c in Running state (HTTP 409) (Request-ID: req-efc9ca30-6732-4f07-8161-0a7344e88bc4)
+[root@queen1 kolla]# openstack appcontainer stop ubuntuint
+Request to stop container ubuntuint has been accepted.
+[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state         | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+| db03c512-7553-4e22-b41d-5dc925608b5c | ubuntuint           | ubuntu:latest | Running | container_stopping | 177.77.77.4 | []    |
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None               | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+--------------------+-------------+-------+
+</code></pre>
+<p>delete instance:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer delete ubuntuint
+Request to delete container ubuntuint has been accepted.
+[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses   | ports |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+| a7d168ad-2322-4cf8-a5a1-5beb933e91f4 | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.8 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+-------------+-------+
+</code></pre>
+<p>external instance test with issue(first container will cause the VIP not accessable, thus the second one will failed):</p>
+<pre><code># openstack appcontainer run --name ubuntuext --net network=d27c46dc-4dde-4c04-af16-1104f0270e61 --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+# openstack appcontainer run --name ubuntuextHostQueen3 --net network=d27c46dc-4dde-4c04-af16-1104f0270e61 --cpu 1 --memory 1024  ubuntu:latest sleep 3600
+Failed to discover available identity versions when contacting http://10.171.172.24:35357/v3. Attempting to parse version from URL.
+Unable to establish connection to http://10.171.172.24:35357/v3/auth/tokens: HTTPConnectionPool(host='10.171.172.24', port=35357): Max retries exceeded with url: /v3/auth/tokens (Caused by NewConnectionError('&lt;urllib3.connection.HTTPConnection object at 0x7f83e4df4190&gt;: Failed to establish a new connection: [Errno 113] \xe6\xb2\xa1\xe6\x9c\x89\xe5\x88\xb0\xe4\xb8\xbb\xe6\x9c\xba\xe7\x9a\x84\xe8\xb7\xaf\xe7\x94\xb1',))
+</code></pre>
+<h4 id="26-floating-ip-allocation"><a class="header" href="#26-floating-ip-allocation">2.6 floating ip allocation</a></h4>
+<p>Create an zun instance:</p>
+<pre><code>[root@queen1 kolla]# openstack appcontainer list
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+| uuid                                 | name                | image         | status  | task_state | addresses    | ports |
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+| 9edef92d-39cf-4020-bfa2-f2f2fd65d7bd | ubuntuintHostQueen3 | ubuntu:latest | Running | None       | 177.77.77.23 | []    |
++--------------------------------------+---------------------+---------------+---------+------------+--------------+-------+
+</code></pre>
+<p>Allocating a floating IP :</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_14_58_45_1118x383.jpg" alt="./images/2025_07_14_14_58_45_1118x383.jpg"></span></label></p>
+<p>Recreate the security group:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_15_03_50_1255x623.jpg" alt="./images/2025_07_14_15_03_50_1255x623.jpg"></span></label></p>
+<p>In docker instance:</p>
+<pre><code>root@queen3:/# apt update -y &amp;&amp; apt install -y net-tools iputils-ping
+root@queen3:/# ping -c2 223.5.5.5
+PING 223.5.5.5 (223.5.5.5) 56(84) bytes of data.
+64 bytes from 223.5.5.5: icmp_seq=1 ttl=111 time=12.0 ms
+64 bytes from 223.5.5.5: icmp_seq=2 ttl=111 time=8.64 ms
+
+--- 223.5.5.5 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 8.644/10.306/11.968/1.662 ms
+root@queen3:/# cat /etc/issue
+Ubuntu 24.04.2 LTS \n \l
+</code></pre>
+<p>Ping from outside world(same ethernet):</p>
+<pre><code>root@i9workstation:~# ping -c2 10.171.172.177
+PING 10.171.172.177 (10.171.172.177) 56(84) bytes of data.
+64 bytes from 10.171.172.177: icmp_seq=1 ttl=63 time=2.44 ms
+64 bytes from 10.171.172.177: icmp_seq=2 ttl=63 time=1.40 ms
+
+--- 10.171.172.177 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 1.396/1.919/2.442/0.523 
+</code></pre>
+<h4 id="27-zun-privileged-mode"><a class="header" href="#27-zun-privileged-mode">2.7 zun privileged mode</a></h4>
+<p>Create privileged container instance:</p>
+<pre><code># openstack appcontainer run  --name ubuntuint  --net network=5678d45a-4903-4f17-9266-bded57efba34 --privileged --cpu 1 --memory 1024 ubuntu:latest sleep 3600
+Additional properties are not allowed (u'privileged' was unexpected)
+
+Failed validating 'additionalProperties' in schema:
+    {'additionalProperties': False,
+     'properties': {'auto_remove': {'type': ['boolean', 'null']},
+                    'command': {'type': ['string', 'null']},
+                    'cpu': {'minLength': 1,
+</code></pre>
+<p>Reason(Queen version):</p>
+<pre><code>(zun-compute)[root@queen1 /]# ls /zun-base-source/
+zun-1.0.1
+(zun-api)[root@queen1 /]# ls /zun-base-source/
+zun-1.0.1
+</code></pre>
+<p>Release note(<code>https://fossies.org/linux/zun/ChangeLog</code>):</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg"><span class="img-wrapper"><img src="./images/2025_07_14_16_29_55_544x661.jpg" alt="./images/2025_07_14_16_29_55_544x661.jpg"></span></label></p>
+<p>Rocky version:</p>
+<pre><code>[root@queen1 ~]# docker run -it kolla/centos-source-zun-api:rocky /bin/bash
+()[root@46e8671fcd28 /]# ls zun-base-source/
+zun-2.1.0
+</code></pre>
+<p>So we need to backport the <code>--privileged code</code> into zun-1.0.1….</p>
+<h3 id="3-systemd-stop-timeout"><a class="header" href="#3-systemd-stop-timeout">3. systemd stop timeout</a></h3>
+<p>Issue:</p>
+<pre><code>A stop job is running for Session c2 of user ... (1min 30s)
+</code></pre>
+<p>Changed:</p>
+<pre><code># vim /etc/systemd/system.conf
+# cat /etc/systemd/system.conf |grep -i timeoutstop
+DefaultTimeoutStopSec=20s
+# systemctl daemon-reload
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20250713.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="20250715.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20250713.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="20250715.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

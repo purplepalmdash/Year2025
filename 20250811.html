@@ -1,0 +1,868 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>20250811 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-ddf83d7b.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-807f21f3.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="20250811"><a class="header" href="#20250811">20250811</a></h1>
+<h3 id="1-stein-work-tipscentos7"><a class="header" href="#1-stein-work-tipscentos7">1. stein work tips(CentOS7)</a></h3>
+<p>Step:</p>
+<pre><code>192.168.150.11  controller
+192.168.150.12  compute1
+192.168.150.13  compute2
+</code></pre>
+<p>All nodes:</p>
+<pre><code>systemctl disable firewalld
+SELINUX should be disabled
+echo "PS1='[\[\e[31m\]\u\[\e[m\]@\[\e[36m\]\H\[\e[33m\] \W\[\e[m\]]\[\e[35m\]\\$ \[\e[m\]'" &gt;&gt;/etc/bashrc
+source /etc/bashrc
+sed -i.bak   -e 's|^mirrorlist=|#mirrorlist=|g'   -e 's|^#baseurl=http://mirror.centos.org/centos|baseurl=https://mirrors.ustc.edu.cn/centos-vault/centos|g'   /etc/yum.repos.d/CentOS-Base.repo &amp;&amp; yum makecache
+yum install -y vim net-tools wget lrzsz tree screen lsof tcpdump nmap mlocate
+
+cat &gt;&gt;/etc/hosts&lt;&lt;EOF
+
+# controller
+192.168.150.11    controller
+
+# compute
+192.168.150.12    compute1
+192.168.150.13    compute2
+EOF
+</code></pre>
+<p>(Controller)passwordless ssh login:</p>
+<pre><code>ssh-keygen 
+ssh-copy-id root@controller
+ssh-copy-id root@compute1
+ssh-copy-id root@compute2
+</code></pre>
+<p>(Controller) Change repo:</p>
+<pre><code>yum install -y centos-release-openstack-stein
+yum makecache
+cd /etc/yum.repos.d
+
+vim CentOS-OpenStack-stein.repo
+baseurl=https://mirrors.ustc.edu.cn/centos-vault/7.9.2009/cloud/x86_64/openstack-stein/
+vim CentOS-Ceph-Nautilus.repo
+baseurl=https://mirrors.ustc.edu.cn/centos-vault/7.9.2009/storage/x86_64/ceph-nautilus/
+vim CentOS-NFS-Ganesha-28.repo
+baseurl=https://mirrors.ustc.edu.cn/centos-vault/7.9.2009/storage/x86_64/nfs-ganesha-28/
+vim CentOS-QEMU-EV.repo
+baseurl=https://mirrors.ustc.edu.cn/centos-vault/7.9.2009/virt/x86_64/kvm-common/
+
+yum makecache
+yum install -y python-openstackclient 
+</code></pre>
+<p>(Compute1/2):</p>
+<pre><code>yum install -y centos-release-openstack-stein
+(Controller): scp CentOS-OpenStack-stein.repo CentOS-Ceph-Nautilus.repo CentOS-NFS-Ganesha-28.repo CentOS-QEMU-EV.repo root@compute1(2):/etc/yum.repos.d/
+</code></pre>
+<p>(Controller):</p>
+<pre><code>yum install -y mariadb mariadb-server MySQL-python
+vim /etc/my.cnf.d/mariadb-server.cnf (Added following lines under mysqld module):
+default-storage-engine = innodb
+innodb_file_per_table = on
+collation-server = utf8_general_ci
+init-connect = 'SET NAMES utf8'
+character-set-server = utf8
+systemctl enable mariadb.service --now
+mysql_secure_installation
+(Only set the password to yiersansi)
+
+yum install -y memcached python-memcached
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/sysconfig/memcached 
+systemctl enable memcached.service --now
+# test
+printf "set foo 0 0 3\r\nbar\r\n"|nc controller 11211  
+printf "get foo\r\n"|nc controller 11211 
+
+yum install -y rabbitmq-server
+systemctl enable rabbitmq-server.service --now
+rabbitmqctl add_user openstack openstack
+rabbitmqctl set_permissions openstack ".*" ".*" ".*" 
+rabbitmq-plugins list 
+rabbitmq-plugins enable rabbitmq_management  
+
+</code></pre>
+<p>geust/guest for login:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_08_11_16_21_25_819x275.jpg" alt="./images/2025_08_11_16_21_25_819x275.jpg"><span class="img-wrapper"><img src="./images/2025_08_11_16_21_25_819x275.jpg" alt="./images/2025_08_11_16_21_25_819x275.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_08_11_16_23_06_638x790.jpg" alt="./images/2025_08_11_16_23_06_638x790.jpg"><span class="img-wrapper"><img src="./images/2025_08_11_16_23_06_638x790.jpg" alt="./images/2025_08_11_16_23_06_638x790.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="./images/2025_08_11_16_24_53_445x188.jpg" alt="./images/2025_08_11_16_24_53_445x188.jpg"><span class="img-wrapper"><img src="./images/2025_08_11_16_24_53_445x188.jpg" alt="./images/2025_08_11_16_24_53_445x188.jpg"></span></label></p>
+<p>(Controller), Install/config keystone:</p>
+<pre><code>mysql -uroot -p
+create database keystone;
+grant all privileges on keystone.* to keystone_user@controller identified by 'keystone_pass';
+flush privileges;
+quit;
+yum install -y openstack-keystone httpd mod_wsgi
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/keystone/keystone.conf
+# vim /etc/keystone/keystone.conf
+[database]
+connection = mysql+pymysql://keystone_user:keystone_pass@controller/keystone
+
+[token]
+provider = fernet
+
+su -s /bin/sh -c "keystone-manage db_sync" keystone 
+keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+keystone-manage bootstrap --bootstrap-password admin_pass \
+  --bootstrap-admin-url http://controller:5000/v3/ \
+  --bootstrap-internal-url http://controller:5000/v3/ \
+  --bootstrap-public-url http://controller:5000/v3/ \
+  --bootstrap-region-id RegionOne
+sed -i '/#ServerName/aServerName controller:80' /etc/httpd/conf/httpd.conf 
+ln -s /usr/share/keystone/wsgi-keystone.conf /etc/httpd/conf.d/
+systemctl enable httpd.service --now
+export OS_USERNAME=admin
+export OS_PASSWORD=admin_pass
+export OS_PROJECT_NAME=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_AUTH_URL=http://controller:5000/v3
+export OS_IDENTITY_API_VERSION=3
+openstack project create --domain default --description "Service Project" service
+openstack project create --domain default --description "Demo Project" myproject
+openstack user create --domain default --password myuser_pass myuser
+openstack role create myrole
+openstack role add --project myproject --user myuser myrole
+unset OS_AUTH_URL OS_PASSWORD
+# verify admin, passwd is admin_pass
+openstack --os-auth-url http://controller:5000/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name admin --os-username admin token issue
+# verify myuser, passwd is myuser_pass
+openstack --os-auth-url http://controller:5000/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name myproject --os-username myuser token issue
+cd ~
+cat &gt;admin-openrc&lt;&lt;EOF
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=admin_pass
+export OS_AUTH_URL=http://controller:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+EOF
+cat &gt;demo-openrc&lt;&lt;EOF
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=myproject
+export OS_USERNAME=myuser
+export OS_PASSWORD=myuser_pass
+export OS_AUTH_URL=http://controller:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+EOF
+cd ~
+. admin-openrc
+openstack token issue
+</code></pre>
+<p>(Controller), install Glance:</p>
+<pre><code>create database glance;
+grant all privileges on glance.* to glance_user@controller identified by 'glance_pass';
+flush privileges;
+quit;
+. admin-openrc
+openstack user create --domain default --password glance_pass glance
+openstack role add --project service --user glance admin
+openstack service create --name glance --description "OpenStack Image" image
+openstack endpoint create --region RegionOne image public http://controller:9292
+openstack endpoint create --region RegionOne image internal http://controller:9292
+openstack endpoint create --region RegionOne image admin http://controller:9292 
+yum install -y openstack-glance
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/glance/glance-api.conf
+vim /etc/glance/glance-api.conf
+[database]
+connection = mysql+pymysql://glance_user:glance_pass@controller/glance
+
+[glance_store]
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+
+[keystone_authtoken]
+www_authenticate_uri  = http://controller:5000
+auth_url = http://controller:5000
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = glance_pass
+
+[paste_deploy]
+flavor = keystone
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/glance/glance-registry.conf
+vim /etc/glance/glance-registry.conf
+[database]
+connection = mysql+pymysql://glance_user:glance_pass@controller/glance
+
+[keystone_authtoken]
+www_authenticate_uri = http://controller:5000
+auth_url = http://controller:5000
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = glance_pass
+
+[paste_deploy]
+flavor = keystone
+su -s /bin/sh -c "glance-manage db_sync" glance
+systemctl start openstack-glance-api.service openstack-glance-registry.service
+systemctl enable openstack-glance-api.service openstack-glance-registry.service
+
+</code></pre>
+<p>(Controller) upload image:</p>
+<pre><code>cd ~
+wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img
+openstack image create "cirros" \
+  --file cirros-0.4.0-x86_64-disk.img \
+  --disk-format qcow2 --container-format bare \
+  --public
+openstack image list
+</code></pre>
+<p>(Controller) Placement:</p>
+<pre><code>create database placement;
+grant all privileges on placement.* to 'placement_user'@'controller' identified by 'placement_pass'; 
+flush privileges;
+quit;
+cd ~
+. admin-openrc
+openstack user create --domain default --password placement_pass placement
+openstack role add --project service --user placement admin
+openstack service create --name placement --description "Placement API" placement
+openstack endpoint create --region RegionOne placement public http://controller:8778
+openstack endpoint create --region RegionOne placement internal http://controller:8778
+openstack endpoint create --region RegionOne placement admin http://controller:8778
+yum install -y openstack-placement-api
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/placement/placement.conf
+vim /etc/placement/placement.conf
+[api]
+auth_strategy = keystone
+
+[keystone_authtoken]
+auth_url = http://controller:5000/v3
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = placement
+password = placement_pass
+
+[placement_database]
+connection = mysql+pymysql://placement_user:placement_pass@controller/placement
+su -s /bin/sh -c "placement-manage db sync" placement
+cat &gt;&gt;/etc/httpd/conf.d/00-placement-api.conf&lt;&lt;EOF
+
+&lt;Directory /usr/bin&gt;
+   &lt;IfVersion &gt;= 2.4&gt;
+      Require all granted
+   &lt;/IfVersion&gt;
+   &lt;IfVersion &lt; 2.4&gt;
+      Order allow,deny
+      Allow from all
+   &lt;/IfVersion&gt;
+&lt;/Directory&gt;
+EOF
+systemctl restart httpd
+placement-status upgrade check
+
+</code></pre>
+<p>(Controller) nova:</p>
+<pre><code>create database nova_api;
+create database nova;
+create database nova_cell0;
+grant all privileges on nova_api.* to 'nova_user'@'controller' identified by 'nova_pass';
+grant all privileges on nova.* to 'nova_user'@'controller' identified by 'nova_pass';
+grant all privileges on nova_cell0.* to 'nova_user'@'controller' identified by 'nova_pass';
+flush privileges;
+exit;
+cd ~
+. admin-openrc
+openstack user create --domain default --password nova_pass nova 
+openstack role add --project service --user nova admin
+openstack service create --name nova --description "OpenStack Compute" compute
+openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1
+openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1
+openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
+yum install -y openstack-nova-api openstack-nova-conductor openstack-nova-novncproxy openstack-nova-scheduler
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/nova/nova.conf
+vim /etc/nova/nova.conf
+[DEFAULT]
+enabled_apis = osapi_compute,metadata
+transport_url = rabbit://openstack:openstack@controller
+my_ip = 10.0.0.11
+use_neutron = true
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+rpc_backend=rabbit
+
+[api]
+auth_strategy = keystone
+
+[api_database]
+connection = mysql+pymysql://nova:NOVA_DBPASS@controller/nova_api
+
+[database]
+connection = mysql+pymysql://nova:NOVA_DBPASS@controller/nova
+
+[glance]
+api_servers = http://controller:9292
+
+[keystone_authtoken]
+auth_url = http://controller:5000/v3
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = nova_pass
+
+[placement]
+region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://controller:5000/v3
+username = placement
+password = placement_pass
+
+[vnc]
+enabled = true
+server_listen = $my_ip
+server_proxyclient_address = $my_ip
+su -s /bin/sh -c "nova-manage api_db sync" nova
+su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+su -s /bin/sh -c "nova-manage db sync" nova
+su -s /bin/sh -c "nova-manage cell_v2 list_cells" nova
+systemctl start openstack-nova-api.service openstack-nova-scheduler.service \
+  openstack-nova-conductor.service openstack-nova-novncproxy.service
+
+systemctl enable openstack-nova-api.service openstack-nova-scheduler.service \
+  openstack-nova-conductor.service openstack-nova-novncproxy.service
+
+</code></pre>
+<p>(Compute1/2):</p>
+<pre><code>yum install -y python-openstackclient 
+yum install -y openstack-nova-compute
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/nova/nova.conf
+vim /etc/nova/nova.conf
+[DEFAULT]
+enabled_apis = osapi_compute,metadata
+transport_url = rabbit://openstack:openstack@controller
+my_ip = 192.168.150.12(13)
+use_neutron = true
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+
+[api]
+auth_strategy = keystone
+
+[keystone_authtoken]
+auth_url = http://controller:5000/v3
+memcached_servers = controller:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = nova
+password = nova_pass
+
+[vnc]
+enabled = true
+server_listen = 0.0.0.0
+server_proxyclient_address = $my_ip
+novncproxy_base_url = http://controller:6080/vnc_auto.html
+
+[glance]
+api_servers = http://controller:9292
+
+[oslo_concurrency]
+lock_path = /var/lib/nova/tmp
+
+[libvirt]
+virt_type = qemu
+systemctl start libvirtd.service openstack-nova-compute.service
+systemctl enable libvirtd.service openstack-nova-compute.service
+</code></pre>
+<p>(controller) Add compute node:</p>
+<pre><code>cd ~
+. admin-openrc
+openstack compute service list --service nova-compute
+su -s /bin/sh -c "nova-manage cell_v2 discover_hosts --verbose" nova
+
+vim /etc/nova/nova.conf
+[scheduler]
+discover_hosts_in_cells_interval=300
+
+systemctl restart openstack-nova-api.service openstack-nova-scheduler.service \
+  openstack-nova-conductor.service openstack-nova-novncproxy.service
+</code></pre>
+<p>(Controller) Neutron:</p>
+<pre><code>create database neutron;
+grant all privileges on neutron.* to 'neutron_user'@'controller' identified by 'neutron_pass';
+flush privileges;
+quit;
+openstack user create --domain default --password neutron_pass neutron
+openstack role add --project service --user neutron admin
+openstack service create --name neutron --description "OpenStack Networking" network
+openstack endpoint create --region RegionOne network public http://controller:9696
+openstack endpoint create --region RegionOne network internal http://controller:9696
+openstack endpoint create --region RegionOne network admin http://controller:9696
+yum install -y openstack-neutron openstack-neutron-ml2 \
+  openstack-neutron-linuxbridge ebtables
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/neutron.conf
+vim /etc/neutron/neutron.conf
+[DEFAULT]
+core_plugin = ml2
+service_plugins = router
+allow_overlapping_ips = true
+transport_url = rabbit://openstack:openstack@controller
+auth_strategy = keystone
+notify_nova_on_port_status_changes = true
+notify_nova_on_port_data_changes = true
+
+[database]
+connection = mysql+pymysql://neutron_user:neutron_pass@controller/neutron
+
+[keystone_authtoken]
+www_authenticate_uri = http://controller:5000
+auth_url = http://controller:5000
+memcached_servers =controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = neutron_pass
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+
+[nova]
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = nova
+password = nova_pass
+
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/plugins/ml2/ml2_conf.ini
+vim /etc/neutron/plugins/ml2/ml2_conf.ini
+[DEFAULT]
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+extension_drivers = port_security
+
+[ml2_type_flat]
+flat_networks = provider
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+
+[securitygroup]
+enable_ipset = true
+
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+vim /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[DEFAULT]
+[linux_bridge]
+physical_interface_mappings = provider:eth0
+
+[vxlan]
+enable_vxlan = false
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/dhcp_agent.ini
+
+vim /etc/neutron/dhcp_agent.ini
+[DEFAULT]
+interface_driver = linuxbridge
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+enable_isolated_metadata = true
+sed -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/metadata_agent.ini
+vim /etc/neutron/metadata_agent.ini
+[DEFAULT]
+nova_metadata_host = controller
+metadata_proxy_shared_secret = metadata_secret
+
+vim /etc/nova/nova.conf
+url = http://controller:9696
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = neutron_pass
+service_metadata_proxy = true
+metadata_proxy_shared_secret = metadata_secret
+ln -s /etc/neutron/plugins/ml2/ml2_conf.ini /etc/neutron/plugin.ini
+su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
+systemctl restart openstack-nova-api.service
+
+systemctl start neutron-server.service \
+  neutron-linuxbridge-agent.service \
+  neutron-dhcp-agent.service \
+  neutron-metadata-agent.service
+  
+systemctl enable neutron-server.service \
+  neutron-linuxbridge-agent.service \
+  neutron-dhcp-agent.service \
+  neutron-metadata-agent.service
+</code></pre>
+<p>(Compute1/2) Neutron:</p>
+<pre><code>yum install -y openstack-neutron-linuxbridge ebtables ipset
+sed  -i.default -e '/^#/d' -e '/^$/d' /etc/neutron/neutron.conf
+vim /etc/neutron/neutron.conf
+[DEFAULT]
+transport_url = rabbit://openstack:openstack@controller
+auth_strategy = keystone
+
+[keystone_authtoken]
+www_authenticate_uri = http://controller:5000
+auth_url = http://controller:5000
+memcached_servers =controller:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = neutron
+password = neutron_pass
+
+[oslo_concurrency]
+lock_path = /var/lib/neutron/tmp
+
+sed -i.bak -e '/^#/d' -e '/^$/d' /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+vim /etc/neutron/plugins/ml2/linuxbridge_agent.ini
+[linux_bridge]
+physical_interface_mappings = provider:eth0
+
+[vxlan]
+enable_vxlan = false
+
+[securitygroup]
+enable_security_group = true
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
+
+cat &gt;&gt;/etc/sysctl.conf&lt;&lt;EOF
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+EOF
+modprobe br_netfilter
+ sysctl -p
+
+vim /etc/nova/nova.conf
+url = http://controller:9696
+auth_url = http://controller:5000
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+region_name = RegionOne
+project_name = service
+username = neutron
+password = neutron_pass
+
+systemctl restart openstack-nova-compute.service
+
+</code></pre>
+<p>(Controller) Verification of neutron:</p>
+<pre><code>openstack extension list --network
+openstack network agent list
+</code></pre>
+<p>(Controller) Create network:</p>
+<pre><code>openstack network create  --share --external \
+  --provider-physical-network provider \
+  --provider-network-type flat provider
+openstack network list
++--------------------------------------+----------+---------+
+| ID                                   | Name     | Subnets |
++--------------------------------------+----------+---------+
+| 71e9248a-4233-4fd2-961d-4f10a757b299 | provider |         |
++--------------------------------------+----------+---------+
+
+openstack subnet create --network provider \
+   --allocation-pool start=192.168.150.100,end=192.168.150.200 --dns-nameserver 192.168.150.1 --gateway 192.168.150.1 --subnet-range 192.168.150.0/24 provider-sub
+
+# openstack subnet list
++--------------------------------------+--------------+--------------------------------------+------------------+
+| ID                                   | Name         | Network                              | Subnet           |
++--------------------------------------+--------------+--------------------------------------+------------------+
+| d170c5b8-68f3-4d9c-9850-307a765ddd80 | provider-sub | 71e9248a-4233-4fd2-961d-4f10a757b299 | 192.168.150.0/24 |
++--------------------------------------+--------------+--------------------------------------+------------------+
+</code></pre>
+<h3 id="2-gpt-sovits-on-ubuntu2204"><a class="header" href="#2-gpt-sovits-on-ubuntu2204">2. GPT-SoVITS On Ubuntu22.04</a></h3>
+<p>Upgrade cuda to 12.8:</p>
+<pre><code>wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+sudo apt-get -y install cuda-toolkit-12-8
+sudo apt-get install -y cuda-drivers
+export PATH=/usr/local/cuda-12.8/bin${PATH:+:${PATH}}
+sudo reboot
+</code></pre>
+<p>Docker:</p>
+<pre><code>git clone https://github.com/RVC-Boss/GPT-SoVITS.git
+sudo vim /etc/docker/daemon.json
+           "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+sudo systemctl daemon-reload &amp;&amp; sudo systemctl restart docker
+</code></pre>
+<p>Change to docker-ce, then:</p>
+<pre><code>cd ~/Code/GPT-SoVITS
+sudo docker-compose run --service-ports GPT-SoVITS-CU12
+</code></pre>
+<p>Enter the docker instance and execute:</p>
+<pre><code>$ sudo docker exec -it 9956431bddd0 bash
+l(base) root@9956431bddd0:/workspace/GPT-SoVITS# ls *.py
+api.py  api_v2.py  config.py  webui.py
+(base) root@9956431bddd0:/workspace/GPT-SoVITS# python webui.py
+(base) root@9956431bddd0:/workspace/GPT-SoVITS# python api_v2.py 
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="20250805.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="20250812.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="20250805.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="20250812.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
