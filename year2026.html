@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Year2026 - year2025</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-bc033a37.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-15b6880c.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">year2025</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="year2026"><a class="header" href="#year2026">Year2026</a></h1>
+<p>用来记录 2026 年每天所做的事情，主要是技术类。</p>
+<p>From 2026Feb06</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Date</th><th>Conclusion</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="20260729.html">20260729</a></td><td><a href="20260729.html#1-video-devicesdevvideo">1. video devices(/dev/video)</a><br><a href="20260729.html#2-rm-git-commit-history">2. rm git commit history</a></td></tr>
+<tr><td><a href="20260728.html">20260728</a></td><td><a href="20260728.html#1-continue-building">1. Continue building</a><br><a href="20260728.html#2-redroid-parameters">2. redroid parameters</a></td></tr>
+<tr><td><a href="20260727.html">20260727</a></td><td><a href="20260727.html#1-waydroid-atvaosp13">1. waydroid-atv(aosp13)</a><br><a href="20260727.html#2-repo-synclfs-issue">2. repo sync(lfs issue)</a><br><a href="20260727.html#4-conflict">4. Conflict</a></td></tr>
+<tr><td><a href="20260724.html">20260724</a></td><td><a href="20260724.html#1-lasttime-hang-reason">1. lastTime hang reason</a><br><a href="20260724.html#2-waydroid-network-issue">2. waydroid network issue</a><br><a href="20260724.html#3-purge-waydroid-setup">3. purge waydroid setup</a><br><a href="20260724.html#4-waydroid-vs-redroidwaydroid">4. waydroid vs redroid(waydroid)</a><br><a href="20260724.html#5-ffmpe-hal">5. ffmpe hal</a></td></tr>
+<tr><td><a href="20260723.html">20260723</a></td><td><a href="20260723.html#1-re-compact-waydroid-iamge">1. RE-compact waydroid iamge</a><br><a href="20260723.html#2-debugredroid">2. Debug(Redroid)</a></td></tr>
+<tr><td><a href="20260722.html">20260722</a></td><td><a href="20260722.html#1-waydroidredroid-build-modification">1. waydroid(redroid) build modification</a><br><a href="20260722.html#2-waydroid-arm64redroid-build-modification">2. waydroid arm64(redroid) build modification</a><br><a href="20260722.html#3-issuehoudini">3. issue(houdini)</a></td></tr>
+<tr><td><a href="20260721.html">20260721</a></td><td><a href="20260721.html#1-fast-grep">1. fast grep</a><br><a href="20260721.html#2-find-the-latest-modified-files">2. find the latest modified files</a><br><a href="20260721.html#3-build-waydroid-image">3. build waydroid image</a></td></tr>
+<tr><td><a href="20260720.html">20260720</a></td><td><a href="20260720.html#1-build-waydroid-atv-docker-imagefailed">1. Build waydroid-atv docker image(failed)</a><br><a href="20260720.html#2-sync-from-0">2. sync from 0</a></td></tr>
+<tr><td><a href="20260717.html">20260717</a></td><td><a href="20260717.html#1-fedora43-mesa">1. fedora43 mesa</a></td></tr>
+<tr><td><a href="20260716.html">20260716</a></td><td><a href="20260716.html#1-fedora43-nomachine">1. fedora43 nomachine</a><br><a href="20260716.html#2-quicky-sync-lineageos232">2. Quicky sync lineageos232</a><br><a href="20260716.html#3-ika-repo-preparation">3. ika repo preparation</a></td></tr>
+<tr><td><a href="20260715.html">20260715</a></td><td><a href="20260715.html#1-rutabaga-issue">1. rutabaga issue</a><br><a href="20260715.html#2-sftp-only-server">2. sftp only server</a></td></tr>
+<tr><td><a href="20260714.html">20260714</a></td><td><a href="20260714.html#1-rutabagagfxstreamlineageos">1. rutabaga+gfxstream(lineageos)</a></td></tr>
+<tr><td><a href="20260713.html">20260713</a></td><td><a href="20260713.html#1-fedora38-verification">1. Fedora38 verification</a><br><a href="20260713.html#2-start-avm-image">2. start-avm image</a><br><a href="20260713.html#3-fedora38-xorg-configuration">3. Fedora38 xorg Configuration</a><br><a href="20260713.html#4-cf-download">4.  cf download</a></td></tr>
+<tr><td><a href="20260712.html">20260712</a></td><td><a href="20260712.html#1-nomachine-configuration">1. nomachine configuration</a><br><a href="20260712.html#2-archlinuxgodofwar-notebook">2. archlinux(GodOfWAR Notebook)</a></td></tr>
+<tr><td><a href="20260711.html">20260711</a></td><td><a href="20260711.html#1-venuslibvirt">1. venus(libvirt)</a><br><a href="20260711.html#2-run-venusqemu">2. run venus(qemu)</a><br><a href="20260711.html#3-rutabagawith-issue">3. rutabaga(With issue)</a><br><a href="20260711.html#4-astamdgpu-issue">4. ast/amdgpu issue</a></td></tr>
+<tr><td><a href="20260710.html">20260710</a></td><td><a href="20260710.html#1-sort-via-size">1. sort via size</a><br><a href="20260710.html#2-qemurutabagaarchlinux">2. qemu/rutabaga(archlinux)</a><br><a href="20260710.html#3-disable-ast-card">3. disable ast card</a></td></tr>
+<tr><td><a href="20260709.html">20260709</a></td><td><a href="20260709.html#1-color-issue">1. color issue</a><br><a href="20260709.html#2-libvirt720x1280">2. libvirt(720x1280)</a><br><a href="20260709.html#3-enable-developer-mode">3. enable developer mode</a></td></tr>
+<tr><td><a href="20260708.html">20260708</a></td><td><a href="20260708.html#1-exclude-for-grep">1. exclude for grep</a></td></tr>
+<tr><td><a href="20260707.html">20260707</a></td><td><a href="20260707.html#1-workingtips-on-android-lineage-qemu">1. WorkingTips On android-lineage-qemu</a><br><a href="20260707.html#2-non-virgl-configuration">2. non-virgl configuration</a><br><a href="20260707.html#3-reason-for-virt_wifi">3. reason for  <code>virt_wifi</code></a><br><a href="20260707.html#4-gsi-image">4. gsi image</a><br><a href="20260707.html#5-make-gsi-image">5. make gsi image</a><br><a href="20260707.html#6-fastboot">6. fastboot</a></td></tr>
+<tr><td><a href="20260706.html">20260706</a></td><td><a href="20260706.html#1-rockylinux-virgl">1. RockyLinux Virgl</a><br><a href="20260706.html#2-lineageos-buildingvirtio">2. lineageos building(virtio)</a><br><a href="20260706.html#3-virglqemu">3. virgl(qemu)</a><br><a href="20260706.html#4-virglrockylinux">4. virgl(rockylinux)</a></td></tr>
+<tr><td><a href="20260703.html">20260703</a></td><td><a href="20260703.html#1-lineageos20-build-issueubuntu2004">1. lineageos20 build issue(ubuntu2004)</a><br><a href="20260703.html#2-ubuntu21-10-building">2. ubuntu21.10 building</a><br><a href="20260703.html#3-ubuntu22-04-building">3. ubuntu22.04 building</a><br><a href="20260703.html#4-lineageos-src-modification">4. lineageos src modification</a></td></tr>
+<tr><td><a href="20260702.html">20260702</a></td><td><a href="20260702.html#1-egl-test">1. egl test</a></td></tr>
+<tr><td><a href="20260701.html">20260701</a></td><td><a href="20260701.html#1-astamdgpu-issue">1. ast/amdgpu issue</a></td></tr>
+<tr><td><a href="20260630.html">20260630</a></td><td><a href="20260630.html#1-virt-builder">1. virt-builder</a></td></tr>
+<tr><td><a href="20260629.html">20260629</a></td><td><a href="20260629.html#1-run-cuttlefish-in-docker">1. Run cuttlefish in docker</a><br><a href="20260629.html#2-lineageos-23-2">2. lineageos-23.2</a><br><a href="20260629.html#3-chromeos-working-items">3. chromeos working items</a></td></tr>
+<tr><td><a href="20260626.html">20260626</a></td><td><a href="20260626.html#1-ubuntu2004-fcitx">1. ubuntu2004 fcitx</a></td></tr>
+<tr><td><a href="20260625.html">20260625</a></td><td><a href="20260625.html#1-intel-dg1-on-arm64">1. Intel dg1 on arm64</a><br><a href="20260625.html#2-kdewayland">2. kde(wayland)</a></td></tr>
+<tr><td><a href="20260624.html">20260624</a></td><td><a href="20260624.html#1-logout-in-x">1. logout in X</a><br><a href="20260624.html#2-waydroid-atvlineageos23-2">2. waydroid-ATV(lineageOS23.2)</a></td></tr>
+<tr><td><a href="20260623.html">20260623</a></td><td><a href="20260623.html#1-waydroidredroidstartup">1. waydroid(redroid)startup</a></td></tr>
+<tr><td><a href="20260622.html">20260622</a></td><td><a href="20260622.html#1-r11-vnc-building">1. r11 vnc building</a><br><a href="20260622.html#2-r13-vnc">2. r13 vnc</a><br><a href="20260622.html#3-nodejs">3. nodejs</a></td></tr>
+<tr><td><a href="20260617.html">20260617</a></td><td><a href="20260617.html#1-redroid11-with-vnc">1. redroid11 with vnc</a></td></tr>
+<tr><td><a href="20260616.html">20260616</a></td><td><a href="20260616.html#1-build-lineageos23-0-time">1. build lineageos23.0 time</a><br><a href="20260616.html#2-docker-ce-binaryeuler">2. docker-ce binary(euler)</a><br><a href="20260616.html#3-rpm-pkg-building">3. rpm-pkg building</a><br><a href="20260616.html#4-dkms-status">4. dkms status</a></td></tr>
+<tr><td><a href="20260615.html">20260615</a></td><td><a href="20260615.html#1-waydroid-atv-building">1. waydroid-atv building</a><br><a href="20260615.html#2-build-waydroidatv">2. build waydroidatv</a><br><a href="20260615.html#3-external_stagefright-plugins问题">3. <code>external_stagefright-plugins</code>问题</a></td></tr>
+<tr><td><a href="20260614.html">20260614</a></td><td><a href="20260614.html#1-ccache">1. ccache</a></td></tr>
+<tr><td><a href="20260612.html">20260612</a></td><td><a href="20260612.html#1-manually-set-efi-items">1. Manually Set efi items</a><br><a href="20260612.html#2-kea-dhcp-server-timtout">2. kea dhcp server timtout</a><br><a href="20260612.html#3-re-new">3. re-new</a></td></tr>
+<tr><td><a href="20260611.html">20260611</a></td><td><a href="20260611.html#1-cpulimit">1. cpulimit</a></td></tr>
+<tr><td><a href="20260610.html">20260610</a></td><td><a href="20260610.html#1-force-reboot">1. force reboot</a></td></tr>
+<tr><td><a href="20260608.html">20260608</a></td><td><a href="20260608.html#1-build-openeuler-kernel">1. Build OpenEuler Kernel</a><br><a href="20260608.html#2-scp-issue">2. scp issue</a><br><a href="20260608.html#3-rpm-file-file">3. rpm file file</a><br><a href="20260608.html#4-docker-network">4. docker network</a></td></tr>
+<tr><td><a href="20260606.html">20260606</a></td><td><a href="20260606.html#1-build-el-kernel">1. build EL Kernel</a><br><a href="20260606.html#2-tcpdump-in-aic">2. tcpdump in aic</a></td></tr>
+<tr><td><a href="20260605.html">20260605</a></td><td><a href="20260605.html#1-openeuler-kernel">1. openeuler kernel</a><br><a href="20260605.html#2-iptables-rules">2. iptables rules</a><br><a href="20260605.html#3-install-old-kernel">3. Install old kernel</a><br><a href="20260605.html#4-build-dep">4. build-dep</a></td></tr>
+<tr><td><a href="20260603.html">20260603</a></td><td><a href="20260603.html#1-save-to-targzdocker">1. save to tar.gz(docker)</a></td></tr>
+<tr><td><a href="20260602.html">20260602</a></td><td><a href="20260602.html#1-todays-things">1. Today’s things</a></td></tr>
+<tr><td><a href="20260601.html">20260601</a></td><td><a href="20260601.html#1-dg1-vfio">1. dg1 vfio</a></td></tr>
+<tr><td><a href="20260530.html">20260530</a></td><td><a href="20260530.html#1-civ-in-bare-metal">1. CIV in bare metal</a><br><a href="20260530.html#2-lxgw-on-ubuntu22-04">2. lxgw on ubuntu22.04</a></td></tr>
+<tr><td><a href="20260529.html">20260529</a></td><td><a href="20260529.html#1-buildcic">1. buildcic</a><br><a href="20260529.html#3-build-cic-in-docker">3. build cic in docker</a></td></tr>
+<tr><td><a href="20260528.html">20260528</a></td><td><a href="20260528.html#1-intel-aic-issue">1. Intel Aic issue</a></td></tr>
+<tr><td><a href="20260527.html">20260527</a></td><td><a href="20260527.html#1-nuc11-4-screens">1. nuc11 4 screens</a><br><a href="20260527.html#2-grep-exclude-2-folders">2. grep exclude 2 folders</a></td></tr>
+<tr><td><a href="20260526.html">20260526</a></td><td><a href="20260526.html#1-n100-wol">1. n100 wol</a></td></tr>
+<tr><td><a href="20260521.html">20260521</a></td><td><a href="20260521.html#1-git-specify-proxy-for-on-time">1. git specify proxy for on time</a><br><a href="20260521.html#2-pi-dev-console-context">2. pi dev console context</a></td></tr>
+<tr><td><a href="20260520.html">20260520</a></td><td><a href="20260520.html#1-install-pi">1. Install pi:</a></td></tr>
+<tr><td><a href="20260519.html">20260519</a></td><td><a href="20260519.html#1-re-gen-machineid">1. Re-gen machineID</a><br><a href="20260519.html#2-auto-load-binder">2. Auto-load binder</a><br><a href="20260519.html#3-multi-port-reverse-proxy">3. Multi port Reverse proxy</a></td></tr>
+<tr><td><a href="20260518.html">20260518</a></td><td><a href="20260518.html#1-vfiorockylinux">1. vfio(RockyLinux)</a><br><a href="20260518.html#2-net-issue">2. net issue</a></td></tr>
+<tr><td><a href="20260515.html">20260515</a></td><td><a href="20260515.html#1-vulkan-configuration">1. vulkan configuration</a></td></tr>
+<tr><td><a href="20260514.html">20260514</a></td><td><a href="20260514.html#1-firefox-hardware-acceleration">1. firefox hardware acceleration</a><br><a href="20260514.html#2qwen36-mtp">2.qwen36 mtp</a><br><a href="20260514.html#3-lv-extendshrink">3. lv extend/shrink</a><br><a href="20260514.html#4-iso-make">4. iso make</a><br><a href="20260514.html#5-mtp-model-startup">5. mtp model startup</a><br><a href="20260514.html#6-mtp-llamacpp">6. MTP llama.cpp</a></td></tr>
+<tr><td><a href="20260513.html">20260513</a></td><td><a href="20260513.html#1-pinim">1. pi(NIM)</a></td></tr>
+<tr><td><a href="20260512.html">20260512</a></td><td><a href="20260512.html#1-archlinux-upgrade">1. archlinux upgrade</a><br><a href="20260512.html#2-rsync-dir">2. rsync dir</a><br><a href="20260512.html#3-rocky-update-kernel">3. rocky update kernel</a><br><a href="20260512.html#4-ubuntu2604flex170">4. ubuntu2604(flex170)</a></td></tr>
+<tr><td><a href="20260511.html">20260511</a></td><td><a href="20260511.html#1-reverse-ssh-to-llm">1. reverse-ssh to LLM</a><br><a href="20260511.html#2-nixoslegacy-grub">2. nixos(legacy grub)</a><br><a href="20260511.html#3-docker-on-rockylinux">3. docker on rockylinux</a><br><a href="20260511.html#4-binding-problem">4. binding problem</a><br><a href="20260511.html#5-redroid-on-rockylinux">5. redroid on rockylinux</a><br><a href="20260511.html#6-split-pdf">6. split pdf</a></td></tr>
+<tr><td><a href="20260509.html">20260509</a></td><td><a href="20260509.html#1-fake-edid">1. fake edid</a><br><a href="20260509.html#2-nvidiaaarch64">2. nvidia(aarch64)</a><br><a href="20260509.html#3-custom-model-for-compression">3. custom model for compression:</a></td></tr>
+<tr><td><a href="20260508.html">20260508</a></td><td><a href="20260508.html#1-intel-b60">1. intel b60</a><br><a href="20260508.html#2-ollama-related">2. ollama related</a><br><a href="20260508.html#3-xpu-smi">3. xpu-smi</a><br><a href="20260508.html#4-virtualbox-dkms-status">4. virtualbox dkms status</a></td></tr>
+<tr><td><a href="20260507.html">20260507</a></td><td><a href="20260507.html#1-hermes-conf">1. hermes conf</a><br><a href="20260507.html#2-lock-the-screen">2. lock the screen</a><br><a href="20260507.html#3-intel-b60">3. intel b60</a><br><a href="20260507.html#4-docker-speedup">4. docker speedup</a></td></tr>
+<tr><td><a href="20260506.html">20260506</a></td><td><a href="20260506.html#1-rtl8152-on-openwrt">1. RTL8152 On OpenWRT</a></td></tr>
+<tr><td><a href="20260428.html">20260428</a></td><td><a href="20260428.html#1-scpgzip">1. scp(gzip)</a><br><a href="20260428.html#2-kernel-4-19">2. kernel 4.19</a></td></tr>
+<tr><td><a href="20260426.html">20260426</a></td><td><a href="20260426.html#1-lineageos-23-0-build">1. lineageos 23.0 build</a></td></tr>
+<tr><td><a href="20260424.html">20260424</a></td><td><a href="20260424.html#1-scrcpy-new-version">1. scrcpy new version</a><br><a href="20260424.html#2-redroid16-build">2. redroid16 build</a></td></tr>
+<tr><td><a href="20260423.html">20260423</a></td><td><a href="20260423.html#1-build-waydroid">1. build waydroid</a><br><a href="20260423.html#2-build-waydroidaosp14">2. build waydroid(aosp14)</a></td></tr>
+<tr><td><a href="20260422.html">20260422</a></td><td><a href="20260422.html#1-lineageos-14-build">1. lineageos 14 build</a><br><a href="20260422.html#2-redroid16-build">2. redroid16 build</a></td></tr>
+<tr><td><a href="20260421.html">20260421</a></td><td><a href="20260421.html#1-redroid16">1. redroid16</a></td></tr>
+<tr><td><a href="20260420.html">20260420</a></td><td><a href="20260420.html#1-waydroidaosp-items">1. waydroid(aosp) items</a></td></tr>
+<tr><td><a href="20260418.html">20260418</a></td><td><a href="20260418.html#1-build-waydroid">1. build waydroid</a></td></tr>
+<tr><td><a href="20260417.html">20260417</a></td><td><a href="20260417.html#1-custom-image-for-waydroid">1. custom image for waydroid</a></td></tr>
+<tr><td><a href="20260415.html">20260415</a></td><td><a href="20260415.html#1-bliss-building">1. bliss building</a><br><a href="20260415.html#2-adb-pair">2. adb pair</a><br><a href="20260415.html#3-transfer-aosp-src">3. transfer aosp src</a></td></tr>
+<tr><td><a href="20260414.html">20260414</a></td><td><a href="20260414.html#1-waydroidarm64-working-tips">1. waydroid(arm64) working tips</a><br><a href="20260414.html#2-hermesubuntu2204">2. hermes(ubuntu2204)</a><br><a href="20260414.html#3-rebuild-blissos15">3. rebuild blissos15</a></td></tr>
+<tr><td><a href="20260413.html">20260413</a></td><td><a href="20260413.html#1-del-gw">1. del gw</a></td></tr>
+<tr><td><a href="20260410.html">20260410</a></td><td><a href="20260410.html#1-waydroid-workingtips">1. waydroid workingtips</a><br><a href="20260410.html#2-waydroid-on-vm">2. waydroid on vm</a></td></tr>
+<tr><td><a href="20260409.html">20260409</a></td><td><a href="20260409.html#1-waydroid-installation">1. waydroid installation</a></td></tr>
+<tr><td><a href="20260408.html">20260408</a></td><td><a href="20260408.html#1-ext4-creation">1. ext4 creation</a><br><a href="20260408.html#2-blissos-building">2. blissos building</a></td></tr>
+<tr><td><a href="20260407.html">20260407</a></td><td><a href="20260407.html#1-reback-modification">1. reback modification</a></td></tr>
+<tr><td><a href="20260402.html">20260402</a></td><td><a href="20260402.html#1-ghostscript">1. ghostscript</a><br><a href="20260402.html#2-lineageos-workingtips">2. lineageOS workingtips</a></td></tr>
+<tr><td><a href="20260401.html">20260401</a></td><td><a href="20260401.html#1-emulator">1. emulator</a></td></tr>
+<tr><td><a href="20260331.html">20260331</a></td><td><a href="20260331.html#1-ubuntu22-0424-04-aosp-building">1. ubuntu22.04/24.04 aosp building</a><br><a href="20260331.html#2-openeuler20-03-repository">2. openeuler20.03 repository</a><br><a href="20260331.html#3-emulator-with-cpumemdisk">3. emulator with cpu/mem/disk</a><br><a href="20260331.html#4-get-page-size">4. get page size</a></td></tr>
+<tr><td><a href="20260330.html">20260330</a></td><td><a href="20260330.html#1-vnc-nohost">1. vnc nohost</a><br><a href="20260330.html#2-totally-disable-sleep">2. totally disable sleep</a><br><a href="20260330.html#3-activate-officewin">3. activate office/win</a></td></tr>
+<tr><td><a href="20260328.html">20260328</a></td><td><a href="20260328.html#1-for-houdini">1. for houdini</a></td></tr>
+<tr><td><a href="20260327.html">20260327</a></td><td><a href="20260327.html#1-reback-files">1. reback files</a><br><a href="20260327.html#2-opencode-restore">2. opencode restore</a></td></tr>
+<tr><td><a href="20260326.html">20260326</a></td><td><a href="20260326.html#1-virt-wifi-related">1. virt wifi related</a><br><a href="20260326.html#2-logcat-for-hostapd">2. logcat for hostapd</a></td></tr>
+<tr><td><a href="20260325.html">20260325</a></td><td><a href="20260325.html#1-scrcpy-issue">1. scrcpy issue</a><br><a href="20260325.html#2-virt-wifi">2. virt wifi</a><br><a href="20260325.html#3-detection">3. detection</a></td></tr>
+<tr><td><a href="20260324.html">20260324</a></td><td><a href="20260324.html#1-b60-pro-benchmark">1. b60 pro benchmark</a></td></tr>
+<tr><td><a href="20260317.html">20260317</a></td><td><a href="20260317.html#1-restart-cuttlefish">1. restart cuttlefish</a><br><a href="20260317.html#2-rebuild-redroid13">2. rebuild redroid13</a></td></tr>
+<tr><td><a href="20260312.html">20260312</a></td><td><a href="20260312.html#1-cuttlefishubuntu2404">1. cuttlefish(Ubuntu2404)</a><br><a href="20260312.html#2-tyy-issue">2. tyy issue</a><br><a href="20260312.html#3-ss-installation">3. ss installation</a></td></tr>
+<tr><td><a href="20260311.html">20260311</a></td><td><a href="20260311.html#1-get-fd">1. Get fd</a></td></tr>
+<tr><td><a href="20260310.html">20260310</a></td><td><a href="20260310.html#1-scrcpy-issue">1. scrcpy issue</a><br><a href="20260310.html#2-set-tcpip-5555">2. set tcpip 5555</a></td></tr>
+<tr><td><a href="20260309.html">20260309</a></td><td><a href="20260309.html#1-google-chrome-issue-on-ubuntu24-04">1. Google-chrome issue on ubuntu24.04</a><br><a href="20260309.html#2-openclaw-update">2. openclaw update</a></td></tr>
+<tr><td><a href="20260307.html">20260307</a></td><td><a href="20260307.html#1-ace-step-1-5">1. ACE-Step-1.5</a><br><a href="20260307.html#2-cloudflared-tunnel">2. cloudflared tunnel</a></td></tr>
+<tr><td><a href="20260306.html">20260306</a></td><td><a href="20260306.html#1-openclaw-config">1. openclaw config</a><br><a href="20260306.html#2-hongxin-domain-name">2. hongxin domain name</a></td></tr>
+<tr><td><a href="20260305.html">20260305</a></td><td><a href="20260305.html#1-ollama-for-android">1. ollama for android</a></td></tr>
+<tr><td><a href="20260303.html">20260303</a></td><td><a href="20260303.html#1-archlinux-openclaw">1. archlinux openclaw</a><br><a href="20260303.html#2-add-channel">2. add channel:</a><br><a href="20260303.html#3-qwen3-5-35b-with-graphical">3. Qwen3.5-35B with graphical</a></td></tr>
+<tr><td><a href="20260302.html">20260302</a></td><td><a href="20260302.html#1-hint">1. hint</a></td></tr>
+<tr><td><a href="20260228.html">20260228</a></td><td><a href="20260228.html#1-hwe-for-ubuntu2404">1. hwe for ubuntu2404</a></td></tr>
+<tr><td><a href="20260227.html">20260227</a></td><td><a href="20260227.html#1-iflow-cli">1. iflow cli</a><br><a href="20260227.html#2-qwen3">2. Qwen3</a></td></tr>
+<tr><td><a href="20260226.html">20260226</a></td><td><a href="20260226.html#1-paddleocr-installation">1. paddleocr installation</a><br><a href="20260226.html#2-test-paddleocr">2. test paddleocr</a><br><a href="20260226.html#3-huggingface-download">3. huggingface download</a></td></tr>
+<tr><td><a href="20260225.html">20260225</a></td><td><a href="20260225.html#1-nim-configuration-for-openclaw">1. nim configuration for openclaw</a><br><a href="20260225.html#2-docker-cpuset">2. docker cpuset</a></td></tr>
+<tr><td><a href="20260224.html">20260224</a></td><td><a href="20260224.html#1-nim-models">1. NIM models</a><br><a href="20260224.html#2-tyy-glm5-trial">2. tyy glm5 trial</a><br><a href="20260224.html#3-dify-usage">3. dify usage</a><br><a href="20260224.html#4-wake-on-lan">4. wake-on-lan</a><br><a href="20260224.html#5-crossgfw-for-libvirt">5. crossgfw for libvirt</a><br><a href="20260224.html#6-64-bit-openwrt">6. 64-bit openwrt</a><br><a href="20260224.html#7-openclaw-installation">7. openclaw installation</a></td></tr>
+<tr><td><a href="20260208.html">20260208</a></td><td><a href="20260208.html#1-vllm-added">1. vllm added</a></td></tr>
+<tr><td><a href="20260207.html">20260207</a></td><td><a href="20260207.html#1-vllm">1. vllm</a></td></tr>
+<tr><td><a href="20260205.html">20260205</a></td><td><a href="20260205.html#1-on-building-kbox">1. on building kbox</a><br><a href="20260205.html#2-opencode-confignim">2. opencode config(NIM)</a><br><a href="20260205.html#3-kimi">3. kimi</a></td></tr>
+<tr><td><a href="20260204.html">20260204</a></td><td><a href="20260204.html#1-redroid15-buiding">1. redroid15 buiding</a></td></tr>
+<tr><td><a href="20260203.html">20260203</a></td><td><a href="20260203.html#1-licheepi4a">1. licheepi4a</a><br><a href="20260203.html#2-redroid-15-building">2. redroid 15 building</a><br><a href="20260203.html#3-change-repo">3. Change repo</a></td></tr>
+<tr><td><a href="20260202.html">20260202</a></td><td><a href="20260202.html#1-console-output">1. console output</a><br><a href="20260202.html#2-meminfo-patch">2. meminfo patch</a><br><a href="20260202.html#3-redroid13-building">3. redroid13 building</a></td></tr>
+<tr><td><a href="20260130.html">20260130</a></td><td><a href="20260130.html#1-redroid-mem">1. redroid mem</a><br><a href="20260130.html#2-re-disk">2. re disk</a><br><a href="20260130.html#3-re-generate">3. re-generate</a><br><a href="20260130.html#4-todo">4. todo</a></td></tr>
+<tr><td><a href="20260129.html">20260129</a></td><td><a href="20260129.html#1-discord-bot">1. discord bot</a></td></tr>
+<tr><td><a href="20260128.html">20260128</a></td><td><a href="20260128.html#1-clawbot">1. clawbot</a></td></tr>
+<tr><td><a href="20260127.html">20260127</a></td><td><a href="20260127.html#1-redroid普通用户拉起方法">1. redroid普通用户拉起方法</a></td></tr>
+<tr><td><a href="20260126.html">20260126</a></td><td><a href="20260126.html#1-re-run-rerank">1. re-run rerank</a></td></tr>
+<tr><td><a href="20260123.html">20260123</a></td><td><a href="20260123.html#1-show-ips-mac-address">1. show ip’s mac address</a><br><a href="20260123.html#2-priviledged">2. priviledged</a></td></tr>
+<tr><td><a href="20260122.html">20260122</a></td><td><a href="20260122.html#1-unprivileged-redroid">1. unprivileged redroid</a><br><a href="20260122.html#2-xfs-related">2. xfs related</a></td></tr>
+<tr><td><a href="20260121.html">20260121</a></td><td><a href="20260121.html#1-构建知识库">1. 构建知识库</a><br><a href="20260121.html#2-build-kbox">2. build kbox</a></td></tr>
+<tr><td><a href="20260120.html">20260120</a></td><td><a href="20260120.html#1-docker-runtimenvidia">1. docker runtime(nvidia)</a><br><a href="20260120.html#2-kbox-related">2. kbox related</a><br><a href="20260120.html#3-re-org-dify">3. re-org dify</a></td></tr>
+<tr><td><a href="20260117.html">20260117</a></td><td><a href="20260117.html#1-usbdk-usbredirect">1. usbDK &amp; usbredirect</a><br><a href="20260117.html#2-开发编译环境">2. 开发/编译环境</a><br><a href="20260117.html#3-proxmox配置">3. proxmox 配置</a></td></tr>
+<tr><td><a href="20260116.html">20260116</a></td><td><a href="20260116.html#1-qt开发环境">1. QT开发环境</a></td></tr>
+<tr><td><a href="20260115.html">20260115</a></td><td><a href="20260115.html#1-change-default-browser">1. change default browser</a><br><a href="20260115.html#2-spice-related">2. spice related</a></td></tr>
+<tr><td><a href="20260114.html">20260114</a></td><td><a href="20260114.html#1-pve-console">1. pve console</a><br><a href="20260114.html#2-pve-files">2. pve files</a></td></tr>
+<tr><td><a href="20260113.html">20260113</a></td><td><a href="20260113.html#1-docker-run-rerank-model">1. docker run rerank model</a></td></tr>
+<tr><td><a href="20260112.html">20260112</a></td><td><a href="20260112.html#1-hint">1. hint</a></td></tr>
+<tr><td><a href="20260109.html">20260109</a></td><td><a href="20260109.html#1-hints">1. hints</a><br><a href="20260109.html#2-benchmark-related6-18-0-rc4">2. benchmark related(6.18.0-rc4+)</a><br><a href="20260109.html#3-benchmark-related6-18-0-rc4-origin">3. benchmark related(6.18.0-rc4+-origin)</a></td></tr>
+<tr><td><a href="20260107.html">20260107</a></td><td><a href="20260107.html#1-dbench-test">1. dbench test</a></td></tr>
+<tr><td><a href="20260105.html">20260105</a></td><td><a href="20260105.html#1-benchmark-new-node">1. benchmark new node</a><br><a href="20260105.html#2-ollama">2. ollama</a></td></tr>
+<tr><td><a href="20260104.html">20260104</a></td><td><a href="20260104.html#1-opencodeon-my-opencode">1. OpenCode/On-my-opencode</a><br><a href="20260104.html#2-disable-hyper-threading">2. disable hyper-threading</a><br><a href="20260104.html#3-benchmark-result">3. benchmark result</a></td></tr>
+<tr><td><a href="20260101.html">20260101</a></td><td><a href="20260101.html#1-提示词">1. 提示词</a></td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="year2025.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="20260729.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="year2025.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="20260729.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
