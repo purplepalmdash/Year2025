@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-bc033a37.js";
+            window.path_to_searchindex_js = "searchindex-42a21cb3.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-15b6880c.js"></script>
@@ -610,6 +610,17 @@ git branch -m main
 
 # 强制推送更新远程 main 分支
 git push -f origin main
+</code></pre>
+<h3 id="3-guestfish-issue"><a class="header" href="#3-guestfish-issue">3. guestfish issue</a></h3>
+<p>issue and solvement.</p>
+<pre><code>test@myhope:~$ virt-copy-in -a debian-12.img input_h264.mp4 /root/
+libguestfs: error: tar_in: tar subcommand failed on directory: /root/: tar: input_h264.mp4: Cannot open: Structure needs cleaning
+tar: Exiting with failure status due to previous errors
+test@myhope:~$ guestfish -a debian-12.img &lt;&lt;EOF
+run
+e2fsck-f /dev/sda1
+EOF
+test@myhope:~$ virt-copy-in -a debian-12.img input_h264.mp4 /root/
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260728"><a class="header" href="#20260728">20260728</a></h1>
