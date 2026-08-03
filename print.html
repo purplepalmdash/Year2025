@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f5437e08.js";
+            window.path_to_searchindex_js = "searchindex-2866652c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-332ee68f.js"></script>
+        <script src="toc-6456bf1d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,184 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260802"><a class="header" href="#20260802">20260802</a></h1>
+<h3 id="1-pve-repository-configuration"><a class="header" href="#1-pve-repository-configuration">1. pve repository configuration</a></h3>
+<p>Disable pve enterprise repository:</p>
+<pre><code>mv /etc/apt/sources.list.d/pve-enterprise.sources /etc/apt/sources.list.d/pve-enterprise.sources.disabled
+
+mv /etc/apt/sources.list.d/ceph.sources /etc/apt/sources.list.d/ceph.sources.disabled
+</code></pre>
+<p>Add free non-subscription repository:</p>
+<pre><code>cat &gt; /etc/apt/sources.list.d/ceph.list &lt;&lt; EOF
+deb http://download.proxmox.com/debian/ceph-squid trixie no-subscription
+EOF
+
+cat /etc/apt/sources.list.d/pve-enterprise.list
+# pve-enterprise.list 内容应该是：
+deb http://download.proxmox.com/debian/pve trixie pve-no-subscription
+deb http://download.proxmox.com/debian/devel trixie main
+</code></pre>
+<p>Then :</p>
+<pre><code>apt upate
+</code></pre>
+<p>you could also change the debian.sources to ustc.edu.cn</p>
+<h3 id="2-build-pve-qemu"><a class="header" href="#2-build-pve-qemu">2. build pve-qemu</a></h3>
+<p>Via:</p>
+<pre><code>git clone --recursive git://git.proxmox.com/git/pve-qemu.git
+cd pve-qemu
+apt build-dep .
+then make deb
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260801"><a class="header" href="#20260801">20260801</a></h1>
+<h3 id="1-archlinux-mkpkg"><a class="header" href="#1-archlinux-mkpkg">1. archlinux mkpkg</a></h3>
+<p>Step:</p>
+<pre><code>sudo pacman -S devtools
+pkgctl repo clone --protocol https qemu
+
+# Automatically install dependencies and build the pkg, then install
+makepkg -si
+# only build the pkg
+makepkg -s
+</code></pre>
+<p>Make changes to source code, then :</p>
+<pre><code>makepkg -s -e --skippgpcheck
+</code></pre>
+<p>examine the output:</p>
+<pre><code>[dash@arch ~]$ strings /usr/lib/qemu/*.so | grep -i "rendernode"
+egl_rendernode_init
+qemu_drm_rendernode_open
+rendernode
+[dash@arch ~]$ strings /usr/bin/qemu-system-x86_64 | grep -i "qemu_drm_rendernode_open"
+qemu_drm_rendernode_open
+</code></pre>
+<h3 id="2-gpg-error"><a class="header" href="#2-gpg-error">2. gpg error</a></h3>
+<p>when building qemu on archlinux, met the  error:</p>
+<pre><code>==&gt; Verifying source file signatures with gpg...
+    qemu-11.0.3.tar.xz ... FAILED (unknown public key 3353C9CEF108B584)
+==&gt; ERROR: One or more PGP signatures could not be verified! 
+unknown public key 3353C9CEF108B584
+</code></pre>
+<p>solved via:</p>
+<pre><code>gpg --recv-keys 3353C9CEF108B584
+
+</code></pre>
+<h3 id="3-change-pkg-version"><a class="header" href="#3-change-pkg-version">3. change pkg version</a></h3>
+<p>Change the items in PKGBUILD:</p>
+<pre><code>pkgver=11.0.3
+pkgrel=1.1   # 或者 pkgrel=2
+</code></pre>
+<p>then build with:</p>
+<pre><code># 1. 带 -e 增量打包（不会重新解压/不会覆盖你之前改好的 C 代码）
+makepkg -s -e -f --skippgpcheck
+
+# 2. 将生成的新版本包安装覆盖到系统
+sudo pacman -U qemu-*-11.0.3-1.1-x86_64.pkg.tar.zst
+</code></pre>
+<h3 id="4-examine-the-build-log"><a class="header" href="#4-examine-the-build-log">4. examine the build log</a></h3>
+<p>When building qemu, examine the meson buld log via:</p>
+<pre><code>grep -rn "Enabling virglrenderer unstable APIs" src/qemu-11.0.3/build/
+</code></pre>
+<h3 id="5-vainfo-in-vm"><a class="header" href="#5-vainfo-in-vm">5. vainfo in vm</a></h3>
+<p>intel dg1:</p>
+<pre><code>[dash@archvm ~]$ vainfo
+Trying display: wayland
+vainfo: VA-API version: 1.24 (libva 2.24.0)
+vainfo: Driver version: Mesa Gallium driver 26.1.6-arch1.1 for virgl (Mesa Intel(R) Iris(R) Xe Graphics (TGL GT2))
+vainfo: Supported profile and entrypoints
+      VAProfileNone                   : VAEntrypointVideoProc
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260731"><a class="header" href="#20260731">20260731</a></h1>
+<h3 id="1-crosvm-issue"><a class="header" href="#1-crosvm-issue">1. crosvm issue</a></h3>
+<p>issue description:</p>
+<pre><code>./virtio_media_playground/crosvm/target/release/crosvm run   --cpus 2   --mem 2048   --block path=debian-12-arm64.raw   --initrd initrd.img-6.1.0-51-cloud-arm64   -p "console=ttyS0 earlycon root=/dev/vda1 rw panic=-1"   virtio_media_playground/linux/build_virtio_media/arch/arm64/boot/Image  --simple-media-device
+进入系统后： 
+root@localhost:~# dmesg | grep v4l2
+root@localhost:~# lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC [Natoma]
+00:01.0 Mass storage controller: Red Hat, Inc. Virtio 1.0 block device (rev 01)
+00:02.0 System peripheral: Red Hat, Inc. Virtio 1.0 RNG (rev 01)
+00:03.0 System peripheral: Red Hat, Inc. Virtio 1.0 memory balloon (rev 01)
+00:04.0 Multimedia video controller: Red Hat, Inc. Device 1070 (rev 01)
+00:05.0 USB controller: Fresco Logic Device 1400
+00:06.0 Unassigned class [ffff]: Red Hat, Inc. QEMU PVPanic device (rev 01)
+
+
+./virtio_media_playground/crosvm/target/release/crosvm run   --cpus 2   --mem 2048   --block path=debian-12-arm64.raw   --initrd initrd.img-6.1.0-51-cloud-arm64   -p "console=ttyS0 earlycon root=/dev/vda1 rw panic=-1"   virtio_media_playground/linux/build_virtio_media/arch/arm64/boot/Image
+进入系统后：
+root@localhost:~# lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC [Natoma]
+00:01.0 Mass storage controller: Red Hat, Inc. Virtio 1.0 block device (rev 01)
+00:02.0 System peripheral: Red Hat, Inc. Virtio 1.0 RNG (rev 01)
+00:03.0 System peripheral: Red Hat, Inc. Virtio 1.0 memory balloon (rev 01)
+00:04.0 USB controller: Fresco Logic Device 1400
+00:05.0 Unassigned class [ffff]: Red Hat, Inc. QEMU PVPanic device (rev 01)
+我无法找到/dev/video*设备，怎么办？
+</code></pre>
+<p>原因，选错了分支： <code>git clone --branch virtio-media --depth=2 https://github.com/Gnurou/linux</code>,</p>
+<p>Should be:</p>
+<p><code>git clone --branch b4/virtio-media --depth=2 https://github.com/Gnurou/linux</code></p>
+<p>Clone the right branch:</p>
+<pre><code>git -c http.proxy=socks5h://192.168.1.208:1080 clone --branch b4/virtio-media --depth=2 https://github.com/Gnurou/linux
+cd linux/
+cp arch/x86/configs/virtio_media_defconfig arch/arm64/configs/
+make O=build_virtio_media  virtio_media_defconfig
+make O=build_virtio_media  menuconfig
+make O=build_virtio_media -j$(nproc) Image
+</code></pre>
+<p>Open following configurations:</p>
+<pre><code>CONFIG_VIRTIO_MMIO
+CONFIG_PCI_HOST_GENERIC
+CONFIG_SERIAL_OF_PLATFORM
+CONFIG_TMPFS
+CONFIG_TMPFS_POSIX_ACL
+</code></pre>
+<p>Edit config and open configurations:</p>
+<pre><code>cd ~/virtio_media_playground/linux
+nano drivers/media/Kconfig
+第二步：找到第 233 行附近的 MEDIA_VIRTIO
+找到类似下面的内容（第 233 行附近）：
+
+Code snippet
+
+
+config MEDIA_VIRTIO
+	tristate "Virtio-media Driver"
+	depends on MEDIA_SUPPORT &amp;&amp; VIRTIO &amp;&amp; VIDEO_DEV &amp;&amp; 64BIT &amp;&amp; (X86 || ARM &amp;&amp; CPU_LITTLE_ENDIAN)
+第三步：把 ARM 改为 ARM64（或者加上 ARM64）
+修改为：
+
+Code snippet
+
+
+config MEDIA_VIRTIO
+	tristate "Virtio-media Driver"
+	depends on MEDIA_SUPPORT &amp;&amp; VIRTIO &amp;&amp; VIDEO_DEV &amp;&amp; 64BIT &amp;&amp; (X86 || ARM || ARM64)
+保存并退出（nano 中按 Ctrl + O 保存，Ctrl + X 退出）
+</code></pre>
+<p>Rebuild the kernel, then you could use:</p>
+<pre><code>root@localhost:~# lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC [Natoma]
+00:01.0 Mass storage controller: Red Hat, Inc. Virtio 1.0 block device (rev 01)
+00:02.0 System peripheral: Red Hat, Inc. Virtio 1.0 RNG (rev 01)
+00:03.0 System peripheral: Red Hat, Inc. Virtio 1.0 memory balloon (rev 01)
+00:04.0 Multimedia video controller: Red Hat, Inc. Device 1070 (rev 01)
+00:05.0 USB controller: Fresco Logic Device 1400
+00:06.0 Unassigned class [ffff]: Red Hat, Inc. QEMU PVPanic device (rev 01)
+root@localhost:~# ls /dev/video0 
+/dev/video0
+</code></pre>
+<p>Start crosvm instance(with h264 encoder/decoder):</p>
+<pre><code>test@raspberrypi:~ $ ./virtio_media_playground/crosvm/target/release/crosvm run   --cpus 2   --mem 2048   --net tap-name=crosvm_tap0   --block path=debian-12-arm64.raw   --initrd initrd.img-6.1.0-51-cloud-arm64   -p "console=ttyS0 earlycon root=/dev/vda1 rw panic=-1"   --v4l2-proxy /dev/video10   --v4l2-proxy /dev/video11   virtio_media_playground/linux1/linux/build_virtio_media/arch/arm64/boot/Image
+</code></pre>
+<p>ffmpeg convert in vm:</p>
+<pre><code>ffmpeg -y -ss 00:00:00 -t 20 \
+  -i 1080p60fps_test.mp4 \
+  -vf "fps=30,scale=1280:720,format=yuv420p" \
+  -c:v h264_v4l2m2m -b:v 3M -an test_720p_guest.mp4
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260730"><a class="header" href="#20260730">20260730</a></h1>
 <h3 id="1-write-rpi-image"><a class="header" href="#1-write-rpi-image">1. Write rpi image</a></h3>
