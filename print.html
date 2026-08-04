@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-10f614bc.js";
+            window.path_to_searchindex_js = "searchindex-63396a0c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1bdb4653.js"></script>
+        <script src="toc-402a261c.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,51 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260804"><a class="header" href="#20260804">20260804</a></h1>
+<h3 id="1-fedora-repo42"><a class="header" href="#1-fedora-repo42">1. fedora repo(42)</a></h3>
+<p>via:</p>
+<pre><code>sudo sed -i -r -e "
+/^metalink=/s/^/#/
+/^#*baseurl=/{s/^#//
+s%download.(fedoraproject.org|example)\
+%archives.fedoraproject.org%
+s%(/pub)(/fedora/)%\1/archive\2%}
+" /etc/yum.repos.d/fedora*.repo
+</code></pre>
+<h3 id="2-debian-trxie-build-items"><a class="header" href="#2-debian-trxie-build-items">2. debian trxie build items</a></h3>
+<p>Get src:</p>
+<pre><code>mkdir ~/debian-build &amp;&amp; cd ~/debian-build
+apt source libvirglrenderer1
+apt source qemu-system-x86
+sudo apt build-dep -y libvirglrenderer1 qemu-system-x86
+</code></pre>
+<p>modification:</p>
+<pre><code>cd virglrenderer-1.1.0/
+cat meson_options.txt | grep -i video -A3 -B3
+)
+
+option(
+  'video',
+  type : 'boolean',
+  value : 'true',
+  description : 'enable support for hardware video acceleration'
+)
+
+</code></pre>
+<p>build via:</p>
+<pre><code>dpkg-buildpackage -us -uc -b -j$(nproc)
+</code></pre>
+<p>Verification:</p>
+<pre><code>test@debian:~/debian-build/virglrenderer-1.1.0$ cat ./obj-x86_64-linux-gnu/meson-logs/meson-log.txt | grep -i video
+Build Options: -Dpython.bytecompile=-1 -Dtests=true -Dvideo=true -Drender-server=true -Drender-server-worker=process -Dvenus=true -Dprefix=/usr -Dlibdir=lib/x86_64-linux-gnu -Dlocalstatedir=/var -Dsysconfdir=/etc -Dbuildtype=plain -Dwrap_mode=nodownload
+    video                     : true
+    video                     : true
+test@debian:~/debian-build/virglrenderer-1.1.0$ ls ../*.deb
+../libvirglrenderer1_1.1.0-2_amd64.deb         ../virgl-server_1.1.0-2_amd64.deb
+../libvirglrenderer1-dbgsym_1.1.0-2_amd64.deb  ../virgl-server-dbgsym_1.1.0-2_amd64.deb
+../libvirglrenderer-dev_1.1.0-2_amd64.deb
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260803"><a class="header" href="#20260803">20260803</a></h1>
 <h3 id="1-fedora-42-worktips"><a class="header" href="#1-fedora-42-worktips">1. fedora 42 worktips</a></h3>
