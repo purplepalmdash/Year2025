@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-63396a0c.js";
+            window.path_to_searchindex_js = "searchindex-6c8dcd7d.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-402a261c.js"></script>
+        <script src="toc-775bd1e6.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,75 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260806"><a class="header" href="#20260806">20260806</a></h1>
+<h3 id="1-global-undergraduate"><a class="header" href="#1-global-undergraduate">1. global undergraduate</a></h3>
+<p>via:</p>
+<pre><code>sudo pacman -Syuu
+</code></pre>
+<h3 id="2-drm_native_context"><a class="header" href="#2-drm_native_context">2. drm_native_context</a></h3>
+<p>Start via:</p>
+<pre><code>#!/bin/sh
+
+qemu-system-x86_64                                                                    \
+    -enable-kvm                                                                       \
+    -M q35,accel=kvm                                                                  \
+    -smp 8                                                                            \
+    -m 12G                                                                            \
+    -cpu host                                                                         \
+    -net nic,model=virtio                                                             \
+    -net bridge,br=virbr0                                                             \
+    -device virtio-gpu-gl,hostmem=8G,blob=on,drm_native_context=on                    \
+    -vga none                                                                         \
+    -display egl-headless,gl=on                                                       \
+    -object memory-backend-memfd,id=mem1,size=12G                                     \
+    -machine memory-backend=mem1                                                      \
+    -d guest_errors                                                                   \
+    -virtfs local,path=/mnt/games,mount_tag=host0,security_model=passthrough,id=host0 \
+    -drive file=/home/test/manjaro.qcow2,format=qcow2,cache=writeback
+</code></pre>
+<h3 id="3-nomachine-automatically-startup"><a class="header" href="#3-nomachine-automatically-startup">3. nomachine automatically startup</a></h3>
+<p>via:</p>
+<pre><code>❯ cat /usr/NX/etc/server.cfg| grep StartNXDaemon
+StartNXDaemon Automatic
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260805"><a class="header" href="#20260805">20260805</a></h1>
+<h3 id="1-manjaro-verification-items"><a class="header" href="#1-manjaro-verification-items">1. manjaro verification items</a></h3>
+<pre><code>sudo pacman-mirrors -i -c China -m rank
+sudo pacman -Syy
+ sudo pacman -S qemu-full libvirt virt-manager virt-viewer dnsmasq vde2  openbsd-netcat iptables-nft libguestfs
+sudo pacman -Syu --noconfirm
+sudo pacman -S --needed base-deve
+sudo vim /etc/pacman.conf
+[archlinuxcn]
+Server = https://mirror.nju.edu.cn/archlinuxcn/$arch
+sudo pacman -S yay
+yay nomachine
+</code></pre>
+<p>Save the nomachine pkg:</p>
+<pre><code>❯ cd ~/.cache/yay
+❯ ls
+completion.cache  nomachine  vcs.json
+❯ sudo find . | grep pkg.tar.zst
+[sudo] password for test: 
+./nomachine/nomachine-9.8.2-1-x86_64.pkg.tar.zst
+❯ scp nomachine/nomachine-9.8.2-1-x86_64.pkg.tar.zst dash@192.168.1.165:~
+</code></pre>
+<h3 id="2-nxserver-on-archlinux"><a class="header" href="#2-nxserver-on-archlinux">2. nxserver on archlinux</a></h3>
+<p>via:</p>
+<pre><code>sudo pacman -U nomachine-9.8.2-1-x86_64.pkg.tar.zst  --overwrite "/usr/lib/libhogweed.so*,/usr/lib/libnettle.so*"
+sudo /usr/NX/bin/nxserver --start nxd
+
+</code></pre>
+<h3 id="3-vaapi-issue"><a class="header" href="#3-vaapi-issue">3. vaapi issue</a></h3>
+<p>Reason:</p>
+<pre><code>2. 为什么 Host 装了驱动，Guest 还是只暴露 VAProfileNone？
+即便 Guest 安装了 libva-mesa-driver，在 Intel 核显 + VirGL 的组合下，仍然只显示 VAProfileNone 的根本原因是：
+Mesa 的 VirGL 架构目前只支持将 VA-API 请求透传给宿主机的 Gallium 驱动（如 AMD 的 radeonsi），而无法直接透传给 Intel 的原生 intel-media-driver (iHD)。
+AMD 方案（RX 550 / RX 6600）：Host 上 AMD 的 VA-API 驱动直接就是 Mesa 自身的一部分（radeonsi_drv_video.so，属于 Gallium 架构）。因此 VirGL 能直接读取并把 AMD 的解码 Profile 完全复制暴露给虚拟机。
+Intel 方案（UHD 630）：Host 上 Intel 走的是自己独立的 intel-media-driver (iHD)，它不属于 Mesa Gallium 驱动体系。Mesa 内部的 virglrenderer 在初始化宿主机 VA-API 上下文时，识别不到非 Gallium 架构的 iHD 驱动 Profile，导致它只能退回到默认安全的空白状态，只给 Guest 暴露出一个后处理入口（VAProfileNone）。
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260804"><a class="header" href="#20260804">20260804</a></h1>
 <h3 id="1-fedora-repo42"><a class="header" href="#1-fedora-repo42">1. fedora repo(42)</a></h3>
