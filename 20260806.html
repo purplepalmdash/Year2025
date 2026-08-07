@@ -35,7 +35,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-723c0192.js";
+            window.path_to_searchindex_js = "searchindex-99a4ce82.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-1f0c659f.js"></script>
@@ -204,6 +204,56 @@ qemu-system-x86_64                                                              
 <p>via:</p>
 <pre><code>❯ cat /usr/NX/etc/server.cfg| grep StartNXDaemon
 StartNXDaemon Automatic
+</code></pre>
+<h3 id="4-vlcmpv-debugging"><a class="header" href="#4-vlcmpv-debugging">4. vlc/mpv debugging</a></h3>
+<p>vaapi OK:</p>
+<pre><code>LIBVA_DRIVER_NAME=radeonsi mpv --vo=gpu --gpu-context=x11egl --hwdec=vaapi rain.mp4
+</code></pre>
+<p>vlc(automatically vaapi):</p>
+<pre><code>1. 像素格式为原生 VA-API Surface（非内存格式）
+
+[h264 @ 0x7f708cc35a40] Reinit context to 640x480, pix_fmt: vaapi
+[00007f709c0510a0] main video output debug: ... 4cc VAOP ...
+2. 加载了 OpenGL 零拷贝转换模块
+
+[00007f7070002c60] egl_x11 gl debug: EGL version 1.5 by Mesa Project
+[00007f7070387640] main generic debug: using glconv module "glconv_vaapi_x11"
+3. 硬件与驱动信息
+
+[VAAPI @ 0x7f709c09ba00] VAAPI driver: Mesa Gallium driver 26.1.6-arch1.1 for AMD Radeon RX 550 Series (radeonsi, polaris11, ACO, DRM 3.64, 7.2.0-rc6-1-MANJARO).
+</code></pre>
+<p>若想在 AMD 上强制开启 Vulkan Video，通常需要搭配 Mesa 的环境变量(rx550)：</p>
+<pre><code>RADV_PERFTEST=video_decode mpv --vo=gpu-next --hwdec=vulkan rain.mp4
+</code></pre>
+<p>If using <code>gpu-next</code>, then select hwdec to auto(<code>vaapi-copy</code>):</p>
+<pre><code>❯ mpv --vo=gpu-next --hwdec=auto rain.mp4
+● Video  --vid=1  (h264 640x480 29.97 fps) [default]
+● Audio  --aid=1  (aac 2ch 44100 Hz 128 kbps) [default]
+File tags:
+ Artist: 齊秦經典 Classic Chyi Chin
+ Title: 齊秦 - 無情的雨無情的你 (MTV版)
+[ffmpeg/video] h264: Device does not support the VK_KHR_video_decode_queue extension!
+[ffmpeg/video] h264: no frame!
+[ffmpeg/video] h264: Device does not support the VK_KHR_video_decode_queue extension!
+[ffmpeg/video] h264: no frame!
+Cannot load libcuda.so.1
+[ffmpeg/video] h264: Device does not support the VK_KHR_video_decode_queue extension!
+[ffmpeg/video] h264: Failed setup for format vulkan: hwaccel initialisation returned error.
+[ffmpeg/video] h264: no frame!
+[ffmpeg/video] h264: Device does not support the VK_KHR_video_decode_queue extension!
+[ffmpeg/video] h264: Failed setup for format vulkan: hwaccel initialisation returned error.
+[ffmpeg/video] h264: no frame!
+[ffmpeg] CUDA: Cannot load libcuda.so.1
+[ffmpeg] CUDA: Could not dynamically load CUDA
+Using hardware decoding (vaapi-copy).
+AO: [pipewire] 44100Hz stereo 2ch floatp
+VO: [gpu-next] 640x480 nv12
+</code></pre>
+<p>Or you could select:</p>
+<pre><code>$ mpv --hwdec=auto rain.mp4
+Using hardware decoding (vaapi-copy).
+
+$ mpv --hwdec=vaapi-copy rain.mp4
 </code></pre>
 
                     </main>
