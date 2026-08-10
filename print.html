@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-c1c7387e.js";
+            window.path_to_searchindex_js = "searchindex-9a699b62.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-d001aec2.js"></script>
+        <script src="toc-ab6d886e.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,19 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260810"><a class="header" href="#20260810">20260810</a></h1>
+<h3 id="1-logcat-output"><a class="header" href="#1-logcat-output">1. logcat output</a></h3>
+<p>Step:</p>
+<pre><code>adb logcat -c
+adb logcat -d &gt; vlc_play.log
+</code></pre>
+<h3 id="2-redroidgralloc"><a class="header" href="#2-redroidgralloc">2. redroid(gralloc)</a></h3>
+<p>Build:</p>
+<pre><code> lunch redroid_x86_64_only-bp2a-userdebug
+ m gralloc.redroid
+ ls out/target/product/redroid_x86_64_only/obj/SHARED_LIBRARIES/gralloc.redroid_intermediates/gralloc.redroid.so
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260809"><a class="header" href="#20260809">20260809</a></h1>
 <h3 id="1"><a class="header" href="#1">1.</a></h3>
