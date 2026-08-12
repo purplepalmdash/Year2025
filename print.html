@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-2df41c82.js";
+            window.path_to_searchindex_js = "searchindex-92dcb5b7.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-92671325.js"></script>
+        <script src="toc-416004a2.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,103 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260812"><a class="header" href="#20260812">20260812</a></h1>
+<h3 id="1-archlinux-aarch64"><a class="header" href="#1-archlinux-aarch64">1. Archlinux aarch64</a></h3>
+<p>Install gnome via:</p>
+<pre><code>sudo pacman -S gnome gdm
+sudo systemctl enable gdm
+
+</code></pre>
+<p>aarch64:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_09_41_49_857x496.jpg" alt="./images/2026_08_12_09_41_49_857x496.jpg"><span class="img-wrapper"><img src="images/2026_08_12_09_41_49_857x496.jpg" alt="./images/2026_08_12_09_41_49_857x496.jpg"></span></label></p>
+<h3 id="2-waydroiddrm-native"><a class="header" href="#2-waydroiddrm-native">2. waydroid(drm native)</a></h3>
+<p>Using <code>lineage-23.2-20260302-MAINLINE-waydroid_x86_64-vendor.zip</code> and <code>lineage-23.2-20260302-VANILLA-waydroid_x86_64-system.zip</code>:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_15_21_37_758x132.jpg" alt="./images/2026_08_12_15_21_37_758x132.jpg"><span class="img-wrapper"><img src="images/2026_08_12_15_21_37_758x132.jpg" alt="./images/2026_08_12_15_21_37_758x132.jpg"></span></label></p>
+<p>black screen(waydroid):</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_15_21_59_1157x955.jpg" alt="./images/2026_08_12_15_21_59_1157x955.jpg"><span class="img-wrapper"><img src="images/2026_08_12_15_21_59_1157x955.jpg" alt="./images/2026_08_12_15_21_59_1157x955.jpg"></span></label></p>
+<p>Using <code>20260717</code> version:</p>
+<pre><code>$ ls 232_20260717/
+lineage-23.2-20260717-MAINLINE-waydroid_x86_64-vendor.zip  lineage-23.2-20260717-VANILLA-waydroid_x86_64-system.zip  system.img  vendor.img
+sudo mkdir -p /etc/waydroid-extra/images/
+sudo cp &lt;PATH TO SYSTEM IMAGE&gt; /etc/waydroid-extra/images/system.img
+sudo cp &lt;PATH TO VENDOR IMAGE&gt; /etc/waydroid-extra/images/vendor.img
+sudo waydroid init -f
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_15_59_18_795x256.jpg" alt="./images/2026_08_12_15_59_18_795x256.jpg"><span class="img-wrapper"><img src="images/2026_08_12_15_59_18_795x256.jpg" alt="./images/2026_08_12_15_59_18_795x256.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_15_59_33_891x538.jpg" alt="./images/2026_08_12_15_59_33_891x538.jpg"><span class="img-wrapper"><img src="images/2026_08_12_15_59_33_891x538.jpg" alt="./images/2026_08_12_15_59_33_891x538.jpg"></span></label></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_16_03_40_1190x755.jpg" alt="./images/2026_08_12_16_03_40_1190x755.jpg"><span class="img-wrapper"><img src="images/2026_08_12_16_03_40_1190x755.jpg" alt="./images/2026_08_12_16_03_40_1190x755.jpg"></span></label></p>
+<pre><code>:/ # getprop | grep ffmpeg                                                                                                                                                                   
+[debug.ffmpeg-codec2.hwaccel.drm]: [1]
+[debug.ffmpeg-codec2.pixel_format]: [YUV_420]
+[debug.ffmpeg-codec2.rank]: [0]
+[ro.waydroid.codec2-impl]: [c2.ffmpeg]
+
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_16_04_27_1268x855.jpg" alt="./images/2026_08_12_16_04_27_1268x855.jpg"><span class="img-wrapper"><img src="images/2026_08_12_16_04_27_1268x855.jpg" alt="./images/2026_08_12_16_04_27_1268x855.jpg"></span></label></p>
+<p>Change:</p>
+<pre><code>:/ # setprop debug.ffmpeg-codec2.hwaccel.drm 0                                                                                                                                               
+:/ # stop media
+:/ # start media
+:/ # getprop | grep ffmpeg                                                                                                                                                                   
+[debug.ffmpeg-codec2.hwaccel.drm]: [0]
+[debug.ffmpeg-codec2.pixel_format]: [YUV_420]
+[debug.ffmpeg-codec2.rank]: [0]
+[ro.waydroid.codec2-impl]: [c2.ffmpeg]
+</code></pre>
+<p>shrinking:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_12_16_05_54_1016x956.jpg" alt="./images/2026_08_12_16_05_54_1016x956.jpg"><span class="img-wrapper"><img src="images/2026_08_12_16_05_54_1016x956.jpg" alt="./images/2026_08_12_16_05_54_1016x956.jpg"></span></label></p>
+<p>could only restored via <code>waydroid session stop &amp;&amp; waydroid session start</code></p>
+<pre><code>/ # dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES (Ganesh)------------
+GLES: Mesa, virgl (AMD Radeon RX 550 Series (radeonsi, polaris11, ACO, ...), OpenGL ES 3.2 Mesa 26.1.5
+</code></pre>
+<h3 id="3-waydroidmanjaro"><a class="header" href="#3-waydroidmanjaro">3. waydroid(manjaro)</a></h3>
+<p>List installed kernel:</p>
+<pre><code># 查看当前运行及已安装的内核
+mhwd-kernel -li
+
+# 查看所有可安装的内核列表
+mhwd-kernel -l
+</code></pre>
+<p>Install linux 71:</p>
+<pre><code>    ~  sudo mhwd-kernel -i linux71                                   ✔  test@manjarovm 
+</code></pre>
+<p>Install kernel header files,</p>
+<pre><code>sudo pacman -S $(mhwd-kernel -li | grep '*' | awk '{print $2}')-headers
+yay binder_linux-dkms
+ sudo dkms status
+binder/1, 7.1.6-1-MANJARO, x86_64: installed
+
+</code></pre>
+<p>dkms will failed.</p>
+<h3 id="4-zen-kernel"><a class="header" href="#4-zen-kernel">4. zen kernel</a></h3>
+<p>Install steps:</p>
+<pre><code>rm -f chaotic-keyring.pkg.tar.zst chaotic-mirrorlist.pkg.tar.zst
+
+curl -L -O https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst
+curl -L -O https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst
+
+# 1. 生成无签名配置并安装
+echo -e "[options]\nSigLevel = Never" &gt; /tmp/no-sig.conf
+sudo pacman --config /tmp/no-sig.conf -U chaotic-keyring.pkg.tar.zst chaotic-mirrorlist.pkg.tar.zst
+
+# 2. 导入信任密钥
+sudo pacman-key --populate chaotic
+
+# 3. 清理临时下载包
+rm /tmp/no-sig.conf chaotic-*.pkg.tar.zst
+
+$ vim /etc/pacman.conf
+
+[chaotic-aur]
+SigLevel = Never
+Include = /etc/pacman.d/chaotic-mirrorlist
+
+$ sudo pacman -Sy
+$ sudo pacman -S linux-znver3 linux-znver3-headers
+sudo update-grub
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260811"><a class="header" href="#20260811">20260811</a></h1>
 <h3 id="1-waydroidatvredroid-verification"><a class="header" href="#1-waydroidatvredroid-verification">1. waydroidATV(redroid) verification</a></h3>
