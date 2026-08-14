@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-75074a52.js";
+            window.path_to_searchindex_js = "searchindex-11425329.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-86fa1c8e.js"></script>
+        <script src="toc-b225b0ff.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -576,6 +576,70 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260814"><a class="header" href="#20260814">20260814</a></h1>
+<h3 id="1-nixos-sound"><a class="header" href="#1-nixos-sound">1. nixos sound</a></h3>
+<p>Add configuration items:</p>
+<pre><code> cat /etc/nixos/configuration.nix
+
+boot.extraModprobeConfig = ''
+  options snd-intel-dspcfg dsp_driver=1
+  options snd-hda-intel model=dell-headset-multi
+'';
+
+
+  # 2. 开启可分发/所有固件支持
+  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+
+  # 3. 使用正确的 SOF 固件包名
+  hardware.firmware = [ pkgs.sof-firmware ];
+
+</code></pre>
+<h3 id="2-docke-rename"><a class="header" href="#2-docke-rename">2. docke rename</a></h3>
+<p>rename via:</p>
+<pre><code>sudo docker rename xxx yyy
+</code></pre>
+<h3 id="3-moonlightsunshine"><a class="header" href="#3-moonlightsunshine">3. moonlight/sunshine</a></h3>
+<p>Step:</p>
+<pre><code>sudo apt install ./sunshine-debian-trixie-arm64.deb
+sudo usermod -aG input $USER
+sudo usermod -aG video $USER
+sudo usermod -aG render $USER
+echo 'KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TAG+="uaccess", MODE="0660", GROUP="input"' | sudo tee /etc/udev/rules.d/85-sunshine-input.rules
+sudo modprobe uinput
+sudo udevadm control --reload-rules &amp;&amp; sudo udevadm trigger
+sunshine --creds sunshine MyPassword123
+sunshine
+</code></pre>
+<p>Then:</p>
+<pre><code>ssh -L 47990:localhost:47990 test@&lt;Debian设备的IP&gt;
+https://localhost:47990
+Configure the login
+</code></pre>
+<p>Configure the auto-start:</p>
+<pre><code>mkdir -p ~/.config/systemd/user/
+nano ~/.config/systemd/user/sunshine.service
+
+[Unit]
+Description=Sunshine server for Moonlight
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/sunshine
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
+
+systemctl --user daemon-reload
+systemctl --user enable --now sunshine
+systemctl --user status sunshine
+
+loginctl enable-linger $USER
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260813"><a class="header" href="#20260813">20260813</a></h1>
 <h3 id="1-non-priv-docker-instance"><a class="header" href="#1-non-priv-docker-instance">1. non-priv docker instance</a></h3>
