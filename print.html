@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f07ace9b.js";
+            window.path_to_searchindex_js = "searchindex-47737b7a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-c9d64c23.js"></script>
+        <script src="toc-29a68f0b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -591,6 +591,101 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260817"><a class="header" href="#20260817">20260817</a></h1>
+<h3 id="0-plan"><a class="header" href="#0-plan">0. plan</a></h3>
+<ol>
+<li>x13s kernel configuration(waydroid runnable)</li>
+<li>Build waydroid(lineages) for x13s</li>
+<li>RPI related(run x13s waydroid image)</li>
+<li>KVM for x13s</li>
+<li>crosvm(virtio-video) for running waydroid(x13s)</li>
+</ol>
+<h3 id="1-dragon-waydroid-repo"><a class="header" href="#1-dragon-waydroid-repo">1. dragon-waydroid repo</a></h3>
+<pre><code>mkdir -p /media/nvme/dragon_waydroid
+cd /media/nvme/dragon_waydroid
+
+# Copy the existing repos
+sudo cp -a /media/nvme/RE_waydroid_atv_lineageos23.2/.repo .
+sudo chown -R dash:dash .repo
+
+# Changes to dragon's local-manifests
+cp -a .repo/local_manifests .repo/local_manifests.atv.bak
+mkdir -p .repo/local_manifests
+
+proxychains wget -O .repo/local_manifests/00-remotes.xml \
+  https://raw.githubusercontent.com/dragon-waydroid/android_vendor_waydroid/lineage-23.2/manifest_scripts/manifests-36/00-remotes.xml
+proxychains wget -O .repo/local_manifests/01-removes.xml \
+  https://raw.githubusercontent.com/dragon-waydroid/android_vendor_waydroid/lineage-23.2/manifest_scripts/manifests-36/01-removes.xml
+proxychains wget -O .repo/local_manifests/02-waydroid.xml \
+  https://raw.githubusercontent.com/dragon-waydroid/android_vendor_waydroid/lineage-23.2/manifest_scripts/manifests-36/02-waydroid.xml
+</code></pre>
+<p>Error handling:</p>
+<pre><code>$ repo sync -l -j$(nproc) --force-sync
+... A new version of repo (2.65) is available.
+... You should upgrade soon:
+    cp /media/nvme/dragon_waydroid/.repo/repo/repo /usr/local/bin/repo
+error: in sync -l -j20 --force-sync: remove-project element specifies non-existent project: &lt;remove-project name="platform/external/v4l2_codec2"/&gt;
+
+### vim .repo/local_manifests/01-removes.xml
+### 把下面这一行删掉：
+###   &lt;remove-project name="platform/external/v4l2_codec2" /&gt;
+$ repo sync -l -j$(nproc) --force-sync
+... A new version of repo (2.65) is available.
+... You should upgrade soon:
+    cp /media/nvme/dragon_waydroid/.repo/repo/repo /usr/local/bin/repo
+error: in sync -l -j20 --force-sync: duplicate path external/v4l2_codec2 in /media/nvme/dragon_waydroid/.repo/manifest.xm
+
+### 默认 manifest 里已经有这个 path：
+### &lt;!-- .repo/manifests/default.xml --&gt;
+### &lt;project path="external/v4l2_codec2" name="LineageOS/android_external_v4l2_codec2" groups="pdk" /&gt;
+### 
+### dragon 的 02-waydroid.xml 又加了同 path：
+### &lt;project path="external/v4l2_codec2" name="dragon-waydroid/android_external_v4l2_codec2" ... /&gt;
+### 
+### 于是报 duplicate path。之前删掉的 remove 写的是错误名字：
+### &lt;!-- 错误：默认里根本没有这个 name --&gt;
+### &lt;remove-project name="platform/external/v4l2_codec2" /&gt;
+### 
+### 真正要用的 name 是 LineageOS/android_external_v4l2_codec2。
+
+$ vim .repo/local_manifests/01-removes.xml
+加上这一行（不要用 platform/...）：
+  &lt;remove-project name="LineageOS/android_external_v4l2_codec2" /&gt;
+</code></pre>
+<p>Then sync with local repo:</p>
+<pre><code>repo sync -l -j$(nproc) --force-sync
+</code></pre>
+<p>Previsously we made some changes to .repo/manifests/default.xml, commit it locally:</p>
+<pre><code>cd /media/nvme/dragon_waydroid
+
+cd .repo/manifests
+git status
+git diff
+
+cd /media/nvme/dragon_waydroid/.repo/manifests
+# commit modification to local repository
+git commit -am "custom: use BFSU mirrors"
+</code></pre>
+<p>Then with proxy on(redsocks), sync the src:</p>
+<pre><code>$ repo sync  --force-sync 
+
+... A new version of repo (2.65) is available.
+... You should upgrade soon:
+    cp /media/nvme/dragon_waydroid/.repo/repo/repo /usr/local/bin/repo
+
+Syncing: 54% (649/1183) 19:40 | 4 jobs | 19:23 WayDroid-ATV/android_external_ffmpeg @ extern..
+
+</code></pre>
+<h3 id="2-x13s-networkingusb-networking"><a class="header" href="#2-x13s-networkingusb-networking">2. x13s networking(usb networking)</a></h3>
+<p>Enable following items. then rebuild the kernel, reboot.</p>
+<pre><code>CONFIG_NETDEVICES=y
+CONFIG_USB=y
+CONFIG_USB_NET_DRIVERS=y
+CONFIG_USB_USBNET=y
+CONFIG_MII=y
+CONFIG_USB_NET_AX8817X=y
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260816"><a class="header" href="#20260816">20260816</a></h1>
 <h3 id="1-lenovo-x13s-video-encodingdecoding"><a class="header" href="#1-lenovo-x13s-video-encodingdecoding">1. lenovo x13s video encoding/decoding</a></h3>
