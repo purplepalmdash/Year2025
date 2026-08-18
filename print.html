@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-47737b7a.js";
+            window.path_to_searchindex_js = "searchindex-58e6a8ae.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-29a68f0b.js"></script>
+        <script src="toc-e3ef07b8.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -591,6 +591,36 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260818"><a class="header" href="#20260818">20260818</a></h1>
+<h3 id="1-binder_linux"><a class="header" href="#1-binder_linux">1. binder_linux</a></h3>
+<p>Issue:</p>
+<pre><code>ERROR: modpost: "list_lru_del" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "__wake_up_pollfree" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "security_binder_transfer_binder" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "security_binder_set_context_mgr" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "file_close_fd" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "security_binder_transfer_file" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "lock_vma_under_rcu" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "put_ipc_ns" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "init_ipc_ns" [drivers/android/binder_linux.ko] undefined!
+ERROR: modpost: "security_binder_transaction" [drivers/android/binder_linux.ko] undefined!
+</code></pre>
+<p>edit and add component:</p>
+<pre><code>EXPORT_SYMBOL_GPL(list_lru_destroy);
+EXPORT_SYMBOL_GPL(list_lru_del);
+EXPORT_SYMBOL_GPL(list_lru_add);
+test@x13s:~$ cat ~/Code/linux/./mm/list_lru.c
+
+</code></pre>
+<h3 id="2-btop"><a class="header" href="#2-btop">2. btop</a></h3>
+<p>using btop on msm platform(s-tui won’t work)</p>
+<h3 id="3-waydroid-startup-issue"><a class="header" href="#3-waydroid-startup-issue">3. waydroid startup issue</a></h3>
+<p>baterry should use faked one.</p>
+<pre><code>$ sudo vim /var/lib/waydroid/waydroid_base.prop
+ro.boot.fake_battery=1
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260817"><a class="header" href="#20260817">20260817</a></h1>
 <h3 id="0-plan"><a class="header" href="#0-plan">0. plan</a></h3>
