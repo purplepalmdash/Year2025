@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-58e6a8ae.js";
+            window.path_to_searchindex_js = "searchindex-d06d3f30.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e3ef07b8.js"></script>
+        <script src="toc-3b6508fc.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -591,6 +591,67 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260819"><a class="header" href="#20260819">20260819</a></h1>
+<h3 id="1-vllmqwen38"><a class="header" href="#1-vllmqwen38">1. vllm(qwen38)</a></h3>
+<p>Steps:</p>
+<pre><code># 1. 更新系统软件包列表
+sudo apt update &amp;&amp; sudo apt install -y git git-lfs curl
+
+# 2. 安装 uv 环境管理器
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 3. 让 uv 环境变量立即生效
+source $HOME/.local/bin/env
+
+# 1. 在主目录下创建名为 vllm-env 的虚拟环境
+uv venv ~/vllm-env --python 3.12
+
+# 2. 激活虚拟环境
+source ~/vllm-env/bin/activate
+
+# 3. 一键安装 vLLM 及下载依赖（huggingface_hub + hf_transfer 加速）
+uv pip install -U vllm --torch-backend=auto
+uv pip install -U huggingface_hub hf_transfer modelscope
+
+mkdir -p ~/models
+modelscope download --model Qwen/Qwen3.8-27B-FP8 --local_dir ~/models/Qwen3.8-27B-FP8
+
+# start vllm server with mtp enabled. 
+vllm serve ~/models/Qwen3.8-27B-FP8   --host 0.0.0.0   --port 8000   --tensor-parallel-size 1   --max-model-len 262144   --kv-cache-dtype fp8   --gpu-memory-utilization 0.90   --enable-prefix-caching   --enable-chunked-prefill   --reasoning-parser qwen3   --tool-call-parser qwen3_coder   --enable-auto-tool-choice   --speculative-config '{"method":"mtp","num_speculative_tokens":3}'
+
+</code></pre>
+<p>Test via:</p>
+<pre><code>(vllm-env) dash@horse:~$ python test.py 
+
+
+你好！我是通义千问（Qwen），由阿里巴巴通义实验室研发的大语言模型。
+
+我可以帮你完成很多事情，比如：
+
+- **回答问题**：提供清晰、有条理的解释和建议  
+- **写作创作**：撰写文案、故事、邮件、报告、诗歌等  
+- **逻辑分析**：协助推理、归纳、总结复杂问题  
+- **编程辅助**：理解、生成、调试代码  
+- **语言翻译**：支持多种语言之间的转换  
+- **长文本处理**：阅读和理解较长文档，并提取关键信息  
+- **视觉理解**：分析图片、图表、公式或科学图解内容  
+
+你可以把我当作一个助手、伙伴或思考伙伴。有什么我可以帮你的吗？
+(vllm-env) dash@horse:~$ cat test.py 
+import openai
+client = openai.OpenAI(base_url="http://localhost:8000/v1", api_key="EMPTY")
+response = client.chat.completions.create(
+    model="/home/dash/models/Qwen3.8-27B-FP8", # 填写启动时指定的模型路径
+    messages=[{"role": "user", "content": "你好，请自我介绍一下。"}]
+)
+print(response.choices[0].message.content)
+
+</code></pre>
+<p>Start command:</p>
+<pre><code>source ~/vllm-env/bin/activate
+ vllm serve ~/models/Qwen3.8-27B-FP8   --host 0.0.0.0   --port 8000   --tensor-parallel-size 1   --max-model-len 262144   --max-num-seqs 128   --kv-cache-dtype fp8   --gpu-memory-utilization 0.92   --enable-prefix-caching   --enable-chunked-prefill   --reasoning-parser qwen3   --tool-call-parser qwen3_coder   --enable-auto-tool-choice    --speculative-config '{"method":"mtp","num_speculative_tokens":3}'
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260818"><a class="header" href="#20260818">20260818</a></h1>
 <h3 id="1-binder_linux"><a class="header" href="#1-binder_linux">1. binder_linux</a></h3>
