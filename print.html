@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3d6851f2.js";
+            window.path_to_searchindex_js = "searchindex-fa3d87ec.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-deb3ae87.js"></script>
+        <script src="toc-0e225e15.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -184,6 +184,13 @@
 <tr><th>Date</th><th>Conclusion</th></tr>
 </thead>
 <tbody>
+<tr><td><a href="#20260821">20260821</a></td><td><a href="#1-nixos-upgrde">1. nixos upgrde</a><br><a href="#2-sunshine-26-04">2. sunshine 26.04</a><br><a href="#3-rebuild-nomachine">3. rebuild nomachine</a></td></tr>
+<tr><td><a href="#20260820">20260820</a></td><td><a href="#1-pi-resume">1. pi resume</a></td></tr>
+<tr><td><a href="#20260819">20260819</a></td><td><a href="#1-vllmqwen38">1. vllm(qwen38)</a></td></tr>
+<tr><td><a href="#20260818">20260818</a></td><td><a href="#1-binder_linux">1. binder_linux</a><br><a href="#2-btop">2. btop</a><br><a href="#3-waydroid-startup-issue">3. waydroid startup issue</a></td></tr>
+<tr><td><a href="#20260817">20260817</a></td><td><a href="#0-plan">0. plan</a><br><a href="#1-dragon-waydroid-repo">1. dragon-waydroid repo</a><br><a href="#2-x13s-networkingusb-networking">2. x13s networking(usb networking)</a></td></tr>
+<tr><td><a href="#20260816">20260816</a></td><td><a href="#1-lenovo-x13s-video-encodingdecoding">1. lenovo x13s video encoding/decoding</a><br><a href="#2-jhovold-wip-kernel-branch">2. jhovold WIP kernel branch</a><br><a href="#3-x13s-video-test">3. x13s video test</a></td></tr>
+<tr><td><a href="#20260815">20260815</a></td><td><a href="#1-recovery-of-x13s-bootup">1. Recovery of x13s bootup</a></td></tr>
 <tr><td><a href="#20260814">20260814</a></td><td><a href="#1-nixos-sound">1. nixos sound</a><br><a href="#2-docke-rename">2. docke rename</a><br><a href="#3-moonlightsunshine">3. moonlight/sunshine</a></td></tr>
 <tr><td><a href="#20260813">20260813</a></td><td><a href="#1-non-priv-docker-instance">1. non-priv docker instance</a><br><a href="#2-priv-modification">2. priv modification</a><br><a href="#3-some-scriptprivnon-priv">3.  some script(priv/non-priv)</a><br><a href="#4-redroid-packaging-script">4. redroid packaging script</a></td></tr>
 <tr><td><a href="#20260812">20260812</a></td><td><a href="#1-archlinux-aarch64">1. Archlinux aarch64</a><br><a href="#2-waydroiddrm-native">2. waydroid(drm native)</a><br><a href="#3-waydroidmanjaro">3. waydroid(manjaro)</a><br><a href="#4-zen-kernel">4. zen kernel</a></td></tr>
@@ -591,6 +598,314 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260825"><a class="header" href="#20260825">20260825</a></h1>
+<h3 id="1-get-the-release-version"><a class="header" href="#1-get-the-release-version">1. get the release version</a></h3>
+<p>Via:</p>
+<pre><code>127|sargo:/ $ getprop ro.build.fingerprint                                                                                                                                                   
+google/sargo/sargo:12/SP1A.210812.015/7679548:user/release-keys
+sargo:/ $ getprop ro.product.model                                                                                                                                                           
+Pixel 3a
+sargo:/ $ getprop ro.board.platform                                                                                                                                                          
+sdm710
+sargo:/ $ uname -a
+Linux localhost 4.9.270-g862f51bac900-ab7613625 #0 SMP PREEMPT Thu Aug 5 07:29:46 UTC 2021 aarch64
+sargo:/ $ getprop ro.boot.bootloader                                                                                                                                                         
+b4s4-0.4-7617386
+sargo:/ $ getprop ro.boot.verrifiedbootstate 
+</code></pre>
+<h3 id="2-rpi-coderdecoder"><a class="header" href="#2-rpi-coderdecoder">2. rpi coder/decoder</a></h3>
+<p>Command:</p>
+<pre><code>v4l2-ctl --list-devices
+for i in 10 11 12 18 31 19; do echo "=== /dev/video$i ==="; v4l2-ctl -d /dev/video$i --list-formats-out; done
+</code></pre>
+<h4 id="树莓派-v4l2-硬件处理节点功能对照表"><a class="header" href="#树莓派-v4l2-硬件处理节点功能对照表">树莓派 V4L2 硬件处理节点功能对照表</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">设备节点</th><th style="text-align: left">负责处理的数据类型</th><th style="text-align: left">功能说明与作用</th><th style="text-align: left">常见使用场景</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>/dev/video10</strong></td><td style="text-align: left"><strong>H.264 / MJPEG</strong> 压缩视频</td><td style="text-align: left"><strong>通用硬件解码器</strong>：专门将 H.264 格式视频或 MJPEG 动态图片流硬件解压缩为原始图像。</td><td style="text-align: left">播放 1080P H.264 视频、录制/读取 USB 摄像头 MJPEG 流。</td></tr>
+<tr><td style="text-align: left"><strong>/dev/video11</strong></td><td style="text-align: left"><strong>YUV / RGB</strong> 格式（像素数据）</td><td style="text-align: left"><strong>色彩与尺寸转换器</strong>：负责在硬件层面完成图像色彩模式转换（如 YUV 转 RGB）以及画面缩放（Resize）。</td><td style="text-align: left">视频播放前的格式转换、图像帧尺寸调整。</td></tr>
+<tr><td style="text-align: left"><strong>/dev/video12</strong></td><td style="text-align: left"><strong>Bayer / RAW / Grey</strong> 原始图像数据</td><td style="text-align: left"><strong>RAW 图像信号处理器</strong>：处理相机传感器捕获的最原始、未经过色彩插值加工的数据（RAW/Bayer 格式）。</td><td style="text-align: left">连接树莓派 CSI 官方摄像头模块时的底层图像处理。</td></tr>
+<tr><td style="text-align: left"><strong>/dev/video18</strong></td><td style="text-align: left"><strong>YU12 / RGB</strong> 等特定内存格式</td><td style="text-align: left"><strong>格式适配/内存对齐节点</strong>：处理特定内存布局（如 128 位列对齐格式 <code>NC12</code>）的图像数据传输与转换。</td><td style="text-align: left">系统底层硬件管线内部的数据格式适配。</td></tr>
+<tr><td style="text-align: left"><strong>/dev/video31</strong></td><td style="text-align: left"><strong>RGB / YUV</strong> 未压缩画面</td><td style="text-align: left"><strong>硬件合成/图层渲染辅助节点</strong>：协助处理未压缩图像帧的合成与显示。</td><td style="text-align: left">系统桌面 UI 绘制或视频播放器图层合成。</td></tr>
+<tr><td style="text-align: left"><strong>/dev/video19</strong></td><td style="text-align: left"><strong>S265 (HEVC / H.265)</strong> 高清压缩数据</td><td style="text-align: left"><strong>4K / H.265 硬解码专署通道</strong>：专门为高压缩率的 H.265（HEVC）高清/超高清视频提供硬件解码加速。</td><td style="text-align: left">播放 4K 高清电影、播放 H.265 格式监控视频。</td></tr>
+</tbody>
+</table>
+</div>
+<p>Detect the capability:</p>
+<pre><code>test@raspberrypi:~ $ v4l2-ctl -d /dev/video10 --list-framesizes=H264
+ioctl: VIDIOC_ENUM_FRAMESIZES
+	Size: Stepwise 32x32 - 1920x1920 with step 2/2
+test@raspberrypi:~ $ v4l2-ctl -d /dev/video19 --list-framesizes=S265
+ioctl: VIDIOC_ENUM_FRAMESIZES
+</code></pre>
+<h4 id="树莓派硬件编解码规格汇总表"><a class="header" href="#树莓派硬件编解码规格汇总表">树莓派硬件编解码规格汇总表</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th style="text-align: left">功能模块</th><th style="text-align: left">对应设备节点</th><th style="text-align: left">支持的最大分辨率</th><th style="text-align: left">实际算力上限（帧率）</th><th style="text-align: left">硬件限制说明</th></tr>
+</thead>
+<tbody>
+<tr><td style="text-align: left"><strong>H.264 硬件解码</strong></td><td style="text-align: left"><code>/dev/video10</code></td><td style="text-align: left">1920 * 1920</td><td style="text-align: left"><strong>1080p @ 60 fps</strong></td><td style="text-align: left">超出 1080p60 的 H.264 会引发卡顿或降级软解。</td></tr>
+<tr><td style="text-align: left"><strong>H.264 硬件编码</strong></td><td style="text-align: left"><code>/dev/video10</code></td><td style="text-align: left">1920 * 1920</td><td style="text-align: left"><strong>1080p @ 30 fps</strong></td><td style="text-align: left">适合录制/推流，不建议压制 1080p60 高帧率视频。</td></tr>
+<tr><td style="text-align: left"><strong>H.265/HEVC 硬件解码</strong></td><td style="text-align: left"><code>/dev/video19</code></td><td style="text-align: left">3840 * 2160 (4K)</td><td style="text-align: left"><strong>4K @ 60 fps</strong></td><td style="text-align: left">仅支持解码，<strong>不支持</strong> H.265 硬件编码。</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="3-nomachien-software-encoding"><a class="header" href="#3-nomachien-software-encoding">3. nomachien software encoding</a></h3>
+<p>Set software encoding:</p>
+<pre><code>root@raspberrypi:/usr/NX/etc# cat /usr/NX/etc/node.cfg | grep -i hardwareencoding
+EnableHardwareEncoding 0
+root@raspberrypi:/usr/NX/etc# /usr/NX/bin/nxserver --restart
+NX&gt; 162 Disabled service: nxd.
+NX&gt; 162 Disabled service: nxserver.
+NX&gt; 162 Disabled service: nxnode.
+NX&gt; 111 New connections to NoMachine server are enabled.
+NX&gt; 161 Enabled service: nxserver.
+NX&gt; 161 Enabled service: nxnode.
+NX&gt; 161 Enabled service: nxd.
+
+</code></pre>
+<p>On raspberrypi failed.</p>
+<h3 id="4-rpi-lineageos"><a class="header" href="#4-rpi-lineageos">4. rpi lineageOS</a></h3>
+<p>Dd into the sdcard:</p>
+<pre><code>$ sudo dd if=./lineage-23.2-20260520-UNOFFICIAL-KonstaKANG-rpi4.img of=/dev/sdb status=progress bs=10M &amp;&amp; sudo sync
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_25_14_13_44_975x412.jpg" alt="./images/2026_08_25_14_13_44_975x412.jpg"><span class="img-wrapper"><img src="images/2026_08_25_14_13_44_975x412.jpg" alt="./images/2026_08_25_14_13_44_975x412.jpg"></span></label></p>
+<p>Connect wifi:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_25_14_14_40_935x552.jpg" alt="./images/2026_08_25_14_14_40_935x552.jpg"><span class="img-wrapper"><img src="images/2026_08_25_14_14_40_935x552.jpg" alt="./images/2026_08_25_14_14_40_935x552.jpg"></span></label></p>
+<p>Enable Wireless debugging:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_25_14_15_20_925x317.jpg" alt="./images/2026_08_25_14_15_20_925x317.jpg"><span class="img-wrapper"><img src="images/2026_08_25_14_15_20_925x317.jpg" alt="./images/2026_08_25_14_15_20_925x317.jpg"></span></label></p>
+<p>Pair device with paring code:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_25_14_15_53_963x627.jpg" alt="./images/2026_08_25_14_15_53_963x627.jpg"><span class="img-wrapper"><img src="images/2026_08_25_14_15_53_963x627.jpg" alt="./images/2026_08_25_14_15_53_963x627.jpg"></span></label></p>
+<pre><code>dash@ai:~$ adb pair 192.168.1.62:37165
+Enter pairing code: 677136
+* daemon not running; starting now at tcp:5037
+* daemon started successfully
+Successfully paired to 192.168.1.62:37165 [guid=adb-10000000348569ec-FaqnlG]
+</code></pre>
+<p>Then connect with:</p>
+<pre><code>dash@ai:~$ adb connect 192.168.1.62:37347
+connected to 192.168.1.62:37347
+dash@ai:~$ adb shell
+rpi4:/ # dumpsys SurfaceFlinger | grep GLES
+ ------------RE GLES (Ganesh)------------
+GLES: Broadcom, V3D 4.2.14.0, OpenGL ES 3.1 Mesa 26.1.1 (git-ce4ff94462)
+</code></pre>
+<p>Get the media.player info:</p>
+<pre><code># dumpsys media.player  | grep 'hw-accelerated: 1 ' -B7                                                                                                                             
+  Decoder "c2.ffmpeg.ac3.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.ac3.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.alac.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.alac.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.flac.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.flac.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.aac.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.aac.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.mp3.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.mp3.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.mp2.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.mp2.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.vorbis.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.vorbisac3.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.h263.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.h263.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.av1.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.av1.decoder" ]
+      hw-accelerated: 1 ]
+--
+Media type 'video/avc':
+  Decoder "c2.v4l2.avc.decoder" supports
+    aliases: []
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.h264.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.h264.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.hevc.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.hevc.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.mpeg4.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.mpeg4.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.mpeg2.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.mpeg2.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.vp8.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.vp8.decoder" ]
+      hw-accelerated: 1 ]
+--
+  Decoder "c2.ffmpeg.vp9.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.vp9.decoder" ]
+      hw-accelerated: 1 ]
+--
+Media type 'video/avc':
+  Encoder "c2.v4l2.avc.encoder" supports
+      hw-accelerated: 1 ]
+
+</code></pre>
+<p>View the rank:</p>
+<pre><code>rpi4:/ # dumpsys media.player | grep -E 'c2.v4l2|c2.ffmpeg.h264' -A2 -B2
+        int32_t feature-detached-surface = 0
+      }
+  Decoder "c2.ffmpeg.h264.decoder" supports
+    aliases: [
+      "OMX.ffmpeg.h264.decoder" ]
+--
+      hw-accelerated: 1 ]
+    owner: "codec2::ffmpeg"
+    hal name: "c2.ffmpeg.h264.decoder"
+    rank: 256
+    profile/levels: [
+--
+
+Media type 'video/avc':
+  Encoder "c2.v4l2.avc.encoder" supports
+    aliases: []
+    attributes: 0xb: [
+--
+      hw-accelerated: 1 ]
+    owner: "codec2::v4l2"
+    hal name: "c2.v4l2.avc.encoder"
+    rank: 128
+    profile/levels: [
+
+优先级正常：128 &lt; 256，这意味着系统的 MediaCodecList 在按条件筛选 video/avc 解码器时，c2.v4l2.avc.decoder 仍然会排在 c2.ffmpeg.h264.decoder 前面，系统默认会优先选真实的 V4L2 硬件解码器。
+
+</code></pre>
+<h3 id="5-cp936-issue"><a class="header" href="#5-cp936-issue">5. cp936 issue</a></h3>
+<p>Solved via:</p>
+<pre><code># 先清理当前目录下的乱码文件
+rm -rf ./*
+
+# 指定 GBK 或 GB18030 编码解压
+unzip -O CP936 ../工具包.zip
+</code></pre>
+<h3 id="6-ffmpeghwsw-detection"><a class="header" href="#6-ffmpeghwsw-detection">6. ffmpeg(hw/sw) detection</a></h3>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_08_25_14_51_21_804x648.jpg" alt="./images/2026_08_25_14_51_21_804x648.jpg"><span class="img-wrapper"><img src="images/2026_08_25_14_51_21_804x648.jpg" alt="./images/2026_08_25_14_51_21_804x648.jpg"></span></label></p>
+<p>Step:</p>
+<pre><code>method A:
+# 查看进程加载的 shared libraries
+lsof -p 640 | grep -E 'v4l2|drm|gallium|ffmpeg|avcodec'
+# 或者直接看 proc 映射
+cat /proc/640/maps | grep -E 'libv4l2|libva|dri|m2m'
+
+method B: 
+ls -l /proc/640/fd
+
+method C:
+SRC looking
+</code></pre>
+<p>Result:</p>
+<pre><code>1|rpi4:/ # lsof -p 640 | grep -E 'v4l2|drm|gallium|avcodec'                                                                                                                                  
+binder:640_2   640      media  mem       REG              179,5     87928       2200 /system/lib64/libmediadrmmetrics_lite.so
+binder:640_2   640      media  mem       REG               7,57    133736         56 /apex/com.android.hardware.media.c2.ffmpeg/lib64/libdrm.so
+binder:640_2   640      media  mem       REG               7,57  15595368         42 /apex/com.android.hardware.media.c2.ffmpeg/lib64/libavcodec.so
+binder:640_2   640      media  mem       REG              179,5    419248       1760 /system/lib64/android.hardware.drm@1.4.so
+binder:640_2   640      media  mem       REG              179,5    201768       1754 /system/lib64/android.hardware.drm-V2-ndk.so
+binder:640_2   640      media  mem       REG              179,5    320136       1757 /system/lib64/android.hardware.drm@1.1.so
+binder:640_2   640      media  mem       REG              179,5    185432       1759 /system/lib64/android.hardware.drm@1.3.so
+binder:640_2   640      media  mem       REG              179,5    600400       2197 /system/lib64/libmediadrm.so
+binder:640_2   640      media  mem       REG              179,5     51312       1755 /system/lib64/android.hardware.drm.common-V1-ndk.so
+binder:640_2   640      media  mem       REG              179,5    486296       1758 /system/lib64/android.hardware.drm@1.2.so
+binder:640_2   640      media  mem       REG              179,5    469944       1756 /system/lib64/android.hardware.drm@1.0.so
+</code></pre>
+<h3 id="7-redroiddebian"><a class="header" href="#7-redroiddebian">7. redroid(debian)</a></h3>
+<p>Add binder devices:</p>
+<pre><code>modprobe binder_linux devices=binder1,binder2,binder3,binder4,binder5,binder6
+chmod 666 /dev/binder*
+</code></pre>
+<p>Start redroid(succeed):</p>
+<pre><code>sudo docker  run -itd --privileged -v /dev/binder1:/dev/binder     -v /dev/binder2:/dev/hwbinder     -v /dev/binder3:/dev/vndbinder -p 5555:5555 --name redroid131 redroid/redroid:13.0.0-latest
+</code></pre>
+<p>start way-redroid(failed):</p>
+<pre><code>sudo docker  run -itd --privileged -v /dev/binder4:/dev/binder     -v /dev/binder5:/dev/hwbinder     -v /dev/binder6:/dev/vndbinder -p 5555:5555 --name way1 waydroidarm64:latest ro.boot.redroid_fps=60
+</code></pre>
+<p>Should switch to ubuntu(24.04).</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260824"><a class="header" href="#20260824">20260824</a></h1>
+<h3 id="1-ika-issue"><a class="header" href="#1-ika-issue">1. ika issue</a></h3>
+<p>Install on ubuntu25.04 failed:</p>
+<pre><code>test@x13s:~$ sudo apt install ./ika-base_260726-1_arm64.deb 
+Note, selecting 'ika-base' instead of './ika-base_260726-1_arm64.deb'
+Solving dependencies... Error!
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+
+Unsatisfied dependencies:
+ ika-base : Depends: libarchive-tools but it is not going to be installed or
+                     bsdtar but it is not installable
+            Depends: libgbm1 (&gt;= 26.1) but 25.2.8-0ubuntu0.25.10.2 is to be installed
+            Depends: lz4 but it is not going to be installed
+            Depends: libvirglrenderer1 (&gt;= 1.0.0) but it is not going to be installed
+            Depends: libz3-4 but it is not going to be installed
+            Depends: mesa-utils but it is not going to be installed
+            Depends: mesa-vulkan-drivers (&gt;= 26.1) but 25.2.8-0ubuntu0.25.10.2 is to be installed
+            Depends: net-tools but it is not going to be installed
+            Depends: opus-tools but it is not going to be installed
+            Depends: vulkan-tools but it is not going to be installed
+            Depends: wayland-utils but it is not going to be installed
+Error: Unable to satisfy dependencies. Reached two conflicting decisions:
+   1. ika-base:arm64=260726-1 is selected for install
+   2. ika-base:arm64 Depends libgbm1 (&gt;= 26.1)
+      but none of the choices are installable:
+      [no choices]
+</code></pre>
+<h3 id="2-ikadebian-13"><a class="header" href="#2-ikadebian-13">2. ika(debian 13)</a></h3>
+<p>Enable backport repository:</p>
+<pre><code>test@d3000debian:~$ cat /etc/apt/sources.list | grep backport
+# backports 软件源，请按需启用
+ deb http://mirrors.nju.edu.cn/debian trixie-backports main contrib non-free non-free-firmware
+# deb-src http://mirrors.nju.edu.cn/debian trixie-backports main contrib non-free non-free-firmware
+</code></pre>
+<p>Install libgbm1 and mesa-vulkan-drivers:</p>
+<pre><code> sudo apt install -t trixie-backports mesa-vulkan-drivers libgbm1
+</code></pre>
+<p>Install ika packages:</p>
+<pre><code> sudo apt install ./ika-base_260726-1_arm64.deb ./ika-lineageos_260726-1_arm64.deb
+</code></pre>
+<p>Start via:</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260821"><a class="header" href="#20260821">20260821</a></h1>
 <h3 id="1-nixos-upgrde"><a class="header" href="#1-nixos-upgrde">1. nixos upgrde</a></h3>
