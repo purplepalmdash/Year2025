@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fa3d87ec.js";
+            window.path_to_searchindex_js = "searchindex-871875ba.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0e225e15.js"></script>
+        <script src="toc-8a442c8d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,27 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260828"><a class="header" href="#20260828">20260828</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260827"><a class="header" href="#20260827">20260827</a></h1>
+<h3 id="1-mpv-issue"><a class="header" href="#1-mpv-issue">1. mpv issue</a></h3>
+<pre><code># 授予媒体读取权限（最重要）
+adb shell pm grant is.xyz.mpv android.permission.READ_MEDIA_VIDEO
+adb shell pm grant is.xyz.mpv android.permission.READ_MEDIA_IMAGES
+adb shell pm grant is.xyz.mpv android.permission.READ_MEDIA_AUDIO
+
+# 兼容旧权限
+adb shell pm grant is.xyz.mpv android.permission.READ_EXTERNAL_STORAGE
+adb shell pm grant is.xyz.mpv android.permission.WRITE_EXTERNAL_STORAGE
+
+# 尝试授予所有文件访问权限（部分设备有效）
+adb shell appops set is.xyz.mpv MANAGE_EXTERNAL_STORAGE allow
+adb shell appops set is.xyz.mpv READ_EXTERNAL_STORAGE allow
+adb shell appops set is.xyz.mpv READ_MEDIA_VIDEO allow
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260826"><a class="header" href="#20260826">20260826</a></h1>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260825"><a class="header" href="#20260825">20260825</a></h1>
 <h3 id="1-get-the-release-version"><a class="header" href="#1-get-the-release-version">1. get the release version</a></h3>
