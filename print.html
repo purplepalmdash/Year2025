@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-3e08a8d5.js";
+            window.path_to_searchindex_js = "searchindex-39551b0c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-1727c475.js"></script>
+        <script src="toc-9c0ef91a.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,22 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260902"><a class="header" href="#20260902">20260902</a></h1>
+<h3 id="1-bios-configuration-for-b60"><a class="header" href="#1-bios-configuration-for-b60">1. bios configuration for b60</a></h3>
+<p>b60 configuration for scl-ls:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_09_02_09_37_41_535x254.jpg" alt="./images/2026_09_02_09_37_41_535x254.jpg"><span class="img-wrapper"><img src="images/2026_09_02_09_37_41_535x254.jpg" alt="./images/2026_09_02_09_37_41_535x254.jpg"></span></label></p>
+<p>Also should enable csm.</p>
+<h3 id="2-replace-multiple-spaces"><a class="header" href="#2-replace-multiple-spaces">2. Replace multiple spaces</a></h3>
+<p>In vim:</p>
+<pre><code>:%s/\s\+$//e
+</code></pre>
+<h3 id="3-screenrecord-issue"><a class="header" href="#3-screenrecord-issue">3. screenrecord issue</a></h3>
+<p>Command:</p>
+<pre><code>636b705c046f:/ # timeout 3 screenrecord --output-format=raw-frames /data/local/tmp/raw.raw
+124|636b705c046f:/ # ls -l -h /data/local/tmp/raw.raw                                                                                                                                        
+-rw-r--r-- 1 root root 5.9M 2026-09-02 07:51 /data/local/tmp/raw.raw
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260831"><a class="header" href="#20260831">20260831</a></h1>
 <h3 id="1-get-position"><a class="header" href="#1-get-position">1. Get position</a></h3>
