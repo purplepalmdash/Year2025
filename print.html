@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-39551b0c.js";
+            window.path_to_searchindex_js = "searchindex-aa9c1833.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-9c0ef91a.js"></script>
+        <script src="toc-8be1e071.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,17 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260903"><a class="header" href="#20260903">20260903</a></h1>
+<h3 id="1-bondvlan"><a class="header" href="#1-bondvlan">1. bond/vlan</a></h3>
+<p>Step:</p>
+<pre><code>nmcli connection add type bond con-name bond1 ifname bond1 bond.options "mode=active-backup,miimon=100" ipv4.method disabled ipv6.method ignore
+nmcli connection add type ethernet con-name bond1-slave1 ifname enpxxxxx master bond1
+nmcli connection add type vlan con-name bond1.202 ifname bond1.202 dev bond1 id 202 ip4 10.172.180.80/24
+nmcli connection up bond1
+nmcli connection up bond1-slave1
+nmcli connection up bond1.202
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260902"><a class="header" href="#20260902">20260902</a></h1>
 <h3 id="1-bios-configuration-for-b60"><a class="header" href="#1-bios-configuration-for-b60">1. bios configuration for b60</a></h3>
