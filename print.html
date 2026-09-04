@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-aa9c1833.js";
+            window.path_to_searchindex_js = "searchindex-1e12e0ff.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-8be1e071.js"></script>
+        <script src="toc-0fcbd1c8.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,90 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260904"><a class="header" href="#20260904">20260904</a></h1>
+<h3 id="1-llamacpp-build-for-b60-pro"><a class="header" href="#1-llamacpp-build-for-b60-pro">1. llama.cpp build for b60 pro</a></h3>
+<p>Fetch the build tree(llama.cpp):</p>
+<pre><code>git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+git fetch origin --tags --prune
+git checkout b10433   # 或对应的 commit 9b05354ec
+sudo docker build \
+  --build-arg GGML_SYCL_F16=ON \
+  --target server \
+  -f .devops/intel.Dockerfile \
+  -t llama.cpp:sycl-f16-b10433 \
+  .
+</code></pre>
+<p>Fetch the models:</p>
+<pre><code>export HF_ENDPOINT=https://hf-mirror.com
+hf download  ggml-org/Qwen3.8-27B-GGUF mmproj-Qwen3.8-27B-Q8_0.gguf --local-dir .
+hf download  ggml-org/Qwen3.8-27B-GGUF mtp-Qwen3.8-27B-Q4_0.gguf --local-dir .
+hf download  ggml-org/Qwen3.8-27B-GGUF Qwen3.8-27B-Q4_K_M.gguf --local-dir .
+</code></pre>
+<p>Start via:</p>
+<pre><code>NAME=llamacpp-sycl-qwen38
+IMAGE=llama.cpp:sycl-f16-b10433
+MODEL_DIR=/home/dash/intelxe/models
+PORT=8010   # NOT 8003 — headroom-proxy (Anthropic upstream) owns 8003
+
+docker run -d --name "$NAME" \
+  --restart unless-stopped \
+  --memory=22g --memory-swap=24g \
+  --device /dev/dri \
+  --group-add "$(getent group render | cut -d: -f3)" \
+  --group-add "$(getent group video  | cut -d: -f3)" \
+  -v "$MODEL_DIR":/models:ro \
+  -p "0.0.0.0:${PORT}:8000" \
+  -e ONEAPI_DEVICE_SELECTOR=level_zero:0 \
+  "$IMAGE" \
+  -m /models/Qwen3.8-27B-Q4_K_M.gguf \
+  --model-draft /models/mtp-Qwen3.8-27B-Q4_0.gguf \
+  --spec-type draft-mtp --spec-draft-n-max 3 \
+  --mmproj /models/mmproj-Qwen3.8-27B-Q8_0.gguf \
+  -ngl 99 -ngld 99 \
+  -c 65536 \
+  --cache-type-k q4_0 --cache-type-v q4_0 \
+  --parallel 1 \
+  --host 0.0.0.0 --port 8000 \
+  --metrics \
+  -fa on -ub 2048 -b 2048 \
+  --jinja --reasoning off \
+  --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 \
+  --repeat-penalty 1.0
+</code></pre>
+<p>Configuration for pi:</p>
+<pre><code>dash@ai:~$ cat ~/.pi/agent/models.json
+{
+  "providers": {
+    "local-llamacpp": {
+      "baseUrl": "http://192.168.1.7:8010/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false
+      },
+      "models": [
+        {
+          "id": "/models/Qwen3.8-27B-Q4_K_M.gguf",
+          "name": "Qwen3.8 27B Q4_K_M (llama.cpp)",
+          "reasoning": true,
+          "input": ["text","image"],
+          "contextWindow": 65536,
+          "maxTokens": 32768,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260903"><a class="header" href="#20260903">20260903</a></h1>
 <h3 id="1-bondvlan"><a class="header" href="#1-bondvlan">1. bond/vlan</a></h3>
