@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-1e12e0ff.js";
+            window.path_to_searchindex_js = "searchindex-20204830.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0fcbd1c8.js"></script>
+        <script src="toc-851a908d.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,54 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260908"><a class="header" href="#20260908">20260908</a></h1>
+<h3 id="1-pi-plugin"><a class="header" href="#1-pi-plugin">1. pi plugin</a></h3>
+<p>Install following:</p>
+<pre><code>pi install npm:pi-safe-compact
+pi install npm:pi-web-search
+</code></pre>
+<h3 id="2-building-a13-issue"><a class="header" href="#2-building-a13-issue">2. building a13 issue</a></h3>
+<p>Building a13 on host:</p>
+<pre><code>[ 67% 68402/100739] //build/make/tools/releasetools:build_image embedded python archive [linux
+FAILED: out/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86_64_
+PY3/build_image
+rm -f out/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86_64_PY
+3/build_image.main &amp;&amp; sed 's/ENTRY_POINT/build_image/' build/soong/python/scripts/main.py &gt;out
+/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86_64_PY3/build_i
+mage.main &amp;&amp;out/host/linux-x86/bin/merge_zips -p -pm out/soong/.intermediates/build/make/tools
+/releasetools/build_image/linux_glibc_x86_64_PY3/build_image.main --prefix out/soong/.intermed
+iates/prebuilts/build-tools/prebuilt_py3-launcher-autorun/linux_glibc_x86_64/py3-launcher-auto
+run out/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86_64_PY3/
+build_image out/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86
+_64_PY3/build_image.py.srcszip out/soong/.intermediates/build/make/tools/releasetools/releaset
+ools_common/linux_glibc_x86_64_PY3/releasetools_common.py.srcszip out/soong/.intermediates/bui
+ld/make/tools/releasetools/releasetools_fsverity_metadata_generator/linux_glibc_x86_64_PY3/rel
+easetools_fsverity_metadata_generator.py.srcszip out/soong/.intermediates/system/security/fsve
+rity/fsverity_digests_proto_python/linux_glibc_x86_64_PY3/gen/fsverity_digests.proto.srcszip o
+ut/soong/.intermediates/external/protobuf/libprotobuf-python/linux_glibc_x86_64_PY3/libprotobu
+f-python.srcszip out/soong/.intermediates/external/python/six/py-six/linux_glibc_x86_64_PY3/py
+-six.py.srcszip out/soong/.intermediates/build/make/tools/releasetools/releasetools_verity_uti
+ls/linux_glibc_x86_64_PY3/releasetools_verity_utils.py.srcszip out/soong/.intermediates/extern
+al/python/cpython3/Lib/py3-stdlib/linux_glibc_x86_64_PY3/py3-stdlib.py.srcszip &amp;&amp; chmod +x out
+/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_x86_64_PY3/build_i
+mage &amp;&amp; rm -rf out/soong/.intermediates/build/make/tools/releasetools/build_image/linux_glibc_
+x86_64_PY3/build_image.main
+merge_zips.go:724: open out/soong/.intermediates/prebuilts/build-tools/prebuilt_py3-launcher-a
+utorun/linux_glibc_x86_64/py3-launcher-autorun: no such file or directory
+11:00:40 ninja failed with: exit status 1
+
+#### failed to build some targets (01:01:22 (hh:mm:ss)) ####
+
+
+real	61m21.730s
+user	1054m8.148s
+sys	50m47.213s
+ 1 dash@horse:/media/nvme/vnca13preview/vnca13preview$ rm -rf out/soong/.intermediates/prebuilts/build-tools
+dash@horse:/media/nvme/vnca13preview/vnca13preview$ rm -rf out/soong/.intermediates/system/apex
+dash@horse:/media/nvme/vnca13preview/vnca13preview$ rm -rf out/soong/.intermediates/build/make/tools/releasetools
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260904"><a class="header" href="#20260904">20260904</a></h1>
 <h3 id="1-llamacpp-build-for-b60-pro"><a class="header" href="#1-llamacpp-build-for-b60-pro">1. llama.cpp build for b60 pro</a></h3>
