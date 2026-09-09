@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-20204830.js";
+            window.path_to_searchindex_js = "searchindex-8bba9389.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-851a908d.js"></script>
+        <script src="toc-bf1db5e4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,78 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260909"><a class="header" href="#20260909">20260909</a></h1>
+<h3 id="1-qwen35-4b-for-compact"><a class="header" href="#1-qwen35-4b-for-compact">1. qwen35-4b for compact</a></h3>
+<p>Create modelfile:</p>
+<pre><code>$ cat modelfile-qwen354b
+FROM qwen3.5:4b
+
+PARAMETER num_ctx 131072
+PARAMETER temperature 0.6
+PARAMETER top_p 0.9
+</code></pre>
+<p>Create new model and run:</p>
+<pre><code>ollama create qwen354b-256k -f modelfile-qwen354b 
+ollama run qwen354b-256k
+</code></pre>
+<p>make it permanent:</p>
+<pre><code>curl http://localhost:11434/api/generate -d '{
+  "model": "qwen354b-256k",
+  "keep_alive": -1
+}'
+</code></pre>
+<p>Reverse tunnel:</p>
+<pre><code> ssh -p 16522 -R 8021:127.0.0.1:11434 test@kkk.kkk.kkk.com
+</code></pre>
+<p>Configuration for pi:</p>
+<pre><code>dash@horse:~$ cat ~/.pi/agent/models.json 
+{
+  "providers": {
+"ollama": {
+      "baseUrl": "http://127.0.0.1:8021/v1",
+      "api": "openai-completions",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "qwen354b-256k:latest",
+          "contextWindow": 131072,
+          "name": "Qwen354B-256k(Ollama)"
+        }
+      ]
+    },
+    "llama-cpp": {
+      "baseUrl": "http://192.168.1.165:8010/v1",
+      "api": "openai-completions",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "Qwen3.8-27B-Q4_K_M.gguf",
+          "contextWindow": 65536,
+          "name": "Qwen3.8-27B(remote)"
+        }
+      ]
+    }
+  }
+}
+
+dash@horse:~$ cat ~/.pi/agent/settings.json 
+{
+  "lastChangelogVersion": "0.85.1",
+  "defaultProvider": "llama-cpp",
+  "defaultModel": "Qwen3.8-27B-Q4_K_M.gguf",
+"compactionModel": {
+    "model": "ollama/qwen354b-256k:latest",
+    "thinkingLevel": "off",
+"threshold": 0.9
+  },
+  "packages": [
+    "npm:pi-web-search",
+    "npm:pi-compaction-model"
+  ],
+  "theme": "dark"
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260908"><a class="header" href="#20260908">20260908</a></h1>
 <h3 id="1-pi-plugin"><a class="header" href="#1-pi-plugin">1. pi plugin</a></h3>
