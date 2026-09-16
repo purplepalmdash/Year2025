@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-8bba9389.js";
+            window.path_to_searchindex_js = "searchindex-53b32bc0.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-bf1db5e4.js"></script>
+        <script src="toc-9b335645.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,132 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260915"><a class="header" href="#20260915">20260915</a></h1>
+<h3 id="1-pi-uninstall-plugin"><a class="header" href="#1-pi-uninstall-plugin">1. pi uninstall plugin</a></h3>
+<p>via:</p>
+<pre><code>test@bread:~$ pi list
+User packages:
+  npm:pi-web-access
+    /home/test/.pi/agent/npm/node_modules/pi-web-access
+  npm:pi-safe-compact
+    /home/test/.pi/agent/npm/node_modules/pi-safe-compact
+  npm:pi-multivision
+    /home/test/.pi/agent/npm/node_modules/pi-multivision
+test@bread:~$ pi remove npm:pi-multivision
+Removing npm:pi-multivision...
+
+removed 1 package, and audited 136 packages in 974ms
+
+93 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+Removed npm:pi-multivision
+
+</code></pre>
+<h3 id="2-nvidia-smi-mon"><a class="header" href="#2-nvidia-smi-mon">2. nvidia smi mon</a></h3>
+<p>via:</p>
+<pre><code>sudo nvidia-smi dmon
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260914"><a class="header" href="#20260914">20260914</a></h1>
+<h3 id="1-redsocks-issue"><a class="header" href="#1-redsocks-issue">1. redsocks issue</a></h3>
+<p>After running redroid, redsocks will fail :</p>
+<pre><code>$ sudo ./redsocks.sh start
+1789432952.110632 err redsocks.c:1390 redsocks_init_instance(...) bind: Address already in use
+Warning: Extension REDIRECT revision 0 not supported, missing kernel module?
+iptables v1.8.10 (nf_tables): RULE_APPEND failed (No such file or directory): rule in chain OUTPUT
+Warning: Extension REDIRECT revision 0 not supported, missing kernel module?
+iptables v1.8.10 (nf_tables): RULE_APPEND failed (No such file or directory): rule in chain OUTPUT
+</code></pre>
+<p>Solved via:</p>
+<pre><code>sudo modprobe xt_REDIRECT
+sudo modprobe nf_nat
+sudo modprobe iptable_nat
+</code></pre>
+<h3 id="2-ollama-tips"><a class="header" href="#2-ollama-tips">2. ollama tips</a></h3>
+<p>keep alive(forever run) and disable thinking:</p>
+<pre><code>curl http://localhost:11434/api/generate -d '{ "model": "qwen354b-256k","think":false}' &amp;&amp; curl http://localhost:11434/api/generate -d '{ "model": "qwen354b-256k", "keep_alive": -1 }'
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260910"><a class="header" href="#20260910">20260910</a></h1>
+<h3 id="1-pi-multivision"><a class="header" href="#1-pi-multivision">1. pi multivision</a></h3>
+<p>Configuration:</p>
+<pre><code>pi install npm:pi-multivision
+
+$ cat ~/.pi/agent/models.json
+{
+  "providers": {
+"ollama": {
+      "baseUrl": "http://127.0.0.1:8021/v1",
+      "api": "openai-completions",
+"requireHttps": "false",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "qwen354b-256k:latest",
+          "contextWindow": 131072,
+          "name": "Qwen354B-256k(Ollama)",
+	"input": ["text", "image"]
+        }
+      ]
+    },
+    "llama-cpp": {
+      "baseUrl": "http://192.168.1.165:8010/v1",
+      "api": "openai-completions",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "Qwen3.8-27B-Q4_K_M.gguf",
+          "contextWindow": 100000,
+	 "input": ["text"],
+          "name": "Qwen3.8-27B(remote)"
+        }
+      ]
+    }
+  }
+}
+$ cat ~/.pi/agent/pi-multivision.env 
+VISION_MODEL_3_NAME=qwen354b
+VISION_MODEL_3_URL=http://192.168.1.165:8021/v1
+VISION_MODEL_3_MODEL=qwen354b-256k:latest
+VISION_MODEL_3_KEY="none"
+</code></pre>
+<p>Disable thinking mode in ollama:</p>
+<pre><code>curl http://localhost:11434/api/generate -d '{  "model": "qwen354b-256k","think":false}'
+</code></pre>
+<p>Modification for 100K:</p>
+<pre><code> cat startb60_100K.sh
+NAME=llamacpp-sycl-qwen38
+IMAGE=llama.cpp:sycl-f16-b10433
+MODEL_DIR=/home/dash/intelxe/models
+PORT=8010   # NOT 8003 — headroom-proxy (Anthropic upstream) owns 8003
+
+docker run -d --name "$NAME" \
+  --restart unless-stopped \
+  --memory=22g --memory-swap=24g \
+  --device /dev/dri \
+  --group-add "$(getent group render | cut -d: -f3)" \
+  --group-add "$(getent group video  | cut -d: -f3)" \
+  -v "$MODEL_DIR":/models:ro \
+  -p "0.0.0.0:${PORT}:8000" \
+  -e ONEAPI_DEVICE_SELECTOR=level_zero:0 \
+  "$IMAGE" \
+  -m /models/Qwen3.8-27B-Q4_K_M.gguf \
+  --model-draft /models/mtp-Qwen3.8-27B-Q4_0.gguf \
+  --spec-type draft-mtp --spec-draft-n-max 3 \
+  -ngl 99 \
+  -c 100000 \
+  --cache-type-k q4_0 --cache-type-v q4_0 \
+  --parallel 1 \
+  --host 0.0.0.0 --port 8000 \
+  --metrics \
+  -fa on -ub 2048 -b 2048 \
+  --jinja --reasoning on \
+  --temp 1.0 --top-p 0.95 --top-k 20 --min-p 0.0 \
+  --repeat-penalty 1.0
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260909"><a class="header" href="#20260909">20260909</a></h1>
 <h3 id="1-qwen35-4b-for-compact"><a class="header" href="#1-qwen35-4b-for-compact">1. qwen35-4b for compact</a></h3>
