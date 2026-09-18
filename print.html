@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-53b32bc0.js";
+            window.path_to_searchindex_js = "searchindex-9c3eca59.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-9b335645.js"></script>
+        <script src="toc-a3153fed.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -598,6 +598,113 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260918"><a class="header" href="#20260918">20260918</a></h1>
+<h3 id="1-ollama-for-vision"><a class="header" href="#1-ollama-for-vision">1. ollama for vision</a></h3>
+<p>Create 16K context ollama model:</p>
+<pre><code>cat &gt; Modelfile &lt;&lt; EOF
+FROM qwen354b-256k:latest
+PARAMETER num_ctx 16384
+# 可选：再加一些有利于压缩和视觉的参数
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
+EOF
+
+ollama create qwen-compress-vision -f Modelfile
+</code></pre>
+<p>Edit ollama service via:</p>
+<pre><code>$ sudo systemctl edit ollama.service
+[Service]
+Environment="OLLAMA_KEEP_ALIVE=-1"
+</code></pre>
+<p>Reload and restart:</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl restart ollama
+</code></pre>
+<p>Auto set parameter for specified model:</p>
+<pre><code>root@ai:/home/dash# sudo chmod +x /usr/local/bin/preload-ollama.sh
+root@ai:/home/dash# cat /usr/local/bin/preload-ollama.sh
+#!/bin/bash
+# 等待 Ollama 服务完全就绪
+until curl -s http://localhost:11434/api/tags &gt; /dev/null; do
+        sleep 2
+    done
+# 发送空请求触发加载，并指定 keep_alive 参数为永久 (-1)
+curl http://localhost:11434/api/generate -d '{
+  "model": "qwen-compress-vision",
+    "keep_alive": -1
+}'
+curl http://localhost:11434/api/generate -d '{ "model": "qwen-compress-vision","think":false}'
+</code></pre>
+<p>Edit a new system service:</p>
+<pre><code># vim /etc/systemd/system/ollama-preload.service
+
+[Unit]
+Description=Preload Ollama Model on Boot
+After=ollama.service
+Requires=ollama.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/preload-ollama.sh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+<p>Reload and start the service:</p>
+<pre><code>sudo systemctl daemon-reload
+sudo systemctl enable --now ollama-preload.service
+</code></pre>
+<p>Now you got a 100% GPU ollama running instance:</p>
+<pre><code># ollama ps
+NAME                           ID              SIZE      PROCESSOR    CONTEXT    UNTIL   
+qwen-compress-vision:latest    efe5f844d245    3.6 GB    100% GPU     16384      Foreve
+</code></pre>
+<p>Then you could configure the pi’s configuration(models and settings)</p>
+<p>My configuration for pi(coding agent):</p>
+<pre><code>dash@horse:~/.pi/agent$ cat pi-multivision.env 
+VISION_MODEL_3_NAME=qwen354b
+VISION_MODEL_3_URL=http://192.168.1.165:8021/v1
+VISION_MODEL_3_MODEL=qwen-compress-vision:latest
+VISION_MODEL_3_KEY="none"
+dash@horse:~/.pi/agent$ cat models.json 
+{
+  "providers": {
+"ollama": {
+      "baseUrl": "http://127.0.0.1:8021/v1",
+      "api": "openai-completions",
+"requireHttps": "false",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "qwen-compress-vision:latest",
+          "contextWindow": 16384,
+          "name": "qwen-compress-vision(Ollama)",
+	"input": ["text", "image"]
+        }
+      ]
+    },
+    "llama-cpp": {
+      "baseUrl": "http://192.168.1.165:8010/v1",
+      "api": "openai-completions",
+      "apiKey": "none",
+      "models": [
+        {
+          "id": "Qwen3.8-27B-Q4_K_M.gguf",
+          "contextWindow": 100000,
+	 "input": ["text"],
+          "name": "Qwen3.8-27B(remote)"
+        }
+      ]
+    }
+
+  }
+}
+</code></pre>
+<h3 id="2-disable-mutts-win-key-binding"><a class="header" href="#2-disable-mutts-win-key-binding">2. disable mutt’s win key-binding</a></h3>
+<p>via:</p>
+<pre><code>gsettings set org.gnome.mutter overlay-key ''
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260915"><a class="header" href="#20260915">20260915</a></h1>
 <h3 id="1-pi-uninstall-plugin"><a class="header" href="#1-pi-uninstall-plugin">1. pi uninstall plugin</a></h3>
