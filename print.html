@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-83bddf5c.js";
+            window.path_to_searchindex_js = "searchindex-712b7af6.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-d34ec46d.js"></script>
+        <script src="toc-7a93e799.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,21 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20260928"><a class="header" href="#20260928">20260928</a></h1>
+<h3 id="1-rsync-with-try"><a class="header" href="#1-rsync-with-try">1. rsync with try</a></h3>
+<p>Step:</p>
+<pre><code>until sudo rsync -avP --timeout=15 --ignore-errors \
+  --log-file=/tmp/rsync_videos_local.log \
+  /media/sda/videos \
+  /media/sda/Videos \
+  /media/sda/*.mp4 \
+  /run/media/dash/12667746-dp/; do
+    echo "遇到坏道卡死，5秒后自动重试下一个文件..."
+    sleep 5
+done
+</code></pre>
+<h3 id="2"><a class="header" href="#2">2.</a></h3>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260927"><a class="header" href="#20260927">20260927</a></h1>
 <h3 id="1-cheap-vps"><a class="header" href="#1-cheap-vps">1. cheap vps</a></h3>
@@ -24092,7 +24107,7 @@ network:
 <p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2025_05_06_15_49_23_1099x536.jpg" alt="./images/2025_05_06_15_49_23_1099x536.jpg"><span class="img-wrapper"><img src="images/2025_05_06_15_49_23_1099x536.jpg" alt="./images/2025_05_06_15_49_23_1099x536.jpg"></span></label></p>
 <p>英魂之刃:</p>
 <p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2025_05_06_16_39_07_1103x556.jpg" alt="./images/2025_05_06_16_39_07_1103x556.jpg"><span class="img-wrapper"><img src="images/2025_05_06_16_39_07_1103x556.jpg" alt="./images/2025_05_06_16_39_07_1103x556.jpg"></span></label></p>
-<h3 id="2"><a class="header" href="#2">2.</a></h3>
+<h3 id="2-1"><a class="header" href="#2-1">2.</a></h3>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20250505"><a class="header" href="#20250505">20250505</a></h1>
 <h3 id="1-redroid-in-fedorax86_64"><a class="header" href="#1-redroid-in-fedorax86_64">1. redroid in fedora(x86_64)</a></h3>
