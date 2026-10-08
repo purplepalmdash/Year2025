@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-712b7af6.js";
+            window.path_to_searchindex_js = "searchindex-3fe19f69.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7a93e799.js"></script>
+        <script src="toc-ed68de64.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,70 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261008"><a class="header" href="#20261008">20261008</a></h1>
+<h3 id="1-add-swap-for-build-aosp17"><a class="header" href="#1-add-swap-for-build-aosp17">1. Add swap for build aosp17</a></h3>
+<p>Steps listed as:</p>
+<pre><code>dash@aiBox:~$ free -m
+               total        used        free      shared  buff/cache   available
+Mem:           63663        2350         588          12       60725       60605
+Swap:           2047           1        2046
+dash@aiBox:~$ sudo fallocate -l 64G  /swap_build.img
+dash@aiBox:~$ sudo chmod 600 /swap_build.img
+dash@aiBox:~$ sudo mkswap /swap_build.img
+Setting up swapspace version 1, size = 64 GiB (68719472640 bytes)
+no label, UUID=9f250d26-fd17-41f1-a4e3-7820915439a3
+dash@aiBox:~$ sudo swapon /swap_build.img
+dash@aiBox:~$ free -m
+               total        used        free      shared  buff/cache   available
+Mem:           63663        2306         635          12       60720       60648
+Swap:          67583           1       67582
+</code></pre>
+<h3 id="2-redroid17-building-verification"><a class="header" href="#2-redroid17-building-verification">2. redroid17 building verification</a></h3>
+<p>Prepare the directory:</p>
+<pre><code>dash@aiBox:~$ ls redroid17-github/
+device_redroid  device_redroid-prebuilts  README.md  redroid17  redroid17-local_manifests  redroid17-patches  redroid-c2  redroid-omx  vendor_redroid
+</code></pre>
+<p>redroid17 working tree:</p>
+<pre><code>export REPO_URL='https://mirrors.bfsu.edu.cn/git/git-repo'
+repo init --depth 1 -u https://mirrors.bfsu.edu.cn/git/AOSP/platform/manifest -b android-17.0.0_r1
+repo sync -j4 --no-clone-bundle --no-tags 2&gt;&amp;1 | tee /tmp/repo_sync.log
+mkdir -p .repo/local_manifests
+cp ~/redroid17-github/redroid17-local_manifests/local-verify.xml .repo/local_manifests/default.xml
+### Change 
+dash@aiBox:/media/sda/redroid17$ cat .repo/local_manifests/default.xml  | grep fetch
+  &lt;remote name="r17" fetch="file:///home/dash/redroid17-github" revision="main"/&gt;
+repo sync -j4 --force-sync -c --no-tags
+</code></pre>
+<p>Apply patch:</p>
+<pre><code>cd /home/dash/redroid17-github/redroid17-patches
+./apply-patch.sh /media/sda/redroid17
+</code></pre>
+<p>Build:</p>
+<pre><code>LUNCH_TARGET=redroid_x86_64-trunk_staging-userdebug
+CCACHE_DIR=$HOME/ccache17
+export CCACHE_DIR=$CCACHE_DIR
+export USE_CCACHE=1 CCACHE_EXEC=/usr/bin/ccache
+source build/envsetup.sh
+lunch $LUNCH_TARGET
+time BUILD_BROKEN_SRC_DIR_RW_ALLOWLIST=/home/dash/ccache17 m -j12 systemimage vendorimage
+
+ninja: 6h3m16.30s Build Succeeded: 202300 steps - 9.28/s
+
+#### build completed successfully (06:03:23 (hh:mm:ss)) ####
+Try enabling incremental analysis for faster builds after changing Android.bp files.
+See http://go/soong-incremental-analysis
+
+
+real    363m22.729s
+user    3885m2.545s
+sys     413m4.364s
+
+</code></pre>
+<h3 id="3-view-ccache-hit-rate"><a class="header" href="#3-view-ccache-hit-rate">3. view ccache hit rate</a></h3>
+<p>Step:</p>
+<pre><code>CCACHE_DIR=/home/dash/ccache17 ccache -s
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260928"><a class="header" href="#20260928">20260928</a></h1>
 <h3 id="1-rsync-with-try"><a class="header" href="#1-rsync-with-try">1. rsync with try</a></h3>
