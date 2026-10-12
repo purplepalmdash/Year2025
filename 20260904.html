@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f88c05a9.js";
+            window.path_to_searchindex_js = "searchindex-d584c923.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-05663550.js"></script>
+        <script src="toc-5af9fd3b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -256,6 +256,33 @@ docker run -d --name "$NAME" \
     }
   }
 }
+</code></pre>
+<h3 id="2-detect-model-capability"><a class="header" href="#2-detect-model-capability">2. Detect model capability</a></h3>
+<p>Test via:</p>
+<pre><code>$ ls 1.jpg
+$ curl http://localhost:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"model\": \"/home/test/Code/Bonsai-demo/models/bonsai2-gguf/27B/Ternary-Bonsai-2-27B-PQ2_0.gguf\",
+    \"messages\": [
+      {
+        \"role\": \"user\",
+        \"content\": [
+          {
+            \"type\": \"text\",
+            \"text\": \"请详细描述一下这张图片里有什么内容？\"
+          },
+          {
+            \"type\": \"image_url\",
+            \"image_url\": {
+              \"url\": \"data:image/jpeg;base64,$(base64 -w 0 1.jpg)\"
+            }
+          }
+        ]
+      }
+    ],
+    \"max_tokens\": 300
+  }"
 </code></pre>
 
                     </main>

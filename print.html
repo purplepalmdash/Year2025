@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-f88c05a9.js";
+            window.path_to_searchindex_js = "searchindex-d584c923.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-05663550.js"></script>
+        <script src="toc-5af9fd3b.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,44 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261012"><a class="header" href="#20261012">20261012</a></h1>
+<h3 id="1-intel-arcgreatjedi"><a class="header" href="#1-intel-arcgreatjedi">1. Intel arc(Greatjedi)</a></h3>
+<p>Download hf model via:</p>
+<pre><code>export HF_ENDPOINT=https://hf-mirror.com
+dash@ai:~/models$ hf download Greatjedi/Qwen3.8-27B-Intel-Arc-Tuned-GGUF Qwen3.8-27B-GSQ-RCO-IQ3_S-Intel-Arc-Tuned-MTP-Q4_K.gguf --local-dir .
+hf download  unsloth/Qwen3.8-27B-GGUF mmproj-BF16.gguf --local-dir .
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_10_12_09_27_10_964x158.jpg" alt="./images/2026_10_12_09_27_10_964x158.jpg"><span class="img-wrapper"><img src="images/2026_10_12_09_27_10_964x158.jpg" alt="./images/2026_10_12_09_27_10_964x158.jpg"></span></label></p>
+<p>llama.cpp building:</p>
+<pre><code>unzip llama.cpp-master.zip
+mv llama.cpp-master llama.cpp-20260912
+cd llama.cpp-20260912
+rm -rf build
+source /opt/intel/oneapi/setvars.sh --force
+cmake -B build   -DGGML_SYCL=ON   -DCMAKE_C_COMPILER=icx   -DCMAKE_CXX_COMPILER=icpx   -DGGML_SYCL_F16=ON   -DLLAMA_BUILD_UI=ON   -DLLAMA_USE_PREBUILT_UI=ON   -DCMAKE_BUILD_TYPE=Release
+cmake --build build --config Release -j$(nproc)
+### manually download the jinja file
+$ ls chat_templates/qwen-sharp.jinja 
+chat_templates/qwen-sharp.jinja
+</code></pre>
+<p>Start the model via:</p>
+<pre><code>$ cat start.sh
+#!/bin/bash
+# Sourcing oneAPI
+source /opt/intel/oneapi/setvars.sh --force
+
+# CRITICAL FOR BATTLEMAGE: Force Level Zero V1 UR adapter (prevents error 44)
+export UR_LOADER_USE_LEVEL_ZERO_V2=0
+export ONEAPI_DEVICE_SELECTOR=level_zero:0
+export ZE_AFFINITY_MASK=0
+export ZES_ENABLE_SYSMAN=1
+
+# Start
+./build/bin/llama-server -m /home/dash/models/Qwen3.8-27B-GSQ-RCO-IQ3_S-Intel-Arc-Tuned-MTP-Q4_K.gguf --mmproj  /home/dash/models/mmproj-BF16.gguf --spec-type ngram-mod,draft-mtp --spec-ngram-mod-n-match 24   --spec-ngram-mod-n-min 1   --spec-ngram-mod-n-max 3   --spec-draft-n-max 3   --spec-draft-p-min 0.5   -c 200000   --cache-type-k q4_0 --cache-type-v q4_0   -ngl 99 -ngld 99 -fa on   -ub 1024 -b 1024 -t 4 -tb 6 --parallel 1   --jinja --chat-template-file  chat_templates/qwen-sharp.jinja --reasoning-preserve   --host 0.0.0.0 --port 8183
+</code></pre>
+<p>The token generation speed is around <code>30 tps</code>:</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/2026_10_12_11_09_43_975x475.jpg" alt="./images/2026_10_12_11_09_43_975x475.jpg"><span class="img-wrapper"><img src="images/2026_10_12_11_09_43_975x475.jpg" alt="./images/2026_10_12_11_09_43_975x475.jpg"></span></label></p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261010"><a class="header" href="#20261010">20261010</a></h1>
 <h3 id="1-copy-blobhf-model"><a class="header" href="#1-copy-blobhf-model">1. copy blob(hf model)</a></h3>
@@ -1396,6 +1434,33 @@ docker run -d --name "$NAME" \
     }
   }
 }
+</code></pre>
+<h3 id="2-detect-model-capability"><a class="header" href="#2-detect-model-capability">2. Detect model capability</a></h3>
+<p>Test via:</p>
+<pre><code>$ ls 1.jpg
+$ curl http://localhost:8080/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d "{
+    \"model\": \"/home/test/Code/Bonsai-demo/models/bonsai2-gguf/27B/Ternary-Bonsai-2-27B-PQ2_0.gguf\",
+    \"messages\": [
+      {
+        \"role\": \"user\",
+        \"content\": [
+          {
+            \"type\": \"text\",
+            \"text\": \"请详细描述一下这张图片里有什么内容？\"
+          },
+          {
+            \"type\": \"image_url\",
+            \"image_url\": {
+              \"url\": \"data:image/jpeg;base64,$(base64 -w 0 1.jpg)\"
+            }
+          }
+        ]
+      }
+    ],
+    \"max_tokens\": 300
+  }"
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20260903"><a class="header" href="#20260903">20260903</a></h1>
