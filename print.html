@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-1c7b7be4.js";
+            window.path_to_searchindex_js = "searchindex-954cffd9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-538aed2e.js"></script>
+        <script src="toc-f4e777f4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -618,6 +618,132 @@
 </table>
 </div>
 <div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261014"><a class="header" href="#20261014">20261014</a></h1>
+<h3 id="1-firefoxspecify-device"><a class="header" href="#1-firefoxspecify-device">1. firefox(specify device)</a></h3>
+<p>via:</p>
+<pre><code>dash@ai:~$ glxinfo -B | grep -i "device"
+    Device: Mesa Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (0xe211)
+dash@ai:~$ DRI_PRIME=0 glxinfo -B | grep -i "device"
+    Device: Mesa Intel(R) Arc(tm) Pro B60 Graphics (BMG G21) (0xe211)
+dash@ai:~$ DRI_PRIME=1 glxinfo -B | grep -i "device"
+pci id for fd 5: 10de:2507, driver (null)
+pci id for fd 6: 10de:2507, driver (null)
+pci id for fd 7: 10de:2507, driver (null)
+glx: failed to create dri3 screen
+failed to load driver: nvidia-drm
+    Device: zink Vulkan 1.4(NVIDIA GeForce RTX 3050 (NVIDIA_PROPRIETARY)) (0x2507)
+dash@ai:~$ DRI_PRIME=2 glxinfo -B | grep -i "device"
+    Device: Mesa Intel(R) UHD Graphics 730 (ADL-S GT1) (0x4682)
+dash@ai:~$ DRI_PRIME=2 firefox
+Gtk-Message: 11:13:16.062: Not loading module "atk-bridge": The functionality is provided by GTK natively. Please try to not load it.
+</code></pre>
+<h3 id="2-arc-b60-provram-occupy"><a class="header" href="#2-arc-b60-provram-occupy">2. arc b60 pro(vram occupy)</a></h3>
+<p>Free ollama:</p>
+<pre><code>dash@ai:~$ ollama ps
+NAME                           ID              SIZE      PROCESSOR    CONTEXT    UNTIL   
+qwen-compress-vision:latest    efe5f844d245    3.7 GB    100% GPU     16384      Forever    
+dash@ai:~$ sudo systemctl list-units | grep ollama
+  ollama.service                                                                                          loaded active     running            Ollama Service
+dash@ai:~$ sudo systemctl disable ollama --now
+Removed '/etc/systemd/system/default.target.wants/ollama.service'
+</code></pre>
+<p>Make sure the renderD129 only run llama:</p>
+<pre><code>dash@ai:~/llama.cpp-20260912$ sudo fuser -v /dev/dri/renderD128
+                     用户     进程号 权限   命令
+/dev/dri/renderD128: dash      17526 F.... nxnode.bin
+                     dash      2541735 F.... firefox
+dash@ai:~/llama.cpp-20260912$ sudo fuser -v /dev/dri/renderD129
+                     用户     进程号 权限   命令
+/dev/dri/renderD129: dash      2567101 F...m llama-server
+</code></pre>
+<h3 id="3-intel-b60uhd730nvidia-mixed-xorg"><a class="header" href="#3-intel-b60uhd730nvidia-mixed-xorg">3. Intel b60(uhd730/nvidia) mixed xorg</a></h3>
+<p>Via:</p>
+<pre><code>$ sudo mv /usr/share/X11/xorg.conf.d/10-nvidia.conf /root/
+$ cat /etc/X11/xorg.conf.d/20-intel.conf 
+Section "ServerFlags"
+    Option "AutoAddGPU" "false"
+EndSection
+
+Section "ServerLayout"
+    Identifier "aydLayout"
+    Screen 0 "Screen0" 0 0
+EndSection
+
+Section "Device"
+    Identifier "Intel Graphics"
+    Driver "modesetting"
+    BusID "PCI:0:2:0"
+    Option "Primary" "true"
+EndSection
+
+Section "Screen"
+    Identifier "Screen0"
+    Device "Intel Graphics"
+    DefaultDepth 24
+EndSection
+
+Section "Device"
+    Identifier "Intel Arc B60"
+    Driver "modesetting"
+    BusID "PCI:3:0:0"
+    Option "Ignore" "true"
+EndSection
+
+Section "Device"
+    Identifier "NVIDIA RTX 3050"
+    Driver "nvidia"
+    BusID "PCI:6:0:0"
+    Option "Ignore" "true"
+EndSection
+</code></pre>
+<p>注意这里要写入<code>AutoAddGPU</code>为false.</p>
+<p>Detect usage:</p>
+<pre><code>sudo fuser -v /dev/dri/renderD128
+                     用户     进程号 权限   命令
+/dev/dri/renderD128: ollama    13162 F.... llama-server
+                     dash      18333 F.... nxnode.bin
+                     dash      19800 F.... firefox
+dash@ai:~$ 
+
+</code></pre>
+<h3 id="4-wineubuntu2604"><a class="header" href="#4-wineubuntu2604">4. wine(ubuntu2604)</a></h3>
+<p>Solved via:</p>
+<pre><code>sudo nano /etc/profile.d/wine.sh
+export PATH="/opt/wine-stable/bin:$PATH"
+
+sudo chmod 777  /etc/profile.d/wine.sh
+sudo reboot
+
+$ which wine
+/opt/wine-stable/bin/wine
+
+</code></pre>
+<h3 id="5-ollama-use-nvidia"><a class="header" href="#5-ollama-use-nvidia">5. ollama use nvidia</a></h3>
+<p>Solved via:</p>
+<pre><code>$ sudo systemctl edit ollama.service
+[Service]
+Environment="OLLAMA_MODELS=/usr/share/ollama/.ollama/models"
+Environment="OLLAMA_VULKAN=0"
+Environment="GGML_VK_VISIBLE_DEVICES=-1"
+Environment="CUDA_VISIBLE_DEVICES=0"
+Environment="OLLAMA_KEEP_ALIVE=-1"
+</code></pre>
+<p>view:</p>
+<pre><code>dash@ai:~$ ollama ps
+NAME                           ID              SIZE      PROCESSOR    CONTEXT    UNTIL   
+qwen-compress-vision:latest    efe5f844d245    3.6 GB    100% GPU     16384      Forever    
+dash@ai:~$ sudo nvidia-smi  | grep 8192
+|  0%   43C    P8              3W /  130W |    4313MiB /   8192MiB |      0%      Default |
+</code></pre>
+<h3 id="6-piwindows"><a class="header" href="#6-piwindows">6. pi(windows)</a></h3>
+<p>Install via:</p>
+<pre><code>npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+</code></pre>
+<p>winget and git:</p>
+<pre><code>PS C:\Users\test&gt; Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+PS C:\Users\test&gt; winget install --id Git.Git -e --source winget
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261013"><a class="header" href="#20261013">20261013</a></h1>
 <h3 id="1-activate-windows"><a class="header" href="#1-activate-windows">1. Activate Windows</a></h3>
 <p>Via:</p>
@@ -862,6 +988,11 @@ Ok to proceed? (y) y
 安装 Hopper（选 Yes）	★★☆☆☆	会下载安装 Hopper 的 Demo 版。对 Linux 可用，但对你当前的 Windows 游戏分析收益不大，而且有会话时间限制。
 </code></pre>
 <h3 id="5-hints"><a class="header" href="#5-hints">5. hints</a></h3>
+<p>最开始:</p>
+<pre><code>用 REA 分析 C:\rea-work\llk.exe。先给我整体概述，然后重点找出棋盘数据结构和两个方块是否可消除的判定逻辑，给出伪代码和证据。
+
+</code></pre>
+<p>然后:</p>
 <pre><code>直接给你一份「在 Windows + OpenCode 下逆向《连连看》的推荐提示词流程」， 顺便提个需求，我想把这个游戏做一个Linux版本的，能一并做出来吗？
 
 Thought for 2s
@@ -932,6 +1063,23 @@ Thought for 2s
 复刻阶段如果代码报错，直接把报错信息贴给它，让它修。
 需要我现在把提示词 1再优化得更精准一点（针对你具体的 exe 文件名），还是你直接照着上面顺序开始用？
 你准备好原版 exe 后告诉我文件名，我可以帮你把第一句提示词改成完全匹配的版本。
+</code></pre>
+<h3 id="6-pi-vision"><a class="header" href="#6-pi-vision">6. pi vision</a></h3>
+<p>Install :</p>
+<pre><code>pi install npm:@bytetrue/pi-vision
+
+</code></pre>
+<h3 id="7-piwindows"><a class="header" href="#7-piwindows">7. pi(windows)</a></h3>
+<p>fd not found, download it from :</p>
+<p><code>https://github.com/sharkdp/fd/releases</code>,  or let it automatically install</p>
+<pre><code>mkdir -p ~/.pi/agent
+notepad ~/.pi/agent/keybindings.json
+写入以下内容后保存：
+
+json
+{
+  "app.editor.external": []
+}
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261012"><a class="header" href="#20261012">20261012</a></h1>

@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-1c7b7be4.js";
+            window.path_to_searchindex_js = "searchindex-954cffd9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-538aed2e.js"></script>
+        <script src="toc-f4e777f4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -418,6 +418,11 @@ Ok to proceed? (y) y
 安装 Hopper（选 Yes）	★★☆☆☆	会下载安装 Hopper 的 Demo 版。对 Linux 可用，但对你当前的 Windows 游戏分析收益不大，而且有会话时间限制。
 </code></pre>
 <h3 id="5-hints"><a class="header" href="#5-hints">5. hints</a></h3>
+<p>最开始:</p>
+<pre><code>用 REA 分析 C:\rea-work\llk.exe。先给我整体概述，然后重点找出棋盘数据结构和两个方块是否可消除的判定逻辑，给出伪代码和证据。
+
+</code></pre>
+<p>然后:</p>
 <pre><code>直接给你一份「在 Windows + OpenCode 下逆向《连连看》的推荐提示词流程」， 顺便提个需求，我想把这个游戏做一个Linux版本的，能一并做出来吗？
 
 Thought for 2s
@@ -489,12 +494,29 @@ Thought for 2s
 需要我现在把提示词 1再优化得更精准一点（针对你具体的 exe 文件名），还是你直接照着上面顺序开始用？
 你准备好原版 exe 后告诉我文件名，我可以帮你把第一句提示词改成完全匹配的版本。
 </code></pre>
+<h3 id="6-pi-vision"><a class="header" href="#6-pi-vision">6. pi vision</a></h3>
+<p>Install :</p>
+<pre><code>pi install npm:@bytetrue/pi-vision
+
+</code></pre>
+<h3 id="7-piwindows"><a class="header" href="#7-piwindows">7. pi(windows)</a></h3>
+<p>fd not found, download it from :</p>
+<p><code>https://github.com/sharkdp/fd/releases</code>,  or let it automatically install</p>
+<pre><code>mkdir -p ~/.pi/agent
+notepad ~/.pi/agent/keybindings.json
+写入以下内容后保存：
+
+json
+{
+  "app.editor.external": []
+}
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="year2025.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="20261014.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
@@ -508,7 +530,7 @@ Thought for 2s
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="year2025.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="20261014.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
