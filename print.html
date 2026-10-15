@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-77901ab0.js";
+            window.path_to_searchindex_js = "searchindex-17410d9a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-9cc5effd.js"></script>
+        <script src="toc-e3882719.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,89 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261015"><a class="header" href="#20261015">20261015</a></h1>
+<h3 id="1-pi-auto-compact"><a class="header" href="#1-pi-auto-compact">1. pi auto compact</a></h3>
+<p>Install via:</p>
+<pre><code>pi install npm:@sting8k/pi-vcc
+</code></pre>
+<h3 id="2-ubuntu2204-wine"><a class="header" href="#2-ubuntu2204-wine">2. ubuntu2204 wine</a></h3>
+<p>Install :</p>
+<pre><code>  wget -nc -O- https://dl.winehq.org/wine-builds/winehq.key | gpg --dearmor -o /usr/share/keyrings/winehq-archive.gpg
+  vim /etc/apt/sources.list.d/winehq.list
+deb [arch=amd64,i386 signed-by=/usr/share/keyrings/winehq-archive.gpg] https://mirrors.tuna.tsinghua.edu.cn/wine-builds/ubuntu/ jammy main
+
+  apt update -y
+  sudo apt install --install-recommends winehq-stable winetricks
+</code></pre>
+<h3 id="3-nvmubuntu2204"><a class="header" href="#3-nvmubuntu2204">3. nvm(ubuntu2204)</a></h3>
+<p>Install and configure nvm:</p>
+<pre><code>curl -fsSL https://gitee.com/mirrors/nvm/raw/v0.40.1/install.sh | bash
+source ~/.bashrc
+nvm --version
+# 输出版本号（如 0.40.1）即表示安装成功
+export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+export NVM_NPM_MIRROR=https://npmmirror.com/mirrors/npm
+
+echo 'export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node' &gt;&gt; ~/.bashrc
+echo 'export NVM_NPM_MIRROR=https://npmmirror.com/mirrors/npm' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+
+nvm install 22.23.3
+nvm alias default 22.23.3
+nvm use 22.23.3
+
+npm config set registry https://registry.npmmirror.com
+
+node -v          # 应显示 v22.23.3
+npm -v           # 显示对应的 npm 版本
+npm config get registry  # 应显示 https://registry.npmmirror.com/
+
+</code></pre>
+<p>Install:</p>
+<pre><code>npm install -g --registry="https://gz01-srdart.srdcloud.cn/npm/public/public-npm-virtual/" @srdcloud/codefree-o
+codefree-o --version
+
+</code></pre>
+<h3 id="4-codefree-configuration"><a class="header" href="#4-codefree-configuration">4. codefree configuration</a></h3>
+<p>Edit:   <code>~/.codefree-o/.config/codefree.json</code>:</p>
+<pre><code>{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": "allow",
+  "mcp": {
+    "rea": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "rea-agents@6.5.0",
+        "mcp"
+      ],
+      "enabled": true
+    }
+  }
+}
+</code></pre>
+<h3 id="5-wine32-bit-issue"><a class="header" href="#5-wine32-bit-issue">5. wine(32-bit) issue</a></h3>
+<p>Issue:</p>
+<pre><code>test@codefree:~$ winetricks -q mfc42 vcrun6
+
+Registry info:
+/home/test/.wine/system.reg:#arch=win64
+/home/test/.wine/user.reg:#arch=win64
+/home/test/.wine/userdef.reg:#arch=win64
+------------------------------------------------------
+------------------------------------------------------
+warning: wine cmd.exe /c echo '%AppData%' returned empty string, error message ""
+------------------------------------------------------
+
+如何解决这个问题   
+
+</code></pre>
+<p>Solved via:</p>
+<pre><code>export WINEARCH=win32
+export WINEPREFIX=~/.wine32
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261014"><a class="header" href="#20261014">20261014</a></h1>
 <h3 id="1-firefoxspecify-device"><a class="header" href="#1-firefoxspecify-device">1. firefox(specify device)</a></h3>
