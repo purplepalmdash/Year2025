@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-17410d9a.js";
+            window.path_to_searchindex_js = "searchindex-39ae1f3c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-e3882719.js"></script>
+        <script src="toc-11951fe7.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,40 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261020"><a class="header" href="#20261020">20261020</a></h1>
+<h3 id="1-pidrawing"><a class="header" href="#1-pidrawing">1. pi(drawing)</a></h3>
+<p>Install d2:</p>
+<pre><code>curl -fsSL https://d2lang.com/install.sh | sh -s --
+</code></pre>
+<p>Install some plugins:</p>
+<pre><code>1. diagram-design（强烈推荐）
+
+专为 Claude Code、Codex、Pi 等 Agent 设计，支持 40+ 种专业图表（架构图、流程图、时序图、数据模型、泳道图等）。
+输出是自包含的 HTML + SVG，设计感强、可直接交付，不走普通 Mermaid 的“廉价感”。
+
+pi install https://github.com/cathrynlavery/diagram-design
+
+2. pi-drawio
+
+专门生成原生 .drawio 文件（可继续在 draw.io 里编辑），并支持导出 PNG/SVG/PDF。
+安装：pi install npm:pi-drawio，然后 /reload
+
+3. @mcuste/pi-diagram
+
+用 D2 语言生成架构/流程图，token 效率较高。
+安装：pi install npm:@mcuste/pi-diagram（需要本机有 D2 CLI）。
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261019"><a class="header" href="#20261019">20261019</a></h1>
+<h3 id="1-pi-web"><a class="header" href="#1-pi-web">1. pi-web</a></h3>
+<p>Installed via:</p>
+<pre><code>$ npm install -g @jmfederico/pi-web --allow-scripts=node-pty
+$ pi-web install
+$ pi-web doctor
+$ pi-web version
+# Open http://127.0.0.1:8504
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261015"><a class="header" href="#20261015">20261015</a></h1>
 <h3 id="1-pi-auto-compact"><a class="header" href="#1-pi-auto-compact">1. pi auto compact</a></h3>
