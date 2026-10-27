@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-2d1b74fc.js";
+            window.path_to_searchindex_js = "searchindex-7e6bb9c0.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-0d18c458.js"></script>
+        <script src="toc-f7d20b4f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,59 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261027"><a class="header" href="#20261027">20261027</a></h1>
+<h3 id="1-nvidiav100"><a class="header" href="#1-nvidiav100">1. nvidia(v100)</a></h3>
+<p>Re-install driver:</p>
+<pre><code>sudo apt-get purge "*nvidia*" "*libnvidia*"
+sudo apt-get autoremove --purge
+sudo apt install nvidia-driver-580-server
+# nvidia-smi 
+Tue Oct 27 02:51:19 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.178.04             Driver Version: 580.178.04     CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  Tesla V100-PCIE-32GB           Off |   00000000:00:0A.0 Off |                  Off |
+| N/A   33C    P0             36W /  250W |   31236MiB /  32768MiB |      0%      Default |
+|                                         |                        |                  N/A |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A            2034      C   ./build-v100/apps/ninfer-serve        31214MiB |
+</code></pre>
+<h3 id="2-nixos"><a class="header" href="#2-nixos">2. nixos</a></h3>
+<p>Install pi via:</p>
+<pre><code>nix profile add github:earendil-works/pi/stable
+$ pi --version
+1.4.0
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261026"><a class="header" href="#20261026">20261026</a></h1>
+<h3 id="1-i915-vfiovfs-issue"><a class="header" href="#1-i915-vfiovfs-issue">1. i915 vfio/vfs issue</a></h3>
+<p>Solved via:</p>
+<pre><code>grubby --update-kernel=ALL --remove-args="i915.reset=0"
+grubby --update-kernel=ALL --remove-args="i915.guc_log_size_debug=16"
+grubby --update-kernel=ALL --remove-args="i915.force_probe=*"    
+</code></pre>
+<p>Then check the <code>/etc/default/grub</code>, remove these 3 items, then:</p>
+<pre><code>grub2-mkconfig -o /boot/efi/EFI/rocky/grub.cfg
+reboot
+</code></pre>
+<p>Then vfs will be OK .</p>
+<h3 id="2-nixos-installation2605"><a class="header" href="#2-nixos-installation2605">2. nixos installation(26.05)</a></h3>
+<p>Get the iso:</p>
+<pre><code>axel https://mirrors.tuna.tsinghua.edu.cn/nixos-images/nixos-26.05/latest-nixos-graphical-x86_64-linux.iso
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261022"><a class="header" href="#20261022">20261022</a></h1>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261021"><a class="header" href="#20261021">20261021</a></h1>
 <h3 id="1-oh-my-zsh"><a class="header" href="#1-oh-my-zsh">1. oh-my-zsh</a></h3>
