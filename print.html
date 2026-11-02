@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5dc3afbb.js";
+            window.path_to_searchindex_js = "searchindex-c1e41a42.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-ad55d290.js"></script>
+        <script src="toc-3747eecd.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,22 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261102"><a class="header" href="#20261102">20261102</a></h1>
+<h3 id="1-ip-show-stats"><a class="header" href="#1-ip-show-stats">1. ip show stats</a></h3>
+<p>Via:</p>
+<pre><code>ip -s link                  # 看所有接口
+ip -s link show eth0        # 只看某个接口
+cat /proc/net/dev           # 最底层的原始数据
+</code></pre>
+<h3 id="2-addremove-default-gw"><a class="header" href="#2-addremove-default-gw">2. Add/remove default gw</a></h3>
+<p>Add default route:</p>
+<pre><code>sudo ip route add default via 192.168.1.33 dev eth0
+ 
+</code></pre>
+<p>delete default route:</p>
+<pre><code>sudo ip route del default via 192.168.1.33 dev eth0
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261030"><a class="header" href="#20261030">20261030</a></h1>
 <h3 id="1-remote-vnc"><a class="header" href="#1-remote-vnc">1. remote vnc</a></h3>
