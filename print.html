@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fff43370.js";
+            window.path_to_searchindex_js = "searchindex-69b455b9.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-83129bf8.js"></script>
+        <script src="toc-cda997fa.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,31 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261112"><a class="header" href="#20261112">20261112</a></h1>
+<h3 id="1-zelynic"><a class="header" href="#1-zelynic">1. zelynic</a></h3>
+<p>Could limit the download/upload speed:</p>
+<pre><code>dash@ai:~$ sudo /home/dash/.local/bin/zelynic status
+╭───────────────────────────── zelynic status ─────────────────────────────╮
+  active limits: 1 dl, 1 ul                                                 
+  cgroup                download   upload allowed dropped                   
+────────────────────────────────────────────────────────────────────────────
+  cg:31789 (python3.12) 3.0 MB/s 1.0 MB/s  3.5 GB  3.3 GB                   
+    Upload Pacing: 1.0 MB/s (kernel-native)                                 
+  allowed/dropped: cumulative since apply.                                  
+  small dropped = saver lanes working; ingress burns quota, egress saves it.
+  RECWN window: 600.0 KB (binding across 1 download policy; est. RTT 200ms) 
+  v80.1.1 (7047569) by oxyzenQ                                              
+dash@ai:~$ sudo /home/dash/.local/bin/zelynic unstrict cg:31789
+[limiter] Unstrict: cg:31789 — limits removed
+Removed 2 policies for 'cg:31789'
+dash@ai:~$ sudo /home/dash/.local/bin/zelynic status
+╭─────────────────────────────────────────── zelynic status ───────────────────────────────────────────╮
+  no active limits
+  v80.1.1 (7047569) by oxyzenQ
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261111"><a class="header" href="#20261111">20261111</a></h1>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261110"><a class="header" href="#20261110">20261110</a></h1>
 <h3 id="1-find-the-ocr-service"><a class="header" href="#1-find-the-ocr-service">1. find the ocr service</a></h3>
