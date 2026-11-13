@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-69b455b9.js";
+            window.path_to_searchindex_js = "searchindex-5db907b1.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-cda997fa.js"></script>
+        <script src="toc-aeaedac9.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,33 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261113"><a class="header" href="#20261113">20261113</a></h1>
+<h3 id="1-pinvm"><a class="header" href="#1-pinvm">1. pi/nvm</a></h3>
+<p>Install nvm:</p>
+<pre><code>sudo apt update &amp;&amp; sudo apt install -y curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+source ~/.bashrc
+nvm --version
+0.40.4
+</code></pre>
+<p>Install/configure:</p>
+<pre><code>export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node
+# better add this into your .bashrc
+nvm install 22
+nvm use 22
+</code></pre>
+<p>Then install pi via:</p>
+<pre><code>curl ..........
+npm config set registry https://registry.npmmirror.com
+ npm install -g @jmfederico/pi-web --allow-scripts=node-pty --registry=https://registry.npmmirror.com
+pi-web install
+</code></pre>
+<h3 id="2-nala"><a class="header" href="#2-nala">2. nala</a></h3>
+<p>Install nala then enjoy multi-thread download:</p>
+<pre><code>sudo apt install -y nala
+sudo nala install packer
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261112"><a class="header" href="#20261112">20261112</a></h1>
 <h3 id="1-zelynic"><a class="header" href="#1-zelynic">1. zelynic</a></h3>
