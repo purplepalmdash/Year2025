@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-5db907b1.js";
+            window.path_to_searchindex_js = "searchindex-8e78764e.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-aeaedac9.js"></script>
+        <script src="toc-17c83590.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,21 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261116"><a class="header" href="#20261116">20261116</a></h1>
+<h3 id="1-nodejs"><a class="header" href="#1-nodejs">1. nodejs</a></h3>
+<p>configure and install codefree-o:</p>
+<pre><code>sudo apt install -y curl
+curl -o https://gitee.com/mirrors/nvm/raw/master/install.sh | bash
+echo 'export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node' &gt;&gt; ~/.bashrc
+source ~/.bashrc
+nvm --version
+0.41.0
+nvm install --lts
+nvm use lts
+npm config set registry https://registry.npmmirror.com
+npm install -g @srdcloud/codefree-o --registry="https://gz01-srdart.srdcloud.cn/npm/public/public-npm-virtual/"
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261113"><a class="header" href="#20261113">20261113</a></h1>
 <h3 id="1-pinvm"><a class="header" href="#1-pinvm">1. pi/nvm</a></h3>
