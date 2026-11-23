@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-9a7f456a.js";
+            window.path_to_searchindex_js = "searchindex-fc6edf2c.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-48259b6e.js"></script>
+        <script src="toc-3b698106.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,44 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261123"><a class="header" href="#20261123">20261123</a></h1>
+<h3 id="1-strata-update"><a class="header" href="#1-strata-update">1. strata update</a></h3>
+<p>Via:</p>
+<pre><code>$ strata update --check
+</code></pre>
+<p>update via:</p>
+<pre><code>$ strata update
+Strata update (https://github.com/Niko1221/Strata/releases/latest/download)
+  Reading the signed update feed
+iq3_xxs-200k and swift-1.5-iq3_xxs (port 8080) are running. It would update the engine 0.1.58 -&gt; 0.1.66 and the Control 0.1.58 -&gt; 0.1.66. The new engine is downloaded while they keep serving; then they are stopped (answers in progress end), the engine is updated, and you choose whether to start them again with the same settings.
+Stop iq3_xxs-200k and swift-1.5-iq3_xxs (port 8080) for the update? [y/N] y
+  downloading engine 0.1.66 linux-x86_64-cuda-cuda13: 1%  (6 of 591 MB) 
+</code></pre>
+<h3 id="2-ninfer-allv100"><a class="header" href="#2-ninfer-allv100">2. ninfer-all(V100)</a></h3>
+<p>Download the dep files via:</p>
+<pre><code>curl -fLO https://distfiles.gentoo.org/distfiles/62/ffmpeg-9.0.2.tar.xz
+curl -fLO https://distfiles.gentoo.org/distfiles/8b/dav1d-1.5.4.tar.xz
+
+</code></pre>
+<p>Build via:</p>
+<pre><code># ls third_party/media-sources/
+dav1d-1.5.4.tar.xz  ffmpeg-9.0.2.tar.xz
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.8/bin/nvcc  -DCMAKE_CUDA_ARCHITECTURES=70
+cmake --build build --target ninfer-serve ninfer-calibrate
+</code></pre>
+<h3 id="3-ninfer-alla6000"><a class="header" href="#3-ninfer-alla6000">3. ninfer-all(a6000)</a></h3>
+<p>The same download process as above steps, then:</p>
+<pre><code>cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CUDA_ARCHITECTURES=86
+</code></pre>
+<p>Download the model files as:</p>
+<pre><code># 国内镜像下载（15.4 GiB，单文件）
+HF_ENDPOINT=https://hf-mirror.com hf download \
+  WaveCut/Inkling-2-Mini-UD-IQ4_XS-NInfer-v3 \
+  Inkling-2-Mini-UD-IQ4_XS-ninfer-v3.ninfer \
+  --local-dir models
+
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261120"><a class="header" href="#20261120">20261120</a></h1>
 <h3 id="1-lxc-based-environment"><a class="header" href="#1-lxc-based-environment">1. lxc based environment</a></h3>
