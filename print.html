@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-fc6edf2c.js";
+            window.path_to_searchindex_js = "searchindex-090ef4a4.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-3b698106.js"></script>
@@ -655,6 +655,64 @@ HF_ENDPOINT=https://hf-mirror.com hf download \
   --local-dir models
 
 </code></pre>
+<h3 id="4-ninfer-allv100-changes"><a class="header" href="#4-ninfer-allv100-changes">4. ninfer-all(v100 changes)</a></h3>
+<p>Error 定位:</p>
+<pre><code>grep -rn "ggml_cuda_kernel_can_use_pdl\|ggml_cuda_get_device\|ggml_cuda_error" src/ third_party/ 2&gt;/dev/null | head
+# 看看是否有某个库已经定义了它们（T = 已定义，U = 未定义）
+for a in build/src/*/*.a; do nm -C "$a" 2&gt;/dev/null | grep -E " T (ggml_cuda_get_device|ggml_cuda_error)" &amp;&amp; echo "  &lt;- $a"; done
+</code></pre>
+<p>解决：补一个 shim 文件
+新建 src/ops/ggml_cuda_shim.cu，并加到 ninfer_ggml_quants 的源文件列表里：</p>
+<pre><code>#include &lt;cuda_runtime.h&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+
+// 签名必须与 common.cuh 中的声明完全一致（同一命名空间，不要放在 extern "C" 里）
+int ggml_cuda_get_device() {
+    int id = 0;
+    cudaError_t e = cudaGetDevice(&amp;id);
+    if (e != cudaSuccess) {
+        fprintf(stderr, "cudaGetDevice failed: %s\n", cudaGetErrorString(e));
+        abort();
+    }
+    return id;
+}
+
+[[noreturn]] void ggml_cuda_error(const char* stmt, const char* func,
+                                  const char* file, int line, const char* msg) {
+    int id = -1;
+    cudaGetDevice(&amp;id);
+    fprintf(stderr, "CUDA error: %s\n  device %d, in %s at %s:%d\n  %s\n",
+            msg, id, func, file, line, stmt);
+    abort();
+}
+</code></pre>
+<p>找到 ninfer_ggml_quants 是在哪里定义的：</p>
+<pre><code>grep -rn "ninfer_ggml_quants" --include=CMakeLists.txt --include=*.cmake . | grep -v "^./build"
+./src/ops/CMakeLists.txt:126: $&lt;TARGET_OBJECTS:ninfer_ggml_quants&gt; $&lt;TARGET_OBJECTS:ninfer_device_tier&gt;
+./src/ops/linear/gguf/sources.cmake:8:add_library(ninfer_ggml_quants ${_ninfer_ggml_library_type}
+./src/ops/linear/gguf/sources.cmake:52: set_target_properties(ninfer_ggml_quants PROPERTIES
+./src/ops/linear/gguf/sources.cmake:53: COMPILE_PDB_NAME ninfer_ggml_quants
+./src/ops/linear/gguf/sources.cmake:54: COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/CMakeFiles/ninfer_ggml_quants.dir")
+./src/ops/linear/gguf/sources.cmake:57:target_include_directories(ninfer_ggml_quants PRIVATE
+./src/ops/linear/gguf/sources.cmake:61:ninfer_cuda_non_rdc_archive(ninfer_ggml_quants)
+./src/ops/linear/gguf/sources.cmake:62:target_compile_options(ninfer_ggml_quants PRIVATE
+./src/ops/linear/gguf/sources.cmake:65:target_link_libraries(ninfer_ggml_quants PRIVATE ${NINFER_CUDART_TARGET} CUDA::cublas)
+./src/ops/linear/gguf/sources.cmake:68: target_link_libraries(ninfer_ops PRIVATE ninfer_ggml_quants)
+./src/ops/linear/gguf/sources.cmake:71: target_link_libraries(ninfer_ggml_quants PRIVATE $&lt;LINK_ONLY:ninfer_ops&gt;)
+</code></pre>
+<p>add_library(ninfer_ggml_quants …) 那条语句是多行的，在它的右括号之后（第 52 行 set_target_properties 之前或之后都可以）加一行：</p>
+<pre><code>target_sources(ninfer_ggml_quants PRIVATE ${PROJECT_SOURCE_DIR}/src/ops/ggml_cuda_shim.cu)
+</code></pre>
+<p>Then:</p>
+<pre><code>$ cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_CUDA_COMPILER=/usr/local/cuda-12.8/bin/nvcc -DCMAKE_CUDA_ARCHITECTURES=70
+$ cmake --build build --target ninfer-serve ninfer-calibrate
+$ nm -C build/src/ops/libninfer_ggml_quants.a | grep -E " T ggml_cuda_(get_device|error)"
+00000000000000dd T ggml_cuda_error(char const*, char const*, char const*, int, char const*)
+000000000000005d T ggml_cuda_get_device()
+</code></pre>
+<p>Then you could do testing.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261120"><a class="header" href="#20261120">20261120</a></h1>
 <h3 id="1-lxc-based-environment"><a class="header" href="#1-lxc-based-environment">1. lxc based environment</a></h3>
