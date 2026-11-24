@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-090ef4a4.js";
+            window.path_to_searchindex_js = "searchindex-03d318ae.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-3b698106.js"></script>
+        <script src="toc-9a53fede.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,31 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261124"><a class="header" href="#20261124">20261124</a></h1>
+<h3 id="1-ninfer-all"><a class="header" href="#1-ninfer-all">1. ninfer-all</a></h3>
+<p>v100:</p>
+<pre><code>#!/bin/bash
+M=/root/Code/models/Inkling-2-Mini-UD-IQ4_XS-ninfer-v3.ninfer
+./build/apps/ninfer-serve "$M" \
+  --model-id inkling-2-mini \
+  --max-context 524288 --kv-capacity 524288 \
+  --kv-dtype mxfp8 \
+  --max-concurrency 1 \
+  --vision \
+  --port 8080
+</code></pre>
+<p>165:</p>
+<pre><code>cd /media/big/models/ninfer-all-master
+M=/media/big/models/models/Inkling-2-Mini-UD-IQ4_XS-ninfer-v3.ninfer
+./build/apps/ninfer-serve "$M" \
+  --model-id inkling-2-mini \
+  --max-context 524288 --kv-capacity 524288 \
+  --kv-dtype mxfp8 \
+  --max-concurrency 1 \
+  --vision \
+  --host 192.168.1.165  --port 8080
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261123"><a class="header" href="#20261123">20261123</a></h1>
 <h3 id="1-strata-update"><a class="header" href="#1-strata-update">1. strata update</a></h3>
