@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-03d318ae.js";
+            window.path_to_searchindex_js = "searchindex-a5e519e8.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-9a53fede.js"></script>
+        <script src="toc-888008f4.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,126 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261125"><a class="header" href="#20261125">20261125</a></h1>
+<h3 id="1-uncensored-stratafailed"><a class="header" href="#1-uncensored-stratafailed">1. uncensored strata(failed)</a></h3>
+<p>Using hfd for quickly download models from hf-mirror:</p>
+<pre><code>wget https://hf-mirror.com/hfd/hfd.sh
+chmod a+x hfd.sh
+export HF_ENDPOINT=https://hf-mirror.com
+./hfd.sh DatKurai/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-GGUF --local-dir kurai-iq1
+$ sudo du -hs kurai-iq1/
+76G     kurai-iq1/
+</code></pre>
+<h1 id="2-引擎原生-pack读取分片-1约-15-gb-输出"><a class="header" href="#2-引擎原生-pack读取分片-1约-15-gb-输出">2) 引擎原生 pack（读取分片 1；约 1.5 GB 输出）</a></h1>
+<pre><code>python /home/dash/.local/share/strata/terminal/current/tools/iq_pack.py --gguf kurai-iq1/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-00001-of-00002.gguf   --out  kurai-iq1/pack
+
+$ sudo du -hs kurai-iq1/pack/
+1.5G    kurai-iq1/pack/
+</code></pre>
+<h1 id="3-mtp-草稿层通过-http-ranges-从原始-bf16-checkpoint-获取打包重布局"><a class="header" href="#3-mtp-草稿层通过-http-ranges-从原始-bf16-checkpoint-获取打包重布局">3) MTP 草稿层（通过 HTTP ranges 从原始 BF16 checkpoint 获取，打包，重布局）</a></h1>
+<pre><code>python /home/dash/.local/share/strata/terminal/current/tools/mtp_fetch.py fetch --out kurai-iq1/mtp-bf16
+python /home/dash/.local/share/strata/terminal/current/tools/mtp_pack.py --src kurai-iq1/mtp-bf16 --experts q2_0 --out kurai-iq1/mtp-bf16/mtp-q2_0.gguf
+python /home/dash/.local/share/strata/terminal/current/tools/mtp_rt.py  --gguf kurai-iq1/mtp-bf16/mtp-q2_0.gguf --out kurai-iq1/mtp-bf16/rt
+</code></pre>
+<p>开启服务（失败）：</p>
+<pre><code># 4) 服务——从 32K 上下文开始；随内存允许逐步提高 --max-context（见注释中的 Context）
+strata --serve \
+  --pack           kurai-iq1/pack \
+  --native         kurai-iq1/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-00001-of-00002.gguf \
+  --ple-gguf       kurai-iq1/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-00001-of-00002.gguf \
+  --expert-profile kurai-iq1/expert-profile-332.bin \
+  --expert-cache   auto \
+  --prefill        auto \
+  --spec           4 \
+  --spec-min-p     0.5 \
+  --mtp            kurai-iq1/mtp-bf16/rt \
+  --kv             int8 \
+  --resident-experts \
+  --max-context    32768
+</code></pre>
+<p>但是这里我们需要变换为使用profile的形式:</p>
+<pre><code>$ vim ~/.local/state/strata/launch/kurai-iq1-332exp.json
+{
+  "exe": "component:strata-engine",
+  "args": [
+    "--pack",
+    "/home/dash/kurai-iq1/pack",
+    "--native",
+    "/home/dash/kurai-iq1/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-00001-of-00002.gguf",
+    "--ple-gguf",
+    "/home/dash/kurai-iq1/Swift-1.5-Qwen3.8-Flash-Next-GSQ-RCO-Uncen-IQ1-332Exp-00001-of-00002.gguf",
+    "--expert-profile",
+    "/home/dash/kurai-iq1/expert-profile-332.bin",
+    "--expert-cache",
+    "auto",
+    "--prefill",
+    "auto",
+    "--spec",
+    "4",
+    "--spec-min-p",
+    "0.5",
+    "--mtp",
+    "/home/dash/kurai-iq1/mtp-bf16/rt",
+    "--max-context",
+    "32768",
+    "--kv",
+    "int8",
+    "--resident-experts"
+  ],
+  "cwd": "/home/dash/.local/share/strata/terminal/0.1.59.1",
+  "tokenizer": "/home/dash/kurai-iq1/tokenizer",
+  "model_name": "swift-1.5-uncen-iq1-332exp",
+  "log": "/home/dash/.local/state/strata/launch/kurai-iq1-332exp.engine.log",
+  "lib_dirs": [],
+  "port": 8081,
+  "gpu": 0,
+  "gpus_asked": true
+}
+$  cat ~/.config/strata/profiles/launch-kurai-iq1.json
+{
+  "id": "launch-kurai-iq1",
+  "overrides": {
+    "host": "0.0.0.0",
+    "parallel": 1,
+    "port": 8081
+  },
+  "schema_version": 1,
+  "source_config": "/home/dash/.local/state/strata/launch/kurai-iq1-332exp.json"
+}
+</code></pre>
+<p>启动:</p>
+<pre><code>strata serve --config ~/.local/state/strata/launch/kurai-iq1-332exp.json
+</code></pre>
+<h3 id="2-inklingissue"><a class="header" href="#2-inklingissue">2. inkling(issue)</a></h3>
+<p>Stop via:</p>
+<pre><code>strata launch --stop
+</code></pre>
+<p>Start via:</p>
+<pre><code>hf download RX5950XT/Inkling-2-Mini-Uncensored-Strata --local-dir inkling-uncensored    # 三種大小全部，約 45 GB
+strata launch --family inkling-2-mini --model-path inkling-uncensored/Inkling-2-Mini-Uncensored-SQ-10.strata --yes --no-tui
+</code></pre>
+<h3 id="3-update-strata"><a class="header" href="#3-update-strata">3. update strata</a></h3>
+<p>via:</p>
+<pre><code>wget https://github.com/Niko1221/Strata/releases/latest/download/install.sh -o install.sh
+using redsocks
+sh install.sh
+</code></pre>
+<p>After upgrading:</p>
+<pre><code>$ strata --version
+strata 0.2.21.1 (build 0.1.68; python 3.12.15 at /home/dash/.local/share/strata/terminal/0.1.68/python/bin/python3.12)
+</code></pre>
+<h3 id="4-uncensored"><a class="header" href="#4-uncensored">4. uncensored</a></h3>
+<p>Download via:</p>
+<pre><code>dash@aiBox:~$ ./hfd.sh alesha-pro/Qwen3.8-Flash-Next-abliterated-GSQ-RCO-Strata-GGUF   --include "IQ3_S/*" "mmproj-Qwen3.8-Flash-Next-BF16.gguf" "Huihui-Qwen3.8-Flash-Next-refusal-direction-r.gguf" "SHA256SUMS" "LICENSE" "README.md"   --local-dir ~/models/alesha-iq3s
+</code></pre>
+<p>Plan:</p>
+<pre><code> 2001  strata launch   --model iq3_s   --model-path ~/models/alesha-iq3s/IQ3_S   --context 32k   --kv int8   --parallel 1   --vision gpu   --backend nvidia   --plan
+Changes to drafting mtp
+ 2003  strata launch   --model iq3_s   --model-path ~/models/alesha-iq3s/IQ3_S   --context 32k   --kv int8   --parallel 1   --vision gpu   --drafting mtp   --backend nvidia   --plan
+ 2004  strata launch   --model iq3_s   --model-path ~/models/alesha-iq3s/IQ3_S   --context 256k   --kv q4_0   --parallel 1   --vision gpu   --drafting mtp   --backend nvidia   --plan
+ 2005  strata launch   --model iq3_s   --model-path ~/models/alesha-iq3s/IQ3_S   --context 256k   --kv q4_0   --parallel 1   --vision gpu   --drafting mtp   --backend nvidia   --no-tui 
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261124"><a class="header" href="#20261124">20261124</a></h1>
 <h3 id="1-ninfer-all"><a class="header" href="#1-ninfer-all">1. ninfer-all</a></h3>
