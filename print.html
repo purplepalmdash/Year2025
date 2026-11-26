@@ -36,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-a5e519e8.js";
+            window.path_to_searchindex_js = "searchindex-791c0f5a.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-888008f4.js"></script>
+        <script src="toc-71cb57bd.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -617,6 +617,28 @@
 </tbody>
 </table>
 </div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="20261126"><a class="header" href="#20261126">20261126</a></h1>
+<h3 id="1-top-memory-occupied"><a class="header" href="#1-top-memory-occupied">1. top memory occupied</a></h3>
+<p>via:</p>
+<pre><code>$ ps -eo pid,user,rss:10,%mem,comm,args --sort=-%mem | head -n 11
+    PID USER            RSS %MEM COMMAND         COMMAND
+   4708 dash         300300  0.4 gnome-shell     /usr/bin/gnome-shell
+   4418 dash         118016  0.1 Xorg            /usr/lib/xorg/Xorg vt2 -displayfd 3 -auth /run/user/1000/gdm/Xauthority -nolisten tcp -background none -noreset -keeptty -novtswitch -verbose 3
+   6475 dash         102332  0.1 snapd-desktop-i /snap/snapd-desktop-integration/391/usr/bin/snapd-desktop-integration
+   4852 nx           101052  0.1 nxserver.bin    /usr/NX/bin/nxserver.bin --daemon
+   5407 dash          92300  0.1 xdg-desktop-por /usr/libexec/xdg-desktop-portal-gnome
+   4846 root          77124  0.1 dockerd         /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+    466 root          72192  0.1 systemd-journal /lib/systemd/systemd-journald
+   6109 dash          69760  0.1 nxnode.bin      /usr/NX/bin/nxnode.bin
+   5419 dash          68068  0.1 evolution-alarm /usr/libexec/evolution-data-server/evolution-alarm-notify
+   6153 dash          59532  0.0 gjs             gjs /usr/share/gnome-shell/extensions/ding@rastersoft.com/ding.js -E -P /usr/share/gnome-shell/extensions/ding@rastersoft.com -M 0 -D 0:0:1920:1080:1:27:0:70:0:0
+</code></pre>
+<h3 id="2-install-oh-my-zsh"><a class="header" href="#2-install-oh-my-zsh">2. Install oh-my-zsh</a></h3>
+<p>Via:</p>
+<pre><code>sudo apt install zsh git curl
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="20261125"><a class="header" href="#20261125">20261125</a></h1>
 <h3 id="1-uncensored-stratafailed"><a class="header" href="#1-uncensored-stratafailed">1. uncensored strata(failed)</a></h3>
